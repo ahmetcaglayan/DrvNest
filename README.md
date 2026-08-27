@@ -1,371 +1,364 @@
 <div align="center">
 
-<img src="assets/logo.svg" alt="DrvNest logosu: bir mikroçipi kucaklayan altıgen petek gözü" width="120" height="120">
+<img src="assets/logo.svg" alt="DrvNest logo: a hexagonal nest cell cradling a mint microchip" width="120" height="120">
 
 # DrvNest
 
-**DrvNest, Windows 10 ve 11 için ücretsiz ve açık kaynak bir sürücü güncelleme programıdır.**
-Sistemdeki tüm aygıtları tarar, eksik ve eski sürücüleri bulup kurar, gereken yeniden
-başlatmalardan sonra kaldığı yerden devam eder; format öncesinde sürücülerinizi yedekler ve
-format sonrasında internet olmadan geri yükler. Tek dosya, kurulum yok, reklam yok.
+**DrvNest is a free, open-source driver updater for Windows 10 and 11.**
+It scans every device in the machine, finds and installs the missing and outdated drivers, resumes
+after the restarts they need, backs your drivers up before a format and restores them afterwards
+with no internet at all. One file, no installer, no adware.
 
 <br>
 
-[![DrvNest.exe indir](https://img.shields.io/badge/⬇️%20DrvNest.exe%20İNDİR-Windows%20x64-2ea043?style=for-the-badge&logo=windows&logoColor=white&labelColor=1a7f37)](https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe)
+[![Download DrvNest.exe](https://img.shields.io/badge/⬇️%20DOWNLOAD%20DrvNest.exe-Windows%20x64-2ea043?style=for-the-badge&logo=windows&logoColor=white&labelColor=1a7f37)](https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe)
 
-<sub>[🌐 Proje sayfası](https://ahmetcaglayan.github.io/DrvNest/tr/) · [Tüm sürümler ve arm64 yapısı →](../../releases)</sub>
-
-<br>
-
-### Kurulum gerekmez. İndir, çift tıkla, çalışır.
-
-`Windows 10 1607+ / Windows 11` · `64-bit` · `Yönetici yetkisi gerekir`
-
-**.NET kurulumu gerekmez. Visual C++ Redistributable gerekmez.**
-Her şey exe'nin içinde: .NET 8 çalışma zamanı self-contained ve tek dosya olarak paketlenir,
-WPF de kendi `vcruntime140_cor3.dll` / `msvcp140_cor3.dll` kopyalarını beraberinde taşır.
+<sub>[🌐 Project site](https://ahmetcaglayan.github.io/DrvNest/) · [All releases and the arm64 build →](../../releases)</sub>
 
 <br>
 
-[![Lisans: MIT](https://img.shields.io/badge/Lisans-MIT-blue?style=flat-square)](LICENSE)
+### No installer. Download, double-click, done.
+
+`Windows 10 1607+ / Windows 11` · `64-bit` · `Administrator rights required`
+
+**No .NET installation. No Visual C++ Redistributable.**
+Everything lives inside the executable: the .NET 8 runtime is published self-contained as
+a single file, and WPF carries its own `vcruntime140_cor3.dll` / `msvcp140_cor3.dll`.
+
+<br>
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-0078d4?style=flat-square&logo=windows&logoColor=white)](../../releases)
 [![.NET 8](https://img.shields.io/badge/.NET-8.0-512bd4?style=flat-square&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
-[![Sürüm](https://img.shields.io/github/v/release/ahmetcaglayan/DrvNest?style=flat-square&label=S%C3%BCr%C3%BCm)](../../releases/latest)
-[![İndirme](https://img.shields.io/github/downloads/ahmetcaglayan/DrvNest/total?style=flat-square&label=indirme&color=2ea043)](../../releases)
-[![Yıldız](https://img.shields.io/github/stars/ahmetcaglayan/DrvNest?style=flat-square)](../../stargazers)
-[![Derleme](https://img.shields.io/github/actions/workflow/status/ahmetcaglayan/DrvNest/build.yml?style=flat-square&label=Derleme)](../../actions/workflows/build.yml)
+[![Release](https://img.shields.io/github/v/release/ahmetcaglayan/DrvNest?style=flat-square&label=Release)](../../releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/ahmetcaglayan/DrvNest/total?style=flat-square&label=downloads&color=2ea043)](../../releases)
+[![Stars](https://img.shields.io/github/stars/ahmetcaglayan/DrvNest?style=flat-square)](../../stargazers)
+[![Build](https://img.shields.io/github/actions/workflow/status/ahmetcaglayan/DrvNest/build.yml?style=flat-square&label=Build)](../../actions/workflows/build.yml)
 
-<sub>🇹🇷 Türkçe · [🇬🇧 English](README.en.md)</sub>
+<sub>🇬🇧 English · [🇹🇷 Türkçe](README.tr.md)</sub>
 
 </div>
 
 ---
 
-## 🎯 Bu ne işe yarar?
+## 🎯 What is it for?
 
-Windows'u formatladınız. Aygıt Yöneticisi sarı ünlem işaretleriyle dolu, ekran çözünürlüğü
-yanlış, ses yok ve — en kötüsü — ağ kartının sürücüsü olmadığı için internet de yok.
+You just formatted Windows. Device Manager is full of yellow exclamation marks, the
+resolution is wrong, there is no sound and — worst of all — no internet, because the
+network adapter has no driver either.
 
-DrvNest bu tabloyu tek bir pencereden çözer:
+DrvNest solves that from a single window:
 
-- Sistemdeki **tüm PnP aygıtlarını** listeler ve hangisinin sürücüsü olmadığını söyler.
-- Eksik ve güncellenebilir sürücüleri **Windows Update kataloğundan** ya da
-  **USB'deki yerel bir klasörden** bulur.
-- Hepsini bir kuyruğa alır, indirir, kurar; gereken yeniden başlatmalardan sonra
-  **kaldığı yerden devam eder**.
-- Format **öncesinde** mevcut sürücülerinizi dışa aktarır; format **sonrasında**
-  internet olmadan geri yükler.
+- Lists **every PnP device** in the machine and tells you which ones have no driver.
+- Finds missing and upgradable drivers in the **Windows Update catalog** or in a
+  **local folder on a USB stick**.
+- Queues them, downloads them, installs them and **carries on where it left off** after
+  every restart it needs.
+- Exports your current drivers **before** a format and restores them **afterwards**
+  with no internet involved.
 
-Tek dosya, kurulum yok, arka planda çalışan servis yok, telemetri yok.
+One file, no installer, no background service, no telemetry.
 
 ---
 
-## ✨ Öne çıkan özellikler
+## ✨ Features
 
-| Özellik | Ne yapar |
+| Feature | What it does |
 | --- | --- |
-| 🔍 **Tam aygıt taraması** | Sistemdeki tüm PnP aygıtlarını SetupAPI + CfgMgr32 ile sayar. WMI kullanmaz, bu yüzden WMI deposu bozuk ya da yeni kurulmuş bir makinede de çalışır. |
-| ⚠️ **Eksik sürücü tespiti** | Configuration Manager sorun kodlarını okur; 28 (`CM_PROB_FAILED_INSTALL`), 1 ve 19 "sürücü yok" olarak işaretlenir. 22 devre dışı, 14 yeniden başlatma bekliyor demektir. |
-| ☁️ **Windows Update sürücü kataloğu** | Windows Update Agent COM API'si (WUApiLib) üzerinden Microsoft Update'e bağlanır. Ek servis, ek indirme, ek bağımlılık yok — `wuapi.dll` zaten her Windows'ta var. |
-| 💾 **Yerel / çevrimdışı INF havuzu** | Klasörlerdeki `.inf` paketlerini ayrıştırır ve donanım kimliğine göre eşleştirir. USB bellek, ağ paylaşımı ya da bir DrvNest yedeği kaynak olabilir. |
-| ⚡ **Paralel indirme + sıralı kurulum** | İndirmeler aynı anda (varsayılan 3, ayarlanabilir 1–8). Kurulumlar tek tek. Bu bir eksiklik değil: Windows Update ikinci bir kuruluma `WU_E_OPERATIONINPROGRESS` döner ve PnP alt sistemi zaten sıraya sokar. Aynı anda kurmaya çalışmak sadece sahte hatalar üretir. |
-| 🔄 **Yeniden başlatma sonrası devam** | Kuyruk her adımda `session.json` dosyasına yazılır; `schtasks` ile oturum açılışına bağlı bir görev (yedeği HKLM `RunOnce`) DrvNest'i `--resume` ile geri getirir ve kaldığı yerden devam eder. |
-| 🛡️ **Sistem geri yükleme noktası** | Oturumdaki ilk kurulumdan önce `srclient.dll` ile sürücü tipinde bir geri yükleme noktası oluşturur. |
-| ↩️ **Güncelleme öncesi yedek** | Değiştirilecek sürücü paketi kurulumdan hemen önce dışa aktarılır; yolu geçmiş kaydına yazılır, böylece bir şey ters giderse o klasörden geri yüklenebilir. |
-| 📦 **Sürücü yedekleme / geri yükleme** | `pnputil /export-driver` ile tüm üçüncü parti sürücüleri klasöre veya ZIP'e aktarır; `pnputil /add-driver ... /subdirs /install` ile geri yükler. |
-| 📊 **Güncelleme geçmişi** | Kalıcı kayıt, satır başına bir JSON nesnesi (`history.jsonl`) olarak tutulur; tek tıkla CSV'ye aktarılır. |
-| 📄 **Donanım raporu** | Tüm aygıtları ve donanım kimliklerini düz metin dosyasına yazar. İnterneti olmayan makineden USB ile taşıyıp çalışan bir bilgisayarda sürücü aramak için. |
-| 🆙 **Kendi kendini güncelleme** | GitHub Releases'ten yeni sürümü indirir, **SHA-256 doğrulaması** yapar (`checksums.txt` yoksa kurulumu reddeder) ve exe'yi yerinde değiştirir. |
-| 🌍 **Türkçe / İngilizce arayüz** | Uygulama açıkken anında değişir. |
-| 🎨 **Koyu / açık tema** | Palet sözlüğü değiştirilir, pencere yeniden açılmadan uygulanır. |
+| 🔍 **Full device scan** | Enumerates every present PnP device through SetupAPI + CfgMgr32. No WMI, so it also works on a freshly installed machine or one with a broken WMI repository. |
+| ⚠️ **Missing-driver detection** | Reads Configuration Manager problem codes; 28 (`CM_PROB_FAILED_INSTALL`), 1 and 19 mean "no driver". 22 is disabled, 14 is waiting for a restart. |
+| ☁️ **Windows Update driver catalog** | Talks to Microsoft Update through the Windows Update Agent COM API (WUApiLib). No extra service, no extra download, no extra dependency — `wuapi.dll` ships with Windows. |
+| 💾 **Local / offline INF repository** | Parses `.inf` packages in folders and matches them by hardware id. A USB stick, a network share or a DrvNest backup all work as a source. |
+| ⚡ **Parallel downloads + serialized installs** | Downloads overlap (3 by default, configurable 1–8). Installs run one at a time. That is not a shortcut: Windows Update returns `WU_E_OPERATIONINPROGRESS` for a second concurrent install and the PnP subsystem serializes anyway. Pretending otherwise would only produce spurious failures. |
+| 🔄 **Resume after reboot** | The queue is written to `session.json` after every state change; a logon-triggered `schtasks` task (with an HKLM `RunOnce` fallback) relaunches DrvNest with `--resume` and it continues exactly where it stopped. |
+| 🛡️ **System restore point** | Creates a driver-type restore point through `srclient.dll` before the first install of a session. |
+| ↩️ **Pre-update backup** | The package about to be replaced is exported immediately before the install, and its path is stored in the history record so it can be restored if something goes wrong. |
+| 📦 **Driver backup / restore** | Exports every third-party driver package with `pnputil /export-driver` into a folder or ZIP, and restores with `pnputil /add-driver ... /subdirs /install`. |
+| 📊 **Update history** | A permanent record kept as one JSON object per line (`history.jsonl`), exportable to CSV in one click. |
+| 📄 **Hardware report** | Writes every device and hardware id to a plain text file — carry it on a USB stick to a working computer and look the drivers up by hand. |
+| 🆙 **Built-in updater** | Downloads the new release from GitHub, **verifies its SHA-256** (and refuses to install when the release publishes no `checksums.txt`), then swaps the executable in place. |
+| 🌍 **Turkish / English UI** | Switches instantly while the app is open. |
+| 🎨 **Dark / light theme** | Swaps the palette dictionary; applied without reopening the window. |
 
 ---
 
-## 🚑 Format sonrası kurtarma senaryosu
+## 🚑 Post-format recovery
 
-Bu, DrvNest'in var oluş sebebi.
+This is why DrvNest exists.
 
-### Tavuk-yumurta problemi
+### The chicken-and-egg problem
 
-Formattan sonra genellikle **ağ kartının sürücüsü de yoktur**. Sürücüyü indirmek için
-internet, internete çıkmak için sürücü gerekir. Windows Update bu durumda size yardım
-edemez, çünkü ona ulaşamazsınız.
+After a format the **network adapter usually has no driver either**. You need the
+internet to download the driver and the driver to reach the internet. Windows Update
+cannot help, because you cannot reach it.
 
-Çözüm: **sürücüleri formattan önce yanınıza almak.**
+The fix: **take your drivers with you before the format.**
 
-### Format ÖNCESİ (5 dakika)
+### BEFORE the format (5 minutes)
 
-1. DrvNest'i çalıştırın.
-2. **Yedekle & Geri Yükle** menüsüne gidin.
-3. **Yedek Oluştur**'a basın. Sistemdeki tüm üçüncü parti sürücü paketleri dışa aktarılır.
-   (Microsoft'un kendi kutu içi sürücüleri bilinçli olarak yedeklenmez — Windows onları
-   zaten kendisi kurar, yedeğe eklemek boyutu boşuna üçe katlardı.)
-4. İsterseniz **ZIP olarak sıkıştır** kutusunu işaretleyin.
-5. Oluşan klasörü **ve `DrvNest.exe`'yi aynı USB belleğe** kopyalayın.
+1. Run DrvNest.
+2. Go to **Backup & Restore**.
+3. Click **Create backup**. Every third-party driver package on the system is exported.
+   (Microsoft's own in-box drivers are deliberately skipped — Windows reinstalls those
+   itself, and including them would triple the backup size for nothing.)
+4. Tick **Compress as ZIP** if you like.
+5. Copy the resulting folder **and `DrvNest.exe`** onto the same USB stick.
 
-> 💡 İsteğe bağlı: Yedek klasörünü USB'de `DrvNest.exe` ile aynı dizinde `Drivers` adıyla
-> tutarsanız, DrvNest onu **otomatik olarak** yerel sürücü havuzu olarak kaydeder.
-> Hiçbir ayar yapmanız gerekmez.
+> 💡 Optional: name the backup folder `Drivers` and keep it next to `DrvNest.exe`.
+> DrvNest registers it **automatically** as a local driver repository — no configuration
+> needed.
 
-### Format SONRASI
+### AFTER the format
 
-1. USB belleği takın, `DrvNest.exe`'yi çalıştırın (yönetici onayı ister).
-   İnternet yoksa `DrvNest.exe --rescue` ile açın: Windows Update hiç aranmaz,
-   yalnızca yerel kaynaklar kullanılır.
-2. **Yedekle & Geri Yükle → Geri Yükle** (veya **Klasörden Geri Yükle**) ile yedeğinizi
-   seçin. Tüm paketler sürücü deposuna eklenir ve aygıtlara bağlanır.
-3. Ağ kartı çalışmaya başladıktan sonra **Tara**'ya basın.
-4. **Genel Bakış → Format Sonrası Kurtarma** butonu, hâlâ eksik olan her şeyi
-   Windows Update'ten bulup sıraya alır.
-5. Yeniden başlatma istenirse kabul edin — DrvNest açılışta kendini geri çağırır ve
-   kuyruğun kalanını tamamlar.
+1. Plug the stick in and run `DrvNest.exe` (it asks for elevation).
+   With no internet, start it as `DrvNest.exe --rescue`: Windows Update is never
+   contacted and only local sources are used.
+2. **Backup & Restore → Restore** (or **Restore from folder**) and pick your backup.
+   Every package is added to the driver store and bound to its devices.
+3. Once the network adapter works, press **Scan**.
+4. **Dashboard → Post-format recovery** queues everything that is still missing from
+   Windows Update.
+5. Accept the restart when asked — DrvNest brings itself back at logon and finishes the
+   rest of the queue.
 
-> ℹ️ Yedek klasörü illa DrvNest tarafından üretilmiş olmak zorunda değil. Üreticinin
-> sitesinden indirip açtığınız herhangi bir sürücü klasörünü de **Klasörden Geri Yükle**
-> ile kurabilirsiniz; içindeki `.inf` dosyaları alt klasörler dahil taranır.
+> ℹ️ The folder does not have to be a DrvNest backup. Any vendor driver folder you
+> downloaded and extracted works with **Restore from folder**; its `.inf` files are
+> found recursively.
 
-### Komut satırı
+### Command line
 
 ```powershell
-DrvNest.exe                 # normal başlatma
-DrvNest.exe --rescue        # çevrimdışı kurtarma modu (--offline ile aynı)
-DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür
+DrvNest.exe                 # normal launch
+DrvNest.exe --rescue        # offline rescue mode (same as --offline)
+DrvNest.exe --resume        # continue an interrupted queue straight away
 ```
 
 ---
 
-## 📸 Ekran görüntüleri
+## 📸 Screenshots
 
-> Ekran görüntüleri yakında — `assets/screenshots/` klasörüne eklenecek.
+> Screenshots coming soon — they will live in `assets/screenshots/`.
 
-Uygulamadaki dokuz ekran:
+The nine screens:
 
-- `dashboard.png` — Genel Bakış: aygıt/eksik/güncelleme sayıları, sistem özeti, hızlı işlemler
-- `devices.png` — Aygıtlar: sınıfa göre gruplanmış tam envanter, filtreler ve arama
-- `updates.png` — Güncellemeler: kurulabilir paket listesi ve seçim
-- `queue.png` — İşlemler: canlı indirme/kurulum ilerlemesi
-- `backup.png` — Yedekle & Geri Yükle
-- `history.png` — Geçmiş ve CSV dışa aktarma
-- `logs.png` — Günlük
-- `settings.png` — Ayarlar
-- `about.png` — Hakkında ve kendi kendini güncelleme
+- `dashboard.png` — Dashboard: device/missing/update counters, system summary, quick actions
+- `devices.png` — Devices: full inventory grouped by class, filters and search
+- `updates.png` — Updates: installable packages and selection
+- `queue.png` — Activity: live download/install progress
+- `backup.png` — Backup & Restore
+- `history.png` — History and CSV export
+- `logs.png` — Logs
+- `settings.png` — Settings
+- `about.png` — About and the built-in updater
 
 ---
 
-## 🧭 Menüler
+## 🧭 Menus
 
-| Menü | Ne yapar |
+| Menu | What it does |
 | --- | --- |
-| **Genel Bakış** | Aygıt sayısı, eksik sürücü sayısı, güncelleme sayısı, sorunlu aygıt sayısı. İşletim sistemi / makine / işlemci / BIOS özeti. Hızlı işlemler: *Şimdi Tara*, *Format Sonrası Kurtarma*, *Tümünü Güncelle*, *Sürücüleri Yedekle*, *Donanım Raporu*. Çalışan ağ sürücüsü yoksa uyarı şeridi çıkar. |
-| **Aygıtlar** | Sistemdeki tüm PnP aygıtları, sınıfa göre gruplanmış. Filtreler: *Tümü / Sorunlu / Sürücüsüz / Jenerik Sürücü*. Ada, üreticiye, sürüme ve donanım kimliğine göre arama; donanım kimliğini panoya kopyalama. |
-| **Güncellemeler** | Kurulabilecek paketler: hem eksik sürücüler hem de sürüm yükseltmeleri. Tekli seçim, *Tümünü Seç / Seçimi Temizle*, seçili boyut toplamı, *Seçilenleri Kur*. Bir güncellemeyi gizleyebilir veya bir aygıtı tamamen yoksayabilirsiniz. |
-| **İşlemler** | Çalışan kuyruk. Her iş için indirme yüzdesi, hız, aktarılan bayt ve kurulum aşaması ayrı ayrı görünür. *Tümünü İptal Et*, *Başarısızları Tekrar Dene*, *Şimdi Yeniden Başlat* / *Daha Sonra*. Kesintiye uğramış bir oturum varsa *Devam Et* butonu burada çıkar. |
-| **Yedekle & Geri Yükle** | *Yedek Oluştur* (isteğe bağlı ZIP), mevcut yedeklerin listesi (paket sayısı, boyut, tarih), *Geri Yükle*, *Klasörden Geri Yükle*, *Aç*, *Sil*. |
-| **Geçmiş** | Yapılan tüm sürücü işlemlerinin kalıcı kaydı. Sonuca göre filtre, arama, *CSV Olarak Dışa Aktar*, *Geçmişi Temizle*. Bir kaydın güncelleme öncesi yedeği duruyorsa klasörü açabilirsiniz. |
-| **Günlük** | Canlı tanılama akışı. *Kopyala* butonu sürüm, işletim sistemi ve makine başlığıyla birlikte günlüğü panoya alır — hata bildirirken tam olarak bu gerekir. Günlük dosyasını / klasörünü açma ve temizleme. |
-| **Ayarlar** | Aynı anda indirme sayısı, tekrar deneme sayısı, açılışta tarama, geri yükleme noktası, güncelleme öncesi yedek, yeniden başlatma sonrası devam, otomatik yeniden başlatma ve gecikmesi, çevrimdışı mod, isteğe bağlı sürücüler, yerel sürücü klasörleri, geçmiş saklama süresi, tema, dil. |
-| **Hakkında** | Sürüm bilgisi, *Güncellemeleri Kontrol Et*, *İndir ve Kur*, sürüm notları, proje sayfası ve hata bildirme bağlantıları. |
+| **Dashboard** | Device count, missing drivers, available updates, problem devices. OS / machine / CPU / BIOS summary. Quick actions: *Scan now*, *Post-format recovery*, *Update everything*, *Back up drivers*, *Hardware report*. A warning banner appears when no network adapter has a working driver. |
+| **Devices** | Every PnP device, grouped by class. Filters: *All / Problems / Missing / Generic driver*. Search by name, manufacturer, version and hardware id; copy a hardware id to the clipboard. |
+| **Updates** | Installable packages: both missing drivers and version upgrades. Per-row selection, *Select all / Clear selection*, total selected size, *Install selected*. You can hide one update or ignore a device entirely. |
+| **Activity** | The running queue. Download percentage, speed, transferred bytes and the install phase are shown separately for every job. *Cancel all*, *Retry failed*, *Restart now* / *Later*. An interrupted session shows a *Continue* button here. |
+| **Backup & Restore** | *Create backup* (optionally zipped), the list of existing backups (package count, size, date), *Restore*, *Restore from folder*, *Open*, *Delete*. |
+| **History** | A permanent record of every driver operation. Filter by outcome, search, *Export as CSV*, *Clear history*. If a record's pre-update backup still exists you can open its folder. |
+| **Logs** | Live diagnostics. *Copy* puts the log on the clipboard with a version / OS / machine header — exactly what an issue report needs. Open the log file or folder, or clear it. |
+| **Settings** | Parallel download count, retry count, scan on startup, restore point, pre-update backup, resume after restart, automatic restart and its delay, offline mode, optional drivers, local driver folders, history retention, theme, language. |
+| **About** | Version information, *Check for updates*, *Download and install*, release notes, project page and issue links. |
 
 ---
 
-## ⚙️ Nasıl çalışır?
+## ⚙️ How it works
 
 ```mermaid
 flowchart TD
-    A["Tarama başlar"] --> B["Aygıtlar<br/>SetupAPI + CfgMgr32"]
-    B --> C{"Sağlayıcılar<br/>paralel sorgulanır"}
+    A["Scan starts"] --> B["Devices<br/>SetupAPI + CfgMgr32"]
+    B --> C{"Providers<br/>queried in parallel"}
     C --> D["Windows Update<br/>WUApiLib COM"]
-    C --> E["Yerel INF havuzu<br/>USB / klasör / yedek"]
-    D --> F["Aday listesi<br/>tekilleştirilir"]
+    C --> E["Local INF repository<br/>USB / folder / backup"]
+    D --> F["Candidate list<br/>deduplicated"]
     E --> F
-    F --> G["Kullanıcı seçer"]
-    G --> H["Kuyruk"]
-    H --> I["Paralel indirme<br/>varsayılan 3 iş"]
-    I --> J["Sıralı kurulum<br/>tek global kilit"]
-    J --> K{"Yeniden başlatma<br/>gerekiyor mu?"}
-    K -->|Hayır| L["Bitti"]
-    K -->|Evet| M["session.json yazılır<br/>+ schtasks ONLOGON"]
-    M --> N["Yeniden başlatma"]
+    F --> G["User selects"]
+    G --> H["Queue"]
+    H --> I["Parallel downloads<br/>3 jobs by default"]
+    I --> J["Serialized installs<br/>one global lock"]
+    J --> K{"Restart<br/>required?"}
+    K -->|No| L["Done"]
+    K -->|Yes| M["session.json written<br/>+ schtasks ONLOGON"]
+    M --> N["Restart"]
     N --> O["DrvNest --resume"]
     O --> H
 ```
 
-Kısa teknik özet:
+In short:
 
-1. **Tarama.** `SetupDiGetClassDevs(DIGCF_PRESENT | DIGCF_ALLCLASSES)` ile sistemde
-   fiziksel olarak bulunan her aygıt sayılır; `CM_Get_DevNode_Status` sorun kodunu,
-   `HKLM\SYSTEM\CurrentControlSet\Control\Class\<DriverKey>` ise kurulu sürücünün
-   sürümünü, tarihini ve sağlayıcısını verir.
-2. **Sağlayıcılar.** Windows Update ve yerel INF havuzu aynı anda sorgulanır. Biri
-   başarısız olursa bu bir uyarı satırına dönüşür, tarama iptal olmaz.
-3. **Tekilleştirme.** İki kaynak aynı paketi önerirse **yerel kopya tercih edilir** —
-   zaten diskte olduğu için ağ gerektirmez. Windows Update kurulu olandan daha eski bir
-   sürüm önerirse o aday listeden düşer.
-4. **Kuyruk.** İndirmeler `SemaphoreSlim(MaxParallelJobs)` ile paralel, kurulumlar tek
-   bir global kilidin arkasında sıralıdır. Başarısız bir iş varsayılan olarak 2 kez
-   tekrar denenir.
-5. **Devam.** Her durum değişikliği `session.json`'a atomik olarak yazılır. Yeniden
-   başlatma gerekiyorsa kuyruk park edilir, oturum açılışına bağlı görev DrvNest'i
-   `--resume` ile geri getirir. Bir oturum en fazla 10 yeniden başlatma sürer; sonrasında
-   güvenlik gereği bırakılır.
+1. **Scan.** `SetupDiGetClassDevs(DIGCF_PRESENT | DIGCF_ALLCLASSES)` enumerates every
+   device physically present; `CM_Get_DevNode_Status` supplies the problem code, and
+   `HKLM\SYSTEM\CurrentControlSet\Control\Class\<DriverKey>` supplies the installed
+   driver's version, date and provider.
+2. **Providers.** Windows Update and the local INF repository are queried at the same
+   time. A provider that fails becomes a warning line, never an aborted scan.
+3. **Deduplication.** When both sources offer the same package the **local copy wins** —
+   it is already on disk and needs no network. If Windows Update offers a version older
+   than the installed one, that candidate is dropped.
+4. **Queue.** Downloads run behind `SemaphoreSlim(MaxParallelJobs)`; installs run behind
+   one global lock. A failed job is retried twice by default.
+5. **Resume.** Every state change is written atomically to `session.json`. When a restart
+   is needed the queue is parked, and a logon-triggered task brings DrvNest back with
+   `--resume`. A session survives at most 10 restarts before it is abandoned as a safety
+   valve.
 
 ---
 
-## 🔨 Kaynak koddan derleme
+## 🔨 Building from source
 
-Normal kullanıcı için burası ilgisiz: **exe'yi indirin, çift tıklayın, bitti.**
-Kaynak kod deponun içinde ayrı bir klasörde durur ve kimseyi rahatsız etmez.
+Irrelevant if you just want the app: **download the exe, double-click, done.**
+The source sits in its own folder and bothers nobody.
 
 ```
 DrvNest/
-├── src/                    kaynak kod (C#, .NET 8, WPF)
-│   ├── DrvNest.Core/       arayüzden bağımsız çekirdek: tarama, sağlayıcılar, kuyruk
-│   ├── DrvNest.App/        WPF masaüstü uygulaması (DrvNest.exe)
-│   └── DrvNest.Cli/        (ayrılmış) başsız/konsol ön yüz için yer tutucu
-├── docs/                   dokümanlar
-├── build/                  derleme scriptleri
-├── assets/                 logo ve ekran görüntüleri
+├── src/                    source code (C#, .NET 8, WPF)
+│   ├── DrvNest.Core/       UI-free core: scanning, providers, job engine
+│   ├── DrvNest.App/        WPF desktop application (DrvNest.exe)
+│   └── DrvNest.Cli/        (reserved) placeholder for a headless front end
+├── docs/                   documentation
+├── build/                  build scripts
+├── assets/                 logo and screenshots
 └── .github/workflows/      CI
 ```
 
-Kısaca:
+The short version:
 
 ```powershell
 dotnet publish src/DrvNest.App/DrvNest.App.csproj -c Release -r win-x64 -o publish
 ```
 
-Ayrıntılar, arm64 yapısı ve WUApiLib COM referansının açıklaması için:
+Details, the arm64 build and an explanation of the WUApiLib COM reference:
 **[docs/BUILD.md](docs/BUILD.md)**
 
-Mimari, `IDriverProvider` soyutlaması ve yeni bir sürücü kaynağının nasıl ekleneceği:
+Architecture, the `IDriverProvider` abstraction and how to add a new driver source:
 **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
 
 ---
 
-## 🔐 Güvenlik ve gizlilik
+## 🔐 Security and privacy
 
-- **Telemetri yok.** Kullanım verisi, cihaz kimliği, istatistik hiçbir yere gönderilmez.
-- Makineden dışarı çıkan **yalnızca iki** trafik vardır:
-  1. **Windows Update sorguları** — doğrudan Microsoft'a, Windows'un kendi
-     Windows Update Agent bileşeni üzerinden. (Çevrimdışı modda veya `--rescue` ile
-     hiç yapılmaz.)
-  2. **GitHub Releases API** — sadece siz *Güncellemeleri Kontrol Et*'e bastığınızda,
-     yeni sürüm olup olmadığına bakmak için.
-- **Neden yönetici yetkisi?** Sürücü kurmak ayrıcalıklı bir işlemdir: `pnputil`,
-  Windows Update kurucusu ve Sistem Geri Yükleme yükseltilmiş bir belirteç ister.
-  DrvNest bunu uygulama bildiriminde (`requireAdministrator`) baştan ister — kuyruğun
-  ortasında yarıda kalmaktansa dürüst olmayı tercih eder.
-- **Güvenlik ağları:** oturumdaki ilk kurulumdan önce sistem geri yükleme noktası,
-  her güncellemeden önce değiştirilen sürücünün yedeği.
-- **Kendi kendini güncelleme** indirilen dosyayı sürümün `checksums.txt` dosyasındaki
-  SHA-256 ile karşılaştırır; sağlama toplamı yoksa veya tutmuyorsa dosya silinir ve
-  kurulum reddedilir.
-- Tüm durum dosyaları `%ProgramData%\DrvNest` altındadır: `settings.json`,
-  `session.json`, `history.jsonl`, `logs/`, `backups/`, `cache/`, `reports/`.
+- **No telemetry.** No usage data, no device identifiers, no statistics leave the machine.
+- Exactly **two** things ever go out:
+  1. **Windows Update queries** — straight to Microsoft, through Windows' own Windows
+     Update Agent. (Never in offline mode or with `--rescue`.)
+  2. **The GitHub Releases API** — only when you press *Check for updates*.
+- **Why administrator?** Installing a driver is privileged: `pnputil`, the Windows Update
+  installer and System Restore all need an elevated token. DrvNest asks for it up front in
+  its application manifest (`requireAdministrator`) rather than failing half way through a
+  queue.
+- **Safety nets:** a system restore point before the first install of a session, and a
+  backup of every driver package it replaces.
+- **The updater** compares the download against the release's `checksums.txt` SHA-256;
+  a missing or mismatching checksum means the file is deleted and the update refused.
+- All state lives under `%ProgramData%\DrvNest`: `settings.json`, `session.json`,
+  `history.jsonl`, `logs/`, `backups/`, `cache/`, `reports/`.
 
-Güvenlik açığı bildirimi: **[SECURITY.md](SECURITY.md)**
+Vulnerability reports: **[SECURITY.md](SECURITY.md)**
 
 ---
 
-## ❓ Sık Sorulan Sorular
+## ❓ FAQ
 
-### DrvNest ücretsiz mi?
+### Is DrvNest free?
 
-Evet. DrvNest MIT lisansıyla yayımlanır ve kaynak kodunun tamamı bu depodadır. Ücretli sürüm,
-deneme süresi, para ödeyince açılan özellik, reklam ya da yanında gelen üçüncü parti yazılım
-yoktur. Tarama ile kurulum aynı programın parçasıdır.
+Yes. DrvNest is released under the MIT licence and the full source is in this repository. There is
+no paid tier, no trial, no feature that unlocks after payment, no advertising and no bundled
+third-party software. The scan and the installs are the same product.
 
-### .NET kurmam gerekiyor mu?
+### Do I need to install .NET?
 
-Hayır. .NET 8 çalışma zamanının tamamı `DrvNest.exe`'nin içindedir (self-contained, tek dosya
-yayını) ve WPF kendi `vcruntime140_cor3.dll` / `msvcp140_cor3.dll` kopyalarını taşır. Visual C++
-Redistributable de gerekmez. Tek gereksinim 64-bit Windows 10 sürüm 1607 (yapı 14393) veya üstüdür.
+No. The entire .NET 8 runtime is inside `DrvNest.exe` (self-contained, single-file publish) and WPF
+carries its own `vcruntime140_cor3.dll` / `msvcp140_cor3.dll`. No Visual C++ Redistributable either.
+The only requirement is 64-bit Windows 10 version 1607 (build 14393) or newer.
 
-### SmartScreen / antivirüs neden uyarı veriyor?
+### Why does SmartScreen or my antivirus warn about it?
 
-Çünkü `DrvNest.exe` **kod imzalama sertifikasıyla imzalanmamıştır** — sertifika ücretlidir.
-SmartScreen ve Smart App Control, itibar kazanmamış imzasız her exe için uyarı gösterir; üstelik
-yönetici olarak çalışıp sürücü kuran ve zamanlanmış görev oluşturan bir uygulama sezgisel
-tarayıcılara kötü amaçlı yazılım gibi görünür. Dürüst çözüm dosyayı doğrulamaktır:
-`Get-FileHash .\DrvNest.exe -Algorithm SHA256` çıktısını sürümün `checksums.txt` dosyasındaki
-satırla karşılaştırın.
+Because `DrvNest.exe` is **not code-signed** — certificates cost money. SmartScreen and Smart App
+Control warn about any unsigned executable that has not built up reputation, and an app that runs as
+administrator, installs drivers and registers a scheduled task looks like malware to a heuristic
+scanner. The honest mitigation is to verify the file: compare the output of
+`Get-FileHash .\DrvNest.exe -Algorithm SHA256` with the matching line in the release's
+`checksums.txt`.
 
-### Formattan sonra internet yokken sürücü kurabilir miyim?
+### Can I install drivers after a format with no internet?
 
-Evet, DrvNest asıl bunun için yazıldı. Format öncesinde sürücülerinizi yedekleyip yedeği ve
-`DrvNest.exe`'yi aynı USB belleğe koyun, format sonrasında `DrvNest.exe --rescue` ile açıp
-**Geri Yükle**'ye basın. `DrvNest.exe` ile aynı klasördeki `Drivers` adlı klasör otomatik olarak
-yerel sürücü havuzu sayılır; üreticiden indirip açtığınız klasörler de kullanılabilir.
+Yes — that is what DrvNest was built for. Back your drivers up before the format, put the backup and
+`DrvNest.exe` on the same USB stick, then start `DrvNest.exe --rescue` afterwards and press
+**Restore**. A folder named `Drivers` next to `DrvNest.exe` is registered automatically as a local
+driver repository, and any vendor folder you extracted yourself works too.
 
-### Bozulan bir sürücüyü geri alabilir miyim?
+### Can I roll a driver back?
 
-Evet, üç yolu var: DrvNest'in kurulumdan hemen önce aldığı yedekten **Klasörden Geri Yükle** ile,
-oturumun ilk kurulumundan önce oluşturulan sistem geri yükleme noktasından (`rstrui.exe`) ya da
-Aygıt Yöneticisi'ndeki *Sürücüyü Geri Al* düğmesiyle. Bu yüzden geri yükleme noktası ayarını
-kapatmayın.
+Yes, three ways: from the backup DrvNest exports immediately before each install (**Restore from
+folder**), from the system restore point created before the first install of a session
+(`rstrui.exe`), or with Windows' own *Roll Back Driver* button in Device Manager. Which is why
+leaving the restore-point setting on is recommended.
 
-### Yeniden başlatmadan sonra gerçekten devam ediyor mu?
+### Does it really resume after a reboot?
 
-Evet. Kuyruk durumu her değişiklikte `session.json`'a atomik olarak yazılır ve oturum açılışına
-bağlı `DrvNest\ResumeSession` zamanlanmış görevi (yedeği HKLM `RunOnce`) DrvNest'i `--resume` ile
-geri getirir. Bir oturum en fazla 10 yeniden başlatma taşır; kuyruk bitince görev ve kayıt silinir.
+Yes. Queue state is written atomically to `session.json` on every change, and a logon-triggered
+`DrvNest\ResumeSession` scheduled task (with an HKLM `RunOnce` fallback) brings DrvNest back with
+`--resume`. A session survives at most 10 restarts; the task and the registry value are removed once
+the queue finishes.
 
-### DrvNest veri topluyor mu?
+### Does DrvNest collect any data?
 
-Hayır. Telemetri, kullanım istatistiği, cihaz kimliği yok. Makineden dışarı yalnızca iki trafik
-çıkar: Windows'un kendi bileşeni üzerinden Microsoft'a giden Windows Update sorguları (çevrimdışı
-modda hiç yapılmaz) ve *Güncellemeleri Kontrol Et*'e bastığınızda GitHub Releases API'sine giden
-tek bir istek.
-
----
-
-"Exe neden bu kadar büyük?", "Neden WMI kullanılmıyor?", "Windows Server'da çalışır mı?" gibi
-soruların cevapları ve tam liste:
-
-**[docs/FAQ.md](docs/FAQ.md)** · Kullanım rehberi: **[docs/USAGE.md](docs/USAGE.md)** ·
-Proje sayfası: **[ahmetcaglayan.github.io/DrvNest](https://ahmetcaglayan.github.io/DrvNest/tr/)**
+No. No telemetry, no usage statistics, no device identifiers. Exactly two things leave the machine:
+Windows Update queries, which go straight to Microsoft through Windows' own agent and never happen
+in offline mode, and one request to the GitHub Releases API when you press *Check for updates*.
 
 ---
 
-## 🤝 Katkıda bulunma
+"Why is the exe so big?", "Why no WMI?", "Does it work on Windows Server?" and the rest:
 
-Katkılar memnuniyetle karşılanır.
-
-- **Hata bildirimi:** [Issues](../../issues) — lütfen **Günlük** menüsündeki *Kopyala*
-  butonuyla aldığınız günlüğü ekleyin, sürüm ve işletim sistemi bilgisi otomatik olarak
-  başına yazılır.
-- **Kod:** depoyu çatallayın, bir dal açın, değişikliğinizi gönderin. Mevcut kod stilini
-  koruyun: NuGet bağımlılığı eklemeyin (tek dosya boyutu ve çevrimdışı çalışabilirlik
-  bilinçli bir tercihtir), `DrvNest.Core` içine arayüz kodu koymayın.
-- **Çeviri:** yeni bir dil eklemek `src/DrvNest.App/Services/Loc.cs` içine bir sözlük
-  eklemekten ibarettir; ayrıntılar [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) içinde.
+**[docs/FAQ.md](docs/FAQ.md)** · Usage guide (Turkish): **[docs/USAGE.md](docs/USAGE.md)** ·
+Project site: **[ahmetcaglayan.github.io/DrvNest](https://ahmetcaglayan.github.io/DrvNest/)**
 
 ---
 
-## 📄 Lisans
+## 🤝 Contributing
 
-MIT — bkz. [LICENSE](LICENSE).
+Contributions are welcome.
 
----
-
-## ⚠️ Sorumluluk reddi
-
-Sürücü kurmak doğası gereği risklidir. Yanlış ya da bozuk bir sürücü, sistemin
-açılmamasına kadar varan sorunlara yol açabilir. DrvNest bu riski azaltmak için
-sistem geri yükleme noktası oluşturur ve değiştirdiği sürücüleri yedekler, ancak
-hiçbir garanti vermez.
-
-**Geri yükleme noktası ayarını kapatmayın.** Önemli verilerinizin yedeği olsun.
-Yazılım "olduğu gibi" sunulur; kullanımından doğacak sonuçların sorumluluğu
-kullanıcıya aittir.
+- **Bug reports:** [Issues](../../issues) — please attach the log from the *Copy* button
+  in the **Logs** menu; it already carries the version and OS header.
+- **Code:** fork, branch, open a pull request. Keep the existing style: no NuGet
+  dependencies (single-file size and offline operation are deliberate choices), and no UI
+  code inside `DrvNest.Core`.
+- **Translation:** adding a language means adding one dictionary to
+  `src/DrvNest.App/Services/Loc.cs`; see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ---
 
-## Anahtar kelimeler
+## 📄 License
+
+MIT — see [LICENSE](LICENSE).
+
+---
+
+## ⚠️ Disclaimer
+
+Installing drivers carries inherent risk. A wrong or corrupt driver can cause problems up
+to and including a machine that will not boot. DrvNest reduces that risk by creating a
+system restore point and backing up the drivers it replaces, but it offers no guarantee.
+
+**Leave the restore point setting on.** Keep backups of anything you care about. The
+software is provided "as is"; the consequences of using it are the user's responsibility.
+
+---
+
+## Keywords
 
 <sub>
-sürücü güncelleme programı · format sonrası driver yükleme · eksik sürücü bulma programı ·
-driver yedekleme programı · ücretsiz driver güncelleyici · windows sürücü tarama ·
-çevrimdışı sürücü kurulumu · usb ile driver yükleme · açık kaynak sürücü güncelleyici ·
-windows 10 / windows 11 sürücü kurma · aygıt yöneticisi sarı ünlem çözümü
+windows driver updater open source · free driver updater no adware · install drivers after format ·
+offline driver installer usb · driver backup restore windows · missing driver finder ·
+windows 11 driver scanner · pnputil driver export · windows update driver catalog tool ·
+device manager yellow exclamation mark fix
 </sub>

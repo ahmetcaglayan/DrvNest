@@ -257,4 +257,4 @@ For reference, so none of it gets done twice:
 | Citation metadata (renders as a "Cite this repository" widget) | [`CITATION.cff`](../CITATION.cff) |
 | Issue-template contact links | [`.github/ISSUE_TEMPLATE/config.yml`](../.github/ISSUE_TEMPLATE/config.yml) |
 | Pages deployment | [`.github/workflows/pages.yml`](../.github/workflows/pages.yml) |
-| Question-shaped headings, badges, keyword lines | [`README.md`](../README.md), [`README.en.md`](../README.en.md) |
+| Question-shaped headings, badges, keyword lines | [`README.md`](../README.md), [`README.tr.md`](../README.tr.md) |
