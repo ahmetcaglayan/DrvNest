@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use or reference DrvNest, please cite it using the metadata below."
+type: software
+title: "DrvNest"
+abstract: >-
+  DrvNest is a free and open-source Windows driver scanner, installer and updater
+  for Windows 10 and Windows 11. It enumerates every present PnP device through
+  SetupAPI and CfgMgr32, reports which devices have no driver, installs missing and
+  outdated drivers from the Windows Update catalog or from local INF folders,
+  resumes its install queue after the restarts a driver install requires, and backs
+  drivers up so they can be restored offline from a USB stick after a format. It
+  ships as a single self-contained executable that needs neither the .NET runtime
+  nor the Visual C++ Redistributable.
+authors:
+  - family-names: "Çağlayan"
+    given-names: "Ahmet"
+    alias: "ahmetcaglayan"
+repository-code: "https://github.com/ahmetcaglayan/DrvNest"
+url: "https://ahmetcaglayan.github.io/DrvNest/"
+license: MIT
+version: "1.0.0"
+date-released: "2026-08-27"
+keywords:
+  - windows
+  - drivers
+  - device-drivers
+  - driver-updater
+  - driver-backup
+  - offline-installer
+  - post-format-recovery
+  - pnputil
+  - windows-update
+  - dotnet
+  - csharp
+  - wpf

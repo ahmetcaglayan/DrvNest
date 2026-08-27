@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--
+      net8.0-windows rather than plain net8.0: this project talks to SetupAPI,
+      CfgMgr32, srclient, the registry and the Windows Update Agent. Nothing here
+      could ever run on another platform, and the Windows TFM provides
+      Microsoft.Win32.Registry without a NuGet package.
+    -->
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>DrvNest.Core</RootNamespace>
+    <AssemblyName>DrvNest.Core</AssemblyName>
+    <IsPublishable>false</IsPublishable>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+
+    <!--
+      The Windows Update Agent is reached through IDispatch with `dynamic`, and the
+      five callback interfaces it calls back into are declared by hand in
+      Providers/WuaInterop.cs.
+
+      There is deliberately no <COMReference> to WUApiLib here. tlbimp only runs under
+      the .NET Framework build of MSBuild, so a COMReference makes `dotnet build` fail
+      with MSB4803 - which would mean nobody could compile this project, or run CI,
+      without a full Visual Studio install. Five hand written interface declarations,
+      with GUIDs read straight out of wuapi.dll, are the cheaper half of that trade.
+    -->
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+  </PropertyGroup>
+
+  <!--
+    No PackageReference on purpose. Every dependency avoided is weight removed from
+    the single file executable someone downloads onto a machine that was formatted
+    five minutes ago, and one less thing that can fail to restore offline.
+  -->
+
+</Project>

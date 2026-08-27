@@ -1,0 +1,51 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <!--
+        Segoe MDL2 Assets code points, kept in one place.
+
+        Every value below was rendered and visually verified against the font that
+        ships with Windows 10 and 11, so none of them show up as an empty box.
+    -->
+
+    <sys:String x:Key="Icon.Home">&#xE80F;</sys:String>
+    <sys:String x:Key="Icon.Devices">&#xE772;</sys:String>
+    <sys:String x:Key="Icon.Update">&#xE777;</sys:String>
+    <sys:String x:Key="Icon.Download">&#xE896;</sys:String>
+    <sys:String x:Key="Icon.Save">&#xE74E;</sys:String>
+    <sys:String x:Key="Icon.History">&#xE81C;</sys:String>
+    <sys:String x:Key="Icon.Document">&#xE7C3;</sys:String>
+    <sys:String x:Key="Icon.Settings">&#xE713;</sys:String>
+    <sys:String x:Key="Icon.Info">&#xE946;</sys:String>
+
+    <sys:String x:Key="Icon.Search">&#xE721;</sys:String>
+    <sys:String x:Key="Icon.Refresh">&#xE72C;</sys:String>
+    <sys:String x:Key="Icon.Delete">&#xE74D;</sys:String>
+    <sys:String x:Key="Icon.Warning">&#xE7BA;</sys:String>
+    <sys:String x:Key="Icon.Error">&#xE783;</sys:String>
+    <sys:String x:Key="Icon.Shield">&#xE7EF;</sys:String>
+    <sys:String x:Key="Icon.Folder">&#xE838;</sys:String>
+    <sys:String x:Key="Icon.OpenExternal">&#xE8A7;</sys:String>
+    <sys:String x:Key="Icon.Sync">&#xE895;</sys:String>
+    <sys:String x:Key="Icon.Power">&#xE7E8;</sys:String>
+    <sys:String x:Key="Icon.Undo">&#xE845;</sys:String>
+    <sys:String x:Key="Icon.Check">&#xE73E;</sys:String>
+    <sys:String x:Key="Icon.CheckCircle">&#xE930;</sys:String>
+    <sys:String x:Key="Icon.Cancel">&#xE711;</sys:String>
+    <sys:String x:Key="Icon.Chip">&#xE950;</sys:String>
+    <sys:String x:Key="Icon.Pending">&#xE9F3;</sys:String>
+    <sys:String x:Key="Icon.Link">&#xE71B;</sys:String>
+    <sys:String x:Key="Icon.Copy">&#xE8C8;</sys:String>
+    <sys:String x:Key="Icon.Chevron">&#xE70D;</sys:String>
+    <sys:String x:Key="Icon.Bolt">&#xE945;</sys:String>
+    <sys:String x:Key="Icon.Monitor">&#xE7F4;</sys:String>
+    <sys:String x:Key="Icon.Wifi">&#xE701;</sys:String>
+
+    <!-- Window caption buttons -->
+    <sys:String x:Key="Icon.Minimize">&#xE921;</sys:String>
+    <sys:String x:Key="Icon.Maximize">&#xE922;</sys:String>
+    <sys:String x:Key="Icon.Restore">&#xE923;</sys:String>
+    <sys:String x:Key="Icon.Close">&#xE8BB;</sys:String>
+
+</ResourceDictionary>

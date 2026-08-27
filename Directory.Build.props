@@ -1,0 +1,55 @@
+<Project>
+
+  <!--
+    Shared build settings for every DrvNest project.
+
+    The version here is the single source of truth. CI overrides it with
+    -p:Version=<tag> so a GitHub release tag and the version reported inside the
+    application can never drift apart.
+
+    Deployment settings (self-contained, single file) deliberately live in the two
+    executable projects instead of here: RuntimeIdentifier has to be known at
+    restore time, and applying it to the class library would only produce noise.
+  -->
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <Product>DrvNest</Product>
+    <Company>DrvNest</Company>
+    <Authors>DrvNest contributors</Authors>
+    <Copyright>Copyright (c) $([System.DateTime]::Now.Year) DrvNest contributors</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+
+    <!--
+      Warnings stay warnings. A driver tool that refuses to build because of a
+      style nit helps nobody, and contributors on a slightly older SDK patch
+      should not be blocked from compiling.
+    -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+
+    <!--
+      Source files are UTF-8 without a BOM and contain Turkish UI strings. Pinning
+      the compiler code page means the build produces identical output whether it
+      runs on a Turkish-locale developer machine or on an English CI runner.
+    -->
+    <CodePage>65001</CodePage>
+
+    <!--
+      Symbols are embedded rather than written beside the binary, so a publish really
+      does produce a single file and a stack trace from a user's log still has line
+      numbers in it.
+    -->
+    <DebugType>embedded</DebugType>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+  </PropertyGroup>
+
+</Project>

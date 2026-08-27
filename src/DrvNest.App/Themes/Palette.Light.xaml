@@ -1,0 +1,62 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        Light palette. Key-for-key identical to Palette.Dark.xaml, which is what
+        lets ThemeManager swap one for the other at runtime.
+    -->
+
+    <Color x:Key="Color.Window">#F1F4F8</Color>
+    <Color x:Key="Color.Sidebar">#FFFFFF</Color>
+    <Color x:Key="Color.Surface">#FFFFFF</Color>
+    <Color x:Key="Color.SurfaceAlt">#F6F8FB</Color>
+    <Color x:Key="Color.SurfaceHover">#EAEEF4</Color>
+    <Color x:Key="Color.Border">#D8DFE8</Color>
+    <Color x:Key="Color.BorderSubtle">#E8EDF3</Color>
+
+    <Color x:Key="Color.Text">#14181E</Color>
+    <Color x:Key="Color.TextMuted">#5A6675</Color>
+    <Color x:Key="Color.TextFaint">#8B98A8</Color>
+
+    <Color x:Key="Color.Accent">#0FA97B</Color>
+    <Color x:Key="Color.AccentHover">#12C48F</Color>
+    <Color x:Key="Color.AccentPressed">#0B8A64</Color>
+    <Color x:Key="Color.AccentText">#FFFFFF</Color>
+    <Color x:Key="Color.Info">#2B6FE0</Color>
+    <Color x:Key="Color.Success">#0FA97B</Color>
+    <Color x:Key="Color.Warning">#C77700</Color>
+    <Color x:Key="Color.Danger">#D93B48</Color>
+
+    <SolidColorBrush x:Key="Brush.Window" Color="{StaticResource Color.Window}" />
+    <SolidColorBrush x:Key="Brush.Sidebar" Color="{StaticResource Color.Sidebar}" />
+    <SolidColorBrush x:Key="Brush.Surface" Color="{StaticResource Color.Surface}" />
+    <SolidColorBrush x:Key="Brush.SurfaceAlt" Color="{StaticResource Color.SurfaceAlt}" />
+    <SolidColorBrush x:Key="Brush.SurfaceHover" Color="{StaticResource Color.SurfaceHover}" />
+    <SolidColorBrush x:Key="Brush.Border" Color="{StaticResource Color.Border}" />
+    <SolidColorBrush x:Key="Brush.BorderSubtle" Color="{StaticResource Color.BorderSubtle}" />
+
+    <SolidColorBrush x:Key="Brush.Text" Color="{StaticResource Color.Text}" />
+    <SolidColorBrush x:Key="Brush.TextMuted" Color="{StaticResource Color.TextMuted}" />
+    <SolidColorBrush x:Key="Brush.TextFaint" Color="{StaticResource Color.TextFaint}" />
+
+    <SolidColorBrush x:Key="Brush.Accent" Color="{StaticResource Color.Accent}" />
+    <SolidColorBrush x:Key="Brush.AccentHover" Color="{StaticResource Color.AccentHover}" />
+    <SolidColorBrush x:Key="Brush.AccentPressed" Color="{StaticResource Color.AccentPressed}" />
+    <SolidColorBrush x:Key="Brush.AccentText" Color="{StaticResource Color.AccentText}" />
+    <SolidColorBrush x:Key="Brush.Info" Color="{StaticResource Color.Info}" />
+    <SolidColorBrush x:Key="Brush.Success" Color="{StaticResource Color.Success}" />
+    <SolidColorBrush x:Key="Brush.Warning" Color="{StaticResource Color.Warning}" />
+    <SolidColorBrush x:Key="Brush.Danger" Color="{StaticResource Color.Danger}" />
+
+    <SolidColorBrush x:Key="Brush.AccentSoft" Color="#1A0FA97B" />
+    <SolidColorBrush x:Key="Brush.InfoSoft" Color="#1A2B6FE0" />
+    <SolidColorBrush x:Key="Brush.WarningSoft" Color="#1AC77700" />
+    <SolidColorBrush x:Key="Brush.DangerSoft" Color="#1AD93B48" />
+    <SolidColorBrush x:Key="Brush.Overlay" Color="#66000000" />
+
+    <LinearGradientBrush x:Key="Brush.SidebarGradient" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FFFFFF" Offset="0" />
+        <GradientStop Color="#F7F9FC" Offset="1" />
+    </LinearGradientBrush>
+
+</ResourceDictionary>

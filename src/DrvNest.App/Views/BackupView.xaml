@@ -1,0 +1,237 @@
+<UserControl x:Class="DrvNest.App.Views.BackupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="clr-namespace:DrvNest.App.Services"
+             xmlns:vm="clr-namespace:DrvNest.App.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:BackupViewModel}"
+             d:DesignWidth="900">
+
+    <Grid Margin="22,10,22,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- ============================================ HEADER -->
+        <StackPanel Grid.Row="0" Margin="0,10,0,16">
+            <TextBlock Text="{s:Loc bk.title}" Style="{StaticResource Text.H1}" />
+            <TextBlock Text="{s:Loc bk.subtitle}" Style="{StaticResource Text.Muted}" Margin="0,4,0,0" />
+        </StackPanel>
+
+        <!-- ============================================ THE USB TIP -->
+        <Border Grid.Row="1"
+                Style="{StaticResource Card}"
+                Background="{DynamicResource Brush.InfoSoft}"
+                BorderBrush="{DynamicResource Brush.Info}"
+                Padding="16,13"
+                Margin="0,0,0,14">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{StaticResource Icon.Info}"
+                           FontFamily="Segoe MDL2 Assets"
+                           FontSize="15"
+                           VerticalAlignment="Top"
+                           Margin="0,1,0,0"
+                           Foreground="{DynamicResource Brush.Info}" />
+                <TextBlock Text="{Binding Tip}"
+                           Style="{StaticResource Text.Body}"
+                           Margin="11,0,0,0"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+        </Border>
+
+        <!-- ============================================ ACTIONS -->
+        <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,0,0,14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Margin="0,0,18,0">
+                    <TextBlock Text="{s:Loc bk.create}" Style="{StaticResource Text.H2}" />
+                    <TextBlock Text="{s:Loc bk.createDesc}"
+                               Style="{StaticResource Text.Muted}"
+                               Margin="0,5,0,0"
+                               TextWrapping="Wrap" />
+
+                    <CheckBox Style="{StaticResource Input.CheckBox}"
+                              Margin="0,12,0,0"
+                              Content="{s:Loc bk.compress}"
+                              IsChecked="{Binding Compress}" />
+
+                    <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                        <TextBlock Text="{s:Loc bk.location}" Style="{StaticResource Text.Caption}" />
+                        <TextBlock Text="{Binding BackupRootPath}"
+                                   Style="{StaticResource Text.Mono}"
+                                   Margin="8,0,0,0"
+                                   TextTrimming="CharacterEllipsis"
+                                   MaxWidth="420" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <Button Style="{StaticResource Btn.Primary}"
+                            MinWidth="180"
+                            Command="{Binding CreateCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{StaticResource Icon.Save}"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="13"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Text="{s:Loc bk.create}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource Btn.Secondary}"
+                            MinWidth="180"
+                            Margin="0,8,0,0"
+                            Content="{s:Loc bk.restoreFolder}"
+                            Command="{Binding RestoreFolderCommand}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ============================================ STATUS -->
+        <Border Grid.Row="3"
+                Style="{StaticResource Card.Flat}"
+                Padding="14,11"
+                Margin="0,0,0,14"
+                Visibility="{Binding HasStatus, Converter={StaticResource BoolToVisibility}}">
+            <StackPanel>
+                <ProgressBar Style="{StaticResource Progress.Bar}"
+                             IsIndeterminate="True"
+                             Margin="0,0,0,9"
+                             Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+                <TextBlock Text="{Binding Status}"
+                           Style="{StaticResource Text.Body}"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+        </Border>
+
+        <!-- ============================================ EXISTING BACKUPS -->
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{s:Loc bk.existing}" Style="{StaticResource Text.H2}" />
+
+                <Button Grid.Column="1"
+                        Style="{StaticResource Btn.Ghost}"
+                        Padding="10,5"
+                        Content="{s:Loc common.refresh}"
+                        Command="{Binding RefreshCommand}" />
+            </Grid>
+
+            <TextBlock Grid.Row="1"
+                       Text="{s:Loc bk.empty}"
+                       Style="{StaticResource Text.Muted}"
+                       HorizontalAlignment="Center"
+                       Margin="0,26,0,0"
+                       VerticalAlignment="Top"
+                       Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisibility}}" />
+
+            <ListBox Grid.Row="1"
+                     ItemsSource="{Binding Backups}"
+                     SelectedItem="{Binding Selected}"
+                     Style="{StaticResource List.Plain}"
+                     ItemContainerStyle="{StaticResource List.Row}"
+                     Padding="0,0,8,16"
+                     Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisibility},
+                                 ConverterParameter=invert}">
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0"
+                                    Width="36" Height="36"
+                                    CornerRadius="9"
+                                    VerticalAlignment="Center"
+                                    Background="{DynamicResource Brush.SurfaceHover}">
+                                <TextBlock Text="{StaticResource Icon.Folder}"
+                                           FontFamily="Segoe MDL2 Assets"
+                                           FontSize="15"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource Brush.Info}" />
+                            </Border>
+
+                            <StackPanel Grid.Column="1" Margin="13,0,14,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Name}"
+                                           Style="{StaticResource Text.Body}"
+                                           FontWeight="SemiBold"
+                                           TextTrimming="CharacterEllipsis" />
+
+                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                    <TextBlock Text="{Binding CreatedLocal, StringFormat=yyyy-MM-dd HH:mm}"
+                                               Style="{StaticResource Text.Muted}" />
+                                    <TextBlock Text="  ·  " Style="{StaticResource Text.Muted}" />
+                                    <TextBlock Text="{Binding SizeDisplay}" Style="{StaticResource Text.Muted}" />
+                                    <TextBlock Text="  ·  " Style="{StaticResource Text.Muted}" />
+                                    <TextBlock Text="{Binding PackageCount}" Style="{StaticResource Text.Muted}" />
+                                </StackPanel>
+
+                                <TextBlock Text="{Binding Path}"
+                                           Style="{StaticResource Text.Mono}"
+                                           Margin="0,4,0,0"
+                                           TextTrimming="CharacterEllipsis"
+                                           ToolTip="{Binding Path}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Button Style="{StaticResource Btn.Secondary}"
+                                        Padding="11,6"
+                                        Content="{s:Loc bk.restore}"
+                                        Command="{Binding DataContext.RestoreCommand,
+                                                  RelativeSource={RelativeSource AncestorType=ListBox}}" />
+
+                                <Button Style="{StaticResource Btn.Ghost}"
+                                        Padding="7,5"
+                                        Margin="6,0,0,0"
+                                        FontFamily="Segoe MDL2 Assets"
+                                        FontSize="13"
+                                        Content="{StaticResource Icon.OpenExternal}"
+                                        ToolTip="{s:Loc common.open}"
+                                        Command="{Binding DataContext.OpenCommand,
+                                                  RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                        CommandParameter="{Binding}" />
+
+                                <Button Style="{StaticResource Btn.Ghost}"
+                                        Padding="7,5"
+                                        Margin="2,0,0,0"
+                                        FontFamily="Segoe MDL2 Assets"
+                                        FontSize="13"
+                                        Foreground="{DynamicResource Brush.Danger}"
+                                        Content="{StaticResource Icon.Delete}"
+                                        ToolTip="{s:Loc common.delete}"
+                                        Command="{Binding DataContext.DeleteCommand,
+                                                  RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                        CommandParameter="{Binding}" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+</UserControl>

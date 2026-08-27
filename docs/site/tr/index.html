@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>DrvNest — Ücretsiz Sürücü Güncelleme Programı</title>
+<meta name="description" content="DrvNest, Windows 10 ve 11 için ücretsiz ve açık kaynak sürücü güncelleme programı. Eksik sürücüleri bulur, kurar ve format sonrası USB'den çevrimdışı yükler.">
+
+<link rel="canonical" href="https://ahmetcaglayan.github.io/DrvNest/tr/">
+<link rel="alternate" hreflang="tr" href="https://ahmetcaglayan.github.io/DrvNest/tr/">
+<link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/DrvNest/">
+<link rel="alternate" hreflang="x-default" href="https://ahmetcaglayan.github.io/DrvNest/">
+
+<meta name="author" content="Ahmet Çağlayan">
+<meta name="theme-color" content="#0D1014" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DrvNest">
+<meta property="og:title" content="DrvNest — Ücretsiz Sürücü Güncelleme Programı">
+<meta property="og:description" content="DrvNest, Windows 10 ve 11 için ücretsiz ve açık kaynak sürücü güncelleme programı. Eksik sürücüleri bulur, kurar ve format sonrası USB'den çevrimdışı yükler.">
+<meta property="og:url" content="https://ahmetcaglayan.github.io/DrvNest/tr/">
+<meta property="og:image" content="https://ahmetcaglayan.github.io/DrvNest/og-image.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="Koyu zemin üzerinde DrvNest logosu ve kelime markası; altında ücretsiz, açık kaynak Windows sürücü güncelleyici yazıyor.">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:locale:alternate" content="en_US">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DrvNest — Ücretsiz Sürücü Güncelleme Programı">
+<meta name="twitter:description" content="Ücretsiz, açık kaynak Windows sürücü güncelleme programı. Eksik sürücüleri bulur, format sonrası USB'den çevrimdışı kurar, yeniden başlatmadan sonra devam eder.">
+<meta name="twitter:image" content="https://ahmetcaglayan.github.io/DrvNest/og-image.png">
+<meta name="twitter:image:alt" content="Koyu zemin üzerinde DrvNest logosu ve kelime markası; altında ücretsiz, açık kaynak Windows sürücü güncelleyici yazıyor.">
+
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "DrvNest",
+  "alternateName": "DrvNest Sürücü Güncelleme Programı",
+  "description": "DrvNest, Windows 10 ve Windows 11 için ücretsiz ve açık kaynak bir sürücü güncelleme programıdır. Sistemdeki tüm PnP aygıtlarını tarar, hangisinin sürücüsü olmadığını söyler, eksik ve eski sürücüleri Windows Update kataloğundan ya da yerel INF klasörlerinden kurar, gereken yeniden başlatmalardan sonra kuyruğa kaldığı yerden devam eder ve sürücüleri yedekleyerek format sonrasında USB bellekten çevrimdışı geri yüklemenizi sağlar.",
+  "applicationCategory": "UtilitiesApplication",
+  "applicationSubCategory": "Sürücü güncelleyici",
+  "operatingSystem": "Windows 10, Windows 11",
+  "softwareVersion": "1.0.0",
+  "downloadUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest",
+  "installUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe",
+  "url": "https://ahmetcaglayan.github.io/DrvNest/tr/",
+  "image": "https://ahmetcaglayan.github.io/DrvNest/og-image.png",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "inLanguage": ["tr", "en"],
+  "codeRepository": "https://github.com/ahmetcaglayan/DrvNest",
+  "programmingLanguage": "C#",
+  "softwareRequirements": "Windows 10 sürüm 1607 (yapı 14393) veya üstü, 64-bit, yönetici yetkisi. .NET çalışma zamanı ve Visual C++ Redistributable gerekmez.",
+  "permissions": "Sürücü kurmak, sürücü deposunu dışa aktarmak ve sistem geri yükleme noktası oluşturmak için yönetici yetkisi gerekir.",
+  "releaseNotes": "https://github.com/ahmetcaglayan/DrvNest/blob/main/CHANGELOG.md",
+  "featureList": [
+    "Tüm PnP aygıtlarını WMI kullanmadan SetupAPI ve CfgMgr32 ile tarar",
+    "Configuration Manager sorun kodlarından eksik sürücüleri tespit eder",
+    "Windows Update Agent üzerinden Windows Update sürücü kataloğunu sorgular",
+    "Yerel INF klasörlerinden, USB bellekten veya ağ paylaşımından sürücü kurar",
+    "Paralel indirme, sıralı kurulum",
+    "Yeniden başlatmadan sonra kuyruğa otomatik devam eder",
+    "Sistem geri yükleme noktası oluşturur ve değiştirdiği her sürücüyü yedekler",
+    "pnputil ile tüm üçüncü parti sürücüleri yedekler ve geri yükler",
+    "İnterneti olmayan, yeni formatlanmış makineler için çevrimdışı kurtarma modu",
+    "Tüm aygıtları ve donanım kimliklerini listeleyen donanım raporu",
+    "Türkçe ve İngilizce arayüz, koyu ve açık tema"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "creator": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "maintainer": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "softwareHelp": {
+    "@type": "CreativeWork",
+    "url": "https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/USAGE.md"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "tr",
+  "url": "https://ahmetcaglayan.github.io/DrvNest/tr/",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "DrvNest ücretsiz mi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Evet. DrvNest MIT lisansıyla yayımlanır ve kaynak kodunun tamamı GitHub'dadır. Ücretli sürüm, deneme süresi, para ödeyince açılan özellik, reklam ya da yanında gelen üçüncü parti yazılım yoktur. Tarama ile kurulum aynı programın parçasıdır."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": ".NET veya Visual C++ Redistributable kurmam gerekiyor mu?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hayır. .NET 8 çalışma zamanının tamamı DrvNest.exe'nin içindedir (self-contained, tek dosya yayını) ve WPF kendi özel vcruntime140_cor3.dll ile msvcp140_cor3.dll kopyalarını beraberinde taşır. Tek gereksinim 64-bit Windows 10 sürüm 1607 (yapı 14393) veya üstüdür. Dosyanın yaklaşık 65 MB olmasının sebebi de budur."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "SmartScreen veya antivirüs neden uyarı veriyor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "DrvNest kod imzalama sertifikasıyla imzalanmamıştır, çünkü sertifika ücretlidir. Windows SmartScreen ve Smart App Control, henüz itibar kazanmamış imzasız her exe için uyarı gösterir; üstelik yönetici olarak çalışan, sürücü kuran ve zamanlanmış görev oluşturan tek dosyalık bir uygulama sezgisel tarayıcılara kötü amaçlı yazılım gibi görünür. Dürüst çözüm indirdiğiniz dosyayı doğrulamaktır: PowerShell'de Get-FileHash .\\DrvNest.exe -Algorithm SHA256 komutunu çalıştırın ve çıkan değeri sürümle birlikte yayımlanan checksums.txt dosyasındaki DrvNest.exe satırıyla karşılaştırın. Tutuyorsa dosya birebir yayımlanan dosyadır. İsterseniz kaynak koddan kendiniz de derleyebilirsiniz."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "İnternet yokken formattan sonra sürücü kurabilir miyim?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Evet, DrvNest asıl bunun için yazıldı. Format öncesinde Yedekle ve Geri Yükle ekranından tüm üçüncü parti sürücü paketlerini dışa aktarın, sonra o klasörü ve DrvNest.exe dosyasını aynı USB belleğe kopyalayın. Format sonrasında DrvNest.exe --rescue ile açın: Windows Update hiç aranmaz, yalnızca yerel kaynaklar kullanılır. DrvNest.exe ile aynı klasördeki Drivers adlı klasör otomatik olarak yerel sürücü havuzu sayılır. Üreticinin sitesinden indirip açtığınız herhangi bir sürücü klasörü de işe yarar, çünkü içindeki INF dosyaları alt klasörler dahil taranır."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Bozulan bir sürücüyü geri alabilir miyim?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Evet, üç yolu var. DrvNest değiştireceği paketi kurulumdan hemen önce dışa aktarır ve yolunu geçmiş kaydına yazar; Klasörden Geri Yükle ile o klasörü kurabilirsiniz. Oturumdaki ilk kurulumdan önce sürücü tipinde bir sistem geri yükleme noktası oluşturulur, Windows'un Sistem Geri Yükleme sihirbazıyla (rstrui.exe) o noktaya dönebilirsiniz. Aygıt Yöneticisi'ndeki Sürücüyü Geri Al düğmesi de DrvNest'ten bağımsız olarak çalışmaya devam eder."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Yeniden başlatmadan sonra gerçekten devam ediyor mu?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Evet. Kuyruğun durumu her değişiklikte session.json dosyasına atomik olarak yazılır ve DrvNest oturum açılışına bağlı DrvNest\\ResumeSession adlı bir zamanlanmış görev kaydeder; Görev Zamanlayıcı kullanılamıyorsa HKLM altındaki RunOnce kaydına düşer. Makine açıldığında görev DrvNest'i --resume ile başlatır ve kalan işler devam eder. Bir oturum en fazla on yeniden başlatma taşır; kuyruk bittiğinde hem zamanlanmış görev hem RunOnce kaydı silinir."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Neden yönetici yetkisi istiyor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sürücü kurmak ayrıcalıklı bir işlemdir. pnputil ile sürücü deposuna paket eklemek veya dışa aktarmak, Windows Update kurucusunu çalıştırmak ve srclient.dll üzerinden sistem geri yükleme noktası oluşturmak yükseltilmiş bir belirteç ister; ayrıca devam görevi HKLM altına kaydedilir. DrvNest bunu uygulama bildiriminde baştan ister, çünkü kuyruğun ortasında erişim reddedildi hatasıyla durmaktansa dürüst olmayı tercih eder."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "DrvNest veri topluyor mu?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hayır. Telemetri, kullanım istatistiği ve cihaz kimliği toplanmaz. Makineden dışarı yalnızca iki trafik çıkar: Windows'un kendi Windows Update Agent bileşeni üzerinden doğrudan Microsoft'a giden Windows Update sorguları (çevrimdışı modda ve --rescue ile hiç yapılmaz) ve siz Güncellemeleri Kontrol Et'e bastığınızda GitHub Releases API'sine gönderilen tek bir istek. Geri kalan her şey kendi makinenizde, %ProgramData%\\DrvNest klasöründe kalır."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">İçeriğe geç</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="https://ahmetcaglayan.github.io/DrvNest/tr/">
+      <img src="../favicon.svg" width="30" height="30" alt="DrvNest logosu: bir mikroçipi kucaklayan altıgen petek gözü">
+      <span>Drv<span class="mark-nest">Nest</span></span>
+    </a>
+    <nav class="site-nav" aria-label="Ana menü">
+      <ul>
+        <li><a href="#ozellikler">Özellikler</a></li>
+        <li><a href="#format-sonrasi">Format sonrası</a></li>
+        <li><a href="#karsilastirma">Karşılaştırma</a></li>
+        <li><a href="#sss">SSS</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest">GitHub</a></li>
+        <li><a class="lang-switch" href="../" hreflang="en" lang="en">English</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap">
+      <img class="hero-mark" src="../favicon.svg" width="84" height="84" alt="DrvNest uygulama simgesi: bir mikroçipi tutan nane yeşili altıgen">
+      <h1>Ücretsiz sürücü güncelleme programı — formattan sonra da çalışır</h1>
+      <p class="lede">
+        <strong>DrvNest</strong> bilgisayarınızdaki tüm aygıtları tarar, hangisinin sürücüsü olmadığını
+        söyler ve eksik ya da eski sürücüleri Windows Update kataloğundan veya USB bellekteki bir
+        klasörden kurar. İndirmeleri paralel yapar, sürücü kurulumunun gerektirdiği yeniden
+        başlatmalardan sonra kaldığı yerden devam eder ve eski sürücülerinizi hiç internet olmadan
+        geri yükleyebilir.
+      </p>
+      <p class="meta-line">
+        Windows 10 1607+ ve Windows 11 · 64-bit (x64 ve arm64 yapıları) · yönetici yetkisi gerekir · MIT lisanslı
+      </p>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe">
+          DrvNest.exe indir
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/DrvNest">
+          GitHub'da kaynak kod
+        </a>
+      </div>
+      <p class="cta-note">
+        Tek dosya, yaklaşık 65 MB. Kurulum sihirbazı yok, ayrıca .NET kurmak gerekmez, Visual C++
+        Redistributable gerekmez, yanında hiçbir şey gelmez.
+        <a href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">Tüm sürümler, arm64 yapısı ve checksums.txt →</a>
+      </p>
+
+      <ul class="pill-row">
+        <li class="pill">Reklam yazılımı yok</li>
+        <li class="pill">Ücretli sürüm yok</li>
+        <li class="pill">Telemetri yok</li>
+        <li class="pill">Arka planda servis yok</li>
+        <li class="pill">Türkçe ve İngilizce arayüz</li>
+        <li class="pill">Koyu ve açık tema</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="sorun">
+    <div class="wrap">
+      <h2>Hangi derde çare?</h2>
+      <p class="section-intro">
+        Windows'u yeni kurdunuz. Aygıt Yöneticisi sarı ünlem işaretleriyle dolu, ekran çözünürlüğü
+        yanlış, ses yok ve — en kötüsü — ağ kartının sürücüsü de olmadığı için internet yok. Sürücüyü
+        indirmek için internet, internete çıkmak için sürücü gerekiyor.
+      </p>
+      <p class="section-intro">
+        DrvNest bu kısır döngüyü tek bir pencereden kırar: donanımı sayar, ulaşabildiği sürücülerle
+        eşleştirir ve kurar. Hiç ağ yoksa da yanınızda getirdiğiniz klasörden kurar.
+      </p>
+    </div>
+  </section>
+
+  <section id="ozellikler">
+    <div class="wrap">
+      <h2>DrvNest ne yapar?</h2>
+      <p class="section-intro">
+        Buradaki her madde yayımlanan uygulamanın içinde. Özellik listesi diye sunulan bir yol
+        haritası yok.
+      </p>
+      <ul class="cards">
+        <li class="card">
+          <h3>Tüm aygıtları tarar</h3>
+          <p>
+            Sistemde fiziksel olarak bulunan her PnP aygıtını WMI yerine SetupAPI ve CfgMgr32 ile
+            sayar. Bu yüzden beş dakika önce formatlanmış ya da WMI deposu bozuk bir makinede de
+            çalışır.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Eksik sürücüleri bulur</h3>
+          <p>
+            Canlı Configuration Manager sorun kodlarını okur: 28, 1 ve 19 "sürücü yok" demektir; 22
+            devre dışı, 14 yeniden başlatma bekliyor anlamına gelir. Sorunlu, sürücüsüz ve jenerik
+            sürücü kullanan aygıtlar için ayrı filtreler vardır.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Windows Update sürücü kataloğunu kullanır</h3>
+          <p>
+            Windows'un kendisiyle gelen Windows Update Agent COM arayüzü üzerinden Microsoft Update'e
+            bağlanır. Kurulacak ek servis, araya giren üçüncü parti bir sürücü aynası yoktur.
+          </p>
+        </li>
+        <li class="card">
+          <h3>USB bellekten, çevrimdışı kurar</h3>
+          <p>
+            Bir klasördeki INF paketlerini ayrıştırır ve donanım kimliğinize göre eşleştirir. USB
+            bellek, ağ paylaşımı, bir DrvNest yedeği ya da üreticiden indirip açtığınız bir klasör
+            kaynak olabilir.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Paralel indirir, tek tek kurar</h3>
+          <p>
+            Varsayılan olarak aynı anda üç indirme, ayarlanabilir 1–8. Kurulumlar bilinçli olarak
+            sıralıdır: Windows Update ikinci bir eşzamanlı kuruluma WU_E_OPERATIONINPROGRESS döner ve
+            PnP alt sistemi zaten sıraya sokar.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Yeniden başlatmalara dayanır</h3>
+          <p>
+            Kuyruk durumu her değişiklikte <code>session.json</code> dosyasına yazılır; oturum
+            açılışına bağlı zamanlanmış görev DrvNest'i <code>--resume</code> ile geri getirir. Üç
+            yeniden başlatma isteyen on sürücülük bir kuyruk kendi kendini bitirir.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Bir şeyi değiştirmeden önce yedekler</h3>
+          <p>
+            Oturumdaki ilk kurulumdan önce sürücü tipinde bir sistem geri yükleme noktası, her
+            değiştirilen paket için de kurulumdan hemen önce alınan bir dışa aktarma — yolu geçmiş
+            kaydına yazılır.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Tüm sürücü setinizi yedekler ve geri yükler</h3>
+          <p>
+            <code>pnputil /export-driver</code> ile tüm üçüncü parti sürücü paketlerini klasöre veya
+            ZIP'e aktarır, <code>pnputil /add-driver /subdirs /install</code> ile geri yükler.
+            Microsoft'un kutu içi sürücüleri bilinçli olarak atlanır; Windows onları zaten kendi kurar.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Donanım raporu yazar</h3>
+          <p>
+            Tüm aygıtları ve donanım kimliklerini düz metin dosyasına döker. Başka hiçbir yol
+            kalmadığında bu dosyayı USB ile çalışan bir bilgisayara taşıyıp sürücüleri elle
+            arayabilirsiniz.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Dürüst bir geçmiş tutar</h3>
+          <p>
+            Yapılan her sürücü işlemi satır başına bir JSON nesnesi olarak kalıcı kaydedilir; sonuca
+            göre filtrelenir ve tek tıkla CSV'ye aktarılır. Ayrıca sürüm ve işletim sistemi başlığıyla
+            kopyalanabilen canlı bir tanılama günlüğü vardır.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Kendi güncellemesini doğrular</h3>
+          <p>
+            Kendi kendini güncelleme, indirilen dosyayı sürümün <code>checksums.txt</code> dosyasındaki
+            SHA-256 ile karşılaştırır; sağlama toplamı yoksa veya tutmuyorsa kurulumu reddeder. Arka
+            planda sessiz güncelleme yapılmaz.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Türkçe ve İngilizce konuşur</h3>
+          <p>
+            Arayüz dili ve koyu/açık tema, uygulama açıkken anında değişir; yeniden başlatmak
+            gerekmez.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="format-sonrasi">
+    <div class="wrap">
+      <h2>Format sonrası sürücü yükleme — adım adım</h2>
+      <p class="section-intro">
+        DrvNest'in var oluş sebebi tam olarak bu. Format öncesinde harcayacağınız beş dakika, format
+        sonrasında makineyi anında kullanılabilir hale getiren şey.
+      </p>
+
+      <div class="steps">
+        <div class="step-block">
+          <h3>Format ÖNCESİ — yaklaşık beş dakika</h3>
+          <ol>
+            <li>DrvNest'i çalıştırın ve <strong>Yedekle &amp; Geri Yükle</strong> menüsünü açın.</li>
+            <li><strong>Yedek Oluştur</strong>'a basın. Sistemdeki tüm üçüncü parti sürücü paketleri dışa aktarılır.</li>
+            <li>Tek dosya istiyorsanız <strong>ZIP olarak sıkıştır</strong> kutusunu işaretleyin.</li>
+            <li>Oluşan klasörü <strong>ve DrvNest.exe dosyasını</strong> aynı USB belleğe kopyalayın.</li>
+            <li>İsteğe bağlı ama işe yarar: klasöre <code>Drivers</code> adını verip <code>DrvNest.exe</code> ile aynı dizinde tutun. DrvNest onu hiçbir ayar gerekmeden yerel sürücü havuzu olarak kaydeder.</li>
+          </ol>
+        </div>
+
+        <div class="step-block">
+          <h3>Format SONRASI</h3>
+          <ol>
+            <li>USB belleği takın ve <code>DrvNest.exe --rescue</code> ile açın. Windows Update hiç aranmaz, yalnızca yerel kaynaklar kullanılır.</li>
+            <li><strong>Yedekle &amp; Geri Yükle → Geri Yükle</strong> (veya <strong>Klasörden Geri Yükle</strong>) ile yedeğinizi seçin. Tüm paketler sürücü deposuna eklenir ve aygıtlara bağlanır.</li>
+            <li>Ağ kartının sürücüsü çalışmaya başladıktan sonra <strong>Tara</strong>'ya basın.</li>
+            <li><strong>Genel Bakış → Format Sonrası Kurtarma</strong>, hâlâ eksik olan her şeyi bu kez Windows Update'ten bulup sıraya alır.</li>
+            <li>Yeniden başlatma istenirse kabul edin. DrvNest oturum açılışında kendini geri çağırır ve kuyruğun kalanını tamamlar.</li>
+          </ol>
+        </div>
+      </div>
+
+      <p class="callout">
+        <strong>Hiç hazırlık yapmadıysanız?</strong> <strong>Genel Bakış → Donanım Raporu</strong> ile
+        tüm donanım kimliklerini bir metin dosyasına yazdırın, dosyayı çalışan bir bilgisayara taşıyın,
+        üreticinin sitesinden doğru paketleri indirip açın, klasörleri geri getirin ve
+        <strong>Klasörden Geri Yükle</strong> ile kurun. Önceliğiniz ağ kartı sürücüsü olsun; o
+        çalıştığı anda gerisini Windows Update halleder.
+      </p>
+
+      <h3 class="sub-heading">Komut satırı</h3>
+      <pre><code>DrvNest.exe                 # normal başlatma
+DrvNest.exe --rescue        # çevrimdışı kurtarma modu (--offline ile aynı)
+DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür</code></pre>
+    </div>
+  </section>
+
+  <section id="karsilastirma">
+    <div class="wrap">
+      <h2>Diğer sürücü güncelleyicilerle farkı — ve eksikleri</h2>
+      <p class="section-intro">
+        Sürücü güncelleme programlarının kötü bir ünü var ve bunu çoğunlukla hak ediyorlar: kırk sorun
+        bulan ücretsiz bir tarama, çözümün önünde duran bir ödeme duvarı, arka planda sürekli çalışan
+        bir servis ve yanında arkadaşlarını getiren bir kurulum dosyası. DrvNest tam tersi kurgulandı.
+        Ticari araçlardan bazı somut konularda geride de kalıyor; bunlar gizlenmek yerine burada
+        yazıyor.
+      </p>
+
+      <div class="table-scroll">
+        <table>
+          <caption class="sr-only">DrvNest ile yaygın ücretsiz sürücü güncelleyici kalıbının karşılaştırması</caption>
+          <thead>
+            <tr>
+              <th scope="col">&nbsp;</th>
+              <th scope="col">DrvNest</th>
+              <th scope="col">Yaygın ücretsiz program kalıbı</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ücret</td>
+              <td><span class="yes">Ücretsiz, MIT lisanslı</span></td>
+              <td>Tarama ücretsiz, kurulum için ödeme</td>
+            </tr>
+            <tr>
+              <td>Kaynak kod</td>
+              <td><span class="yes">Açık, denetlenebilir, derlenebilir</span></td>
+              <td>Kapalı</td>
+            </tr>
+            <tr>
+              <td>Yanında gelenler</td>
+              <td><span class="yes">Hiçbir şey</span></td>
+              <td>Çoğu zaman bir "PC temizleyici", araç çubuğu veya deneme sürümü</td>
+            </tr>
+            <tr>
+              <td>Telemetri</td>
+              <td><span class="yes">Yok</span></td>
+              <td>Genellikle var</td>
+            </tr>
+            <tr>
+              <td>Arka plan servisi</td>
+              <td><span class="yes">Yok — siz çalıştırınca çalışır</span></td>
+              <td>Sürekli açık ajan ve düzenli hatırlatmalar</td>
+            </tr>
+            <tr>
+              <td>Sürücüler nereden geliyor</td>
+              <td>Microsoft'un Windows Update kataloğu ve sizin gösterdiğiniz INF klasörleri</td>
+              <td>Üreticinin işlettiği kendi sürücü aynası</td>
+            </tr>
+            <tr>
+              <td>İnternetsiz çalışma</td>
+              <td><span class="yes">Evet — kurtarma modu, USB ve yerel INF klasörleri</span></td>
+              <td>Nadiren</td>
+            </tr>
+            <tr>
+              <td>Kod imzalama</td>
+              <td><span class="no">İmzalı değil</span> — checksums.txt içindeki SHA-256'yı doğrulayın</td>
+              <td>Genellikle imzalı</td>
+            </tr>
+            <tr>
+              <td>Dosya boyutu</td>
+              <td><span class="no">Tek ~65 MB dosya</span>, başka hiçbir şey gerektirmez</td>
+              <td>Küçük bir kurulum dosyası artı bağımlılıkları</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="callout warn">
+        <strong>Dürüst küçük yazı.</strong> DrvNest <strong>kod imzalama sertifikasıyla imzalanmamıştır</strong>;
+        bu yüzden SmartScreen ve Smart App Control ilk çalıştırmada uyarı verir. Çözüm dosyaya körü
+        körüne güvenmek değil, yayımlanan SHA-256 değerini doğrulamaktır. Uygulama yönetici yetkisi
+        ister, yalnızca 64-bit Windows 10 1607 ve üstünde çalışır, .NET çalışma zamanının tamamı
+        içinde olduğu için dosya büyüktür ve Windows izin vermediği için kurulumlar tek tek yapılır.
+        Sürücü kurmak doğası gereği risklidir: geri yükleme noktası ayarını kapatmayın, verilerinizin
+        yedeği olsun ve depodaki sorumluluk reddi bölümünü okuyun.
+      </p>
+    </div>
+  </section>
+
+  <section id="sss">
+    <div class="wrap">
+      <h2>Sık sorulan sorular</h2>
+      <p class="section-intro">
+        Teknik sorular dahil tam liste
+        <a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/FAQ.md">docs/FAQ.md</a>
+        dosyasında.
+      </p>
+
+      <div class="faq">
+        <article class="faq-item">
+          <h3>DrvNest ücretsiz mi?</h3>
+          <p>
+            Evet. DrvNest MIT lisansıyla yayımlanır ve kaynak kodunun tamamı GitHub'dadır. Ücretli
+            sürüm, deneme süresi, para ödeyince açılan özellik, reklam ya da yanında gelen üçüncü parti
+            yazılım yoktur. Tarama ile kurulum aynı programın parçasıdır.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>.NET veya Visual C++ Redistributable kurmam gerekiyor mu?</h3>
+          <p>
+            Hayır. .NET 8 çalışma zamanının tamamı <code>DrvNest.exe</code>'nin içindedir
+            (self-contained, tek dosya yayını) ve WPF kendi özel <code>vcruntime140_cor3.dll</code> ile
+            <code>msvcp140_cor3.dll</code> kopyalarını beraberinde taşır. Tek gereksinim 64-bit
+            Windows 10 sürüm 1607 (yapı 14393) veya üstüdür. Dosyanın yaklaşık 65 MB olmasının sebebi
+            de budur.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>SmartScreen veya antivirüs neden uyarı veriyor?</h3>
+          <p>
+            DrvNest <strong>kod imzalama sertifikasıyla imzalanmamıştır</strong>, çünkü sertifika
+            ücretlidir. Windows SmartScreen ve Smart App Control, henüz itibar kazanmamış imzasız her
+            exe için uyarı gösterir; üstelik yönetici olarak çalışan, sürücü kuran ve zamanlanmış görev
+            oluşturan tek dosyalık bir uygulama sezgisel tarayıcılara kötü amaçlı yazılım gibi görünür.
+          </p>
+          <p>
+            Dürüst çözüm indirdiğiniz dosyayı doğrulamaktır. PowerShell'de
+            <code>Get-FileHash .\DrvNest.exe -Algorithm SHA256</code> komutunu çalıştırın ve çıkan
+            değeri sürümle birlikte yayımlanan <code>checksums.txt</code> dosyasındaki
+            <code>DrvNest.exe</code> satırıyla karşılaştırın. Tutuyorsa dosya birebir yayımlanan
+            dosyadır. İsterseniz kaynak koddan kendiniz de derleyebilirsiniz.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>İnternet yokken formattan sonra sürücü kurabilir miyim?</h3>
+          <p>
+            Evet, DrvNest asıl bunun için yazıldı. Format öncesinde <strong>Yedekle &amp; Geri
+            Yükle</strong> ekranından tüm üçüncü parti sürücü paketlerini dışa aktarın, sonra o klasörü
+            ve <code>DrvNest.exe</code> dosyasını aynı USB belleğe kopyalayın. Format sonrasında
+            <code>DrvNest.exe --rescue</code> ile açın: Windows Update hiç aranmaz, yalnızca yerel
+            kaynaklar kullanılır.
+          </p>
+          <p>
+            <code>DrvNest.exe</code> ile aynı klasördeki <code>Drivers</code> adlı klasör otomatik
+            olarak yerel sürücü havuzu sayılır. Üreticinin sitesinden indirip açtığınız herhangi bir
+            sürücü klasörü de işe yarar, çünkü içindeki INF dosyaları alt klasörler dahil taranır.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Bozulan bir sürücüyü geri alabilir miyim?</h3>
+          <p>Evet, üç yolu var.</p>
+          <ol>
+            <li>DrvNest değiştireceği paketi kurulumdan hemen önce dışa aktarır ve yolunu geçmiş kaydına yazar; <strong>Klasörden Geri Yükle</strong> ile o klasörü kurabilirsiniz.</li>
+            <li>Oturumdaki ilk kurulumdan önce sürücü tipinde bir sistem geri yükleme noktası oluşturulur; Windows'un <em>Sistem Geri Yükleme</em> sihirbazıyla (<code>rstrui.exe</code>) o noktaya dönebilirsiniz.</li>
+            <li>Aygıt Yöneticisi'ndeki <em>Sürücüyü Geri Al</em> düğmesi DrvNest'ten bağımsız olarak çalışmaya devam eder.</li>
+          </ol>
+        </article>
+
+        <article class="faq-item">
+          <h3>Yeniden başlatmadan sonra gerçekten devam ediyor mu?</h3>
+          <p>
+            Evet. Kuyruğun durumu her değişiklikte <code>session.json</code> dosyasına atomik olarak
+            yazılır ve DrvNest oturum açılışına bağlı <code>DrvNest\ResumeSession</code> adlı bir
+            zamanlanmış görev kaydeder; Görev Zamanlayıcı kullanılamıyorsa HKLM altındaki
+            <code>RunOnce</code> kaydına düşer. Makine açıldığında görev DrvNest'i
+            <code>--resume</code> ile başlatır ve kalan işler devam eder. Bir oturum en fazla on
+            yeniden başlatma taşır; kuyruk bittiğinde hem zamanlanmış görev hem <code>RunOnce</code>
+            kaydı silinir.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Neden yönetici yetkisi istiyor?</h3>
+          <p>
+            Sürücü kurmak ayrıcalıklı bir işlemdir. <code>pnputil</code> ile sürücü deposuna paket
+            eklemek veya dışa aktarmak, Windows Update kurucusunu çalıştırmak ve
+            <code>srclient.dll</code> üzerinden sistem geri yükleme noktası oluşturmak yükseltilmiş bir
+            belirteç ister; ayrıca devam görevi HKLM altına kaydedilir. DrvNest bunu uygulama
+            bildiriminde baştan ister, çünkü kuyruğun ortasında "erişim reddedildi" hatasıyla
+            durmaktansa dürüst olmayı tercih eder.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>DrvNest veri topluyor mu?</h3>
+          <p>
+            Hayır. Telemetri, kullanım istatistiği ve cihaz kimliği toplanmaz. Makineden dışarı
+            yalnızca iki trafik çıkar: Windows'un kendi Windows Update Agent bileşeni üzerinden
+            doğrudan Microsoft'a giden Windows Update sorguları (çevrimdışı modda ve
+            <code>--rescue</code> ile hiç yapılmaz) ve siz <em>Güncellemeleri Kontrol Et</em>'e
+            bastığınızda GitHub Releases API'sine gönderilen tek bir istek. Geri kalan her şey kendi
+            makinenizde, <code>%ProgramData%\DrvNest</code> klasöründe kalır.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="indir">
+    <div class="wrap">
+      <h2>DrvNest'i indirin</h2>
+      <p class="section-intro">
+        Dosyayı indirin, istediğiniz yere koyun ve çift tıklayın. Kaldırmak için dosyayı silin, isterseniz
+        <code>%ProgramData%\DrvNest</code> klasörünü de kaldırın — kuyruk bittikten sonra kayıt defterinde
+        hiçbir şey kalmaz.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe">
+          DrvNest.exe indir
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">
+          Tüm sürümler ve sağlama toplamları
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Alt menü">
+      <ul>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest">Depo</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">Sürümler</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/USAGE.md">Kullanım rehberi</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/FAQ.md">SSS</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/BUILD.md">Kaynaktan derleme</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/ARCHITECTURE.md">Mimari</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/SECURITY.md">Güvenlik politikası</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/issues">Hata bildir</a></li>
+        <li><a href="../" hreflang="en" lang="en">English</a></li>
+      </ul>
+    </nav>
+
+    <p>
+      DrvNest, <a href="https://github.com/ahmetcaglayan">Ahmet Çağlayan</a> tarafından MIT lisansıyla
+      yayımlanan özgür bir yazılımdır. Sürücü kurmak doğası gereği risklidir ve yazılım hiçbir garanti
+      vermez — geri yükleme noktası ayarını açık bırakın, önemli verilerinizin yedeği olsun.
+    </p>
+    <p>Windows, Microsoft Corporation'ın ticari markasıdır. Bu proje Microsoft ile bağlantılı değildir.</p>
+
+    <p class="keywords">
+      Anahtar kelimeler: sürücü güncelleme programı, format sonrası driver yükleme, eksik sürücü bulma
+      programı, driver yedekleme programı, ücretsiz driver güncelleyici, windows sürücü tarama,
+      çevrimdışı sürücü kurulumu, usb ile driver yükleme, açık kaynak sürücü güncelleyici.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

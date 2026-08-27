@@ -1,0 +1,136 @@
+name: Bug report
+description: Something in DrvNest does not work
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this.
+
+        **Security issues do not belong here.** If the problem could be abused by
+        someone else, please report it privately instead:
+        [Security Policy](https://github.com/ahmetcaglayan/DrvNest/blob/main/SECURITY.md).
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Before you file
+      options:
+        - label: I searched the existing issues and this is not a duplicate.
+          required: true
+        - label: I am running the latest release of DrvNest.
+          required: false
+
+  - type: input
+    id: version
+    attributes:
+      label: DrvNest version
+      description: Shown on the About page, and in the title bar.
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version and build
+      description: >
+        Press Win+R, type `winver` and copy what it says. The build number matters -
+        driver behaviour changes between Windows releases.
+      placeholder: "Windows 11 24H2, build 26100.1742"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: architecture
+    attributes:
+      label: Architecture
+      options:
+        - x64 (DrvNest.exe)
+        - ARM64 (DrvNest-arm64.exe)
+        - Not sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: elevated
+    attributes:
+      label: Did you run DrvNest as administrator?
+      description: >
+        DrvNest cannot install drivers without elevation. Right-click the
+        executable and choose "Run as administrator". A great many reports turn
+        out to be this.
+      options:
+        - "Yes - I accepted the UAC prompt"
+        - "No"
+        - "Not sure"
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you expected, and what happened instead.
+      placeholder: |
+        I clicked Install on the network adapter driver and ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open DrvNest as administrator
+        2. Go to Devices and scan
+        3. ...
+    validations:
+      required: true
+
+  - type: input
+    id: hardware-id
+    attributes:
+      label: Device / hardware ID involved
+      description: >
+        Select the device in DrvNest (or in Device Manager: Properties ->
+        Details -> Hardware Ids) and paste the first ID, plus the device name.
+        Without this a driver bug is usually impossible to track down.
+      placeholder: "Realtek PCIe GbE - PCI\\VEN_10EC&DEV_8168&SUBSYS_86771043&REV_15"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: source
+    attributes:
+      label: Which driver source was involved?
+      options:
+        - Windows Update
+        - Local repository (folder, ZIP or USB stick)
+        - Restoring a DrvNest backup
+        - Not applicable / do not know
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log excerpt
+      description: >
+        Open the **Logs** page and press **Copy** - that puts the whole diagnostic
+        log on your clipboard. The file is also at
+        `%ProgramData%\DrvNest\logs\drvnest.log`. Paste the part around the failure,
+        or the whole thing if it is short. Please check it for anything you would
+        rather not make public before posting.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: Screenshots, hardware details, whether it worked in an earlier version.
+    validations:
+      required: false

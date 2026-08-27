@@ -1,0 +1,97 @@
+name: build
+
+# DrvNest builds on Windows only, and that is not a limitation we can work around:
+# the app is WPF and DrvNest.Core calls SetupAPI, CfgMgr32 and the Windows Update
+# Agent. Nothing beyond the .NET 8 SDK is needed - there are no NuGet packages and
+# the COM interop is hand-written, so no tlbimp and no Visual Studio.
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and smoke-publish
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Report the SDK version
+        shell: pwsh
+        run: dotnet --info
+
+      - name: Restore
+        shell: pwsh
+        run: dotnet restore src/DrvNest.sln
+
+      - name: Build (Release)
+        shell: pwsh
+        run: dotnet build src/DrvNest.sln --configuration Release --no-restore
+
+      # The real deliverable is a self-contained single file, and single-file
+      # publishing fails in ways a plain build never notices. Proving it here keeps
+      # the release workflow from being the first place we find out.
+      - name: Publish smoke test (win-x64, self-contained single file)
+        shell: pwsh
+        run: |
+          dotnet publish src/DrvNest.App/DrvNest.App.csproj `
+            --configuration Release `
+            --runtime win-x64 `
+            --self-contained true `
+            -p:PublishSingleFile=true `
+            -p:EnableCompressionInSingleFile=true `
+            -p:PublishReadyToRun=true `
+            -p:PublishTrimmed=false `
+            --output publish/win-x64
+
+      - name: Verify the published executable
+        shell: pwsh
+        run: |
+          $exe = 'publish/win-x64/DrvNest.exe'
+          if (-not (Test-Path $exe)) {
+            throw "Expected $exe to exist after publish."
+          }
+          $item = Get-Item $exe
+          $mb = [math]::Round($item.Length / 1MB, 1)
+          Write-Host "DrvNest.exe -> $mb MB"
+          if ($item.Length -lt 10MB) {
+            throw "DrvNest.exe is only $mb MB; the .NET runtime is clearly not bundled."
+          }
+
+      - name: Upload the build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DrvNest-win-x64
+          path: publish/win-x64/DrvNest.exe
+          retention-days: 7
+          if-no-files-found: error

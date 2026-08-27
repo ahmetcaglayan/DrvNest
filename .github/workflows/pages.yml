@@ -1,0 +1,57 @@
+name: Deploy landing site to GitHub Pages
+
+# Publishes docs/site/ to GitHub Pages.
+#
+# Repository setup this expects (done once, by hand):
+#   Settings -> Pages -> Build and deployment -> Source: GitHub Actions
+# See docs/SEO.md for the rest of the one-time, web-UI-only steps.
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'docs/site/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+# GITHUB_TOKEN needs to write Pages and mint an OIDC token for the deployment.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two deployments at once; let a queued one finish rather than
+# cancelling it, so the published site always matches a real commit.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build artifact
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload docs/site as the Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,67 @@
+# =============================================================================
+#  DrvNest
+#
+#  Git normalises line endings; this file says where that is not wanted.
+# =============================================================================
+
+# Let git decide for anything not listed below.
+* text=auto
+
+# ---- Source and configuration ----------------------------------------------
+*.cs        text diff=csharp
+*.xaml      text
+*.csproj    text
+*.props     text
+*.targets   text
+*.config    text
+*.manifest  text
+*.xml       text
+*.json      text
+*.md        text
+*.yml       text
+*.yaml      text
+*.editorconfig text
+*.gitattributes text
+*.gitignore text
+
+# ---- Windows tooling that insists on CRLF -----------------------------------
+# Visual Studio rewrites .sln with CRLF on every save, and the Inno Setup
+# compiler is happiest with CRLF too.
+*.sln       text eol=crlf
+*.iss       text eol=crlf
+*.ps1       text eol=crlf
+*.psm1      text eol=crlf
+*.cmd       text eol=crlf
+*.bat       text eol=crlf
+
+# ---- Always LF --------------------------------------------------------------
+*.sh        text eol=lf
+
+# ---- Binary -----------------------------------------------------------------
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.webp      binary
+*.ico       binary
+*.exe       binary
+*.dll       binary
+*.pdb       binary
+*.zip       binary
+*.7z        binary
+*.cab       binary
+*.msi       binary
+*.sys       binary
+*.snk       binary
+*.pfx       binary
+*.ttf       binary
+*.otf       binary
+*.woff      binary
+*.woff2     binary
+
+# ---- Not part of a source archive -------------------------------------------
+/.github        export-ignore
+/build          export-ignore
+/assets         export-ignore
+/.gitattributes export-ignore
+/.gitignore     export-ignore

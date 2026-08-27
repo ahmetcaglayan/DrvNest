@@ -1,0 +1,215 @@
+<UserControl x:Class="DrvNest.App.Views.UpdatesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="clr-namespace:DrvNest.App.Services"
+             xmlns:vm="clr-namespace:DrvNest.App.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:UpdatesViewModel}"
+             d:DesignWidth="900">
+
+    <Grid Margin="22,10,22,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- ============================================ HEADER -->
+        <StackPanel Grid.Row="0" Margin="0,10,0,16">
+            <TextBlock Text="{s:Loc upd.title}" Style="{StaticResource Text.H1}" />
+            <TextBlock Text="{s:Loc upd.subtitle}" Style="{StaticResource Text.Muted}" Margin="0,4,0,0" />
+        </StackPanel>
+
+        <!-- ============================================ TOOLBAR -->
+        <Grid Grid.Row="1" Margin="0,0,0,14"
+              Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisibility},
+                          ConverterParameter=invert}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Button Style="{StaticResource Btn.Secondary}"
+                        Padding="12,7"
+                        Content="{s:Loc common.selectAll}"
+                        Command="{Binding SelectAllCommand}" />
+
+                <Button Style="{StaticResource Btn.Ghost}"
+                        Padding="12,7"
+                        Margin="8,0,0,0"
+                        Content="{s:Loc common.selectNone}"
+                        Command="{Binding SelectNoneCommand}" />
+            </StackPanel>
+
+            <TextBox Grid.Column="1"
+                     Style="{StaticResource Input.TextBox}"
+                     Width="300"
+                     HorizontalAlignment="Right"
+                     Text="{Binding Search, UpdateSourceTrigger=PropertyChanged, Delay=180}"
+                     Tag="{s:Loc common.search}"
+                     ToolTip="{s:Loc common.search}" />
+        </Grid>
+
+        <!-- ============================================ EMPTY STATE -->
+        <StackPanel Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisibility}}">
+            <TextBlock Text="{StaticResource Icon.CheckCircle}"
+                       FontFamily="Segoe MDL2 Assets"
+                       FontSize="38"
+                       HorizontalAlignment="Center"
+                       Foreground="{DynamicResource Brush.TextFaint}" />
+            <TextBlock Text="{s:Loc upd.empty}"
+                       Style="{StaticResource Text.Body}"
+                       Margin="0,14,0,0"
+                       HorizontalAlignment="Center" />
+            <TextBlock Text="{s:Loc upd.emptyHint}"
+                       Style="{StaticResource Text.Caption}"
+                       Margin="0,5,0,0"
+                       HorizontalAlignment="Center" />
+        </StackPanel>
+
+        <!-- ============================================ LIST -->
+        <ListBox Grid.Row="2"
+                 ItemsSource="{Binding View}"
+                 Style="{StaticResource List.Plain}"
+                 ItemContainerStyle="{StaticResource List.Row}"
+                 Padding="0,0,8,8"
+                 Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisibility},
+                             ConverterParameter=invert}">
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Grid.Column="0"
+                                  Style="{StaticResource Input.CheckBox}"
+                                  VerticalAlignment="Top"
+                                  Margin="0,2,0,0"
+                                  IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+
+                        <StackPanel Grid.Column="1" Margin="13,0,14,0">
+
+                            <!-- Badge + device name -->
+                            <StackPanel Orientation="Horizontal">
+                                <Border Style="{StaticResource Badge}"
+                                        Background="{DynamicResource Brush.DangerSoft}"
+                                        Visibility="{Binding IsMissing,
+                                                    Converter={StaticResource BoolToVisibility}}">
+                                    <TextBlock Text="{Binding BadgeText}"
+                                               Style="{StaticResource Badge.Text}"
+                                               Foreground="{DynamicResource Brush.Danger}" />
+                                </Border>
+
+                                <Border Style="{StaticResource Badge}"
+                                        Background="{DynamicResource Brush.AccentSoft}"
+                                        Visibility="{Binding IsMissing,
+                                                    Converter={StaticResource BoolToVisibility},
+                                                    ConverterParameter=invert}">
+                                    <TextBlock Text="{Binding BadgeText}"
+                                               Style="{StaticResource Badge.Text}"
+                                               Foreground="{DynamicResource Brush.Accent}" />
+                                </Border>
+
+                                <TextBlock Text="{Binding DeviceName}"
+                                           Style="{StaticResource Text.Body}"
+                                           FontWeight="SemiBold"
+                                           Margin="10,0,0,0"
+                                           VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+
+                            <TextBlock Text="{Binding Title}"
+                                       Style="{StaticResource Text.Muted}"
+                                       Margin="0,6,0,0"
+                                       TextTrimming="CharacterEllipsis"
+                                       ToolTip="{Binding Title}" />
+
+                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                <TextBlock Text="{Binding VersionTransition}"
+                                           Style="{StaticResource Text.Mono}"
+                                           Foreground="{DynamicResource Brush.Accent}" />
+                                <TextBlock Text="  ·  " Style="{StaticResource Text.Mono}" />
+                                <TextBlock Text="{Binding ProviderName}" Style="{StaticResource Text.Mono}" />
+                                <TextBlock Text="  ·  " Style="{StaticResource Text.Mono}" />
+                                <TextBlock Text="{Binding SizeDisplay}" Style="{StaticResource Text.Mono}" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Row actions -->
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top">
+                            <Button Style="{StaticResource Btn.Ghost}"
+                                    Padding="6,4"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="12"
+                                    Content="{StaticResource Icon.Cancel}"
+                                    ToolTip="{s:Loc upd.hide}"
+                                    Command="{Binding DataContext.HideCommand,
+                                              RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                    CommandParameter="{Binding}" />
+
+                            <Button Style="{StaticResource Btn.Ghost}"
+                                    Padding="6,4"
+                                    Margin="2,0,0,0"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="12"
+                                    Content="{StaticResource Icon.Delete}"
+                                    ToolTip="{s:Loc upd.ignoreDevice}"
+                                    Command="{Binding DataContext.IgnoreDeviceCommand,
+                                              RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                    CommandParameter="{Binding}" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- ============================================ ACTION BAR -->
+        <Border Grid.Row="3"
+                Background="{DynamicResource Brush.Surface}"
+                BorderBrush="{DynamicResource Brush.Border}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource Corner.Card}"
+                Padding="16,12"
+                Margin="0,10,0,16"
+                Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisibility},
+                            ConverterParameter=invert}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="{Binding SelectionSummary}"
+                           Style="{StaticResource Text.Body}"
+                           VerticalAlignment="Center" />
+
+                <Button Grid.Column="1"
+                        Style="{StaticResource Btn.Primary}"
+                        MinWidth="170"
+                        Command="{Binding InstallSelectedCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{StaticResource Icon.Download}"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="13"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Text="{s:Loc upd.installSelected}"
+                                   Margin="8,0,0,0"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

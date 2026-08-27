@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="DrvNest">
+  <title>DrvNest</title>
+  <defs>
+    <linearGradient id="dnlSurface" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E9EFF6"/>
+    </linearGradient>
+    <linearGradient id="dnlInk" x1="0.12" y1="0" x2="0.88" y2="1">
+      <stop offset="0" stop-color="#1B2531"/>
+      <stop offset="1" stop-color="#0C1116"/>
+    </linearGradient>
+    <linearGradient id="dnlMint" x1="0.1" y1="0" x2="0.75" y2="1">
+      <stop offset="0" stop-color="#2ADCA6"/>
+      <stop offset="1" stop-color="#12A277"/>
+    </linearGradient>
+  </defs>
+
+  <!-- container -->
+  <rect x="6" y="6" width="244" height="244" rx="56" ry="56" fill="url(#dnlSurface)"/>
+  <rect x="7" y="7" width="242" height="242" rx="55" ry="55" fill="none" stroke="#D3DDE8" stroke-width="2"/>
+
+  <!-- chip pins -->
+  <g fill="url(#dnlInk)">
+    <rect x="105" y="46" width="14" height="20" rx="5"/>
+    <rect x="137" y="46" width="14" height="20" rx="5"/>
+    <rect x="105" y="190" width="14" height="20" rx="5"/>
+    <rect x="137" y="190" width="14" height="20" rx="5"/>
+  </g>
+
+  <!-- nest cell -->
+  <path d="M196 128 L162 186.89 L94 186.89 L60 128 L94 69.11 L162 69.11 Z"
+        fill="none" stroke="url(#dnlInk)" stroke-width="15" stroke-linejoin="round"/>
+
+  <!-- chip body -->
+  <rect x="99" y="99" width="58" height="58" rx="14" ry="14" fill="url(#dnlMint)"/>
+  <rect x="116" y="116" width="24" height="24" rx="6" ry="6" fill="#FFFFFF"/>
+</svg>

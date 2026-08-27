@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 72" width="320" height="72" role="img" aria-label="Download DrvNest.exe">
+  <title>Download DrvNest.exe</title>
+  <defs>
+    <linearGradient id="dnBtn" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#4BE6B4"/>
+      <stop offset="1" stop-color="#26C093"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="1" y="1" width="318" height="70" rx="16" ry="16" fill="url(#dnBtn)"/>
+  <rect x="1.5" y="1.5" width="317" height="69" rx="15.5" ry="15.5" fill="none" stroke="#0F8C66" stroke-opacity="0.45" stroke-width="1"/>
+
+  <!-- download glyph -->
+  <g fill="#06231A">
+    <path d="M37.5 15.5 h14 v16 h8.5 L44.5 47.5 L29 31.5 h8.5 z"/>
+    <rect x="29" y="51.5" width="31" height="5.5" rx="2.75"/>
+  </g>
+
+  <text x="192" y="43" text-anchor="middle"
+        font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif"
+        font-size="18" font-weight="600" letter-spacing="0.2" fill="#06231A">Download DrvNest.exe</text>
+</svg>

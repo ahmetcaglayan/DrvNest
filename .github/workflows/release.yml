@@ -1,0 +1,258 @@
+name: release
+
+# Publishes a GitHub release whose assets are exactly what the in-app updater
+# expects (see src/DrvNest.Core/AppInfo.cs and Updating/SelfUpdateService.cs):
+#
+#   DrvNest.exe          self-contained single file, win-x64
+#   DrvNest-arm64.exe    self-contained single file, win-arm64
+#   checksums.txt        sha256sum format, "<hash>  <filename>"
+#
+# The updater refuses to install a release that has no checksums.txt, so that file
+# is not optional. The Inno Setup installer is a convenience and is allowed to fail.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release, e.g. v1.2.3"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+jobs:
+  release:
+    name: Build and publish the release
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      # The tag is the single source of truth for the version. It is read through an
+      # environment variable rather than interpolated into the script, so a strange
+      # tag name cannot turn into PowerShell.
+      - name: Resolve the version from the tag
+        id: version
+        shell: pwsh
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          $tag = if ([string]::IsNullOrWhiteSpace($env:INPUT_TAG)) { $env:REF_NAME } else { $env:INPUT_TAG }
+          $tag = $tag.Trim()
+
+          if ($tag -notmatch '^[vV]?\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$') {
+            throw "Tag '$tag' is not a version tag. Expected something like v1.2.3."
+          }
+
+          $version = $tag -replace '^[vV]', ''
+          $prerelease = if ($version -like '*-*') { 'true' } else { 'false' }
+
+          Write-Host "tag=$tag version=$version prerelease=$prerelease"
+
+          "VERSION=$version"       | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "RELEASE_TAG=$tag"       | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "version=$version"       | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "tag=$tag"               | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "prerelease=$prerelease" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: Restore
+        shell: pwsh
+        run: dotnet restore src/DrvNest.sln
+
+      - name: Publish win-x64
+        shell: pwsh
+        run: |
+          dotnet publish src/DrvNest.App/DrvNest.App.csproj `
+            --configuration Release `
+            --runtime win-x64 `
+            --self-contained true `
+            -p:Version=$env:VERSION `
+            -p:PublishSingleFile=true `
+            -p:EnableCompressionInSingleFile=true `
+            -p:PublishReadyToRun=true `
+            -p:PublishTrimmed=false `
+            --output publish/win-x64
+
+      - name: Publish win-arm64
+        shell: pwsh
+        run: |
+          dotnet publish src/DrvNest.App/DrvNest.App.csproj `
+            --configuration Release `
+            --runtime win-arm64 `
+            --self-contained true `
+            -p:Version=$env:VERSION `
+            -p:PublishSingleFile=true `
+            -p:EnableCompressionInSingleFile=true `
+            -p:PublishReadyToRun=true `
+            -p:PublishTrimmed=false `
+            --output publish/win-arm64
+
+      - name: Assemble dist
+        shell: pwsh
+        run: |
+          if (Test-Path dist) { Remove-Item dist -Recurse -Force }
+          New-Item -ItemType Directory -Path dist | Out-Null
+
+          $pairs = @(
+            @{ From = 'publish/win-x64/DrvNest.exe';   To = 'dist/DrvNest.exe' },
+            @{ From = 'publish/win-arm64/DrvNest.exe'; To = 'dist/DrvNest-arm64.exe' }
+          )
+
+          foreach ($pair in $pairs) {
+            if (-not (Test-Path $pair.From)) { throw "Missing publish output: $($pair.From)" }
+            Copy-Item -Path $pair.From -Destination $pair.To -Force
+          }
+
+          Get-ChildItem dist -File |
+            ForEach-Object { "{0,-24} {1,8:N1} MB" -f $_.Name, ($_.Length / 1MB) }
+
+      # Convenience only. Chocolatey being down must never block a release, so this
+      # step is deliberately non-fatal: the release simply ships without an installer.
+      - name: Build the Inno Setup installer
+        id: installer
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          choco install innosetup -y --no-progress
+
+          $candidates = @(
+            'C:\Program Files (x86)\Inno Setup 6\ISCC.exe',
+            'C:\Program Files\Inno Setup 6\ISCC.exe'
+          )
+          $iscc = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+          if (-not $iscc) {
+            $onPath = Get-Command iscc.exe -ErrorAction SilentlyContinue
+            if ($onPath) { $iscc = $onPath.Source }
+          }
+          if (-not $iscc) { throw 'ISCC.exe was not found after installing Inno Setup.' }
+
+          & $iscc "/DMyAppVersion=$env:VERSION" 'build\installer\DrvNest.iss'
+          if ($LASTEXITCODE -ne 0) { throw "ISCC exited with $LASTEXITCODE." }
+
+          if (-not (Test-Path 'dist\DrvNest-Setup.exe')) {
+            throw 'ISCC reported success but dist\DrvNest-Setup.exe is missing.'
+          }
+          Write-Host 'Installer built: dist\DrvNest-Setup.exe'
+
+      # sha256sum layout: "<hash><two spaces><filename>". SelfUpdateService splits on
+      # whitespace, but sticking to the standard format keeps `sha256sum -c` working
+      # for anyone who prefers to verify from a shell.
+      - name: Generate checksums.txt
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem -Path dist -File |
+            Where-Object { $_.Name -ne 'checksums.txt' } |
+            Sort-Object Name
+
+          if ($files.Count -eq 0) { throw 'dist is empty; nothing to checksum.' }
+
+          $lines = foreach ($file in $files) {
+            $hash = (Get-FileHash -Path $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+            "$hash  $($file.Name)"
+          }
+
+          $text = ($lines -join "`n") + "`n"
+          $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+          [System.IO.File]::WriteAllText((Join-Path (Resolve-Path dist) 'checksums.txt'), $text, $utf8NoBom)
+
+          Get-Content dist/checksums.txt
+
+      - name: Verify the release assets the updater requires
+        shell: pwsh
+        run: |
+          foreach ($required in @('DrvNest.exe', 'DrvNest-arm64.exe', 'checksums.txt')) {
+            if (-not (Test-Path (Join-Path 'dist' $required))) {
+              throw "Required release asset '$required' is missing. The in-app updater would break."
+            }
+          }
+          Write-Host 'All updater-required assets are present.'
+
+      # The template is a single-quoted here-string so backticks in the markdown code
+      # fence stay literal. Every line below is indented by the YAML block scalar and
+      # lands back at column 0 in the generated script, which is where PowerShell
+      # insists the closing '@ has to be.
+      - name: Compose the release notes header
+        shell: pwsh
+        run: |
+          $template = @'
+          ## Download
+
+          ### [Download DrvNest.exe]({REPO}/releases/download/{TAG}/DrvNest.exe)
+
+          Windows 10 (1607) or newer, 64-bit. On an ARM64 device download
+          [DrvNest-arm64.exe]({REPO}/releases/download/{TAG}/DrvNest-arm64.exe) instead.
+
+          **No prerequisites.** One file, nothing to install: the .NET 8 runtime and
+          everything else DrvNest needs is inside the executable. No .NET install, no
+          Visual C++ redistributable, no internet connection required to start it.
+          Right-click and *Run as administrator* -- installing drivers needs elevation.
+
+          ### Verify your download
+
+          ```powershell
+          Get-FileHash .\DrvNest.exe -Algorithm SHA256
+          ```
+
+          Compare the result with the matching line in
+          [checksums.txt]({REPO}/releases/download/{TAG}/checksums.txt). The hashes are
+          lowercase there and uppercase in PowerShell's output; the comparison is not
+          case sensitive.
+
+          ---
+
+          '@
+
+          $repo = 'https://github.com/${{ github.repository }}'
+          $body = $template.Replace('{REPO}', $repo).Replace('{TAG}', $env:RELEASE_TAG)
+
+          if (Test-Path 'dist\DrvNest-Setup.exe') {
+            $installerNote = 'An optional Windows installer, `DrvNest-Setup.exe`, is attached below.'
+            $body += "`n" + $installerNote + "`n`n---`n"
+          }
+
+          # generate_release_notes appends straight onto this, so end on a blank line.
+          $body += "`n"
+
+          $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+          [System.IO.File]::WriteAllText((Join-Path $PWD 'release-notes.md'), $body, $utf8NoBom)
+
+          Get-Content release-notes.md
+
+      - name: Create the GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: DrvNest ${{ steps.version.outputs.version }}
+          body_path: release-notes.md
+          generate_release_notes: true
+          prerelease: ${{ steps.version.outputs.prerelease == 'true' }}
+          draft: false
+          fail_on_unmatched_files: true
+          files: |
+            dist/*

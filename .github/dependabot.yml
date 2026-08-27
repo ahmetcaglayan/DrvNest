@@ -1,0 +1,24 @@
+version: 2
+
+# GitHub Actions only. DrvNest has no NuGet dependencies at all - DrvNest.Core is
+# deliberately BCL, P/Invoke and the Windows Update Agent COM API and nothing else
+# - so there is no nuget ecosystem entry to add here.
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Istanbul
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: ci
+    labels:
+      - dependencies
+      - github-actions
+    groups:
+      actions:
+        patterns:
+          - "*"

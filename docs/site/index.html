@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>DrvNest — Free Open-Source Windows Driver Updater</title>
+<meta name="description" content="DrvNest is a free, open-source Windows 10 and 11 driver updater. It finds missing drivers, installs them after a format, and restores drivers offline from USB.">
+
+<link rel="canonical" href="https://ahmetcaglayan.github.io/DrvNest/">
+<link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/DrvNest/">
+<link rel="alternate" hreflang="tr" href="https://ahmetcaglayan.github.io/DrvNest/tr/">
+<link rel="alternate" hreflang="x-default" href="https://ahmetcaglayan.github.io/DrvNest/">
+
+<meta name="author" content="Ahmet Çağlayan">
+<meta name="theme-color" content="#0D1014" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DrvNest">
+<meta property="og:title" content="DrvNest — Free Open-Source Windows Driver Updater">
+<meta property="og:description" content="DrvNest is a free, open-source Windows 10 and 11 driver updater. It finds missing drivers, installs them after a format, and restores drivers offline from USB.">
+<meta property="og:url" content="https://ahmetcaglayan.github.io/DrvNest/">
+<meta property="og:image" content="https://ahmetcaglayan.github.io/DrvNest/og-image.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="The DrvNest logo and wordmark on a dark background, above the words free, open-source Windows driver updater.">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="tr_TR">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DrvNest — Free Open-Source Windows Driver Updater">
+<meta name="twitter:description" content="Free, open-source Windows driver updater. Finds missing drivers, installs them after a format, and restores drivers offline from a USB stick.">
+<meta name="twitter:image" content="https://ahmetcaglayan.github.io/DrvNest/og-image.png">
+<meta name="twitter:image:alt" content="The DrvNest logo and wordmark on a dark background, above the words free, open-source Windows driver updater.">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "DrvNest",
+  "alternateName": "DrvNest Driver Updater",
+  "description": "DrvNest is a free and open-source Windows driver updater for Windows 10 and Windows 11. It scans every PnP device, reports which ones have no driver, installs missing and outdated drivers from the Windows Update catalog or from local INF folders, resumes its queue after the restarts a driver install needs, and backs drivers up so they can be restored offline from a USB stick after a format.",
+  "applicationCategory": "UtilitiesApplication",
+  "applicationSubCategory": "Driver updater",
+  "operatingSystem": "Windows 10, Windows 11",
+  "softwareVersion": "1.0.0",
+  "downloadUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest",
+  "installUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe",
+  "url": "https://ahmetcaglayan.github.io/DrvNest/",
+  "image": "https://ahmetcaglayan.github.io/DrvNest/og-image.png",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "inLanguage": ["en", "tr"],
+  "codeRepository": "https://github.com/ahmetcaglayan/DrvNest",
+  "programmingLanguage": "C#",
+  "softwareRequirements": "Windows 10 version 1607 (build 14393) or newer, 64-bit, administrator rights. No .NET runtime and no Visual C++ Redistributable required.",
+  "permissions": "Administrator rights are required to install drivers, export the driver store and create a system restore point.",
+  "releaseNotes": "https://github.com/ahmetcaglayan/DrvNest/blob/main/CHANGELOG.md",
+  "featureList": [
+    "Scans every PnP device with SetupAPI and CfgMgr32, without WMI",
+    "Detects missing drivers from Configuration Manager problem codes",
+    "Finds drivers in the Windows Update catalog through the Windows Update Agent",
+    "Installs drivers from local INF folders, a USB stick or a network share",
+    "Parallel downloads with serialized installs",
+    "Resumes the queue automatically after a reboot",
+    "Creates a system restore point and backs up each driver before replacing it",
+    "Backs up and restores every third-party driver with pnputil",
+    "Offline rescue mode for a freshly formatted machine with no internet",
+    "Hardware report listing every device and hardware id",
+    "Turkish and English interface, dark and light theme"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "creator": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "maintainer": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "softwareHelp": {
+    "@type": "CreativeWork",
+    "url": "https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/USAGE.md"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "en",
+  "url": "https://ahmetcaglayan.github.io/DrvNest/",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is DrvNest really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. DrvNest is released under the MIT licence and the full source code is on GitHub. There is no paid tier, no trial, no feature that unlocks after payment, no advertising and no bundled third-party software. The scan and the installs are the same product."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to install .NET or the Visual C++ Redistributable?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The entire .NET 8 runtime is inside DrvNest.exe as a self-contained single-file publish, and WPF carries its own private copies of vcruntime140_cor3.dll and msvcp140_cor3.dll. The only requirement is 64-bit Windows 10 version 1607 (build 14393) or newer. That is also why the executable is around 65 MB."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does SmartScreen or my antivirus warn about DrvNest?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "DrvNest is not code-signed, because a code-signing certificate costs money. Windows SmartScreen and Smart App Control show a warning for any unsigned executable that has not built up reputation, and a single-file app that runs as administrator, installs drivers and registers a scheduled task looks like malware to a heuristic scanner. The honest mitigation is to verify the download: run Get-FileHash .\\DrvNest.exe -Algorithm SHA256 and compare the result with the DrvNest.exe line in the checksums.txt published with the release. A match means the file is byte-for-byte the published one. You can also build it yourself from source."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can DrvNest install drivers after a format with no internet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and that is what it was built for. Before the format, use Backup and Restore to export every third-party driver package, then copy that folder and DrvNest.exe onto the same USB stick. After the format, start DrvNest.exe --rescue: Windows Update is never contacted and only local sources are used. A folder named Drivers next to DrvNest.exe is registered automatically as a local driver repository. Any vendor driver folder you extracted yourself works too, because its INF files are matched recursively."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I roll back a driver that breaks something?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, in three ways. DrvNest exports the package it is about to replace and records the path in the history entry, so you can reinstall it with Restore from folder. It also creates a driver-type system restore point before the first install of a session, which you can use through the Windows System Restore wizard. And Windows' own Roll Back Driver button in Device Manager keeps working independently of DrvNest."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does DrvNest really continue after a reboot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The queue is written atomically to session.json on every state change, and DrvNest registers a logon-triggered scheduled task called DrvNest\\ResumeSession, falling back to an HKLM RunOnce value when Task Scheduler is unavailable. At the next logon the task relaunches DrvNest with --resume and the remaining jobs continue. A session survives at most ten restarts, and the task and RunOnce value are removed when the queue finishes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does DrvNest need administrator rights?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Installing a driver is a privileged operation. Adding packages to or exporting them from the driver store with pnputil, driving the Windows Update installer and creating a system restore point through srclient.dll all require an elevated token, and the resume task is registered under HKLM. DrvNest asks for elevation up front in its application manifest rather than failing with access denied in the middle of a queue."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does DrvNest collect any data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. There is no telemetry, no usage statistics and no device identifiers. Exactly two things ever leave the machine: Windows Update queries, which go straight to Microsoft through Windows' own Windows Update Agent and are skipped entirely in offline or rescue mode, and a single request to the GitHub Releases API when you press Check for updates. Everything else stays in %ProgramData%\\DrvNest on your own machine."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="https://ahmetcaglayan.github.io/DrvNest/">
+      <img src="favicon.svg" width="30" height="30" alt="DrvNest logo: a hexagonal nest cell cradling a mint microchip">
+      <span>Drv<span class="mark-nest">Nest</span></span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#post-format">After a format</a></li>
+        <li><a href="#compare">How it compares</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest">GitHub</a></li>
+        <li><a class="lang-switch" href="tr/" hreflang="tr" lang="tr">Türkçe</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap">
+      <img class="hero-mark" src="favicon.svg" width="84" height="84" alt="The DrvNest application icon: a mint hexagon holding a microchip">
+      <h1>The free Windows driver updater that also works after a format</h1>
+      <p class="lede">
+        <strong>DrvNest</strong> scans every device in your PC, tells you which ones have no driver,
+        and installs the missing and outdated ones from the Windows Update catalog or from a folder
+        on a USB stick. It downloads in parallel, keeps going after the restarts a driver install
+        needs, and can put your old drivers back with no internet connection at all.
+      </p>
+      <p class="meta-line">
+        Windows 10 1607+ and Windows 11 · 64-bit (x64 and arm64 builds) · administrator rights required · MIT licensed
+      </p>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe">
+          Download DrvNest.exe
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/DrvNest">
+          Source code on GitHub
+        </a>
+      </div>
+      <p class="cta-note">
+        One file, roughly 65 MB. No installer, no .NET runtime to add, no Visual C++ Redistributable,
+        nothing bundled. <a href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">All releases, the arm64 build and checksums.txt →</a>
+      </p>
+
+      <ul class="pill-row">
+        <li class="pill">No adware</li>
+        <li class="pill">No paid tier</li>
+        <li class="pill">No telemetry</li>
+        <li class="pill">No background service</li>
+        <li class="pill">Turkish and English UI</li>
+        <li class="pill">Dark and light theme</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="problem">
+    <div class="wrap">
+      <h2>The problem it was built for</h2>
+      <p class="section-intro">
+        You have just reinstalled Windows. Device Manager is full of yellow exclamation marks, the
+        resolution is wrong, there is no sound and — worst of all — no internet, because the network
+        adapter has no driver either. You need the internet to download a driver, and a driver to
+        reach the internet.
+      </p>
+      <p class="section-intro">
+        DrvNest breaks that loop from a single window: it enumerates the hardware, matches it against
+        drivers it can actually reach, and installs them. When there is no network at all, it installs
+        from a folder you brought with you.
+      </p>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>What DrvNest does</h2>
+      <p class="section-intro">
+        Every one of these is in the shipping application — there is no roadmap section pretending to
+        be a feature list.
+      </p>
+      <ul class="cards">
+        <li class="card">
+          <h3>Scans every device</h3>
+          <p>
+            Enumerates all present PnP devices through SetupAPI and CfgMgr32 rather than WMI, so it
+            works on a machine that was formatted five minutes ago or whose WMI repository is broken.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Finds the missing drivers</h3>
+          <p>
+            Reads live Configuration Manager problem codes. Code 28, 1 and 19 mean "no driver"; 22 is
+            a disabled device and 14 is one waiting for a restart. Filters let you look at problem
+            devices, driverless devices or devices running a generic driver.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Uses the Windows Update driver catalog</h3>
+          <p>
+            Talks to Microsoft Update through the Windows Update Agent COM API that already ships with
+            Windows. No extra service to install, no third-party driver mirror in the middle.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Installs from a USB stick, offline</h3>
+          <p>
+            Parses the INF packages in any folder — a USB stick, a network share, a DrvNest backup or a
+            vendor download you extracted — and matches them to your hardware ids.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Downloads in parallel, installs one at a time</h3>
+          <p>
+            Three concurrent downloads by default, configurable from one to eight. Installs are
+            serialized on purpose: Windows Update returns WU_E_OPERATIONINPROGRESS for a second
+            concurrent install and the PnP subsystem serializes anyway.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Survives the reboots</h3>
+          <p>
+            Queue state is written to <code>session.json</code> after every change and a logon-triggered
+            scheduled task brings DrvNest back with <code>--resume</code>, so a ten-driver queue that
+            needs three restarts finishes itself.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Backs up before it changes anything</h3>
+          <p>
+            A driver-type system restore point before the first install of a session, and an export of
+            each driver package immediately before it is replaced, with the path recorded in the
+            history entry.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Backs up and restores your whole driver set</h3>
+          <p>
+            Exports every third-party driver package with <code>pnputil /export-driver</code> into a
+            folder or a ZIP, and restores with <code>pnputil /add-driver /subdirs /install</code>.
+            Microsoft's in-box drivers are deliberately skipped — Windows reinstalls those itself.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Writes a hardware report</h3>
+          <p>
+            Every device and hardware id in a plain text file, so you can carry it on a USB stick to a
+            working computer and look the drivers up by hand when nothing else is available.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Keeps an honest history</h3>
+          <p>
+            A permanent record of every driver operation as one JSON object per line, filterable by
+            outcome and exportable to CSV in a click, plus a live diagnostic log with a copy button
+            that includes the version and OS header.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Verifies its own updates</h3>
+          <p>
+            The built-in updater compares the download against the SHA-256 in the release's
+            <code>checksums.txt</code>, and refuses to install anything when the checksum is missing or
+            does not match. It never updates silently in the background.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Speaks Turkish and English</h3>
+          <p>
+            The interface language and the dark or light theme both switch instantly while the
+            application is open, with no restart.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="post-format">
+    <div class="wrap">
+      <h2>Installing drivers after a format, step by step</h2>
+      <p class="section-intro">
+        This is the walkthrough DrvNest exists for. The five minutes you spend before the format are
+        what make the machine usable immediately afterwards.
+      </p>
+
+      <div class="steps">
+        <div class="step-block">
+          <h3>Before the format — about five minutes</h3>
+          <ol>
+            <li>Run DrvNest and open <strong>Backup &amp; Restore</strong>.</li>
+            <li>Click <strong>Create backup</strong>. Every third-party driver package on the system is exported.</li>
+            <li>Tick <strong>Compress as ZIP</strong> if you want a single file.</li>
+            <li>Copy the resulting folder <strong>and DrvNest.exe</strong> onto the same USB stick.</li>
+            <li>Optional but useful: name the folder <code>Drivers</code> and keep it next to <code>DrvNest.exe</code>. DrvNest then registers it as a local driver repository automatically, with no configuration.</li>
+          </ol>
+        </div>
+
+        <div class="step-block">
+          <h3>After the format</h3>
+          <ol>
+            <li>Plug the stick in and run <code>DrvNest.exe --rescue</code>. Windows Update is never contacted; only local sources are used.</li>
+            <li>Go to <strong>Backup &amp; Restore → Restore</strong>, or <strong>Restore from folder</strong>, and pick your backup. Every package is added to the driver store and bound to its devices.</li>
+            <li>Once the network adapter has a working driver, press <strong>Scan</strong>.</li>
+            <li><strong>Dashboard → Post-format recovery</strong> queues everything still missing, from Windows Update this time.</li>
+            <li>Accept the restart when it is asked for. DrvNest comes back at logon and finishes the rest of the queue.</li>
+          </ol>
+        </div>
+      </div>
+
+      <p class="callout">
+        <strong>No backup, no internet, nothing prepared?</strong> Use
+        <strong>Dashboard → Hardware report</strong> to write every hardware id to a text file, carry it
+        to a working computer, download the right packages from the vendor, extract them, bring the
+        folders back and install them with <strong>Restore from folder</strong>. Start with the network
+        adapter; once that works, Windows Update handles the rest.
+      </p>
+
+      <h3 class="sub-heading">Command line</h3>
+      <pre><code>DrvNest.exe                 # normal launch
+DrvNest.exe --rescue        # offline rescue mode (same as --offline)
+DrvNest.exe --resume        # continue an interrupted queue straight away</code></pre>
+    </div>
+  </section>
+
+  <section id="compare">
+    <div class="wrap">
+      <h2>How DrvNest compares — and where it falls short</h2>
+      <p class="section-intro">
+        Driver updaters have a bad reputation, and it is mostly earned: a free scan that finds forty
+        problems, a paywall in front of the fix, a resident service, and an installer that brings
+        friends. DrvNest is built the other way round. It is also worse than commercial tools in a few
+        specific ways, and those are listed here rather than buried.
+      </p>
+
+      <div class="table-scroll">
+        <table>
+          <caption class="sr-only">DrvNest compared with the common freeware driver updater pattern</caption>
+          <thead>
+            <tr>
+              <th scope="col">&nbsp;</th>
+              <th scope="col">DrvNest</th>
+              <th scope="col">The common freeware pattern</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Price</td>
+              <td><span class="yes">Free, MIT licensed</span></td>
+              <td>Free scan, paid unlock to install</td>
+            </tr>
+            <tr>
+              <td>Source code</td>
+              <td><span class="yes">Public, auditable, buildable</span></td>
+              <td>Closed</td>
+            </tr>
+            <tr>
+              <td>Bundled extras</td>
+              <td><span class="yes">None</span></td>
+              <td>Often a "PC cleaner", a toolbar or a trial</td>
+            </tr>
+            <tr>
+              <td>Telemetry</td>
+              <td><span class="yes">None</span></td>
+              <td>Commonly present</td>
+            </tr>
+            <tr>
+              <td>Background service</td>
+              <td><span class="yes">None — it runs when you run it</span></td>
+              <td>Resident agent and periodic nags</td>
+            </tr>
+            <tr>
+              <td>Where drivers come from</td>
+              <td>Microsoft's Windows Update catalog, plus INF folders you point it at</td>
+              <td>A vendor-operated driver mirror</td>
+            </tr>
+            <tr>
+              <td>Works with no internet</td>
+              <td><span class="yes">Yes — rescue mode, USB and local INF folders</span></td>
+              <td>Rarely</td>
+            </tr>
+            <tr>
+              <td>Code signing</td>
+              <td><span class="no">Not signed</span> — verify the SHA-256 in checksums.txt</td>
+              <td>Usually signed</td>
+            </tr>
+            <tr>
+              <td>Install size</td>
+              <td><span class="no">One ~65 MB file</span> that needs nothing else</td>
+              <td>A small installer plus its dependencies</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="callout warn">
+        <strong>The honest small print.</strong> DrvNest is <strong>not code-signed</strong>, so
+        SmartScreen and Smart App Control will warn you on first run; the fix is to verify the
+        published SHA-256 rather than to trust the file blindly. It needs administrator rights, it only
+        runs on 64-bit Windows 10 1607 or newer, the executable is large because the whole .NET runtime
+        is inside it, and installs run one at a time because Windows will not do them in parallel.
+        Installing drivers is inherently risky: leave the restore-point setting on, keep backups, and
+        read the disclaimer in the repository.
+      </p>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <h2>Frequently asked questions</h2>
+      <p class="section-intro">
+        The full list, including the technical questions, is in
+        <a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/FAQ.md">docs/FAQ.md</a>.
+      </p>
+
+      <div class="faq">
+        <article class="faq-item">
+          <h3>Is DrvNest really free?</h3>
+          <p>
+            Yes. DrvNest is released under the MIT licence and the full source code is on GitHub.
+            There is no paid tier, no trial, no feature that unlocks after payment, no advertising and
+            no bundled third-party software. The scan and the installs are the same product.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Do I need to install .NET or the Visual C++ Redistributable?</h3>
+          <p>
+            No. The entire .NET 8 runtime is inside <code>DrvNest.exe</code> as a self-contained
+            single-file publish, and WPF carries its own private copies of
+            <code>vcruntime140_cor3.dll</code> and <code>msvcp140_cor3.dll</code>. The only requirement
+            is 64-bit Windows 10 version 1607 (build 14393) or newer. That is also why the executable is
+            around 65 MB.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Why does SmartScreen or my antivirus warn about DrvNest?</h3>
+          <p>
+            DrvNest is <strong>not code-signed</strong>, because a code-signing certificate costs money.
+            Windows SmartScreen and Smart App Control show a warning for any unsigned executable that
+            has not built up reputation, and a single-file app that runs as administrator, installs
+            drivers and registers a scheduled task looks like malware to a heuristic scanner.
+          </p>
+          <p>
+            The honest mitigation is to verify the download. Run
+            <code>Get-FileHash .\DrvNest.exe -Algorithm SHA256</code> and compare the result with the
+            <code>DrvNest.exe</code> line in the <code>checksums.txt</code> published with the release.
+            A match means the file is byte-for-byte the published one. You can also build it yourself
+            from source.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Can DrvNest install drivers after a format with no internet?</h3>
+          <p>
+            Yes, and that is what it was built for. Before the format, use <strong>Backup &amp;
+            Restore</strong> to export every third-party driver package, then copy that folder and
+            <code>DrvNest.exe</code> onto the same USB stick. After the format, start
+            <code>DrvNest.exe --rescue</code>: Windows Update is never contacted and only local sources
+            are used.
+          </p>
+          <p>
+            A folder named <code>Drivers</code> next to <code>DrvNest.exe</code> is registered
+            automatically as a local driver repository. Any vendor driver folder you extracted yourself
+            works too, because its INF files are matched recursively.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Can I roll back a driver that breaks something?</h3>
+          <p>Yes, in three ways.</p>
+          <ol>
+            <li>DrvNest exports the package it is about to replace and records the path in the history entry, so you can reinstall it with <strong>Restore from folder</strong>.</li>
+            <li>It creates a driver-type system restore point before the first install of a session, which you can use through the Windows System Restore wizard (<code>rstrui.exe</code>).</li>
+            <li>Windows' own <em>Roll Back Driver</em> button in Device Manager keeps working independently of DrvNest.</li>
+          </ol>
+        </article>
+
+        <article class="faq-item">
+          <h3>Does DrvNest really continue after a reboot?</h3>
+          <p>
+            Yes. The queue is written atomically to <code>session.json</code> on every state change, and
+            DrvNest registers a logon-triggered scheduled task called
+            <code>DrvNest\ResumeSession</code>, falling back to an HKLM <code>RunOnce</code> value when
+            Task Scheduler is unavailable. At the next logon the task relaunches DrvNest with
+            <code>--resume</code> and the remaining jobs continue. A session survives at most ten
+            restarts, and the task and <code>RunOnce</code> value are removed when the queue finishes.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Why does DrvNest need administrator rights?</h3>
+          <p>
+            Installing a driver is a privileged operation. Adding packages to or exporting them from the
+            driver store with <code>pnputil</code>, driving the Windows Update installer and creating a
+            system restore point through <code>srclient.dll</code> all require an elevated token, and the
+            resume task is registered under HKLM. DrvNest asks for elevation up front in its application
+            manifest rather than failing with "access denied" in the middle of a queue.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Does DrvNest collect any data?</h3>
+          <p>
+            No. There is no telemetry, no usage statistics and no device identifiers. Exactly two things
+            ever leave the machine: Windows Update queries, which go straight to Microsoft through
+            Windows' own Windows Update Agent and are skipped entirely in offline or rescue mode, and a
+            single request to the GitHub Releases API when you press <em>Check for updates</em>.
+            Everything else stays in <code>%ProgramData%\DrvNest</code> on your own machine.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="get-it">
+    <div class="wrap">
+      <h2>Get DrvNest</h2>
+      <p class="section-intro">
+        Download the executable, put it wherever you like and double-click it. To remove it, delete the
+        file and optionally the <code>%ProgramData%\DrvNest</code> folder — nothing is left in the
+        registry once a queue has finished.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe">
+          Download DrvNest.exe
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">
+          All releases and checksums
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest">Repository</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">Releases</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/USAGE.md">Usage guide</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/FAQ.md">FAQ</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/BUILD.md">Building from source</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/ARCHITECTURE.md">Architecture</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/SECURITY.md">Security policy</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/issues">Report a bug</a></li>
+        <li><a href="tr/" hreflang="tr" lang="tr">Türkçe</a></li>
+      </ul>
+    </nav>
+
+    <p>
+      DrvNest is free software by <a href="https://github.com/ahmetcaglayan">Ahmet Çağlayan</a>,
+      released under the MIT licence. Installing drivers carries inherent risk and the software comes
+      with no warranty — keep the restore-point setting on and keep backups of anything you care about.
+    </p>
+    <p>Windows is a trademark of Microsoft Corporation. This project is not affiliated with Microsoft.</p>
+
+    <p class="keywords">
+      Keywords: windows driver updater open source, free driver updater no adware, install drivers
+      after format, offline driver installer usb, driver backup restore windows, missing driver finder,
+      windows 11 driver scanner, pnputil driver export, windows update driver catalog tool.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

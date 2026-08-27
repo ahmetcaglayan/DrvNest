@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" width="1280" height="320" role="img" aria-label="DrvNest - Scan, install and update every Windows driver">
+  <title>DrvNest</title>
+  <defs>
+    <linearGradient id="bnBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#131A22"/>
+      <stop offset="0.5" stop-color="#0E1319"/>
+      <stop offset="1" stop-color="#090C10"/>
+    </linearGradient>
+    <radialGradient id="bnGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#35D8A4" stop-opacity="0.20"/>
+      <stop offset="0.55" stop-color="#35D8A4" stop-opacity="0.05"/>
+      <stop offset="1" stop-color="#35D8A4" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bnRule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#35D8A4" stop-opacity="0.9"/>
+      <stop offset="0.45" stop-color="#4C8DFF" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#35D8A4" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="bnTile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1C232D"/>
+      <stop offset="0.55" stop-color="#12171E"/>
+      <stop offset="1" stop-color="#0B0E12"/>
+    </linearGradient>
+    <linearGradient id="bnMint" x1="0.12" y1="0" x2="0.88" y2="1">
+      <stop offset="0" stop-color="#5BF0BF"/>
+      <stop offset="0.55" stop-color="#35D8A4"/>
+      <stop offset="1" stop-color="#22B98A"/>
+    </linearGradient>
+    <linearGradient id="bnChip" x1="0.1" y1="0" x2="0.75" y2="1">
+      <stop offset="0" stop-color="#6BF3CA"/>
+      <stop offset="1" stop-color="#2AC694"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="320" fill="url(#bnBg)"/>
+  <ellipse cx="188" cy="150" rx="420" ry="300" fill="url(#bnGlow)"/>
+
+  <!-- honeycomb motif -->
+  <g fill="none" stroke="#35D8A4" stroke-width="2" stroke-linejoin="round">
+    <path d="M1136 160 L1113 199.8 L1067 199.8 L1044 160 L1067 120.2 L1113 120.2 Z" stroke-opacity="0.20"/>
+    <path d="M1136 80.3 L1113 120.1 L1067 120.1 L1044 80.3 L1067 40.5 L1113 40.5 Z" stroke-opacity="0.10"/>
+    <path d="M1136 239.7 L1113 279.5 L1067 279.5 L1044 239.7 L1067 199.9 L1113 199.9 Z" stroke-opacity="0.10"/>
+    <path d="M1205 120.2 L1182 160 L1136 160 L1113 120.2 L1136 80.4 L1182 80.4 Z" stroke-opacity="0.13"/>
+    <path d="M1205 199.8 L1182 239.6 L1136 239.6 L1113 199.8 L1136 160 L1182 160 Z" stroke-opacity="0.13"/>
+    <path d="M1067 120.2 L1044 160 L998 160 L975 120.2 L998 80.4 L1044 80.4 Z" stroke-opacity="0.08"/>
+    <path d="M1067 199.8 L1044 239.6 L998 239.6 L975 199.8 L998 160 L1044 160 Z" stroke-opacity="0.08"/>
+  </g>
+  <path d="M1136 160 L1113 199.8 L1067 199.8 L1044 160 L1067 120.2 L1113 120.2 Z" fill="#35D8A4" fill-opacity="0.05"/>
+
+  <!-- app mark -->
+  <g transform="translate(76 84) scale(0.59375)">
+    <rect x="6" y="6" width="244" height="244" rx="56" ry="56" fill="url(#bnTile)"/>
+    <rect x="7" y="7" width="242" height="242" rx="55" ry="55" fill="none" stroke="#2A323D" stroke-width="2"/>
+    <g fill="url(#bnMint)">
+      <rect x="105" y="46" width="14" height="20" rx="5"/>
+      <rect x="137" y="46" width="14" height="20" rx="5"/>
+      <rect x="105" y="190" width="14" height="20" rx="5"/>
+      <rect x="137" y="190" width="14" height="20" rx="5"/>
+    </g>
+    <path d="M196 128 L162 186.89 L94 186.89 L60 128 L94 69.11 L162 69.11 Z"
+          fill="none" stroke="url(#bnMint)" stroke-width="15" stroke-linejoin="round"/>
+    <rect x="99" y="99" width="58" height="58" rx="14" ry="14" fill="url(#bnChip)"/>
+    <rect x="116" y="116" width="24" height="24" rx="6" ry="6" fill="#0B1F19"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="272" y="150" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif"
+        font-size="82" font-weight="700" letter-spacing="-1.5" fill="#E8EDF4">Drv<tspan fill="#35D8A4">Nest</tspan></text>
+
+  <text x="275" y="196" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif"
+        font-size="26" font-weight="400" fill="#94A3B4">Scan, install and update every Windows driver</text>
+
+  <text x="275" y="234" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif"
+        font-size="17" font-weight="400" letter-spacing="0.4" fill="#7A8899">Self-contained · No .NET required · Works offline</text>
+
+  <rect x="0" y="316" width="1280" height="4" fill="url(#bnRule)"/>
+</svg>

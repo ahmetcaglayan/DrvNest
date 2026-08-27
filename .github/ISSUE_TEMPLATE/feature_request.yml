@@ -1,0 +1,88 @@
+name: Feature request
+description: Suggest an idea for DrvNest
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        DrvNest is built around one moment: the first boot after a format, on a
+        machine with no runtime installed and possibly no network. Ideas that make
+        that moment go better have an easy time here.
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Before you file
+      options:
+        - label: I searched the existing issues and this is not already suggested.
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: >
+        Describe the situation you are in, not the solution. What are you trying to
+        do, and where does DrvNest get in the way today?
+      placeholder: |
+        After a format I have to ... because DrvNest cannot ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like DrvNest to do?
+      description: Now the solution. Be concrete about how it should behave.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part of DrvNest?
+      options:
+        - Scanning and device detection
+        - Windows Update driver source
+        - Local repository / offline drivers
+        - Backup and restore
+        - Queue, installing and retries
+        - Reboot and resume
+        - Self-update
+        - Settings
+        - User interface and themes
+        - Translation / a new language
+        - Command line (DrvNest.Cli)
+        - Something else
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+      description: Other tools, manual workarounds, or a different design that would also work.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Constraints this has to live with
+      description: >
+        DrvNest ships as one self-contained file that must run on a machine with
+        nothing installed on it. Please confirm you have thought about these.
+      options:
+        - label: This does not require a new NuGet dependency in DrvNest.Core.
+          required: false
+        - label: This still works offline, or degrades gracefully without a network.
+          required: false
+
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Would you like to work on this?
+      options:
+        - label: I would be willing to open a pull request.
+          required: false

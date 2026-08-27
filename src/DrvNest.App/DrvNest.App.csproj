@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>DrvNest.App</RootNamespace>
+
+    <!-- The published file is literally called DrvNest.exe. -->
+    <AssemblyName>DrvNest</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+
+    <AssemblyTitle>DrvNest</AssemblyTitle>
+    <Description>Scan, install and update every Windows driver - built for the first boot after a format.</Description>
+  </PropertyGroup>
+
+  <!--
+    Zero-prerequisite deployment.
+
+    This is the whole point of the project: someone who just formatted their PC
+    has no .NET runtime, no Visual C++ redistributable and quite possibly no
+    network. One file has to be enough.
+
+      SelfContained          .NET 8 runtime is inside the executable
+      PublishSingleFile      one file to copy onto a USB stick
+      PublishTrimmed=false   trimming breaks WPF reflection and COM interop
+      ReadyToRun             faster cold start on a bare install
+      Compression            keeps the single file around 65 MB instead of 150 MB
+
+    WPF's runtime pack bundles its own private copies of the Visual C++ runtime
+    (vcruntime140_cor3.dll, msvcp140_cor3.dll), so no VC++ redistributable is
+    needed either. The only requirement left is Windows 10 1607 or newer.
+  -->
+  <PropertyGroup>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <DebugType>embedded</DebugType>
+    <!-- Minimum supported OS is Windows 10 1607; it is documented rather than declared,
+         because raising TargetPlatformVersion would pull in the WinRT projections for
+         no benefit to a pure Win32 + WPF application. -->
+  </PropertyGroup>
+
+  <!-- The icon is optional so the project still builds from a clean clone. -->
+  <PropertyGroup Condition="Exists('Assets\drvnest.ico')">
+    <ApplicationIcon>Assets\drvnest.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DrvNest.Core\DrvNest.Core.csproj" />
+  </ItemGroup>
+
+</Project>

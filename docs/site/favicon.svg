@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="DrvNest">
+  <title>DrvNest</title>
+  <desc>A hexagonal nest cell cradling a mint microchip.</desc>
+  <defs>
+    <linearGradient id="fvSurface" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1C232D"/>
+      <stop offset="0.55" stop-color="#12171E"/>
+      <stop offset="1" stop-color="#0B0E12"/>
+    </linearGradient>
+    <linearGradient id="fvMint" x1="0.12" y1="0" x2="0.88" y2="1">
+      <stop offset="0" stop-color="#5BF0BF"/>
+      <stop offset="0.55" stop-color="#35D8A4"/>
+      <stop offset="1" stop-color="#22B98A"/>
+    </linearGradient>
+    <linearGradient id="fvChip" x1="0.1" y1="0" x2="0.75" y2="1">
+      <stop offset="0" stop-color="#6BF3CA"/>
+      <stop offset="1" stop-color="#2AC694"/>
+    </linearGradient>
+  </defs>
+
+  <!-- tile -->
+  <rect x="6" y="6" width="244" height="244" rx="56" ry="56" fill="url(#fvSurface)"/>
+  <rect x="7" y="7" width="242" height="242" rx="55" ry="55" fill="none" stroke="#2A323D" stroke-width="2"/>
+
+  <!-- nest cell, stroke thickened for small sizes -->
+  <path d="M198 128 L163 188.62 L93 188.62 L58 128 L93 67.38 L163 67.38 Z"
+        fill="none" stroke="url(#fvMint)" stroke-width="21" stroke-linejoin="round"/>
+
+  <!-- chip body -->
+  <rect x="97" y="97" width="62" height="62" rx="15" ry="15" fill="url(#fvChip)"/>
+  <rect x="115" y="115" width="26" height="26" rx="7" ry="7" fill="#0B1F19"/>
+</svg>

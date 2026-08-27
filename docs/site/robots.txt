@@ -1,0 +1,8 @@
+# DrvNest -- https://ahmetcaglayan.github.io/DrvNest/
+# Everything here is public documentation for a free, open-source project.
+# Crawl all of it, including by AI assistants and answer engines.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://ahmetcaglayan.github.io/DrvNest/sitemap.xml
