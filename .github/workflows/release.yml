@@ -34,6 +34,11 @@ jobs:
     name: Build and publish the release
     runs-on: windows-latest
 
+    # The secrets context cannot be used in a step-level `if`, so the presence of a
+    # signing certificate is resolved once here into a plain string the steps can test.
+    env:
+      HAS_SIGNING_CERT: ${{ secrets.SIGNING_CERTIFICATE_BASE64 != '' }}
+
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
@@ -159,6 +164,43 @@ jobs:
             throw 'ISCC reported success but dist\DrvNest-Setup.exe is missing.'
           }
           Write-Host 'Installer built: dist\DrvNest-Setup.exe'
+
+      # Code signing. Skipped entirely until a certificate exists, so the release keeps
+      # working today and starts producing signed binaries the moment the two secrets
+      # are added - no workflow edit needed.
+      #
+      # Without a signature Windows shows "Unknown publisher" on the UAC prompt and
+      # SmartScreen warns on first run. That is not something a build can fix: it needs
+      # a certificate issued to a verified identity. See docs/SIGNING.md.
+      #
+      # Runs before the checksums are generated, because signing changes the file.
+      - name: Sign the executables
+        if: env.HAS_SIGNING_CERT == 'true'
+        shell: pwsh
+        env:
+          CERT_BASE64: ${{ secrets.SIGNING_CERTIFICATE_BASE64 }}
+          CERT_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          $pfx = Join-Path $env:RUNNER_TEMP 'drvnest-signing.pfx'
+          [System.IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:CERT_BASE64))
+
+          $signtool = Get-ChildItem 'C:\Program Files (x86)\Windows Kits\10\bin' -Recurse -Filter signtool.exe |
+            Where-Object { $_.FullName -like '*\x64\*' } |
+            Sort-Object FullName -Descending |
+            Select-Object -First 1 -ExpandProperty FullName
+
+          if (-not $signtool) { throw 'signtool.exe was not found on the runner.' }
+
+          foreach ($file in Get-ChildItem dist -Filter *.exe) {
+            & $signtool sign /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 `
+              /f $pfx /p $env:CERT_PASSWORD $file.FullName
+            if ($LASTEXITCODE -ne 0) { throw "Signing failed for $($file.Name)." }
+          }
+
+          Remove-Item $pfx -Force
+          Write-Host 'All executables signed.'
 
       # sha256sum layout: "<hash><two spaces><filename>". SelfUpdateService splits on
       # whitespace, but sticking to the standard format keeps `sha256sum -c` working

@@ -90,8 +90,8 @@ Yine de engellenirse:
 - *Ayarlar → Gizlilik ve güvenlik → Windows Güvenliği → Uygulama ve tarayıcı denetimi →
   Akıllı Uygulama Denetimi ayarları* yolundan kapatabilirsiniz. **Not:** Smart App Control
   bir kez kapatıldığında, Windows'u yeniden kurmadan tekrar açılamaz.
-- Kalıcı çözüm kod imzalama sertifikasıdır; projenin açık kaynak olması nedeniyle
-  [SignPath.io](https://signpath.io/) gibi ücretsiz OSS imzalama programları bir seçenektir.
+- Kalıcı çözüm kod imzalama sertifikasıdır. Seçenekler, maliyetleri ve CI kurulumu
+  [docs/SIGNING.md](SIGNING.md) dosyasında ayrıntılı olarak anlatılıyor.
 
 **İndirdiğiniz dosyanın gerçekten yayımlanan dosya olduğunu doğrulayabilirsiniz.**
 Her sürümle birlikte bir `checksums.txt` yayımlanır. PowerShell'de:
@@ -379,9 +379,8 @@ loose `.dll` files gets blocked by Smart App Control, while the single-file buil
 - Turn it off under *Settings → Privacy & security → Windows Security → App & browser
   control → Smart App Control settings*. **Note:** once switched off, Smart App Control
   cannot be turned back on without reinstalling Windows.
-- The permanent fix is code signing. Because this project is open source,
-  [SignPath.io](https://signpath.io/) and similar free OSS signing programmes are an
-  option.
+- The permanent fix is code signing. The options, what they cost and how to wire one
+  into CI are laid out in [docs/SIGNING.md](SIGNING.md).
 
 **You can verify that your download is exactly the published file.** Every release ships a
 `checksums.txt`. In PowerShell:
