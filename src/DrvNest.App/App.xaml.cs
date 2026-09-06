@@ -59,9 +59,29 @@ public partial class App : Application
         // Remove the previous executable if this launch is the result of a self-update.
         SelfUpdateService.CleanUpAfterUpdate();
 
+        // Schedules the daily check. Returns immediately and waits 20 seconds before
+        // touching the network, so it never competes with the opening scan.
+        AppHost.Updates.Start();
+
         var window = new MainWindow { DataContext = new MainViewModel() };
         MainWindow = window;
         window.Show();
+
+        // Capture mode replaces the normal startup flow: it drives the whole menu and
+        // exits. See Services/CaptureRunner.cs; it is how the published screenshots are
+        // regenerated after a UI change.
+        var captureFolder = CaptureRunner.ParseFolder(e.Args);
+
+        if (captureFolder is not null)
+        {
+            if (CaptureRunner.ParseLanguage(e.Args) is { } language) Loc.SetLanguage(language);
+
+            Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,
+                new Action(async () => await CaptureRunner.RunAsync(
+                    window, captureFolder, scanFirst: launchMode != LaunchMode.Rescue)));
+
+            return;
+        }
 
         // Deferred so the window paints before any long running work starts.
         Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle,

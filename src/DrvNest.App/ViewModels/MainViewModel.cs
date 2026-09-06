@@ -23,6 +23,7 @@ public sealed class MainViewModel : ViewModelBase
     private bool _isScanning;
     private double _scanPercent;
     private bool _scanIndeterminate;
+    private bool _updateAvailable;
     private CancellationTokenSource? _scanCancellation;
 
     public MainViewModel()
@@ -42,6 +43,19 @@ public sealed class MainViewModel : ViewModelBase
         AppEvents.StatusChanged += message => OnUi(() => StatusText = message);
         AppEvents.ScanCompleted += _ => OnUi(UpdateBadges);
         AppEvents.QueueChanged += () => OnUi(UpdateBadges);
+
+        // The daily background check has no window of its own, so a new release is
+        // announced the same way everything else is: a count on the menu entry that
+        // leads to it, plus one line in the status bar. Nothing is installed by it.
+        AppEvents.UpdateAvailable += release => OnUi(() =>
+        {
+            _updateAvailable = true;
+            UpdateBadges();
+            StatusText = Loc.T("about.autoNotice", release.Version);
+        });
+
+        AppEvents.UpdateStaged += version => OnUi(() =>
+            StatusText = Loc.T("about.updateReady", version));
 
         Loc.LanguageChanged += () => OnUi(() =>
         {
@@ -109,6 +123,13 @@ public sealed class MainViewModel : ViewModelBase
         NavItems.Add(new NavItem("queue",     "nav.queue",     "\uE896", () => new QueueView()));
         NavItems.Add(new NavItem("backup",    "nav.backup",    "\uE74E", () => new BackupView()));
         NavItems.Add(new NavItem("history",   "nav.history",   "\uE81C", () => new HistoryView()));
+
+        // The two monitor pages. They sit after the driver work rather than at the top
+        // because that is still what DrvNest is for, and they sample nothing at all
+        // until one of them is actually opened.
+        NavItems.Add(new NavItem("system",    "nav.system",    "\uE950", () => new SystemMonitorView()));
+        NavItems.Add(new NavItem("network",   "nav.network",   "\uE701", () => new NetworkMonitorView()));
+
         NavItems.Add(new NavItem("logs",      "nav.logs",      "\uE7C3", () => new LogsView()));
         NavItems.Add(new NavItem("settings",  "nav.settings",  "\uE713", () => new SettingsView()));
         NavItems.Add(new NavItem("about",     "nav.about",     "\uE946", () => new AboutView()));
@@ -132,6 +153,8 @@ public sealed class MainViewModel : ViewModelBase
 
         var session = AppHost.Sessions.Current;
         Find("queue").BadgeCount = session?.PendingCount ?? 0;
+
+        Find("about").BadgeCount = _updateAvailable ? 1 : 0;
 
         NavItem Find(string key) => NavItems.First(n => n.Key == key);
     }

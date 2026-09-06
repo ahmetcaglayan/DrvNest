@@ -71,19 +71,31 @@
                     Padding="16,13"
                     Margin="0,0,0,16"
                     Visibility="{Binding HasNotice, Converter={StaticResource BoolToVisibility}}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{StaticResource Icon.Warning}"
+<!--
+                    A Grid rather than a horizontal StackPanel: a StackPanel gives its
+                    children infinite width when measuring, so TextWrapping does nothing
+                    and a long warning is clipped instead of wrapped.
+                -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="{StaticResource Icon.Warning}"
                                FontFamily="Segoe MDL2 Assets"
                                FontSize="15"
                                VerticalAlignment="Top"
                                Margin="0,1,0,0"
                                Foreground="{DynamicResource Brush.Warning}" />
 
-                    <TextBlock Text="{Binding Notice}"
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding Notice}"
                                Style="{StaticResource Text.Body}"
                                Margin="11,0,0,0"
                                TextWrapping="Wrap" />
-                </StackPanel>
+                </Grid>
             </Border>
 
             <!-- ============================================ METRICS -->

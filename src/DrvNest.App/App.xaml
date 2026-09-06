@@ -33,6 +33,8 @@
             <conv:DeviceClassToColorConverter x:Key="ClassColor" />
             <conv:ClassGuidToIconConverter x:Key="ClassIcon" />
             <conv:ScaleConverter x:Key="Scale" />
+            <conv:ThermalBandToBrushConverter x:Key="ThermalBandToBrush" />
+            <conv:UpToBrushConverter x:Key="UpToBrush" />
 
         </ResourceDictionary>
     </Application.Resources>

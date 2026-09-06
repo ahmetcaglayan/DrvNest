@@ -4,12 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>DrvNest — Free Open-Source Windows Driver Updater</title>
-<meta name="description" content="DrvNest is a free, open-source Windows 10 and 11 driver updater. It finds missing drivers, installs them after a format, and restores drivers offline from USB.">
+<title>DrvNest — Free Open-Source Windows Driver Updater, System and Network Monitor</title>
+<meta name="description" content="DrvNest is a free, open-source Windows 10 and 11 driver updater with a built-in system and network monitor. It finds missing drivers, installs them after a format, restores drivers offline from USB, and shows what every program is costing in CPU, RAM and bandwidth.">
 
 <link rel="canonical" href="https://ahmetcaglayan.github.io/DrvNest/">
 <link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/DrvNest/">
 <link rel="alternate" hreflang="tr" href="https://ahmetcaglayan.github.io/DrvNest/tr/">
+<link rel="alternate" hreflang="ru" href="https://ahmetcaglayan.github.io/DrvNest/ru/">
+<link rel="alternate" hreflang="zh" href="https://ahmetcaglayan.github.io/DrvNest/zh/">
+<link rel="alternate" hreflang="hi" href="https://ahmetcaglayan.github.io/DrvNest/hi/">
 <link rel="alternate" hreflang="x-default" href="https://ahmetcaglayan.github.io/DrvNest/">
 
 <meta name="author" content="Ahmet Çağlayan">
@@ -18,7 +21,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="DrvNest">
-<meta property="og:title" content="DrvNest — Free Open-Source Windows Driver Updater">
+<meta property="og:title" content="DrvNest — Free Windows Driver Updater, System and Network Monitor">
 <meta property="og:description" content="DrvNest is a free, open-source Windows 10 and 11 driver updater. It finds missing drivers, installs them after a format, and restores drivers offline from USB.">
 <meta property="og:url" content="https://ahmetcaglayan.github.io/DrvNest/">
 <meta property="og:image" content="https://ahmetcaglayan.github.io/DrvNest/og-image.png">
@@ -27,9 +30,12 @@
 <meta property="og:image:alt" content="The DrvNest logo and wordmark on a dark background, above the words free, open-source Windows driver updater.">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="tr_TR">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:locale:alternate" content="hi_IN">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="DrvNest — Free Open-Source Windows Driver Updater">
+<meta name="twitter:title" content="DrvNest — Free Windows Driver Updater, System and Network Monitor">
 <meta name="twitter:description" content="Free, open-source Windows driver updater. Finds missing drivers, installs them after a format, and restores drivers offline from a USB stick.">
 <meta name="twitter:image" content="https://ahmetcaglayan.github.io/DrvNest/og-image.png">
 <meta name="twitter:image:alt" content="The DrvNest logo and wordmark on a dark background, above the words free, open-source Windows driver updater.">
@@ -47,14 +53,14 @@
   "applicationCategory": "UtilitiesApplication",
   "applicationSubCategory": "Driver updater",
   "operatingSystem": "Windows 10, Windows 11",
-  "softwareVersion": "1.0.0",
+  "softwareVersion": "1.1.0",
   "downloadUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest",
   "installUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe",
   "url": "https://ahmetcaglayan.github.io/DrvNest/",
   "image": "https://ahmetcaglayan.github.io/DrvNest/og-image.png",
   "license": "https://opensource.org/licenses/MIT",
   "isAccessibleForFree": true,
-  "inLanguage": ["en", "tr"],
+  "inLanguage": ["en", "tr", "ru", "zh", "hi"],
   "codeRepository": "https://github.com/ahmetcaglayan/DrvNest",
   "programmingLanguage": "C#",
   "softwareRequirements": "Windows 10 version 1607 (build 14393) or newer, 64-bit, administrator rights. No .NET runtime and no Visual C++ Redistributable required.",
@@ -71,7 +77,17 @@
     "Backs up and restores every third-party driver with pnputil",
     "Offline rescue mode for a freshly formatted machine with no internet",
     "Hardware report listing every device and hardware id",
-    "Turkish and English interface, dark and light theme"
+    "Live system monitor: processor load per logical core, memory breakdown, temperature sensors, storage and battery",
+    "Per-application resource usage: processor share, working set, private bytes and disk throughput for every process",
+    "Live network monitor: download and upload for the whole machine, session and since-boot totals, every adapter",
+    "Per-application network usage from TCP connection statistics, with open connection counts and remote endpoints",
+    "Automatic daily update check, with optional automatic download and install verified against SHA-256",
+    "English, Turkish, Russian, Simplified Chinese and Hindi interface, dark and light theme"
+  ],
+  "screenshot": [
+    "https://ahmetcaglayan.github.io/DrvNest/screenshots/dashboard.png",
+    "https://ahmetcaglayan.github.io/DrvNest/screenshots/system.png",
+    "https://ahmetcaglayan.github.io/DrvNest/screenshots/network.png"
   ],
   "offers": {
     "@type": "Offer",
@@ -189,11 +205,24 @@
     <nav class="site-nav" aria-label="Main">
       <ul>
         <li><a href="#features">Features</a></li>
+        <li><a href="#monitor">Monitor</a></li>
         <li><a href="#post-format">After a format</a></li>
         <li><a href="#compare">How it compares</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="https://github.com/ahmetcaglayan/DrvNest">GitHub</a></li>
-        <li><a class="lang-switch" href="tr/" hreflang="tr" lang="tr">Türkçe</a></li>
+        <li><a href="#screenshots">Screenshots</a></li>
+        <li>
+      <details class="lang-menu">
+        <summary aria-label="Choose a language">English ▾</summary>
+        <ul>
+        <li><a href="./" hreflang="en" lang="en" aria-current="true">English</a></li>
+        <li><a href="tr/" hreflang="tr" lang="tr">Türkçe</a></li>
+        <li><a href="ru/" hreflang="ru" lang="ru">Русский</a></li>
+        <li><a href="zh/" hreflang="zh" lang="zh">简体中文</a></li>
+        <li><a href="hi/" hreflang="hi" lang="hi">हिन्दी</a></li>
+        </ul>
+      </details>
+        </li>
       </ul>
     </nav>
   </div>
@@ -209,7 +238,9 @@
         <strong>DrvNest</strong> scans every device in your PC, tells you which ones have no driver,
         and installs the missing and outdated ones from the Windows Update catalog or from a folder
         on a USB stick. It downloads in parallel, keeps going after the restarts a driver install
-        needs, and can put your old drivers back with no internet connection at all.
+        needs, and can put your old drivers back with no internet connection at all. Since 1.1 it
+        also shows you, live, what the machine and every program on it are costing in processor
+        time, memory and bandwidth.
       </p>
       <p class="meta-line">
         Windows 10 1607+ and Windows 11 · 64-bit (x64 and arm64 builds) · administrator rights required · MIT licensed
@@ -233,15 +264,172 @@
         <li class="pill">No paid tier</li>
         <li class="pill">No telemetry</li>
         <li class="pill">No background service</li>
-        <li class="pill">Turkish and English UI</li>
+        <li class="pill">System &amp; network monitor</li>
+        <li class="pill">5 interface languages</li>
         <li class="pill">Dark and light theme</li>
       </ul>
+    </div>
+  </section>
+
+
+  <section id="whats-new">
+    <div class="wrap">
+      <h2>New in 1.1 <span class="badge-new">1.1.0</span></h2>
+      <p class="section-intro">
+        Three additions, all of them things the application can genuinely do rather than
+        things it promises to do later.
+      </p>
+
+      <ul class="whatsnew">
+        <li>
+          <h3>System Monitor</h3>
+          <p>
+            Processor load with a bar for every logical core, a memory breakdown down to
+            cached and committed bytes, every temperature sensor the firmware exposes,
+            storage capacity with live read and write throughput, and battery state —
+            plus a table of every running program and what it is costing.
+          </p>
+        </li>
+        <li>
+          <h3>Network Monitor</h3>
+          <p>
+            Live download and upload for the whole machine, totals for this session and
+            since Windows started, every adapter with its address and link speed, and a
+            per-application table showing which program is using the connection, how
+            fast, and how many connections it is holding open.
+          </p>
+        </li>
+        <li>
+          <h3>Automatic updates</h3>
+          <p>
+            DrvNest now asks GitHub once a day whether a newer release exists and tells
+            you on the menu. Downloading and installing stays off by default, and even
+            when you switch it on the verified file is only swapped in as the application
+            closes — never in the middle of a driver queue.
+          </p>
+        </li>
+        <li>
+          <h3>Five languages</h3>
+          <p>
+            English, Turkish, Russian, Simplified Chinese and Hindi, all built into the
+            single executable and switchable without a restart. A JSON file dropped next
+            to <code>DrvNest.exe</code> still adds or corrects a translation with no
+            rebuild.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="screenshots">
+    <div class="wrap">
+      <h2>What it looks like</h2>
+      <p class="section-intro">
+        Real screenshots from the shipping application, taken on a Windows 11 laptop.
+        They are regenerated from the build itself with
+        <code>DrvNest.exe --capture</code>, so they cannot drift out of date.
+      </p>
+
+    <div class="shots" role="region" aria-roledescription="carousel" aria-label="DrvNest screenshots">
+      <div class="shots-track" id="shotsTrack" tabindex="0">
+        <figure class="shot" id="shot-0" role="group" aria-roledescription="slide" aria-label="1 / 10">
+          <img src="screenshots/dashboard.png" width="1240" height="820" loading="eager" decoding="async" alt="Dashboard">
+          <figcaption class="shot-caption">
+            <h3>Dashboard</h3>
+            <p>Every number that matters on one screen: devices found, drivers missing, updates available and problem devices, with the machine&#8217;s own operating system, hardware, processor and BIOS summary underneath.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-1" role="group" aria-roledescription="slide" aria-label="2 / 10">
+          <img src="screenshots/system.png" width="1240" height="820" loading="lazy" decoding="async" alt="System Monitor">
+          <figcaption class="shot-caption">
+            <h3>System Monitor</h3>
+            <p>Processor, memory, temperature and disk activity as live charts, with one bar per logical core. The temperature card says plainly when the machine has no sensor Windows can read, rather than inventing a number.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-2" role="group" aria-roledescription="slide" aria-label="3 / 10">
+          <img src="screenshots/system-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="Usage per program">
+          <figcaption class="shot-caption">
+            <h3>Usage per program</h3>
+            <p>Every running process with its processor share, working set, private bytes, disk throughput and thread count. Sort by processor, memory or disk, search by name or PID, and pause the table to read a row.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-3" role="group" aria-roledescription="slide" aria-label="4 / 10">
+          <img src="screenshots/network.png" width="1240" height="820" loading="lazy" decoding="async" alt="Network Monitor">
+          <figcaption class="shot-caption">
+            <h3>Network Monitor</h3>
+            <p>Download and upload for the whole machine as live charts, the total for this session and since Windows started, the number of open connections, and every adapter with its address and negotiated link speed.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-4" role="group" aria-roledescription="slide" aria-label="5 / 10">
+          <img src="screenshots/network-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="Traffic per program">
+          <figcaption class="shot-caption">
+            <h3>Traffic per program</h3>
+            <p>Which application is using the connection right now, how fast in each direction, how much it has moved this session and how many connections it holds open — with the remote endpoint on the tooltip.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-5" role="group" aria-roledescription="slide" aria-label="6 / 10">
+          <img src="screenshots/devices.png" width="1240" height="820" loading="lazy" decoding="async" alt="Devices">
+          <figcaption class="shot-caption">
+            <h3>Devices</h3>
+            <p>Every PnP device grouped by class, with live Configuration Manager problem codes translated into plain sentences. Filter by problem, missing driver or generic driver, and copy any hardware id.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-6" role="group" aria-roledescription="slide" aria-label="7 / 10">
+          <img src="screenshots/updates.png" width="1240" height="820" loading="lazy" decoding="async" alt="Updates">
+          <figcaption class="shot-caption">
+            <h3>Updates</h3>
+            <p>Installable packages from the Windows Update driver catalog and from local INF folders, side by side. Per-row selection, the total download size, and the option to hide one update or ignore a device entirely.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-7" role="group" aria-roledescription="slide" aria-label="8 / 10">
+          <img src="screenshots/queue.png" width="1240" height="820" loading="lazy" decoding="async" alt="Activity">
+          <figcaption class="shot-caption">
+            <h3>Activity</h3>
+            <p>The running queue: download percentage, speed, bytes transferred and the install phase, one line per driver. An interrupted session shows a Continue button here after the restart.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-8" role="group" aria-roledescription="slide" aria-label="9 / 10">
+          <img src="screenshots/backup.png" width="1240" height="820" loading="lazy" decoding="async" alt="Backup &amp; Restore">
+          <figcaption class="shot-caption">
+            <h3>Backup &amp; Restore</h3>
+            <p>Export every third-party driver package before you format, optionally as a single ZIP, then put the whole set back afterwards with no internet connection at all.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-9" role="group" aria-roledescription="slide" aria-label="10 / 10">
+          <img src="screenshots/settings.png" width="1240" height="820" loading="lazy" decoding="async" alt="Settings">
+          <figcaption class="shot-caption">
+            <h3>Settings</h3>
+            <p>Parallel downloads, retries, restore points, pre-update backups, resume after restart, automatic updates, offline mode, local driver folders, history retention, theme and language.</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="shots-bar">
+      <ul class="shots-dots" id="shotsDots">
+      <li><button type="button" data-slide="0" aria-current="true">Dashboard</button></li>
+      <li><button type="button" data-slide="1">System Monitor</button></li>
+      <li><button type="button" data-slide="2">Usage per program</button></li>
+      <li><button type="button" data-slide="3">Network Monitor</button></li>
+      <li><button type="button" data-slide="4">Traffic per program</button></li>
+      <li><button type="button" data-slide="5">Devices</button></li>
+      <li><button type="button" data-slide="6">Updates</button></li>
+      <li><button type="button" data-slide="7">Activity</button></li>
+      <li><button type="button" data-slide="8">Backup &amp; Restore</button></li>
+      <li><button type="button" data-slide="9">Settings</button></li>
+      </ul>
+      <div class="shots-arrows">
+        <button type="button" id="shotsPrev" aria-label="Previous screenshot">&#8592;</button>
+        <button type="button" id="shotsNext" aria-label="Next screenshot">&#8594;</button>
+      </div>
+    </div>
     </div>
   </section>
 
   <section id="problem">
     <div class="wrap">
       <h2>The problem it was built for</h2>
+      <div class="prose-2col">
       <p class="section-intro">
         You have just reinstalled Windows. Device Manager is full of yellow exclamation marks, the
         resolution is wrong, there is no sound and — worst of all — no internet, because the network
@@ -253,6 +441,7 @@
         drivers it can actually reach, and installs them. When there is no network at all, it installs
         from a folder you brought with you.
       </p>
+      </div>
     </div>
   </section>
 
@@ -349,10 +538,44 @@
           </p>
         </li>
         <li class="card">
-          <h3>Speaks Turkish and English</h3>
+          <h3>Shows what the machine is doing</h3>
           <p>
-            The interface language and the dark or light theme both switch instantly while the
-            application is open, with no restart.
+            A live panel for processor load per logical core, memory down to cached and
+            committed bytes, every temperature sensor the firmware actually exposes, storage
+            capacity with real read and write throughput, and battery state. Nothing is
+            sampled until you open the page, and it stops the moment you leave it.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Shows what each program costs</h3>
+          <p>
+            Processor share, working set, private bytes, disk throughput and thread count for
+            every running process, measured the same way Task Manager measures them. Sortable,
+            searchable and pausable.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Shows where the bandwidth goes</h3>
+          <p>
+            Live download and upload for the whole machine from the adapters&#8217; own
+            counters, and per-application traffic from Windows&#8217; TCP connection
+            statistics — no kernel driver, no packet capture, no third-party service.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Keeps itself up to date</h3>
+          <p>
+            One request a day to the GitHub Releases API tells you when a new version exists.
+            Automatic download and install is opt-in, verified against SHA-256, and only ever
+            applied as DrvNest closes.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Speaks five languages</h3>
+          <p>
+            English, Turkish, Russian, Simplified Chinese and Hindi, all inside the one
+            executable. The language and the dark or light theme both switch instantly while
+            the application is open, with no restart.
           </p>
         </li>
       </ul>
@@ -366,6 +589,42 @@
         This is the walkthrough DrvNest exists for. The five minutes you spend before the format are
         what make the machine usable immediately afterwards.
       </p>
+
+      <figure class="figure">
+<svg viewBox="0 0 1160 258" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="flow-title">How a driver gets installed</title>
+  <desc id="flow-desc">Five steps from left to right: scan the devices, match them against available driver packages, download in parallel, install one at a time, and restart. A dashed line returns from the restart step to the install step, showing that the queue resumes automatically after the reboot.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--dim)" />
+    </marker>
+  </defs>
+
+  <g font-family="var(--font-sans)">
+    <g><rect x="10" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/><text x="30" y="86" font-size="13" font-weight="700" fill="var(--accent)">01</text><text x="54" y="86" font-size="16" font-weight="600" fill="var(--text)">Scan</text><text x="30" y="118" font-size="14" fill="var(--muted)">SetupAPI + CfgMgr32,</text><text x="30" y="138" font-size="14" fill="var(--muted)">never WMI</text></g>
+    <line x1="208" y1="115" x2="234" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="242" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="262" y="86" font-size="13" font-weight="700" fill="var(--dim)">02</text><text x="286" y="86" font-size="16" font-weight="600" fill="var(--text)">Match</text><text x="262" y="118" font-size="14" fill="var(--muted)">Windows Update and</text><text x="262" y="138" font-size="14" fill="var(--muted)">local INF folders</text></g>
+    <line x1="440" y1="115" x2="466" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="474" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="494" y="86" font-size="13" font-weight="700" fill="var(--dim)">03</text><text x="518" y="86" font-size="16" font-weight="600" fill="var(--text)">Download</text><text x="494" y="118" font-size="14" fill="var(--muted)">Up to eight at once,</text><text x="494" y="138" font-size="14" fill="var(--muted)">checksum verified</text></g>
+    <line x1="672" y1="115" x2="698" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="706" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="726" y="86" font-size="13" font-weight="700" fill="var(--dim)">04</text><text x="750" y="86" font-size="16" font-weight="600" fill="var(--text)">Install</text><text x="726" y="118" font-size="14" fill="var(--muted)">One at a time —</text><text x="726" y="138" font-size="14" fill="var(--muted)">Windows insists</text></g>
+    <line x1="904" y1="115" x2="930" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="938" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/><text x="958" y="86" font-size="13" font-weight="700" fill="var(--accent)">05</text><text x="982" y="86" font-size="16" font-weight="600" fill="var(--text)">Restart</text><text x="958" y="118" font-size="14" fill="var(--muted)">Logon task brings</text><text x="958" y="138" font-size="14" fill="var(--muted)">DrvNest back</text></g>
+
+    <!-- The queue resumes at the install step after the restart it asked for. -->
+    <path d="M 1044 170 L 1044 216 L 812 216 L 812 174" fill="none" stroke="var(--dim)"
+          stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#arrow)" />
+    <text x="928" y="240" text-anchor="middle" font-size="14" fill="var(--dim)">the queue picks itself up where it left off</text>
+  </g>
+</svg>
+        <figcaption>
+          The whole flow, and the part most tools skip: a ten-driver queue that needs three
+          restarts finishes itself, because the queue is written to disk after every change
+          and a logon task brings DrvNest back with <code>--resume</code>.
+        </figcaption>
+      </figure>
 
       <div class="steps">
         <div class="step-block">
@@ -403,6 +662,63 @@
       <pre><code>DrvNest.exe                 # normal launch
 DrvNest.exe --rescue        # offline rescue mode (same as --offline)
 DrvNest.exe --resume        # continue an interrupted queue straight away</code></pre>
+    </div>
+  </section>
+
+
+  <section id="monitor">
+    <div class="wrap">
+      <h2>Two numbers that are not the same number</h2>
+      <p class="section-intro">
+        The monitor pages are careful about something most tools quietly get wrong. What the
+        whole machine transfers and what a single program transfers are measured in two
+        different ways, and they do not add up to exactly the same total — so DrvNest reports
+        them separately and says why.
+      </p>
+
+      <figure class="figure">
+<svg viewBox="0 0 1120 300" role="img" aria-labelledby="mon-title mon-desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="mon-title">How machine-wide and per-application traffic are measured</title>
+  <desc id="mon-desc">Two columns. The left column, machine-wide, is measured from the network adapters and includes TCP, UDP, QUIC and broadcast traffic. The right column, per application, is measured from TCP connection statistics and therefore covers TCP only.</desc>
+
+  <g font-family="var(--font-sans)">
+    <!-- machine-wide column -->
+    <rect x="10" y="16" width="530" height="268" rx="14" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
+    <text x="36" y="52" font-size="17" font-weight="600" fill="var(--text)">The whole machine</text>
+    <text x="36" y="76" font-size="14" fill="var(--dim)">Adapter byte counters · every protocol</text>
+
+    <g><text x="36" y="112" font-size="14" fill="var(--muted)">TCP</text><rect x="186" y="104" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="104" width="91" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="112" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">counted</text></g>
+    <g><text x="36" y="156" font-size="14" fill="var(--muted)">UDP / QUIC</text><rect x="186" y="148" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="148" width="50" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="156" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">counted</text></g>
+    <g><text x="36" y="200" font-size="14" fill="var(--muted)">DNS, broadcast</text><rect x="186" y="192" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="192" width="20" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="200" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">counted</text></g>
+    <g><text x="36" y="244" font-size="14" fill="var(--muted)">Total</text><rect x="186" y="236" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="236" width="148" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="244" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">exact</text></g>
+
+    <!-- per-application column -->
+    <rect x="580" y="16" width="530" height="268" rx="14" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="606" y="52" font-size="17" font-weight="600" fill="var(--text)">Per application</text>
+    <text x="606" y="76" font-size="14" fill="var(--dim)">TCP connection statistics · TCP only</text>
+
+    <g><text x="606" y="112" font-size="14" fill="var(--muted)">chrome</text><rect x="756" y="104" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="104" width="91" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="112" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="156" font-size="14" fill="var(--muted)">DrvNest</text><rect x="756" y="148" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="148" width="41" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="156" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="200" font-size="14" fill="var(--muted)">svchost</text><rect x="756" y="192" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="192" width="20" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="200" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="244" font-size="14" fill="var(--muted)">UDP traffic</text><rect x="756" y="236" width="148" height="9" rx="4.5" fill="var(--bg)"/><text x="1084" y="244" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">not attributable</text></g>
+  </g>
+</svg>
+        <figcaption>
+          Machine-wide traffic comes from the network adapters and covers every protocol.
+          Per-application traffic comes from Windows&#8217; own TCP connection statistics,
+          which is why UDP — QUIC, most video calls and DNS — is in the first column but not
+          the second.
+        </figcaption>
+      </figure>
+
+      <p class="section-intro">
+        The same honesty applies to temperature. Windows has no general-purpose temperature
+        API; what exists is the ACPI thermal zone the firmware declares for the operating
+        system&#8217;s own fan control. Many desktops declare none at all. Real per-core and
+        per-GPU readings come from a vendor chip over an SMBus and need a signed kernel
+        driver, which is why tools like HWiNFO install one. DrvNest will not install a kernel
+        driver to draw a number on a page, so when the machine has no sensor the card says so.
+      </p>
     </div>
   </section>
 
@@ -461,6 +777,11 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
               <td>Works with no internet</td>
               <td><span class="yes">Yes — rescue mode, USB and local INF folders</span></td>
               <td>Rarely</td>
+            </tr>
+            <tr>
+              <td>Resource and network monitor</td>
+              <td><span class="yes">Built in, per program</span></td>
+              <td>Usually absent, or a separate paid product</td>
             </tr>
             <tr>
               <td>Code signing</td>
@@ -584,13 +905,65 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
         </article>
 
         <article class="faq-item">
+          <h3>Why does the temperature card say there is no sensor?</h3>
+          <p>
+            Because on that machine there is not one Windows can read. The only temperature
+            Windows exposes without a driver is the ACPI thermal zone the firmware declares
+            for its own fan control, and a great many desktop motherboards declare none.
+            Per-core and GPU temperatures come from a vendor sensor chip over an SMBus, which
+            needs a signed kernel driver — that is what HWiNFO and Open Hardware Monitor
+            install. DrvNest will not install a kernel driver to fill in a number, so it tells
+            you the sensor is missing instead of guessing.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Why does per-program network usage not add up to the machine total?</h3>
+          <p>
+            The two figures come from different places, and both are correct. The machine
+            total is the sum of the network adapters&#8217; own byte counters, so it includes
+            everything: TCP, UDP, QUIC, broadcast. The per-application figure comes from
+            Windows&#8217; TCP connection statistics (ESTATS), which is the only per-process
+            byte counter Windows offers without a kernel driver — and it covers TCP only.
+            Video calls, most game traffic and DNS are therefore in the first number and not
+            in the second. DrvNest says so on the page rather than quietly under-reporting.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Does DrvNest update itself in the background?</h3>
+          <p>
+            It checks, once a day, and tells you. It does not install anything unless you turn
+            that on in <strong>Settings → Updates</strong>, and even then the download is
+            verified against the release&#8217;s <code>checksums.txt</code> and only swapped in
+            as DrvNest closes — never while a driver queue is running. Both the check and the
+            install are skipped entirely in offline and rescue mode. You can also turn the
+            check off completely; the button on the About page keeps working.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Is the monitor a background service?</h3>
+          <p>
+            No. Neither monitor samples anything until you open its page, and both stop the
+            moment you navigate away. DrvNest still installs no service, no driver and no
+            startup entry — the only thing it ever registers is the logon task that resumes an
+            interrupted driver queue, and that removes itself when the queue finishes.
+          </p>
+        </article>
+
+        <article class="faq-item">
           <h3>Does DrvNest collect any data?</h3>
           <p>
             No. There is no telemetry, no usage statistics and no device identifiers. Exactly two things
             ever leave the machine: Windows Update queries, which go straight to Microsoft through
             Windows' own Windows Update Agent and are skipped entirely in offline or rescue mode, and a
-            single request to the GitHub Releases API when you press <em>Check for updates</em>.
-            Everything else stays in <code>%ProgramData%\DrvNest</code> on your own machine.
+            requests to the GitHub Releases API — one when you press <em>Check for updates</em>,
+            and one a day from the automatic check if you leave it on. Neither sends anything
+            about your machine; they are ordinary anonymous HTTPS GETs. The monitor pages send
+            nothing anywhere: every number on them is read locally and never leaves the
+            computer. Everything else stays in <code>%ProgramData%\DrvNest</code> on your own
+            machine.
           </p>
         </article>
       </div>
@@ -631,6 +1004,9 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
         <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/SECURITY.md">Security policy</a></li>
         <li><a href="https://github.com/ahmetcaglayan/DrvNest/issues">Report a bug</a></li>
         <li><a href="tr/" hreflang="tr" lang="tr">Türkçe</a></li>
+        <li><a href="ru/" hreflang="ru" lang="ru">Русский</a></li>
+        <li><a href="zh/" hreflang="zh" lang="zh">简体中文</a></li>
+        <li><a href="hi/" hreflang="hi" lang="hi">हिन्दी</a></li>
       </ul>
     </nav>
 
@@ -644,10 +1020,81 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
     <p class="keywords">
       Keywords: windows driver updater open source, free driver updater no adware, install drivers
       after format, offline driver installer usb, driver backup restore windows, missing driver finder,
-      windows 11 driver scanner, pnputil driver export, windows update driver catalog tool.
+      windows 11 driver scanner, pnputil driver export, windows update driver catalog tool, free system
+      monitor windows, cpu ram temperature monitor open source, per application network usage windows,
+      bandwidth monitor per program, which program is using my internet, task manager alternative.
     </p>
   </div>
 </footer>
+
+<script>
+/* Screenshot carousel.
+
+   The markup is a scroll-snapping strip, so with JavaScript disabled it degrades to
+   something you can still swipe or scroll through - which is also exactly how it
+   behaves on a touch screen. This only adds the buttons and keeps the labels in sync
+   with whatever is on screen, however the reader got there. */
+(function () {
+  var track = document.getElementById('shotsTrack');
+  var dots  = document.getElementById('shotsDots');
+  if (!track || !dots) return;
+
+  var slides  = Array.prototype.slice.call(track.querySelectorAll('.shot'));
+  var buttons = Array.prototype.slice.call(dots.querySelectorAll('button'));
+  if (!slides.length) return;
+
+  function show(index) {
+    var target = slides[Math.max(0, Math.min(index, slides.length - 1))];
+    track.scrollTo({ left: target.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+  }
+
+  function current() {
+    /* Whichever slide's centre is closest to the viewport centre. */
+    var middle = track.scrollLeft + track.clientWidth / 2;
+    var best = 0, bestGap = Infinity;
+
+    slides.forEach(function (slide, i) {
+      var centre = slide.offsetLeft - track.offsetLeft + slide.clientWidth / 2;
+      var gap = Math.abs(centre - middle);
+      if (gap < bestGap) { bestGap = gap; best = i; }
+    });
+
+    return best;
+  }
+
+  function sync() {
+    var index = current();
+    buttons.forEach(function (button, i) {
+      if (i === index) button.setAttribute('aria-current', 'true');
+      else button.removeAttribute('aria-current');
+    });
+  }
+
+  buttons.forEach(function (button, i) {
+    button.addEventListener('click', function () { show(i); });
+  });
+
+  var prev = document.getElementById('shotsPrev');
+  var next = document.getElementById('shotsNext');
+  if (prev) prev.addEventListener('click', function () { show(current() - 1); });
+  if (next) next.addEventListener('click', function () { show(current() + 1); });
+
+  track.addEventListener('keydown', function (event) {
+    if (event.key === 'ArrowLeft')  { show(current() - 1); event.preventDefault(); }
+    if (event.key === 'ArrowRight') { show(current() + 1); event.preventDefault(); }
+  });
+
+  /* rAF-throttled: the scroll event fires far more often than the labels can matter. */
+  var queued = false;
+  track.addEventListener('scroll', function () {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; sync(); });
+  }, { passive: true });
+
+  sync();
+})();
+</script>
 
 </body>
 </html>

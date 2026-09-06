@@ -321,6 +321,71 @@
                 </Border>
 
                 <!-- ======================================== APPEARANCE -->
+                <!-- ============================================ UPDATES -->
+                <TextBlock Text="{s:Loc set.updates}" Style="{StaticResource Text.H2}" Margin="0,0,0,10" />
+
+                <Border Style="{StaticResource Card}" Margin="0,0,0,18">
+                    <StackPanel>
+
+                        <Grid Style="{StaticResource SettingRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                                <TextBlock Text="{s:Loc set.autoCheck}" Style="{StaticResource SettingLabel}" />
+                                <TextBlock Text="{s:Loc set.autoCheckHint}" Style="{StaticResource SettingHint}" />
+                            </StackPanel>
+
+                            <ToggleButton Grid.Column="1"
+                                          Style="{StaticResource Input.Switch}"
+                                          VerticalAlignment="Center"
+                                          IsChecked="{Binding AutoCheckUpdates}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource SettingRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                                <TextBlock Text="{s:Loc set.autoInstall}" Style="{StaticResource SettingLabel}" />
+                                <TextBlock Text="{s:Loc set.autoInstallHint}" Style="{StaticResource SettingHint}" />
+                            </StackPanel>
+
+                            <ToggleButton Grid.Column="1"
+                                          Style="{StaticResource Input.Switch}"
+                                          VerticalAlignment="Center"
+                                          IsChecked="{Binding AutoInstallUpdates}" />
+                        </Grid>
+
+                        <Grid Style="{StaticResource SettingRow}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                                <TextBlock Text="{s:Loc set.prerelease}" Style="{StaticResource SettingLabel}" />
+                                <TextBlock Text="{s:Loc set.prereleaseHint}" Style="{StaticResource SettingHint}" />
+                            </StackPanel>
+
+                            <ToggleButton Grid.Column="1"
+                                          Style="{StaticResource Input.Switch}"
+                                          VerticalAlignment="Center"
+                                          IsChecked="{Binding IncludePrereleaseUpdates}" />
+                        </Grid>
+
+                        <Border Style="{StaticResource Divider}" />
+
+                        <TextBlock Text="{Binding LastUpdateCheckDisplay}"
+                                   Style="{StaticResource SettingHint}"
+                                   Margin="0,4,0,6" />
+                    </StackPanel>
+                </Border>
+
                 <TextBlock Text="{s:Loc set.appearance}" Style="{StaticResource Text.H2}" Margin="0,0,0,10" />
 
                 <Border Style="{StaticResource Card}" Margin="0,0,0,18">

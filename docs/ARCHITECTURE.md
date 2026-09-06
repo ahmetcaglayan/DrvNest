@@ -18,7 +18,7 @@ src/
 
 **`DrvNest.Core`** contains everything that is not a window: device scanning, the driver
 providers, the job engine, persistence, backup/restore, reboot resume, the restore point
-service and the self-updater. It references no WPF type and no NuGet package. Anything in
+service, the self-updater and the system and network monitors. It references no WPF type and no NuGet package. Anything in
 here can be driven from a console host, a service or a test harness.
 
 **`DrvNest.App`** is the WPF shell. It owns the composition root, the view models, the
@@ -412,17 +412,82 @@ opts into long paths (driver store paths get deep) and sets the active code page
 
 ---
 
+## 8b. Monitoring
+
+`Core/Monitoring` is self-contained and has no relationship to the driver pipeline. It
+exists because the two questions people open Task Manager for — what is this machine
+doing, and who is using my connection — are answerable from the same elevated process that
+is already installing drivers.
+
+```
+Monitoring/
+├── Metrics.cs           immutable sample shapes
+├── MonitorInterop.cs    the kernel32 / ntdll / psapi / powrprof surface
+├── SystemMonitor.cs     one timer, one machine-wide sample per tick
+├── ProcessMonitor.cs    per-process CPU, memory and disk from two samples
+├── ThermalReader.cs     ACPI thermal zones
+├── WmiLite.cs           WbemScripting over IDispatch, for the above
+├── TcpEstats.cs         connection table + per-connection byte counters
+└── NetworkMonitor.cs    adapter totals and per-process attribution
+```
+
+Four design decisions are worth recording, because each of them had an easier wrong
+answer.
+
+**No performance counters.** Every reading comes from a direct system call —
+`GetSystemTimes`, `NtQuerySystemInformation`, `GlobalMemoryStatusEx`, `GetPerformanceInfo`,
+`CallNtPowerInformation`, `IOCTL_DISK_PERFORMANCE`. PDH would produce the same numbers
+while adding its own measurable cost to DrvNest's own row in its own process table, which
+would be a slightly absurd thing for a monitor to do.
+
+**No `System.Management`.** Thermal zones are the one reading that genuinely needs WMI, and
+`System.Management` is a NuGet package. `WmiLite` reaches `WbemScripting.SWbemLocator`
+through `IDispatch` with `dynamic` instead — the same technique `WindowsUpdateProvider`
+already uses for the Windows Update Agent, and for the same reason: every avoided
+dependency is weight removed from the single file someone downloads onto a machine they
+formatted five minutes ago.
+
+**No kernel driver, and the UI says so.** Real per-core and per-GPU temperatures come from
+a vendor sensor chip over an SMBus and need a signed kernel driver. DrvNest will not
+install one, so a machine with no ACPI thermal zone gets an explanation rather than a
+plausible number. The same honesty governs per-process network traffic: TCP ESTATS is the
+only per-process byte counter Windows offers without a driver, it covers TCP and not UDP,
+and the page states that instead of quietly under-reporting.
+
+**Nothing runs unless a page is open.** `SystemMonitor` and `NetworkMonitor` are started
+from the view's `Loaded` and stopped from its `Unloaded`. Navigation caches its pages, so
+tying the lifetime to the view model constructor would have left a timer running for the
+rest of the session — which is exactly how an application that promises "no background
+service" acquires one.
+
+The expensive half of a sample (a sweep over four hundred processes) runs on a task rather
+than on the timer thread, guarded by an `Interlocked` flag so two sweeps can never overlap,
+and its results are marshalled to the UI thread. The tables are patched in place by
+`ListSync` rather than rebuilt, so a list that reorders once a second does not reset its
+scroll position every second.
+
+---
+
 ## 9. Localisation
 
 `DrvNest.App/Services/Loc.cs` is a static string table: two `Dictionary<string, string>`
 instances (`Turkish`, `English`) and a `T(key)` lookup that falls back to English and then
 to the key itself.
 
+Russian, Simplified Chinese and Hindi live in `DrvNest.App/Languages/*.json` and are
+compiled into the assembly as embedded resources, which `LoadEmbeddedPacks` reads back out
+of the manifest at startup. They are not more C# dictionaries because three more of those
+would have made `Loc.cs` four thousand lines long, and JSON is what a translator can
+actually edit. They are embedded rather than shipped as files because a `Languages` folder
+that has to travel next to the executable on a USB stick would not survive the trip.
+
 A RESX + satellite assembly setup would fight the single-file publish configuration
 (`SatelliteResourceLanguages` is pinned to `en` in `Directory.Build.props`), and this
 application has a few hundred strings rather than a few thousand.
 
-`SetLanguage` also sets `CultureInfo.DefaultThreadCurrentCulture` / `…UICulture` and raises
+`SetLanguage` also sets the culture — `DefaultThreadCurrentCulture` / `…UICulture` **and**
+the current thread's, because the defaults only seed threads created afterwards and
+without both the application formats numbers two different ways at once — and raises
 `LanguageChanged`. `MainViewModel` handles that by **rebuilding** pages rather than
 re-binding them: views resolve their strings through a markup extension at parse time, so
 `NavItem.ResetView()` discards the cached view and the next navigation constructs it fresh.
@@ -430,13 +495,31 @@ Cheap, and it removes a whole class of stale-text bugs.
 
 ### Adding a language
 
-1. Copy the `English` dictionary in `Loc.cs`, translate the values, name it e.g. `German`.
-2. Add a case to `SetLanguage`, and set the `CultureInfo` for it.
-3. Add the code to `LanguageOptions` in `SettingsViewModel` and to the allowed values in
-   `AppSettings.Normalize()` (which currently resets anything that is not `tr` or `en`).
+Nothing in the shell needs to change. Write
+`src/DrvNest.App/Languages/<code>.json` as a flat object of the same keys as the English
+table, plus `_name` (the language's own name, for the picker) and `_englishName`:
 
-Keys missing from a new dictionary fall back to English automatically, so a partial
-translation is usable from the first commit.
+```json
+{
+  "_name": "Deutsch",
+  "_englishName": "German",
+  "nav.dashboard": "Übersicht"
+}
+```
+
+The build embeds anything matching `Languages\*.json`, `LoadEmbeddedPacks` registers it,
+and it appears in the settings picker. Keys missing from a pack fall back to English
+automatically, so a partial translation is usable from the first commit.
+
+The same file dropped into `Languages\<code>.json` **next to the executable**, or into
+`%ProgramData%\DrvNest\Languages`, is merged over the built-in one — which means a user
+can correct a translation, or add a language entirely, without a rebuild.
+
+To extract the current English table as a starting point:
+
+```powershell
+python build/extract-strings.py > de.json
+```
 
 ---
 

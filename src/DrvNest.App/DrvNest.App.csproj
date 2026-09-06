@@ -51,6 +51,18 @@
     <ApplicationIcon>Assets\drvnest.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <!--
+    Language packs are compiled into the executable rather than copied beside it.
+    A single-file publish is the whole point of this project; a Languages folder that
+    has to travel with the exe on a USB stick would not survive first contact with a
+    user. Services/Loc.cs reads them back out of the manifest at startup, and a loose
+    Languages\<code>.json next to the exe still wins, so a translation can be corrected
+    without a rebuild.
+  -->
+  <ItemGroup>
+    <EmbeddedResource Include="Languages\*.json" LogicalName="DrvNest.Languages.%(Filename).json" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\DrvNest.Core\DrvNest.Core.csproj" />
   </ItemGroup>

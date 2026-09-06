@@ -4,13 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>DrvNest — Ücretsiz Sürücü Güncelleme Programı</title>
-<meta name="description" content="DrvNest, Windows 10 ve 11 için ücretsiz ve açık kaynak sürücü güncelleme programı. Eksik sürücüleri bulur, kurar ve format sonrası USB'den çevrimdışı yükler.">
+<title>DrvNest — Ücretsiz Açık Kaynak Windows Sürücü Güncelleme Programı, Sistem ve Ağ İzleyici</title>
+<meta name="description" content="DrvNest, Windows 10 ve 11 için ücretsiz ve açık kaynak bir sürücü güncelleme programı; içinde sistem ve ağ izleyicisi de var. Eksik sürücüleri bulur, format sonrasında kurar, USB bellekten çevrimdışı geri yükler ve her programın işlemciden, bellekten ve bant genişliğinden ne götürdüğünü gösterir.">
 
 <link rel="canonical" href="https://ahmetcaglayan.github.io/DrvNest/tr/">
-<link rel="alternate" hreflang="tr" href="https://ahmetcaglayan.github.io/DrvNest/tr/">
-<link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/DrvNest/">
-<link rel="alternate" hreflang="x-default" href="https://ahmetcaglayan.github.io/DrvNest/">
+<link rel="alternate" hreflang="en" href="../">
+<link rel="alternate" hreflang="tr" href="../tr/">
+<link rel="alternate" hreflang="ru" href="../ru/">
+<link rel="alternate" hreflang="zh" href="../zh/">
+<link rel="alternate" hreflang="hi" href="../hi/">
+<link rel="alternate" hreflang="x-default" href="../">
 
 <meta name="author" content="Ahmet Çağlayan">
 <meta name="theme-color" content="#0D1014" media="(prefers-color-scheme: dark)">
@@ -18,8 +21,8 @@
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="DrvNest">
-<meta property="og:title" content="DrvNest — Ücretsiz Sürücü Güncelleme Programı">
-<meta property="og:description" content="DrvNest, Windows 10 ve 11 için ücretsiz ve açık kaynak sürücü güncelleme programı. Eksik sürücüleri bulur, kurar ve format sonrası USB'den çevrimdışı yükler.">
+<meta property="og:title" content="DrvNest — Ücretsiz Windows Sürücü Güncelleme Programı, Sistem ve Ağ İzleyici">
+<meta property="og:description" content="DrvNest, Windows 10 ve 11 için ücretsiz ve açık kaynak bir sürücü güncelleme programı. Eksik sürücüleri bulur, format sonrasında kurar ve sürücüleri USB'den çevrimdışı geri yükler.">
 <meta property="og:url" content="https://ahmetcaglayan.github.io/DrvNest/tr/">
 <meta property="og:image" content="https://ahmetcaglayan.github.io/DrvNest/og-image.png">
 <meta property="og:image:width" content="1280">
@@ -27,10 +30,13 @@
 <meta property="og:image:alt" content="Koyu zemin üzerinde DrvNest logosu ve kelime markası; altında ücretsiz, açık kaynak Windows sürücü güncelleyici yazıyor.">
 <meta property="og:locale" content="tr_TR">
 <meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:locale:alternate" content="hi_IN">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="DrvNest — Ücretsiz Sürücü Güncelleme Programı">
-<meta name="twitter:description" content="Ücretsiz, açık kaynak Windows sürücü güncelleme programı. Eksik sürücüleri bulur, format sonrası USB'den çevrimdışı kurar, yeniden başlatmadan sonra devam eder.">
+<meta name="twitter:title" content="DrvNest — Ücretsiz Windows Sürücü Güncelleme Programı, Sistem ve Ağ İzleyici">
+<meta name="twitter:description" content="Ücretsiz, açık kaynak Windows sürücü güncelleme programı. Eksik sürücüleri bulur, format sonrasında kurar ve sürücüleri USB bellekten çevrimdışı geri yükler.">
 <meta name="twitter:image" content="https://ahmetcaglayan.github.io/DrvNest/og-image.png">
 <meta name="twitter:image:alt" content="Koyu zemin üzerinde DrvNest logosu ve kelime markası; altında ücretsiz, açık kaynak Windows sürücü güncelleyici yazıyor.">
 
@@ -47,14 +53,14 @@
   "applicationCategory": "UtilitiesApplication",
   "applicationSubCategory": "Sürücü güncelleyici",
   "operatingSystem": "Windows 10, Windows 11",
-  "softwareVersion": "1.0.0",
+  "softwareVersion": "1.1.0",
   "downloadUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest",
   "installUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe",
-  "url": "https://ahmetcaglayan.github.io/DrvNest/tr/",
+  "url": "https://ahmetcaglayan.github.io/DrvNest/",
   "image": "https://ahmetcaglayan.github.io/DrvNest/og-image.png",
   "license": "https://opensource.org/licenses/MIT",
   "isAccessibleForFree": true,
-  "inLanguage": ["tr", "en"],
+  "inLanguage": ["en", "tr", "ru", "zh", "hi"],
   "codeRepository": "https://github.com/ahmetcaglayan/DrvNest",
   "programmingLanguage": "C#",
   "softwareRequirements": "Windows 10 sürüm 1607 (yapı 14393) veya üstü, 64-bit, yönetici yetkisi. .NET çalışma zamanı ve Visual C++ Redistributable gerekmez.",
@@ -71,7 +77,17 @@
     "pnputil ile tüm üçüncü parti sürücüleri yedekler ve geri yükler",
     "İnterneti olmayan, yeni formatlanmış makineler için çevrimdışı kurtarma modu",
     "Tüm aygıtları ve donanım kimliklerini listeleyen donanım raporu",
-    "Türkçe ve İngilizce arayüz, koyu ve açık tema"
+    "Canlı sistem izleyici: mantıksal çekirdek başına işlemci yükü, bellek dökümü, sıcaklık sensörleri, depolama ve pil",
+    "Uygulama başına kaynak kullanımı: her süreç için işlemci payı, çalışma kümesi, özel bayt ve disk aktarım hızı",
+    "Canlı ağ izleyici: makine geneli indirme ve yükleme, oturum ve açılıştan beri toplamları, tüm ağ bağdaştırıcıları",
+    "TCP bağlantı istatistiklerinden uygulama başına ağ kullanımı, açık bağlantı sayıları ve uzak uç noktalarla birlikte",
+    "Günlük otomatik güncelleme denetimi, isteğe bağlı otomatik indirme ve SHA-256 ile doğrulanan kurulum",
+    "İngilizce, Türkçe, Rusça, Basitleştirilmiş Çince ve Hintçe arayüz, koyu ve açık tema"
+  ],
+  "screenshot": [
+    "https://ahmetcaglayan.github.io/DrvNest/screenshots/dashboard.png",
+    "https://ahmetcaglayan.github.io/DrvNest/screenshots/system.png",
+    "https://ahmetcaglayan.github.io/DrvNest/screenshots/network.png"
   ],
   "offers": {
     "@type": "Offer",
@@ -106,11 +122,11 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "inLanguage": "tr",
-  "url": "https://ahmetcaglayan.github.io/DrvNest/tr/",
+  "url": "https://ahmetcaglayan.github.io/DrvNest/",
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "DrvNest ücretsiz mi?",
+      "name": "DrvNest gerçekten ücretsiz mi?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Evet. DrvNest MIT lisansıyla yayımlanır ve kaynak kodunun tamamı GitHub'dadır. Ücretli sürüm, deneme süresi, para ödeyince açılan özellik, reklam ya da yanında gelen üçüncü parti yazılım yoktur. Tarama ile kurulum aynı programın parçasıdır."
@@ -129,7 +145,7 @@
       "name": "SmartScreen veya antivirüs neden uyarı veriyor?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "DrvNest kod imzalama sertifikasıyla imzalanmamıştır, çünkü sertifika ücretlidir. Windows SmartScreen ve Smart App Control, henüz itibar kazanmamış imzasız her exe için uyarı gösterir; üstelik yönetici olarak çalışan, sürücü kuran ve zamanlanmış görev oluşturan tek dosyalık bir uygulama sezgisel tarayıcılara kötü amaçlı yazılım gibi görünür. Dürüst çözüm indirdiğiniz dosyayı doğrulamaktır: PowerShell'de Get-FileHash .\\DrvNest.exe -Algorithm SHA256 komutunu çalıştırın ve çıkan değeri sürümle birlikte yayımlanan checksums.txt dosyasındaki DrvNest.exe satırıyla karşılaştırın. Tutuyorsa dosya birebir yayımlanan dosyadır. İsterseniz kaynak koddan kendiniz de derleyebilirsiniz."
+        "text": "DrvNest kod imzalama sertifikasıyla imzalanmamıştır, çünkü sertifika ücretlidir. Windows SmartScreen ve Smart App Control, henüz itibar kazanmamış imzasız her exe için uyarı gösterir; üstelik yönetici olarak çalışan, sürücü kuran ve zamanlanmış görev oluşturan tek dosyalık bir uygulama sezgisel tarayıcılara kötü amaçlı yazılım gibi görünür. Dürüst çözüm indirdiğiniz dosyayı doğrulamaktır: Get-FileHash .\\DrvNest.exe -Algorithm SHA256 komutunu çalıştırın ve çıkan değeri sürümle birlikte yayımlanan checksums.txt dosyasındaki DrvNest.exe satırıyla karşılaştırın. Tutuyorsa dosya birebir yayımlanan dosyadır. İsterseniz kaynak koddan kendiniz de derleyebilirsiniz."
       }
     },
     {
@@ -145,7 +161,7 @@
       "name": "Bozulan bir sürücüyü geri alabilir miyim?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Evet, üç yolu var. DrvNest değiştireceği paketi kurulumdan hemen önce dışa aktarır ve yolunu geçmiş kaydına yazar; Klasörden Geri Yükle ile o klasörü kurabilirsiniz. Oturumdaki ilk kurulumdan önce sürücü tipinde bir sistem geri yükleme noktası oluşturulur, Windows'un Sistem Geri Yükleme sihirbazıyla (rstrui.exe) o noktaya dönebilirsiniz. Aygıt Yöneticisi'ndeki Sürücüyü Geri Al düğmesi de DrvNest'ten bağımsız olarak çalışmaya devam eder."
+        "text": "Evet, üç yolu var. DrvNest değiştireceği paketi kurulumdan hemen önce dışa aktarır ve yolunu geçmiş kaydına yazar; Klasörden Geri Yükle ile o klasörü kurabilirsiniz. Oturumdaki ilk kurulumdan önce sürücü tipinde bir sistem geri yükleme noktası oluşturulur, Windows'un Sistem Geri Yükleme sihirbazıyla o noktaya dönebilirsiniz. Aygıt Yöneticisi'ndeki Sürücüyü Geri Al düğmesi de DrvNest'ten bağımsız olarak çalışmaya devam eder."
       }
     },
     {
@@ -169,7 +185,7 @@
       "name": "DrvNest veri topluyor mu?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Hayır. Telemetri, kullanım istatistiği ve cihaz kimliği toplanmaz. Makineden dışarı yalnızca iki trafik çıkar: Windows'un kendi Windows Update Agent bileşeni üzerinden doğrudan Microsoft'a giden Windows Update sorguları (çevrimdışı modda ve --rescue ile hiç yapılmaz) ve siz Güncellemeleri Kontrol Et'e bastığınızda GitHub Releases API'sine gönderilen tek bir istek. Geri kalan her şey kendi makinenizde, %ProgramData%\\DrvNest klasöründe kalır."
+        "text": "Hayır. Telemetri, kullanım istatistiği ve cihaz kimliği toplanmaz. Makineden dışarı yalnızca iki trafik çıkar: Windows'un kendi Windows Update Agent bileşeni üzerinden doğrudan Microsoft'a giden Windows Update sorguları (çevrimdışı modda ve kurtarma modunda hiç yapılmaz) ve siz Güncellemeleri Kontrol Et'e bastığınızda GitHub Releases API'sine gönderilen tek bir istek. Geri kalan her şey kendi makinenizde, %ProgramData%\\DrvNest klasöründe kalır."
       }
     }
   ]
@@ -182,18 +198,31 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="https://ahmetcaglayan.github.io/DrvNest/tr/">
+    <a class="brand" href="https://ahmetcaglayan.github.io/DrvNest/">
       <img src="../favicon.svg" width="30" height="30" alt="DrvNest logosu: bir mikroçipi kucaklayan altıgen petek gözü">
       <span>Drv<span class="mark-nest">Nest</span></span>
     </a>
     <nav class="site-nav" aria-label="Ana menü">
       <ul>
-        <li><a href="#ozellikler">Özellikler</a></li>
-        <li><a href="#format-sonrasi">Format sonrası</a></li>
-        <li><a href="#karsilastirma">Karşılaştırma</a></li>
-        <li><a href="#sss">SSS</a></li>
+        <li><a href="#features">Özellikler</a></li>
+        <li><a href="#monitor">İzleyici</a></li>
+        <li><a href="#post-format">Format sonrası</a></li>
+        <li><a href="#compare">Karşılaştırma</a></li>
+        <li><a href="#faq">SSS</a></li>
         <li><a href="https://github.com/ahmetcaglayan/DrvNest">GitHub</a></li>
-        <li><a class="lang-switch" href="../" hreflang="en" lang="en">English</a></li>
+        <li><a href="#screenshots">Ekran görüntüleri</a></li>
+        <li>
+      <details class="lang-menu">
+        <summary aria-label="Dil seçin">Türkçe ▾</summary>
+        <ul>
+        <li><a href="../" hreflang="en" lang="en">English</a></li>
+        <li><a href="../tr/" hreflang="tr" lang="tr" aria-current="true">Türkçe</a></li>
+        <li><a href="../ru/" hreflang="ru" lang="ru">Русский</a></li>
+        <li><a href="../zh/" hreflang="zh" lang="zh">简体中文</a></li>
+        <li><a href="../hi/" hreflang="hi" lang="hi">हिन्दी</a></li>
+        </ul>
+      </details>
+        </li>
       </ul>
     </nav>
   </div>
@@ -210,7 +239,8 @@
         söyler ve eksik ya da eski sürücüleri Windows Update kataloğundan veya USB bellekteki bir
         klasörden kurar. İndirmeleri paralel yapar, sürücü kurulumunun gerektirdiği yeniden
         başlatmalardan sonra kaldığı yerden devam eder ve eski sürücülerinizi hiç internet olmadan
-        geri yükleyebilir.
+        geri yükleyebilir. 1.1 sürümünden beri makinenin ve üzerindeki her programın işlemci
+        zamanından, bellekten ve bant genişliğinden ne götürdüğünü de canlı olarak gösteriyor.
       </p>
       <p class="meta-line">
         Windows 10 1607+ ve Windows 11 · 64-bit (x64 ve arm64 yapıları) · yönetici yetkisi gerekir · MIT lisanslı
@@ -226,8 +256,7 @@
       </div>
       <p class="cta-note">
         Tek dosya, yaklaşık 65 MB. Kurulum sihirbazı yok, ayrıca .NET kurmak gerekmez, Visual C++
-        Redistributable gerekmez, yanında hiçbir şey gelmez.
-        <a href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">Tüm sürümler, arm64 yapısı ve checksums.txt →</a>
+        Redistributable gerekmez, yanında hiçbir şey gelmez. <a href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">Tüm sürümler, arm64 yapısı ve checksums.txt →</a>
       </p>
 
       <ul class="pill-row">
@@ -235,28 +264,186 @@
         <li class="pill">Ücretli sürüm yok</li>
         <li class="pill">Telemetri yok</li>
         <li class="pill">Arka planda servis yok</li>
-        <li class="pill">Türkçe ve İngilizce arayüz</li>
+        <li class="pill">Sistem ve ağ izleyici</li>
+        <li class="pill">5 arayüz dili</li>
         <li class="pill">Koyu ve açık tema</li>
       </ul>
     </div>
   </section>
 
-  <section id="sorun">
+
+  <section id="whats-new">
+    <div class="wrap">
+      <h2>1.1 ile gelenler <span class="badge-new">1.1.0</span></h2>
+      <p class="section-intro">
+        Üç ekleme; hepsi uygulamanın ileride yapacağına söz verdiği şeyler değil, şu anda
+        gerçekten yapabildiği şeyler.
+      </p>
+
+      <ul class="whatsnew">
+        <li>
+          <h3>Sistem İzleyici</h3>
+          <p>
+            Her mantıksal çekirdek için ayrı bir çubukla işlemci yükü, önbelleğe alınmış ve
+            ayrılmış baytlara kadar inen bellek dökümü, ürün yazılımının açtığı her sıcaklık
+            sensörü, canlı okuma ve yazma hızıyla depolama kapasitesi ve pil durumu — üstüne
+            çalışan her programı ve neye mal olduğunu gösteren bir tablo.
+          </p>
+        </li>
+        <li>
+          <h3>Ağ İzleyici</h3>
+          <p>
+            Makine genelinde canlı indirme ve yükleme, bu oturumun ve Windows açıldığından beri
+            biriken toplamlar, adresi ve bağlantı hızıyla birlikte her ağ bağdaştırıcısı ve
+            bağlantıyı hangi programın kullandığını, ne hızda kullandığını, kaç bağlantıyı açık
+            tuttuğunu gösteren uygulama başına bir tablo.
+          </p>
+        </li>
+        <li>
+          <h3>Otomatik güncelleme</h3>
+          <p>
+            DrvNest artık günde bir kez GitHub'a yeni bir sürüm çıkıp çıkmadığını soruyor ve
+            menüde size söylüyor. İndirip kurmak varsayılan olarak kapalı; açsanız bile
+            doğrulanmış dosya yalnızca uygulama kapanırken devreye giriyor — sürücü kuyruğunun
+            ortasında asla.
+          </p>
+        </li>
+        <li>
+          <h3>Beş dil</h3>
+          <p>
+            İngilizce, Türkçe, Rusça, Basitleştirilmiş Çince ve Hintçe; hepsi tek dosyalık
+            uygulamanın içinde ve yeniden başlatmadan değiştirilebiliyor.
+            <code>DrvNest.exe</code> ile aynı klasöre bırakılan bir JSON dosyası, hiçbir şeyi
+            yeniden derlemeden bir çeviriyi eklemeye ya da düzeltmeye hâlâ yetiyor.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="screenshots">
+    <div class="wrap">
+      <h2>Nasıl görünüyor</h2>
+      <p class="section-intro">
+        Yayımlanan uygulamadan alınmış gerçek ekran görüntüleri; bir Windows 11 dizüstü
+        bilgisayarda çekildi. <code>DrvNest.exe --capture</code> ile doğrudan derlemenin
+        kendisinden yeniden üretiliyorlar, bu yüzden eskimeleri mümkün değil.
+      </p>
+
+    <div class="shots" role="region" aria-roledescription="carousel" aria-label="DrvNest ekran görüntüleri">
+      <div class="shots-track" id="shotsTrack" tabindex="0">
+        <figure class="shot" id="shot-0" role="group" aria-roledescription="slide" aria-label="1 / 10">
+          <img src="../screenshots/dashboard.png" width="1240" height="820" loading="eager" decoding="async" alt="Genel Bakış">
+          <figcaption class="shot-caption">
+            <h3>Genel Bakış</h3>
+            <p>Önemli olan her sayı tek ekranda: bulunan aygıtlar, eksik sürücüler, mevcut güncellemeler ve sorunlu aygıtlar; altında da makinenin kendi işletim sistemi, donanım, işlemci ve BIOS özeti.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-1" role="group" aria-roledescription="slide" aria-label="2 / 10">
+          <img src="../screenshots/system.png" width="1240" height="820" loading="lazy" decoding="async" alt="Sistem İzleyici">
+          <figcaption class="shot-caption">
+            <h3>Sistem İzleyici</h3>
+            <p>İşlemci, bellek, sıcaklık ve disk hareketi canlı grafikler halinde; her mantıksal çekirdek için bir çubuk. Makinede Windows'un okuyabileceği bir sensör yoksa sıcaklık kartı bir sayı uydurmak yerine bunu açıkça söyler.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-2" role="group" aria-roledescription="slide" aria-label="3 / 10">
+          <img src="../screenshots/system-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="Program başına kullanım">
+          <figcaption class="shot-caption">
+            <h3>Program başına kullanım</h3>
+            <p>Çalışan her süreç; işlemci payı, çalışma kümesi, özel bayt, disk aktarım hızı ve iş parçacığı sayısıyla birlikte. İşlemciye, belleğe ya da diske göre sıralayın, ada veya PID'ye göre arayın, bir satırı okumak için tabloyu duraklatın.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-3" role="group" aria-roledescription="slide" aria-label="4 / 10">
+          <img src="../screenshots/network.png" width="1240" height="820" loading="lazy" decoding="async" alt="Ağ İzleyici">
+          <figcaption class="shot-caption">
+            <h3>Ağ İzleyici</h3>
+            <p>Makine genelinde indirme ve yükleme canlı grafikler halinde, bu oturumun ve Windows açıldığından beri biriken toplam, açık bağlantı sayısı ve adresiyle, anlaşılan bağlantı hızıyla birlikte her ağ bağdaştırıcısı.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-4" role="group" aria-roledescription="slide" aria-label="5 / 10">
+          <img src="../screenshots/network-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="Program başına trafik">
+          <figcaption class="shot-caption">
+            <h3>Program başına trafik</h3>
+            <p>Bağlantıyı şu anda hangi uygulamanın kullandığı, her iki yönde ne hızda kullandığı, bu oturumda ne kadar veri taşıdığı ve kaç bağlantıyı açık tuttuğu — uzak uç nokta da ipucu balonunda.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-5" role="group" aria-roledescription="slide" aria-label="6 / 10">
+          <img src="../screenshots/devices.png" width="1240" height="820" loading="lazy" decoding="async" alt="Aygıtlar">
+          <figcaption class="shot-caption">
+            <h3>Aygıtlar</h3>
+            <p>Sınıfına göre gruplanmış her PnP aygıtı; canlı Configuration Manager sorun kodları düz cümlelere çevrilmiş halde. Soruna, eksik sürücüye ya da jenerik sürücüye göre filtreleyin, istediğiniz donanım kimliğini kopyalayın.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-6" role="group" aria-roledescription="slide" aria-label="7 / 10">
+          <img src="../screenshots/updates.png" width="1240" height="820" loading="lazy" decoding="async" alt="Güncellemeler">
+          <figcaption class="shot-caption">
+            <h3>Güncellemeler</h3>
+            <p>Windows Update sürücü kataloğundan ve yerel INF klasörlerinden kurulabilir paketler yan yana. Satır satır seçim, toplam indirme boyutu ve bir güncellemeyi gizleme ya da bir aygıtı tümüyle yok sayma seçeneği.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-7" role="group" aria-roledescription="slide" aria-label="8 / 10">
+          <img src="../screenshots/queue.png" width="1240" height="820" loading="lazy" decoding="async" alt="Etkinlik">
+          <figcaption class="shot-caption">
+            <h3>Etkinlik</h3>
+            <p>Çalışan kuyruk: indirme yüzdesi, hız, aktarılan bayt ve kurulum aşaması; sürücü başına bir satır. Kesintiye uğrayan bir oturum, yeniden başlatmadan sonra burada bir Devam düğmesi gösterir.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-8" role="group" aria-roledescription="slide" aria-label="9 / 10">
+          <img src="../screenshots/backup.png" width="1240" height="820" loading="lazy" decoding="async" alt="Yedekle &amp; Geri Yükle">
+          <figcaption class="shot-caption">
+            <h3>Yedekle &amp; Geri Yükle</h3>
+            <p>Format öncesinde tüm üçüncü parti sürücü paketlerini, isterseniz tek bir ZIP olarak dışa aktarın; sonrasında setin tamamını hiç internet bağlantısı olmadan geri yükleyin.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-9" role="group" aria-roledescription="slide" aria-label="10 / 10">
+          <img src="../screenshots/settings.png" width="1240" height="820" loading="lazy" decoding="async" alt="Ayarlar">
+          <figcaption class="shot-caption">
+            <h3>Ayarlar</h3>
+            <p>Paralel indirmeler, yeniden denemeler, geri yükleme noktaları, güncelleme öncesi yedekler, yeniden başlatmadan sonra devam, otomatik güncelleme, çevrimdışı mod, yerel sürücü klasörleri, geçmişin saklanma süresi, tema ve dil.</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="shots-bar">
+      <ul class="shots-dots" id="shotsDots">
+      <li><button type="button" data-slide="0" aria-current="true">Genel Bakış</button></li>
+      <li><button type="button" data-slide="1">Sistem İzleyici</button></li>
+      <li><button type="button" data-slide="2">Program başına kullanım</button></li>
+      <li><button type="button" data-slide="3">Ağ İzleyici</button></li>
+      <li><button type="button" data-slide="4">Program başına trafik</button></li>
+      <li><button type="button" data-slide="5">Aygıtlar</button></li>
+      <li><button type="button" data-slide="6">Güncellemeler</button></li>
+      <li><button type="button" data-slide="7">Etkinlik</button></li>
+      <li><button type="button" data-slide="8">Yedekle &amp; Geri Yükle</button></li>
+      <li><button type="button" data-slide="9">Ayarlar</button></li>
+      </ul>
+      <div class="shots-arrows">
+        <button type="button" id="shotsPrev" aria-label="Önceki ekran görüntüsü">&#8592;</button>
+        <button type="button" id="shotsNext" aria-label="Sonraki ekran görüntüsü">&#8594;</button>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <section id="problem">
     <div class="wrap">
       <h2>Hangi derde çare?</h2>
+      <div class="prose-2col">
       <p class="section-intro">
         Windows'u yeni kurdunuz. Aygıt Yöneticisi sarı ünlem işaretleriyle dolu, ekran çözünürlüğü
-        yanlış, ses yok ve — en kötüsü — ağ kartının sürücüsü de olmadığı için internet yok. Sürücüyü
-        indirmek için internet, internete çıkmak için sürücü gerekiyor.
+        yanlış, ses yok ve — en kötüsü — ağ bağdaştırıcısının sürücüsü de olmadığı için internet yok.
+        Sürücüyü indirmek için internet, internete çıkmak için sürücü gerekiyor.
       </p>
       <p class="section-intro">
         DrvNest bu kısır döngüyü tek bir pencereden kırar: donanımı sayar, ulaşabildiği sürücülerle
         eşleştirir ve kurar. Hiç ağ yoksa da yanınızda getirdiğiniz klasörden kurar.
       </p>
+      </div>
     </div>
   </section>
 
-  <section id="ozellikler">
+  <section id="features">
     <div class="wrap">
       <h2>DrvNest ne yapar?</h2>
       <p class="section-intro">
@@ -352,23 +539,94 @@
           </p>
         </li>
         <li class="card">
-          <h3>Türkçe ve İngilizce konuşur</h3>
+          <h3>Makinenin ne yaptığını gösterir</h3>
           <p>
-            Arayüz dili ve koyu/açık tema, uygulama açıkken anında değişir; yeniden başlatmak
-            gerekmez.
+            Mantıksal çekirdek başına işlemci yükü, önbelleğe alınmış ve ayrılmış baytlara kadar
+            inen bellek, ürün yazılımının gerçekten açtığı her sıcaklık sensörü, gerçek okuma ve
+            yazma hızıyla depolama kapasitesi ve pil durumu için canlı bir panel. Siz sayfayı
+            açana kadar hiçbir şey ölçülmez, sayfadan çıktığınız anda da ölçüm durur.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Her programın neye mal olduğunu gösterir</h3>
+          <p>
+            Çalışan her süreç için işlemci payı, çalışma kümesi, özel bayt, disk aktarım hızı ve
+            iş parçacığı sayısı; Görev Yöneticisi neyi nasıl ölçüyorsa aynı yöntemle ölçülür.
+            Sıralanabilir, aranabilir ve duraklatılabilir.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Bant genişliğinin nereye gittiğini gösterir</h3>
+          <p>
+            Bağdaştırıcıların kendi sayaçlarından makine geneli canlı indirme ve yükleme,
+            Windows'un TCP bağlantı istatistiklerinden de uygulama başına trafik — çekirdek
+            sürücüsü yok, paket yakalama yok, üçüncü parti servis yok.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Kendini güncel tutar</h3>
+          <p>
+            GitHub Releases API'sine günde bir istek, yeni bir sürüm çıktığında size haber verir.
+            Otomatik indirme ve kurulum yalnızca siz açarsanız çalışır, SHA-256 ile doğrulanır ve
+            ancak DrvNest kapanırken uygulanır.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Beş dil konuşur</h3>
+          <p>
+            İngilizce, Türkçe, Rusça, Basitleştirilmiş Çince ve Hintçe; hepsi tek dosyalık
+            uygulamanın içinde. Arayüz dili ve koyu/açık tema, uygulama açıkken anında değişir;
+            yeniden başlatmak gerekmez.
           </p>
         </li>
       </ul>
     </div>
   </section>
 
-  <section id="format-sonrasi">
+  <section id="post-format">
     <div class="wrap">
       <h2>Format sonrası sürücü yükleme — adım adım</h2>
       <p class="section-intro">
         DrvNest'in var oluş sebebi tam olarak bu. Format öncesinde harcayacağınız beş dakika, format
         sonrasında makineyi anında kullanılabilir hale getiren şey.
       </p>
+
+      <figure class="figure">
+<svg viewBox="0 0 1160 258" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="flow-title">Bir sürücü nasıl kurulur</title>
+  <desc id="flow-desc">Soldan sağa beş adım: aygıtları tara, bunları elde edilebilen sürücü paketleriyle eşleştir, paralel indir, tek tek kur ve yeniden başlat. Kesik çizgili bir ok yeniden başlatma adımından kurulum adımına geri döner; bu, kuyruğun yeniden başlatmadan sonra kendiliğinden devam ettiğini gösterir.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--dim)" />
+    </marker>
+  </defs>
+
+  <g font-family="var(--font-sans)">
+    <g><rect x="10" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/><text x="30" y="86" font-size="13" font-weight="700" fill="var(--accent)">01</text><text x="54" y="86" font-size="16" font-weight="600" fill="var(--text)">Tara</text><text x="30" y="118" font-size="14" fill="var(--muted)">SetupAPI + CfgMgr32,</text><text x="30" y="138" font-size="14" fill="var(--muted)">WMI kullanılmaz</text></g>
+    <line x1="208" y1="115" x2="234" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="242" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="262" y="86" font-size="13" font-weight="700" fill="var(--dim)">02</text><text x="286" y="86" font-size="16" font-weight="600" fill="var(--text)">Eşleştir</text><text x="262" y="118" font-size="14" fill="var(--muted)">Windows Update ve</text><text x="262" y="138" font-size="14" fill="var(--muted)">yerel INF klasörleri</text></g>
+    <line x1="440" y1="115" x2="466" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="474" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="494" y="86" font-size="13" font-weight="700" fill="var(--dim)">03</text><text x="518" y="86" font-size="16" font-weight="600" fill="var(--text)">İndir</text><text x="494" y="118" font-size="14" fill="var(--muted)">Aynı anda en fazla 8,</text><text x="494" y="138" font-size="14" fill="var(--muted)">sağlaması doğrulanır</text></g>
+    <line x1="672" y1="115" x2="698" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="706" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="726" y="86" font-size="13" font-weight="700" fill="var(--dim)">04</text><text x="750" y="86" font-size="16" font-weight="600" fill="var(--text)">Kur</text><text x="726" y="118" font-size="14" fill="var(--muted)">Teker teker —</text><text x="726" y="138" font-size="14" fill="var(--muted)">Windows böyle istiyor</text></g>
+    <line x1="904" y1="115" x2="930" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="938" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/><text x="958" y="86" font-size="13" font-weight="700" fill="var(--accent)">05</text><text x="982" y="86" font-size="16" font-weight="600" fill="var(--text)">Yeniden başlat</text><text x="958" y="118" font-size="14" fill="var(--muted)">Oturum görevi</text><text x="958" y="138" font-size="14" fill="var(--muted)">DrvNest'i geri açar</text></g>
+
+    <!-- The queue resumes at the install step after the restart it asked for. -->
+    <path d="M 1044 170 L 1044 216 L 812 216 L 812 174" fill="none" stroke="var(--dim)"
+          stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#arrow)" />
+    <text x="928" y="240" text-anchor="middle" font-size="14" fill="var(--dim)">kuyruk kaldığı yerden devam eder</text>
+  </g>
+</svg>
+        <figcaption>
+          Akışın tamamı ve çoğu programın atladığı kısım: üç yeniden başlatma isteyen on
+          sürücülük bir kuyruk kendi kendini bitirir, çünkü kuyruk her değişiklikte diske
+          yazılır ve oturum açılışına bağlı bir görev DrvNest'i <code>--resume</code> ile geri
+          getirir.
+        </figcaption>
+      </figure>
 
       <div class="steps">
         <div class="step-block">
@@ -387,7 +645,7 @@
           <ol>
             <li>USB belleği takın ve <code>DrvNest.exe --rescue</code> ile açın. Windows Update hiç aranmaz, yalnızca yerel kaynaklar kullanılır.</li>
             <li><strong>Yedekle &amp; Geri Yükle → Geri Yükle</strong> (veya <strong>Klasörden Geri Yükle</strong>) ile yedeğinizi seçin. Tüm paketler sürücü deposuna eklenir ve aygıtlara bağlanır.</li>
-            <li>Ağ kartının sürücüsü çalışmaya başladıktan sonra <strong>Tara</strong>'ya basın.</li>
+            <li>Ağ bağdaştırıcısının sürücüsü çalışmaya başladıktan sonra <strong>Tara</strong>'ya basın.</li>
             <li><strong>Genel Bakış → Format Sonrası Kurtarma</strong>, hâlâ eksik olan her şeyi bu kez Windows Update'ten bulup sıraya alır.</li>
             <li>Yeniden başlatma istenirse kabul edin. DrvNest oturum açılışında kendini geri çağırır ve kuyruğun kalanını tamamlar.</li>
           </ol>
@@ -398,8 +656,8 @@
         <strong>Hiç hazırlık yapmadıysanız?</strong> <strong>Genel Bakış → Donanım Raporu</strong> ile
         tüm donanım kimliklerini bir metin dosyasına yazdırın, dosyayı çalışan bir bilgisayara taşıyın,
         üreticinin sitesinden doğru paketleri indirip açın, klasörleri geri getirin ve
-        <strong>Klasörden Geri Yükle</strong> ile kurun. Önceliğiniz ağ kartı sürücüsü olsun; o
-        çalıştığı anda gerisini Windows Update halleder.
+        <strong>Klasörden Geri Yükle</strong> ile kurun. Önceliğiniz ağ bağdaştırıcısı sürücüsü olsun;
+        o çalıştığı anda gerisini Windows Update halleder.
       </p>
 
       <h3 class="sub-heading">Komut satırı</h3>
@@ -409,7 +667,64 @@ DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür</
     </div>
   </section>
 
-  <section id="karsilastirma">
+
+  <section id="monitor">
+    <div class="wrap">
+      <h2>Aynı sayı olmayan iki sayı</h2>
+      <p class="section-intro">
+        İzleyici sayfaları, çoğu programın sessizce yanlış yaptığı bir konuda dikkatli davranıyor.
+        Makinenin tamamının aktardığı veri ile tek bir programın aktardığı veri iki ayrı yöntemle
+        ölçülür ve toplamları birebir aynı çıkmaz — DrvNest de bu yüzden ikisini ayrı ayrı
+        bildirir ve sebebini söyler.
+      </p>
+
+      <figure class="figure">
+<svg viewBox="0 0 1120 300" role="img" aria-labelledby="mon-title mon-desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="mon-title">Makine geneli ve uygulama başına trafik nasıl ölçülür</title>
+  <desc id="mon-desc">İki sütun. Soldaki sütun, makine geneli, ağ bağdaştırıcılarından ölçülür ve TCP, UDP, QUIC ile yayın trafiğini içerir. Sağdaki sütun, uygulama başına, TCP bağlantı istatistiklerinden ölçülür ve bu yüzden yalnızca TCP'yi kapsar.</desc>
+
+  <g font-family="var(--font-sans)">
+    <!-- machine-wide column -->
+    <rect x="10" y="16" width="530" height="268" rx="14" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
+    <text x="36" y="52" font-size="17" font-weight="600" fill="var(--text)">Makinenin tamamı</text>
+    <text x="36" y="76" font-size="14" fill="var(--dim)">Bağdaştırıcı bayt sayaçları · her protokol</text>
+
+    <g><text x="36" y="112" font-size="14" fill="var(--muted)">TCP</text><rect x="186" y="104" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="104" width="91" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="112" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">sayılır</text></g>
+    <g><text x="36" y="156" font-size="14" fill="var(--muted)">UDP / QUIC</text><rect x="186" y="148" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="148" width="50" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="156" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">sayılır</text></g>
+    <g><text x="36" y="200" font-size="14" fill="var(--muted)">DNS, yayın</text><rect x="186" y="192" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="192" width="20" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="200" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">sayılır</text></g>
+    <g><text x="36" y="244" font-size="14" fill="var(--muted)">Toplam</text><rect x="186" y="236" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="236" width="148" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="244" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">tam</text></g>
+
+    <!-- per-application column -->
+    <rect x="580" y="16" width="530" height="268" rx="14" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="606" y="52" font-size="17" font-weight="600" fill="var(--text)">Uygulama başına</text>
+    <text x="606" y="76" font-size="14" fill="var(--dim)">TCP bağlantı istatistikleri · yalnızca TCP</text>
+
+    <g><text x="606" y="112" font-size="14" fill="var(--muted)">chrome</text><rect x="756" y="104" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="104" width="91" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="112" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="156" font-size="14" fill="var(--muted)">DrvNest</text><rect x="756" y="148" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="148" width="41" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="156" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="200" font-size="14" fill="var(--muted)">svchost</text><rect x="756" y="192" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="192" width="20" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="200" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="244" font-size="14" fill="var(--muted)">UDP trafiği</text><rect x="756" y="236" width="148" height="9" rx="4.5" fill="var(--bg)"/><text x="1084" y="244" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">eşleştirilemez</text></g>
+  </g>
+</svg>
+        <figcaption>
+          Makine geneli trafik ağ bağdaştırıcılarından gelir ve her protokolü kapsar. Uygulama
+          başına trafik ise Windows'un kendi TCP bağlantı istatistiklerinden gelir; UDP — QUIC,
+          görüntülü görüşmelerin çoğu ve DNS — bu yüzden birinci sütunda var, ikincisinde yok.
+        </figcaption>
+      </figure>
+
+      <p class="section-intro">
+        Aynı dürüstlük sıcaklık için de geçerli. Windows'ta genel amaçlı bir sıcaklık API'si
+        yok; olan tek şey, ürün yazılımının işletim sisteminin kendi fan denetimi için
+        bildirdiği ACPI termal bölgesi. Masaüstü makinelerin çoğu hiç bildirmiyor. Çekirdek ve
+        GPU başına gerçek ölçümler bir SMBus üzerinden üreticinin yongasından gelir ve imzalı
+        bir çekirdek sürücüsü ister; HWiNFO gibi araçların bir tane kurmasının sebebi budur.
+        DrvNest bir sayfaya sayı yazdırmak için çekirdek sürücüsü kurmaz; makinede sensör
+        yoksa kart bunu açıkça söyler.
+      </p>
+    </div>
+  </section>
+
+  <section id="compare">
     <div class="wrap">
       <h2>Diğer sürücü güncelleyicilerle farkı — ve eksikleri</h2>
       <p class="section-intro">
@@ -467,6 +782,11 @@ DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür</
               <td>Nadiren</td>
             </tr>
             <tr>
+              <td>Kaynak ve ağ izleyici</td>
+              <td><span class="yes">Program başına, uygulamanın içinde</span></td>
+              <td>Genellikle yok ya da ayrı, ücretli bir ürün</td>
+            </tr>
+            <tr>
               <td>Kod imzalama</td>
               <td><span class="no">İmzalı değil</span> — checksums.txt içindeki SHA-256'yı doğrulayın</td>
               <td>Genellikle imzalı</td>
@@ -492,7 +812,7 @@ DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür</
     </div>
   </section>
 
-  <section id="sss">
+  <section id="faq">
     <div class="wrap">
       <h2>Sık sorulan sorular</h2>
       <p class="section-intro">
@@ -503,7 +823,7 @@ DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür</
 
       <div class="faq">
         <article class="faq-item">
-          <h3>DrvNest ücretsiz mi?</h3>
+          <h3>DrvNest gerçekten ücretsiz mi?</h3>
           <p>
             Evet. DrvNest MIT lisansıyla yayımlanır ve kaynak kodunun tamamı GitHub'dadır. Ücretli
             sürüm, deneme süresi, para ödeyince açılan özellik, reklam ya da yanında gelen üçüncü parti
@@ -560,7 +880,7 @@ DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür</
           <p>Evet, üç yolu var.</p>
           <ol>
             <li>DrvNest değiştireceği paketi kurulumdan hemen önce dışa aktarır ve yolunu geçmiş kaydına yazar; <strong>Klasörden Geri Yükle</strong> ile o klasörü kurabilirsiniz.</li>
-            <li>Oturumdaki ilk kurulumdan önce sürücü tipinde bir sistem geri yükleme noktası oluşturulur; Windows'un <em>Sistem Geri Yükleme</em> sihirbazıyla (<code>rstrui.exe</code>) o noktaya dönebilirsiniz.</li>
+            <li>Oturumdaki ilk kurulumdan önce sürücü tipinde bir sistem geri yükleme noktası oluşturulur; Windows'un Sistem Geri Yükleme sihirbazıyla (<code>rstrui.exe</code>) o noktaya dönebilirsiniz.</li>
             <li>Aygıt Yöneticisi'ndeki <em>Sürücüyü Geri Al</em> düğmesi DrvNest'ten bağımsız olarak çalışmaya devam eder.</li>
           </ol>
         </article>
@@ -591,21 +911,73 @@ DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür</
         </article>
 
         <article class="faq-item">
+          <h3>Sıcaklık kartı neden sensör yok diyor?</h3>
+          <p>
+            Çünkü o makinede Windows'un okuyabileceği bir sensör yok. Windows'un sürücü olmadan
+            verdiği tek sıcaklık, ürün yazılımının kendi fan denetimi için bildirdiği ACPI termal
+            bölgesidir ve masaüstü anakartların çok büyük bir kısmı hiç bildirmez. Çekirdek başına
+            ve GPU sıcaklıkları bir SMBus üzerinden üreticinin sensör yongasından gelir, bunun
+            için de imzalı bir çekirdek sürücüsü gerekir — HWiNFO ile Open Hardware Monitor'ün
+            kurduğu şey budur. DrvNest bir sayıyı doldurmak için çekirdek sürücüsü kurmaz; o
+            yüzden tahmin yürütmek yerine sensörün olmadığını söyler.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Program başına ağ kullanımı neden makine toplamını tutmuyor?</h3>
+          <p>
+            İki sayı farklı yerlerden geliyor ve ikisi de doğru. Makine toplamı, ağ
+            bağdaştırıcılarının kendi bayt sayaçlarının toplamıdır; yani her şeyi içerir: TCP,
+            UDP, QUIC, yayın trafiği. Uygulama başına sayı ise Windows'un TCP bağlantı
+            istatistiklerinden (ESTATS) gelir; bu, Windows'un çekirdek sürücüsü olmadan sunduğu
+            tek süreç başına bayt sayacıdır ve yalnızca TCP'yi kapsar. Görüntülü görüşmeler, oyun
+            trafiğinin çoğu ve DNS bu yüzden birinci sayının içinde, ikincisinin içinde değil.
+            DrvNest sessizce eksik bildirmek yerine bunu sayfada yazıyor.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>DrvNest kendini arka planda güncelliyor mu?</h3>
+          <p>
+            Günde bir kez bakar ve size söyler. <strong>Ayarlar → Güncellemeler</strong>
+            bölümünden açmadığınız sürece hiçbir şey kurmaz; açsanız bile indirilen dosya sürümün
+            <code>checksums.txt</code> dosyasıyla doğrulanır ve ancak DrvNest kapanırken devreye
+            girer — bir sürücü kuyruğu çalışırken asla. Çevrimdışı modda ve kurtarma modunda hem
+            denetim hem kurulum tümüyle atlanır. Denetimi büsbütün de kapatabilirsiniz; Hakkında
+            sayfasındaki düğme çalışmaya devam eder.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>İzleyici arka planda çalışan bir servis mi?</h3>
+          <p>
+            Hayır. İki izleyici de siz sayfasını açana kadar hiçbir şey ölçmez ve sayfadan
+            ayrıldığınız anda durur. DrvNest yine hiçbir servis, sürücü veya başlangıç kaydı
+            kurmaz — kaydettiği tek şey, kesintiye uğramış bir sürücü kuyruğunu sürdüren oturum
+            açılışı görevidir; kuyruk bitince o da kendini siler.
+          </p>
+        </article>
+
+        <article class="faq-item">
           <h3>DrvNest veri topluyor mu?</h3>
           <p>
             Hayır. Telemetri, kullanım istatistiği ve cihaz kimliği toplanmaz. Makineden dışarı
             yalnızca iki trafik çıkar: Windows'un kendi Windows Update Agent bileşeni üzerinden
-            doğrudan Microsoft'a giden Windows Update sorguları (çevrimdışı modda ve
-            <code>--rescue</code> ile hiç yapılmaz) ve siz <em>Güncellemeleri Kontrol Et</em>'e
-            bastığınızda GitHub Releases API'sine gönderilen tek bir istek. Geri kalan her şey kendi
-            makinenizde, <code>%ProgramData%\DrvNest</code> klasöründe kalır.
+            doğrudan Microsoft'a giden Windows Update sorguları (çevrimdışı modda ve kurtarma
+            modunda hiç yapılmaz) ve GitHub Releases API'sine giden istekler — biri siz
+            <em>Güncellemeleri Kontrol Et</em>'e bastığınızda, biri de açık bıraktıysanız
+            otomatik denetimden günde bir kez. İkisi de makineniz hakkında hiçbir şey göndermez;
+            sıradan, anonim HTTPS GET istekleridir. İzleyici sayfaları hiçbir yere hiçbir şey
+            göndermez: üzerlerindeki her sayı yerel olarak okunur ve bilgisayardan hiç çıkmaz.
+            Geri kalan her şey kendi makinenizde, <code>%ProgramData%\DrvNest</code> klasöründe
+            kalır.
           </p>
         </article>
       </div>
     </div>
   </section>
 
-  <section id="indir">
+  <section id="get-it">
     <div class="wrap">
       <h2>DrvNest'i indirin</h2>
       <p class="section-intro">
@@ -639,6 +1011,9 @@ DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür</
         <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/SECURITY.md">Güvenlik politikası</a></li>
         <li><a href="https://github.com/ahmetcaglayan/DrvNest/issues">Hata bildir</a></li>
         <li><a href="../" hreflang="en" lang="en">English</a></li>
+        <li><a href="../ru/" hreflang="ru" lang="ru">Русский</a></li>
+        <li><a href="../zh/" hreflang="zh" lang="zh">简体中文</a></li>
+        <li><a href="../hi/" hreflang="hi" lang="hi">हिन्दी</a></li>
       </ul>
     </nav>
 
@@ -650,12 +1025,84 @@ DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür</
     <p>Windows, Microsoft Corporation'ın ticari markasıdır. Bu proje Microsoft ile bağlantılı değildir.</p>
 
     <p class="keywords">
-      Anahtar kelimeler: sürücü güncelleme programı, format sonrası driver yükleme, eksik sürücü bulma
-      programı, driver yedekleme programı, ücretsiz driver güncelleyici, windows sürücü tarama,
-      çevrimdışı sürücü kurulumu, usb ile driver yükleme, açık kaynak sürücü güncelleyici.
+      Anahtar kelimeler: açık kaynak windows sürücü güncelleme programı, reklamsız ücretsiz driver
+      güncelleyici, format sonrası driver yükleme, usb ile çevrimdışı sürücü kurulumu, windows sürücü
+      yedekleme ve geri yükleme, eksik sürücü bulma programı, windows 11 sürücü tarama, pnputil ile
+      sürücü dışa aktarma, windows update sürücü kataloğu aracı, ücretsiz sistem izleme programı,
+      açık kaynak cpu ram sıcaklık izleyici, program başına ağ kullanımı, program başına bant
+      genişliği izleme, hangi program internetimi kullanıyor, görev yöneticisi alternatifi.
     </p>
   </div>
 </footer>
+
+<script>
+/* Screenshot carousel.
+
+   The markup is a scroll-snapping strip, so with JavaScript disabled it degrades to
+   something you can still swipe or scroll through - which is also exactly how it
+   behaves on a touch screen. This only adds the buttons and keeps the labels in sync
+   with whatever is on screen, however the reader got there. */
+(function () {
+  var track = document.getElementById('shotsTrack');
+  var dots  = document.getElementById('shotsDots');
+  if (!track || !dots) return;
+
+  var slides  = Array.prototype.slice.call(track.querySelectorAll('.shot'));
+  var buttons = Array.prototype.slice.call(dots.querySelectorAll('button'));
+  if (!slides.length) return;
+
+  function show(index) {
+    var target = slides[Math.max(0, Math.min(index, slides.length - 1))];
+    track.scrollTo({ left: target.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+  }
+
+  function current() {
+    /* Whichever slide's centre is closest to the viewport centre. */
+    var middle = track.scrollLeft + track.clientWidth / 2;
+    var best = 0, bestGap = Infinity;
+
+    slides.forEach(function (slide, i) {
+      var centre = slide.offsetLeft - track.offsetLeft + slide.clientWidth / 2;
+      var gap = Math.abs(centre - middle);
+      if (gap < bestGap) { bestGap = gap; best = i; }
+    });
+
+    return best;
+  }
+
+  function sync() {
+    var index = current();
+    buttons.forEach(function (button, i) {
+      if (i === index) button.setAttribute('aria-current', 'true');
+      else button.removeAttribute('aria-current');
+    });
+  }
+
+  buttons.forEach(function (button, i) {
+    button.addEventListener('click', function () { show(i); });
+  });
+
+  var prev = document.getElementById('shotsPrev');
+  var next = document.getElementById('shotsNext');
+  if (prev) prev.addEventListener('click', function () { show(current() - 1); });
+  if (next) next.addEventListener('click', function () { show(current() + 1); });
+
+  track.addEventListener('keydown', function (event) {
+    if (event.key === 'ArrowLeft')  { show(current() - 1); event.preventDefault(); }
+    if (event.key === 'ArrowRight') { show(current() + 1); event.preventDefault(); }
+  });
+
+  /* rAF-throttled: the scroll event fires far more often than the labels can matter. */
+  var queued = false;
+  track.addEventListener('scroll', function () {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; sync(); });
+  }, { passive: true });
+
+  sync();
+})();
+</script>
 
 </body>
 </html>

@@ -4,21 +4,66 @@
 
   <url>
     <loc>https://ahmetcaglayan.github.io/DrvNest/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/DrvNest/"/>
     <xhtml:link rel="alternate" hreflang="tr" href="https://ahmetcaglayan.github.io/DrvNest/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://ahmetcaglayan.github.io/DrvNest/ru/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://ahmetcaglayan.github.io/DrvNest/zh/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://ahmetcaglayan.github.io/DrvNest/hi/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://ahmetcaglayan.github.io/DrvNest/"/>
   </url>
 
   <url>
     <loc>https://ahmetcaglayan.github.io/DrvNest/tr/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/DrvNest/"/>
     <xhtml:link rel="alternate" hreflang="tr" href="https://ahmetcaglayan.github.io/DrvNest/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://ahmetcaglayan.github.io/DrvNest/ru/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://ahmetcaglayan.github.io/DrvNest/zh/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://ahmetcaglayan.github.io/DrvNest/hi/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahmetcaglayan.github.io/DrvNest/"/>
+  </url>
+
+  <url>
+    <loc>https://ahmetcaglayan.github.io/DrvNest/ru/</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/DrvNest/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://ahmetcaglayan.github.io/DrvNest/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://ahmetcaglayan.github.io/DrvNest/ru/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://ahmetcaglayan.github.io/DrvNest/zh/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://ahmetcaglayan.github.io/DrvNest/hi/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahmetcaglayan.github.io/DrvNest/"/>
+  </url>
+
+  <url>
+    <loc>https://ahmetcaglayan.github.io/DrvNest/zh/</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/DrvNest/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://ahmetcaglayan.github.io/DrvNest/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://ahmetcaglayan.github.io/DrvNest/ru/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://ahmetcaglayan.github.io/DrvNest/zh/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://ahmetcaglayan.github.io/DrvNest/hi/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ahmetcaglayan.github.io/DrvNest/"/>
+  </url>
+
+  <url>
+    <loc>https://ahmetcaglayan.github.io/DrvNest/hi/</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/DrvNest/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://ahmetcaglayan.github.io/DrvNest/tr/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://ahmetcaglayan.github.io/DrvNest/ru/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://ahmetcaglayan.github.io/DrvNest/zh/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://ahmetcaglayan.github.io/DrvNest/hi/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://ahmetcaglayan.github.io/DrvNest/"/>
   </url>
 

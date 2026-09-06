@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Text.Json;
 using DrvNest.Core.Diagnostics;
 using DrvNest.Core.Persistence;
@@ -66,6 +67,11 @@ public static class Loc
         Options.Add(new LanguageOption(LanguageOption.AutoCode, "System / Sistem", "System"));
         Options.Add(new LanguageOption("en", "English", "English"));
         Options.Add(new LanguageOption("tr", "Türkçe", "Turkish"));
+
+        // Russian, Chinese and Hindi ship inside the executable as JSON rather than as
+        // more C# dictionaries. Three more of those would have made this file four
+        // thousand lines long for no benefit, and JSON is what a translator can edit.
+        LoadEmbeddedPacks();
 
         LoadExternalPacks();
     }
@@ -181,6 +187,44 @@ public static class Loc
     // =====================================================================================
 
     /// <summary>
+    /// Loads the language packs compiled into the executable.
+    ///
+    /// They have to be embedded rather than shipped as files: DrvNest publishes as a
+    /// single self-contained executable that people copy onto a USB stick, and a
+    /// Languages folder next to it would simply not survive the trip.
+    /// </summary>
+    private static void LoadEmbeddedPacks()
+    {
+        var assembly = typeof(Loc).Assembly;
+
+        foreach (var name in assembly.GetManifestResourceNames())
+        {
+            if (!name.EndsWith(".json", StringComparison.OrdinalIgnoreCase)) continue;
+            if (!name.Contains(".Languages.", StringComparison.OrdinalIgnoreCase)) continue;
+
+            try
+            {
+                using var stream = assembly.GetManifestResourceStream(name);
+                if (stream is null) continue;
+
+                using var reader = new StreamReader(stream);
+
+                // "DrvNest.Languages.ru.json" -> "ru"
+                var parts = name.Split('.');
+                if (parts.Length < 2) continue;
+
+                LoadPack(parts[^2].ToLowerInvariant(), reader.ReadToEnd());
+            }
+            catch (Exception ex)
+            {
+                // A broken built-in pack must never stop DrvNest from starting; the
+                // language simply does not appear in the picker.
+                Log.Warn($"Skipping the built-in language pack {name}: {ex.Message}");
+            }
+        }
+    }
+
+    /// <summary>
     /// Loads <c>Languages\*.json</c> from next to the executable and from the data
     /// folder. A malformed pack is skipped with a log line; it can never stop the
     /// application from starting.
@@ -210,11 +254,17 @@ public static class Loc
     }
 
     private static void LoadPack(string path)
+        => LoadPack(Path.GetFileNameWithoutExtension(path).ToLowerInvariant(), File.ReadAllText(path));
+
+    /// <summary>
+    /// Adds or merges one pack. Shared by the embedded packs and the loose files, so a
+    /// user can correct a shipped translation by dropping a JSON file with the same code
+    /// next to the executable.
+    /// </summary>
+    private static void LoadPack(string code, string json)
     {
-        var code = Path.GetFileNameWithoutExtension(path).ToLowerInvariant();
         if (code.Length is 0 or > 12) return;
 
-        var json = File.ReadAllText(path);
         var entries = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
 
         if (entries is null || entries.Count == 0) return;
@@ -242,8 +292,17 @@ public static class Loc
         try
         {
             var culture = CultureInfo.GetCultureInfo(language);
+
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+            // DefaultThreadCurrent* only seeds threads created afterwards, so without
+            // these two lines the user interface thread keeps the machine's own culture
+            // and the application formats numbers two different ways at once: a handle
+            // count rendered on the UI thread came out as "276.132" on a Turkish machine
+            // while the same number formatted on a worker thread came out as "276,132".
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
         }
         catch (CultureNotFoundException)
         {
@@ -276,6 +335,8 @@ public static class Loc
         ["nav.queue"] = "Activity",
         ["nav.backup"] = "Backup & Restore",
         ["nav.history"] = "History",
+        ["nav.system"] = "System Monitor",
+        ["nav.network"] = "Network Monitor",
         ["nav.logs"] = "Logs",
         ["nav.settings"] = "Settings",
         ["nav.about"] = "About",
@@ -497,6 +558,92 @@ public static class Loc
         ["win.minimize"] = "Minimize",
         ["win.maximize"] = "Maximize",
 
+
+        // System monitor
+        ["mon.title"] = "System Monitor",
+        ["mon.subtitle"] = "What this machine, and every program on it, is using right now",
+        ["mon.cpu"] = "Processor",
+        ["mon.memory"] = "Memory",
+        ["mon.temperature"] = "Temperature",
+        ["mon.diskActivity"] = "Disk activity",
+        ["mon.coresValue"] = "{0} cores, {1} threads",
+        ["mon.hottestSensor"] = "Hottest sensor",
+        ["mon.noThermal"] = "This machine publishes no temperature sensor Windows can read. Most desktops do not; a reading would need a kernel driver, which DrvNest will not install.",
+        ["mon.readWrite"] = "Read and write, all drives",
+        ["mon.perCore"] = "Per logical processor",
+        ["mon.core"] = "Core",
+        ["mon.processes"] = "Processes",
+        ["mon.threads"] = "Threads",
+        ["mon.handles"] = "Handles",
+        ["mon.memoryDetail"] = "Memory breakdown",
+        ["mon.inUse"] = "In use",
+        ["mon.available"] = "Available",
+        ["mon.cached"] = "Cached",
+        ["mon.committed"] = "Committed",
+        ["mon.sensors"] = "Temperature sensors",
+        ["mon.storage"] = "Storage",
+        ["mon.freeSpace"] = "{0} free",
+        ["mon.battery"] = "Battery",
+        ["mon.batteryCharging"] = "Charging",
+        ["mon.batteryMains"] = "Plugged in",
+        ["mon.batteryOnBattery"] = "On battery",
+        ["mon.batteryRemaining"] = "About {0} h {1} min left",
+        ["mon.byApp"] = "By application",
+        ["mon.process"] = "Process",
+        ["mon.workingSet"] = "Memory",
+        ["mon.private"] = "Private",
+        ["mon.disk"] = "Disk",
+        ["mon.pause"] = "Pause",
+        ["mon.resume"] = "Resume",
+        ["mon.showAll"] = "Show all",
+        ["mon.showTop"] = "Show top {0}",
+        ["mon.showing"] = "showing {0} of {1}",
+        ["mon.taskManager"] = "Task Manager",
+        ["mon.taskManagerHint"] = "Open the Windows Task Manager, which can also end a process.",
+        ["mon.uptimeDays"] = "Up {0}d {1}h {2}m",
+        ["mon.uptimeHours"] = "Up {0}h {1}m",
+        ["mon.footnote"] = "Processor usage is measured the way Task Manager measures it: the change in a process' own processor time between two samples, spread across every logical processor. The first reading after opening this page is always zero, because a rate needs two samples. Processes that Windows protects report partial numbers.",
+
+        // Network monitor
+        ["net.title"] = "Network Monitor",
+        ["net.subtitle"] = "Live traffic for the whole machine and for each program",
+        ["net.download"] = "Download",
+        ["net.upload"] = "Upload",
+        ["net.down"] = "Down",
+        ["net.up"] = "Up",
+        ["net.totalDown"] = "Session down",
+        ["net.totalUp"] = "Session up",
+        ["net.conns"] = "Conn.",
+        ["net.sessionTotal"] = "This session:",
+        ["net.thisSession"] = "This session",
+        ["net.sinceBootDown"] = "Downloaded since boot",
+        ["net.sinceBootUp"] = "Uploaded since boot",
+        ["net.connections"] = "Open connections",
+        ["net.adapters"] = "Network adapters",
+        ["net.byApp"] = "By application",
+        ["net.resetCounters"] = "Reset counters",
+        ["net.resetHint"] = "Sets the session totals back to zero. The adapter totals since boot are not affected.",
+        ["net.onlyActive"] = "Only active",
+        ["net.allAdapters"] = "All adapters",
+        ["net.onlyConnected"] = "Connected only",
+        ["net.showIdle"] = "Show idle too",
+        ["net.tcpOnlyNote"] = "Per-application figures cover TCP traffic, which is what Windows counts per connection. UDP - QUIC, most video calls and DNS - is included in the machine totals above but cannot be attributed to a program without a kernel driver, so the two do not add up to exactly the same number.",
+        ["net.noPerProcessBytes"] = "Windows refused the per-connection byte counters, so the transfer columns below are empty and only the connection counts are real. Those counters need administrator rights: start DrvNest with Run as administrator. The machine totals above are measured from the adapters and are unaffected.",
+
+        // Automatic updates
+        ["set.updates"] = "Updates",
+        ["set.autoCheck"] = "Check for updates automatically",
+        ["set.autoCheckHint"] = "Asks GitHub once a day whether a newer release exists. Nothing is downloaded or installed without you.",
+        ["set.autoInstall"] = "Download and install updates automatically",
+        ["set.autoInstallHint"] = "Downloads the verified release and swaps it in the next time DrvNest starts. Off by default: this executable installs drivers with an elevated token.",
+        ["set.prerelease"] = "Include pre-releases",
+        ["set.prereleaseHint"] = "Offers beta builds as well as stable ones.",
+        ["about.updateReady"] = "DrvNest {0} has been downloaded and verified. It will be installed the next time you start DrvNest.",
+        ["about.autoNotice"] = "Version {0} is available.",
+        ["about.lastChecked"] = "Last checked: {0}",
+        ["about.neverChecked"] = "Not checked yet",
+
+
         // Status / errors
         ["status.ready"] = "Ready",
         ["status.admin"] = "Administrator",
@@ -541,6 +688,8 @@ public static class Loc
         ["nav.queue"] = "İşlemler",
         ["nav.backup"] = "Yedekle & Geri Yükle",
         ["nav.history"] = "Geçmiş",
+        ["nav.system"] = "Sistem İzleme",
+        ["nav.network"] = "Ağ İzleme",
         ["nav.logs"] = "Günlük",
         ["nav.settings"] = "Ayarlar",
         ["nav.about"] = "Hakkında",
@@ -761,6 +910,92 @@ public static class Loc
         ["about.licenseText"] = "MIT Lisansı. DrvNest özgür ve açık kaynaklı bir yazılımdır, hiçbir garanti verilmez. Sürücü kurmak doğası gereği risk taşır; Sistem Geri Yükleme açıksa her işlemden önce bir geri yükleme noktası oluşturulur.",
         ["win.minimize"] = "Simge durumuna küçült",
         ["win.maximize"] = "Ekranı kapla",
+
+
+        // Sistem izleme
+        ["mon.title"] = "Sistem İzleme",
+        ["mon.subtitle"] = "Bu bilgisayarın ve üzerindeki her programın şu anki kullanımı",
+        ["mon.cpu"] = "İşlemci",
+        ["mon.memory"] = "Bellek",
+        ["mon.temperature"] = "Sıcaklık",
+        ["mon.diskActivity"] = "Disk etkinliği",
+        ["mon.coresValue"] = "{0} çekirdek, {1} iş parçacığı",
+        ["mon.hottestSensor"] = "En sıcak sensör",
+        ["mon.noThermal"] = "Bu bilgisayar Windows'un okuyabileceği bir sıcaklık sensörü yayınlamıyor. Çoğu masaüstü böyledir; değer okumak için bir çekirdek sürücüsü gerekir ve DrvNest böyle bir sürücü kurmaz.",
+        ["mon.readWrite"] = "Tüm diskler, okuma ve yazma",
+        ["mon.perCore"] = "Mantıksal işlemci başına",
+        ["mon.core"] = "Çekirdek",
+        ["mon.processes"] = "İşlem",
+        ["mon.threads"] = "İş parçacığı",
+        ["mon.handles"] = "Tanıtıcı",
+        ["mon.memoryDetail"] = "Bellek dağılımı",
+        ["mon.inUse"] = "Kullanımda",
+        ["mon.available"] = "Kullanılabilir",
+        ["mon.cached"] = "Önbellek",
+        ["mon.committed"] = "Ayrılmış",
+        ["mon.sensors"] = "Sıcaklık sensörleri",
+        ["mon.storage"] = "Depolama",
+        ["mon.freeSpace"] = "{0} boş",
+        ["mon.battery"] = "Pil",
+        ["mon.batteryCharging"] = "Şarj oluyor",
+        ["mon.batteryMains"] = "Prize takılı",
+        ["mon.batteryOnBattery"] = "Pilde",
+        ["mon.batteryRemaining"] = "Yaklaşık {0} sa {1} dk kaldı",
+        ["mon.byApp"] = "Uygulama bazında",
+        ["mon.process"] = "İşlem",
+        ["mon.workingSet"] = "Bellek",
+        ["mon.private"] = "Özel",
+        ["mon.disk"] = "Disk",
+        ["mon.pause"] = "Duraklat",
+        ["mon.resume"] = "Devam et",
+        ["mon.showAll"] = "Tümünü göster",
+        ["mon.showTop"] = "İlk {0} tanesi",
+        ["mon.showing"] = "{1} içinden {0} tanesi",
+        ["mon.taskManager"] = "Görev Yöneticisi",
+        ["mon.taskManagerHint"] = "Windows Görev Yöneticisi'ni açar; bir işlemi sonlandırmak için de kullanılabilir.",
+        ["mon.uptimeDays"] = "{0}g {1}sa {2}dk açık",
+        ["mon.uptimeHours"] = "{0}sa {1}dk açık",
+        ["mon.footnote"] = "İşlemci kullanımı, Görev Yöneticisi ile aynı yöntemle ölçülür: bir işlemin iki örnekleme arasındaki işlemci süresi farkı, tüm mantıksal işlemcilere bölünür. Bu sayfa açıldıktan sonraki ilk değer her zaman sıfırdır, çünkü bir hızın ölçülmesi için iki örnek gerekir. Windows'un koruduğu işlemler eksik değer bildirir.",
+
+        // Ag izleme
+        ["net.title"] = "Ağ İzleme",
+        ["net.subtitle"] = "Tüm bilgisayarın ve her programın canlı trafiği",
+        ["net.download"] = "İndirme",
+        ["net.upload"] = "Yükleme",
+        ["net.down"] = "İnen",
+        ["net.up"] = "Çıkan",
+        ["net.totalDown"] = "Oturum inen",
+        ["net.totalUp"] = "Oturum çıkan",
+        ["net.conns"] = "Bağl.",
+        ["net.sessionTotal"] = "Bu oturumda:",
+        ["net.thisSession"] = "Bu oturum",
+        ["net.sinceBootDown"] = "Açılıştan beri inen",
+        ["net.sinceBootUp"] = "Açılıştan beri çıkan",
+        ["net.connections"] = "Açık bağlantı",
+        ["net.adapters"] = "Ağ bağdaştırıcıları",
+        ["net.byApp"] = "Uygulama bazında",
+        ["net.resetCounters"] = "Sayacı sıfırla",
+        ["net.resetHint"] = "Oturum toplamlarını sıfırlar. Açılıştan beri olan bağdaştırıcı toplamları etkilenmez.",
+        ["net.onlyActive"] = "Sadece etkin",
+        ["net.allAdapters"] = "Tüm bağdaştırıcılar",
+        ["net.onlyConnected"] = "Sadece bağlı olanlar",
+        ["net.showIdle"] = "Boştakileri de göster",
+        ["net.tcpOnlyNote"] = "Uygulama bazındaki değerler TCP trafiğini kapsar; Windows bağlantı başına bunu sayar. UDP trafiği — QUIC, çoğu görüntülü arama ve DNS — yukarıdaki bilgisayar toplamına dahildir ama çekirdek sürücüsü olmadan bir programa atfedilemez; bu yüzden iki değer birebir eşit çıkmaz.",
+        ["net.noPerProcessBytes"] = "Windows bağlantı başına bayt sayaçlarını reddetti; bu yüzden aşağıdaki trafik sütunları boş ve yalnızca bağlantı sayıları gerçek. Bu sayaçlar yönetici yetkisi ister: DrvNest'i Yönetici olarak çalıştırın. Yukarıdaki bilgisayar toplamları bağdaştırıcılardan ölçülür ve bundan etkilenmez.",
+
+        // Otomatik guncelleme
+        ["set.updates"] = "Güncellemeler",
+        ["set.autoCheck"] = "Güncellemeleri otomatik denetle",
+        ["set.autoCheckHint"] = "Günde bir kez GitHub'a yeni sürüm olup olmadığını sorar. Siz onaylamadan hiçbir şey indirilmez veya kurulmaz.",
+        ["set.autoInstall"] = "Güncellemeleri otomatik indir ve kur",
+        ["set.autoInstallHint"] = "Doğrulanmış sürümü indirir ve DrvNest'in bir sonraki açılışında değiştirir. Varsayılan olarak kapalıdır: bu program sürücüleri yönetici yetkisiyle kurar.",
+        ["set.prerelease"] = "Ön sürümleri de dahil et",
+        ["set.prereleaseHint"] = "Kararlı sürümlerin yanı sıra beta yapıları da önerir.",
+        ["about.updateReady"] = "DrvNest {0} indirildi ve doğrulandı. DrvNest'i bir sonraki açışınızda kurulacak.",
+        ["about.autoNotice"] = "{0} sürümü mevcut.",
+        ["about.lastChecked"] = "Son denetim: {0}",
+        ["about.neverChecked"] = "Henüz denetlenmedi",
+
 
         // Status / errors
         ["status.ready"] = "Hazır",

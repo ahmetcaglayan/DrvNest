@@ -70,7 +70,7 @@ is the name the built-in updater looks for when it runs on an ARM64 machine.
 
 ### Setting the version
 
-`Directory.Build.props` holds the single source of truth (`<Version>1.0.0</Version>`).
+`Directory.Build.props` holds the single source of truth (`<Version>1.1.0</Version>`).
 CI overrides it from the release tag so the tag and the version shown inside the app can
 never drift apart:
 
@@ -80,6 +80,50 @@ dotnet publish src/DrvNest.App/DrvNest.App.csproj -c Release -r win-x64 -o publi
 
 `AppInfo.Version` reads `AssemblyInformationalVersionAttribute` at runtime and strips the
 `+<commit>` suffix the SDK appends.
+
+### Regenerating the screenshots
+
+The images in `assets/screenshots/`, which the README and the website both use, are
+produced by the application itself rather than taken by hand:
+
+```powershell
+# from an elevated prompt, against a build
+.\DrvNest.exe --capture .\assets\screenshots --lang en
+```
+
+It walks every menu entry, waits for the live pages to fill their charts, writes one PNG
+per page (plus a second, scrolled shot of the pages whose table falls below the fold) and
+exits. `--lang` pins the interface language, so the published images do not depend on the
+display language of whoever regenerated them.
+
+Two things make this worth having rather than a manual chore. DrvNest runs elevated, and
+User Interface Privilege Isolation stops the unelevated Snipping Tool from seeing input
+aimed at a higher-integrity window — Print Screen over DrvNest does nothing, the same way
+it does nothing over Task Manager. And documentation screenshots rot: regenerating them is
+one command, so a UI change and its pictures stay in step.
+
+Run it elevated. Unelevated, the network page cannot enable the per-connection byte
+counters and the sidebar reports "Not elevated", both of which show up in the image.
+
+Then copy them where the website expects them:
+
+```powershell
+Copy-Item .\assets\screenshots\*.png .\docs\site\screenshots\ -Force
+```
+
+### `build/check-site.py`
+
+The five language pages are one document in five languages, so everything except the
+words has to match. `build/check-site.py` compares each translation against
+`docs/site/index.html` element by element and reports any divergence in structure, ids,
+classes, image paths, relative links or inline SVG geometry:
+
+```powershell
+python build/check-site.py          # every language
+python build/check-site.py ru zh    # just these
+```
+
+It exits non-zero on the first failure, so it can be wired into CI.
 
 ### `build/publish.ps1`
 

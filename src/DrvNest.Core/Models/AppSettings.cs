@@ -64,6 +64,45 @@ public sealed class AppSettings
     /// <summary>Keep this many days of history; 0 keeps everything.</summary>
     public int HistoryRetentionDays { get; set; }
 
+    // =====================================================================================
+    // Self update
+    //
+    // Checking is on by default and installing is not. DrvNest replaces an executable
+    // that installs drivers with an elevated token, so "we quietly swapped your driver
+    // installer while you were not looking" is not a default anyone should have to opt
+    // out of. Telling the user a new version exists costs one HTTPS request a day.
+    // =====================================================================================
+
+    /// <summary>Ask GitHub once per <see cref="UpdateCheckIntervalHours"/> whether a newer release exists.</summary>
+    public bool AutoCheckUpdates { get; set; } = true;
+
+    /// <summary>
+    /// Download the verified release automatically and swap it in when DrvNest closes.
+    /// Off by default; the check still only ever reports, never installs, without this.
+    /// </summary>
+    public bool AutoInstallUpdates { get; set; }
+
+    /// <summary>Offer beta builds as well as stable releases.</summary>
+    public bool IncludePrereleaseUpdates { get; set; }
+
+    /// <summary>Hours between automatic checks. Clamped to between 1 and 720.</summary>
+    public int UpdateCheckIntervalHours { get; set; } = 24;
+
+    /// <summary>When the last automatic check ran, so a restart does not re-check immediately.</summary>
+    public DateTime? LastUpdateCheckUtc { get; set; }
+
+    /// <summary>
+    /// A downloaded and checksum-verified executable waiting to be swapped in on exit.
+    /// Null once it has been applied, or when the file has gone.
+    /// </summary>
+    public string? PendingUpdateFile { get; set; }
+
+    /// <summary>The version <see cref="PendingUpdateFile"/> contains, for the notice.</summary>
+    public string? PendingUpdateVersion { get; set; }
+
+    /// <summary>A version the user chose not to be reminded about again.</summary>
+    public string? SkippedUpdateVersion { get; set; }
+
     public AppSettings Clone()
     {
         var copy = (AppSettings)MemberwiseClone();
@@ -80,6 +119,7 @@ public sealed class AppSettings
         MaxRetryAttempts = Math.Clamp(MaxRetryAttempts, 0, 5);
         AutoRebootDelaySeconds = Math.Clamp(AutoRebootDelaySeconds, 5, 3600);
         HistoryRetentionDays = Math.Clamp(HistoryRetentionDays, 0, 3650);
+        UpdateCheckIntervalHours = Math.Clamp(UpdateCheckIntervalHours, 1, 720);
         LocalRepositoryPaths ??= new List<string>();
         IgnoredHardwareIds ??= new List<string>();
         HiddenUpdateIds ??= new List<string>();

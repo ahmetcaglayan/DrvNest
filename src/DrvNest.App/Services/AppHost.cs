@@ -31,6 +31,9 @@ public static class AppHost
     public static JobEngine Jobs { get; private set; } = null!;
     public static SelfUpdateService Updater { get; private set; } = null!;
 
+    /// <summary>Runs the daily update check and stages an automatic install.</summary>
+    public static UpdateCoordinator Updates { get; private set; } = null!;
+
     /// <summary>UI-facing owner of the running queue; created after the job engine.</summary>
     public static QueueService Queue { get; private set; } = null!;
 
@@ -93,6 +96,17 @@ public static class AppHost
         // Must come after Jobs: it subscribes to the engine's events in its constructor.
         Queue = new QueueService();
 
+        Updates = new UpdateCoordinator(Updater, new SettingsStoreAccessor(
+            () => Settings.Current,
+            change =>
+            {
+                // The store hands out the live instance, so a change has to be applied to
+                // a copy and saved, or a failed write would still have mutated memory.
+                var copy = Settings.Current.Clone();
+                change(copy);
+                Settings.Save(copy);
+            }));
+
         Settings.Changed += OnSettingsChanged;
 
         if (settings.HistoryRetentionDays > 0) History.Prune(settings.HistoryRetentionDays);
@@ -111,6 +125,11 @@ public static class AppHost
     {
         try
         {
+            // Before anything else is torn down: swapping the executable is the last
+            // thing DrvNest does, and only ever on the way out.
+            Updates?.ApplyOnExit();
+            Updates?.Dispose();
+
             Jobs?.Dispose();
             Sessions?.Dispose();
             Log.Info("DrvNest closed.");

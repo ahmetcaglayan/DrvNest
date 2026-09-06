@@ -9,6 +9,87 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Nothing yet.
 
+## [1.1.0] - 2026-09-07
+
+Two new pages and an updater that no longer waits to be asked.
+
+### Added
+
+**System Monitor**
+
+- A live panel for the whole machine: total processor load and a bar for every
+  logical processor, current clock, process / thread / handle counts and uptime.
+- Memory broken down into in use, available, cached and committed, with the
+  commit limit, read from `GlobalMemoryStatusEx` and `GetPerformanceInfo`.
+- Temperature from the ACPI thermal zones the firmware publishes
+  (`root\WMI:MSAcpi_ThermalZoneTemperature`), reached through the WbemScripting
+  COM class rather than a NuGet package. Machines that publish no thermal zone -
+  most desktops - get an explanation of why, not an invented number.
+- Storage: capacity and free space per fixed drive, plus live read and write
+  throughput from `IOCTL_DISK_PERFORMANCE`.
+- Battery percentage, charge state and remaining time on machines that have one.
+- A table of every running process with its processor share, working set, private
+  bytes, disk throughput and thread count. Sortable by processor, memory, disk or
+  name, searchable by name or pid, and pausable so a row can be read. Processor
+  usage is measured the way Task Manager measures it: the change in a process' own
+  kernel + user time between two samples over the wall clock and the logical
+  processor count.
+
+**Network Monitor**
+
+- Live download and upload for the whole machine from the adapters' own byte
+  counters, with totals for this session and since Windows started.
+- Every adapter with its type, address, negotiated link speed and current rate;
+  disconnected adapters are hidden behind a toggle.
+- A per-application table: download and upload rate, session totals, open
+  connection count and the remote endpoint, built from `GetExtendedTcpTable` plus
+  TCP ESTATS (`GetPerTcpConnectionEStats`).
+- The page states plainly that per-application figures cover TCP only, because
+  Windows exposes no per-process UDP counter without a kernel driver, and that the
+  machine total therefore does not equal the sum of the rows.
+
+**Automatic updates**
+
+- A daily check against the GitHub Releases API, twenty seconds after startup so it
+  never competes with the opening scan, showing a count on the *About* menu entry
+  when a newer release exists.
+- Optional automatic download and install, off by default. The download is verified
+  against the release's `checksums.txt` and the swap only happens as DrvNest closes,
+  so an update can never land in the middle of a driver queue.
+- Both are skipped entirely in offline and rescue mode.
+- New settings: automatic check, automatic install, include pre-releases.
+
+**Languages**
+
+- Russian, Simplified Chinese and Hindi, in addition to English and Turkish. They
+  are compiled into the executable as JSON, so the single-file publish keeps
+  working; a `Languages\<code>.json` next to the executable still overrides or adds
+  a translation with no rebuild.
+
+**Documentation**
+
+- `DrvNest.exe --capture <folder> [--lang <code>]` walks the whole menu and writes
+  one PNG per page, so the screenshots in the README and on the website are
+  regenerated from the build rather than taken by hand.
+- The website gained a screenshot carousel, two diagrams, and Russian, Chinese and
+  Hindi pages.
+
+### Fixed
+
+- A wrapping notice inside a horizontal `StackPanel` never actually wrapped, because
+  a `StackPanel` measures its children with infinite width; long warnings on the
+  dashboard were silently clipped at the edge of the card. Both notice banners now
+  use a `Grid`.
+- A language switch only set `CultureInfo.DefaultThreadCurrent*`, which seeds threads
+  created afterwards but not the user interface thread, so the application formatted
+  numbers two different ways at once - a handle count rendered as `276.132` on the UI
+  thread and `276,132` on a worker thread of the same machine.
+
+### Changed
+
+- Text on the website is no longer capped to a narrow measure, so it lines up with
+  the navigation instead of leaving a wide empty column on the right.
+
 ## [1.0.0] - 2026-08-27
 
 First release. DrvNest is a Windows driver scanner, installer and updater built
@@ -99,5 +180,6 @@ adapter may not have a driver either.
   runs as SYSTEM or as a different administrator account. Falls back to the user
   profile when ProgramData is not writable.
 
-[Unreleased]: https://github.com/ahmetcaglayan/DrvNest/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/ahmetcaglayan/DrvNest/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/ahmetcaglayan/DrvNest/releases/tag/v1.1.0
 [1.0.0]: https://github.com/ahmetcaglayan/DrvNest/releases/tag/v1.0.0

@@ -14,7 +14,7 @@
 
 ; Overridable from the command line; the default keeps a bare `iscc` working.
 #ifndef MyAppVersion
-  #define MyAppVersion "1.0.0"
+  #define MyAppVersion "1.1.0"
 #endif
 
 #define MyAppName "DrvNest"

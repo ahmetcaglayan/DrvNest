@@ -1,4 +1,5 @@
 using DrvNest.Core.Models;
+using DrvNest.Core.Updating;
 
 namespace DrvNest.App.Services;
 
@@ -27,6 +28,12 @@ public static class AppEvents
     /// <summary>Raised when the user changes the language, so views can re-read strings.</summary>
     public static event Action? LanguageChanged;
 
+    /// <summary>Raised when the background check finds a newer release.</summary>
+    public static event Action<ReleaseInfo>? UpdateAvailable;
+
+    /// <summary>Raised when an update has been downloaded, verified and staged.</summary>
+    public static event Action<string>? UpdateStaged;
+
     public static void RaiseScanCompleted(ScanResult result) => ScanCompleted?.Invoke(result);
 
     public static void RaiseStatus(string message) => StatusChanged?.Invoke(message);
@@ -36,4 +43,8 @@ public static class AppEvents
     public static void RaiseQueueChanged() => QueueChanged?.Invoke();
 
     public static void RaiseLanguageChanged() => LanguageChanged?.Invoke();
+
+    public static void RaiseUpdateAvailable(ReleaseInfo release) => UpdateAvailable?.Invoke(release);
+
+    public static void RaiseUpdateStaged(string version) => UpdateStaged?.Invoke(version);
 }

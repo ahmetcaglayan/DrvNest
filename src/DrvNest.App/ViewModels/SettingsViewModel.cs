@@ -117,6 +117,32 @@ public sealed class SettingsViewModel : ViewModelBase
         set { _draft.IncludeOptionalDrivers = value; Raise(); }
     }
 
+    // ---- Updates -----------------------------------------------------------------------
+
+    public bool AutoCheckUpdates
+    {
+        get => _draft.AutoCheckUpdates;
+        set { _draft.AutoCheckUpdates = value; Raise(); }
+    }
+
+    public bool AutoInstallUpdates
+    {
+        get => _draft.AutoInstallUpdates;
+        set { _draft.AutoInstallUpdates = value; Raise(); }
+    }
+
+    public bool IncludePrereleaseUpdates
+    {
+        get => _draft.IncludePrereleaseUpdates;
+        set { _draft.IncludePrereleaseUpdates = value; Raise(); }
+    }
+
+    /// <summary>When the background check last completed, for the settings page.</summary>
+    public string LastUpdateCheckDisplay =>
+        _draft.LastUpdateCheckUtc is { } at
+            ? Loc.T("about.lastChecked", at.ToLocalTime().ToString("g"))
+            : Loc.T("about.neverChecked");
+
     // ---- Appearance --------------------------------------------------------------------
 
     public IReadOnlyList<string> ThemeOptions { get; } = new[] { "dark", "light" };
@@ -199,6 +225,8 @@ public sealed class SettingsViewModel : ViewModelBase
             nameof(HistoryRetentionDays), nameof(CreateRestorePoint), nameof(BackupBeforeUpdate),
             nameof(ResumeAfterReboot), nameof(AutoReboot), nameof(AutoRebootDelaySeconds),
             nameof(OfflineMode), nameof(IncludeOptionalDrivers), nameof(Theme),
+            nameof(AutoCheckUpdates), nameof(AutoInstallUpdates),
+            nameof(IncludePrereleaseUpdates), nameof(LastUpdateCheckDisplay),
             nameof(SelectedLanguage), nameof(LanguageHint));
 
         Notice = Loc.T("set.saved");

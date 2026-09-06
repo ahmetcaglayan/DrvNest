@@ -141,3 +141,7 @@ TODO.local.md
 !assets/screenshots/
 !assets/screenshots/*.png
 !assets/**/*.ico
+
+# Python bytecode from the build helper scripts
+__pycache__/
+*.pyc

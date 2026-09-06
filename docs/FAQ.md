@@ -245,6 +245,79 @@ Arka planda sessizce güncelleme **yapılmaz**. Kuyruk çalışırken güncellem
 Kopyalama başarısız olursa orijinal exe geri konur.
 </details>
 
+### İzleme sayfaları
+
+<details>
+<summary><b>Sıcaklık kartı neden "sensör yok" diyor?</b></summary>
+
+Çünkü o makinede Windows'un okuyabileceği bir sensör gerçekten yok.
+
+Windows'un sürücüsüz sunduğu tek sıcaklık, üretici yazılımının kendi fan denetimi için
+tanımladığı ACPI termal bölgesidir (`root\WMI:MSAcpi_ThermalZoneTemperature`) ve pek çok
+masaüstü anakart hiç tanımlamaz. Çekirdek başına ve GPU sıcaklıkları, SMBus üzerinden bir
+üretici sensör yongasından gelir; bunun için imzalı bir çekirdek sürücüsü gerekir —
+HWiNFO ve Open Hardware Monitor tam olarak bunu kurar.
+
+DrvNest bir sayfaya sayı yazmak için çekirdek sürücüsü kurmaz. Bu yüzden makul görünen bir
+45 °C uydurmak yerine sensörün olmadığını söyler.
+</details>
+
+<details>
+<summary><b>Uygulama başına ağ kullanımı neden toplamla tutmuyor?</b></summary>
+
+Çünkü ikisi farklı şekilde ölçülür ve ikisi de doğrudur.
+
+Makine geneli değer, ağ bağdaştırıcılarının kendi bayt sayaçlarının toplamıdır: TCP, UDP,
+QUIC, yayın — her şey dahildir. Uygulama başına değer ise TCP ESTATS'tan
+(`GetPerTcpConnectionEStats`) gelir; bu, Windows'un çekirdek sürücüsü olmadan sunduğu tek
+işlem başına bayt sayacıdır ve **yalnızca TCP'yi** kapsar. Görüntülü aramalar, çoğu oyun
+trafiği ve DNS bu yüzden ilk sayıya dahildir, ikincisine değil.
+
+Sayfa bunu açıkça yazar; sessizce eksik raporlamaz.
+
+ESTATS'ı etkinleştirmek yönetici yetkisi ister. DrvNest her zaman yönetici olarak çalışır;
+yine de reddedilirse tablo işlem başına bağlantı sayısına düşer ve nedenini söyler.
+</details>
+
+<details>
+<summary><b>İzleme sayfaları arka planda çalışıyor mu?</b></summary>
+
+Hayır. İki izleyici de siz sayfasını açana kadar hiçbir şey örneklemez ve sayfadan
+ayrıldığınız anda durur.
+
+DrvNest hâlâ hiçbir servis, sürücü veya başlangıç kaydı kurmaz. Kaydettiği tek şey,
+yarım kalmış bir sürücü kuyruğunu sürdüren oturum açma görevidir ve kuyruk bitince o da
+kendini siler.
+</details>
+
+<details>
+<summary><b>İşlemci yüzdesi neden ilk saniyede hep sıfır?</b></summary>
+
+Çünkü işlemci kullanımı Windows'un sakladığı bir değer değil, bir hızdır; hız ölçmek için
+iki örnek gerekir.
+
+DrvNest, Görev Yöneticisi ile aynı yöntemi kullanır: bir işlemin kendi çekirdek + kullanıcı
+süresinin iki örnek arasındaki farkını, geçen gerçek süreye ve mantıksal işlemci sayısına
+böler. İlk örneğin karşılaştıracağı bir öncesi olmadığı için sonuç sıfırdır; ikinci
+örnekten itibaren değerler gerçektir.
+</details>
+
+<details>
+<summary><b>DrvNest güncellemeleri arka planda kuruyor mu?</b></summary>
+
+**Denetler**, kurmaz. Günde bir kez GitHub'a sorar ve *Hakkında* menü öğesinde bir sayı
+gösterir.
+
+**Ayarlar → Güncellemeler** altından açmadığınız sürece hiçbir şey indirmez veya kurmaz.
+Açsanız bile:
+
+- indirilen dosya, sürümün `checksums.txt` değeriyle SHA-256 olarak doğrulanır,
+- değişim DrvNest **kapanırken** yapılır, çalışan bir sürücü kuyruğunun ortasında asla,
+- çevrimdışı ve kurtarma modunda hem denetim hem kurulum tamamen atlanır.
+
+Denetimi tamamen kapatabilirsiniz; *Güncellemeleri denetle* düğmesi çalışmaya devam eder.
+</details>
+
 ### Teknik detaylar
 
 <details>
@@ -529,6 +602,79 @@ From the **About** page, always on your click:
 
 There is no silent background update. Updating is blocked while the queue is running. If
 the copy fails, the original executable is put back.
+</details>
+
+### Monitoring
+
+<details>
+<summary><b>Why does the temperature card say there is no sensor?</b></summary>
+
+Because on that machine there genuinely is not one Windows can read.
+
+The only temperature Windows exposes without a driver is the ACPI thermal zone the
+firmware declares for its own fan control (`root\WMI:MSAcpi_ThermalZoneTemperature`), and a
+great many desktop motherboards declare none at all. Per-core and GPU temperatures come
+from a vendor sensor chip over an SMBus, which needs a signed kernel driver — exactly what
+HWiNFO and Open Hardware Monitor install.
+
+DrvNest will not install a kernel driver to draw a number on a page, so it tells you the
+sensor is missing instead of inventing a plausible 45 °C.
+</details>
+
+<details>
+<summary><b>Why does per-application network usage not add up to the machine total?</b></summary>
+
+Because the two are measured differently, and both are correct.
+
+The machine-wide figure is the sum of the network adapters' own byte counters, so it
+covers everything: TCP, UDP, QUIC, broadcast. The per-application figure comes from TCP
+ESTATS (RFC 4898) via `GetPerTcpConnectionEStats`, which is the only per-process byte
+counter Windows offers without a kernel driver — and it covers **TCP only**. Video calls,
+much game traffic and DNS are therefore in the first number and not in the second.
+
+The page says so rather than quietly under-reporting.
+
+Enabling ESTATS needs an elevated token. DrvNest always has one; if it is ever refused, the
+table falls back to per-process connection counts and says why.
+</details>
+
+<details>
+<summary><b>Do the monitor pages run in the background?</b></summary>
+
+No. Neither monitor samples anything until you open its page, and both stop the moment you
+navigate away.
+
+DrvNest still installs no service, no driver and no startup entry. The only thing it ever
+registers is the logon task that resumes an interrupted driver queue, and that removes
+itself when the queue finishes.
+</details>
+
+<details>
+<summary><b>Why is every processor percentage zero for the first second?</b></summary>
+
+Because processor usage is not a value Windows stores, it is a rate — and a rate needs two
+samples.
+
+DrvNest measures it the way Task Manager does: the change in a process' own kernel + user
+time between two samples, divided by the wall clock time that elapsed and by the number of
+logical processors. The first sample has nothing to compare against, so it reads zero;
+from the second one on, the numbers are real.
+</details>
+
+<details>
+<summary><b>Does DrvNest install updates in the background?</b></summary>
+
+It **checks**; it does not install. Once a day it asks GitHub and shows a count on the
+*About* menu entry.
+
+It downloads and installs nothing unless you turn that on in **Settings → Updates**, and
+even then:
+
+- the download is verified against the release's `checksums.txt` (SHA-256) before it is trusted,
+- the swap happens as DrvNest **closes**, never in the middle of a running driver queue,
+- both the check and the install are skipped entirely in offline and rescue mode.
+
+You can turn the check off completely; the *Check for updates* button keeps working.
 </details>
 
 ### Technical

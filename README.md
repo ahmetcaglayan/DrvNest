@@ -4,10 +4,11 @@
 
 # DrvNest
 
-**DrvNest is a free, open-source driver updater for Windows 10 and 11.**
+**DrvNest is a free, open-source driver updater, system monitor and network monitor for Windows 10 and 11.**
 It scans every device in the machine, finds and installs the missing and outdated drivers, resumes
 after the restarts they need, backs your drivers up before a format and restores them afterwards
-with no internet at all. One file, no installer, no adware.
+with no internet at all — and shows you live what the machine and every program on it are costing
+in processor time, memory and bandwidth. One file, no installer, no adware.
 
 <br>
 
@@ -35,7 +36,11 @@ a single file, and WPF carries its own `vcruntime140_cor3.dll` / `msvcp140_cor3.
 [![Stars](https://img.shields.io/github/stars/ahmetcaglayan/DrvNest?style=flat-square)](../../stargazers)
 [![Build](https://img.shields.io/github/actions/workflow/status/ahmetcaglayan/DrvNest/build.yml?style=flat-square&label=Build)](../../actions/workflows/build.yml)
 
-<sub>🇬🇧 English · [🇹🇷 Türkçe](README.tr.md)</sub>
+<sub>🇬🇧 English · [🇹🇷 Türkçe](README.tr.md) · [🇷🇺 Русский](README.ru.md) · [🇨🇳 简体中文](README.zh.md) · [🇮🇳 हिन्दी](README.hi.md)</sub>
+
+<br>
+
+<img src="assets/screenshots/dashboard.png" alt="The DrvNest dashboard: device, missing-driver, update and problem-device counters above the quick actions and the system summary" width="900">
 
 </div>
 
@@ -57,6 +62,16 @@ DrvNest solves that from a single window:
 - Exports your current drivers **before** a format and restores them **afterwards**
   with no internet involved.
 
+Since 1.1 it also answers the two questions people open Task Manager for:
+
+- **What is this machine doing?** Processor load per logical core, a memory breakdown,
+  every temperature sensor the firmware exposes, storage with real read/write throughput,
+  battery — and a table of every running program with its processor share, working set,
+  private bytes and disk throughput.
+- **Who is using my connection?** Live download and upload for the whole machine, totals
+  for this session and since Windows started, every adapter — and a per-application table
+  showing which program is transferring what, right now.
+
 One file, no installer, no background service, no telemetry.
 
 ---
@@ -77,7 +92,12 @@ One file, no installer, no background service, no telemetry.
 | 📊 **Update history** | A permanent record kept as one JSON object per line (`history.jsonl`), exportable to CSV in one click. |
 | 📄 **Hardware report** | Writes every device and hardware id to a plain text file — carry it on a USB stick to a working computer and look the drivers up by hand. |
 | 🆙 **Built-in updater** | Downloads the new release from GitHub, **verifies its SHA-256** (and refuses to install when the release publishes no `checksums.txt`), then swaps the executable in place. |
-| 🌍 **Turkish / English UI** | Switches instantly while the app is open. |
+| 📈 **System monitor** | Processor load overall and per logical core (`NtQuerySystemInformation`), memory down to cached and committed bytes (`GlobalMemoryStatusEx` + `GetPerformanceInfo`), ACPI thermal zones, per-volume read/write throughput (`IOCTL_DISK_PERFORMANCE`) and battery state. Nothing is sampled until the page is opened, and it stops the moment you leave it. |
+| 🧮 **Per-application resource usage** | Processor share, working set, private bytes, disk throughput and thread count for every process, measured exactly the way Task Manager measures them: the delta in the process' own kernel + user time between two samples, divided by the wall clock and the logical processor count. |
+| 🌐 **Network monitor** | Machine-wide download and upload from the adapters' own counters, session and since-boot totals, open connection count, and every adapter with its address and negotiated link speed. |
+| 🔎 **Per-application network usage** | Which program is transferring what, from `GetExtendedTcpTable` plus TCP ESTATS (`GetPerTcpConnectionEStats`). TCP only — Windows has no per-process UDP counter without a kernel driver, and the page says so instead of under-reporting quietly. |
+| 🔁 **Automatic update check** | One request a day to the GitHub Releases API, and a count on the *About* entry when a new version exists. Automatic download and install is opt-in, SHA-256 verified, and only ever applied as DrvNest closes — never mid-queue. |
+| 🌍 **Five interface languages** | English, Turkish, Russian, Simplified Chinese and Hindi, all inside the single executable. Switches instantly while the app is open. |
 | 🎨 **Dark / light theme** | Swaps the palette dictionary; applied without reopening the window. |
 
 ---
@@ -137,19 +157,51 @@ DrvNest.exe --resume        # continue an interrupted queue straight away
 
 ## 📸 Screenshots
 
-> Screenshots coming soon — they will live in `assets/screenshots/`.
+Real screenshots of the shipping build, taken on Windows 11. They are regenerated from
+the build itself — see [Regenerating the screenshots](#regenerating-the-screenshots) — so
+they cannot drift out of date.
 
-The nine screens:
+<table>
+<tr>
+<td width="50%"><img src="assets/screenshots/system.png" alt="System Monitor: processor, memory, temperature and disk activity as live charts, with one bar per logical core"><br><sub><b>System Monitor</b> — processor, memory, temperature and disk as live charts, one bar per logical core.</sub></td>
+<td width="50%"><img src="assets/screenshots/network.png" alt="Network Monitor: live download and upload charts, session and since-boot totals, and the adapter list"><br><sub><b>Network Monitor</b> — machine-wide download and upload, session totals, every adapter.</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src="assets/screenshots/system-detail.png" alt="The per-application table: processor share, working set, private bytes, disk throughput and thread count for every process"><br><sub><b>Usage per program</b> — processor, memory, disk and threads for every running process.</sub></td>
+<td width="50%"><img src="assets/screenshots/network-detail.png" alt="The per-application network table: download and upload rate, session totals and open connection count per program"><br><sub><b>Traffic per program</b> — which application is using the connection, and how much.</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src="assets/screenshots/devices.png" alt="Devices: every PnP device grouped by class with live problem codes and filters"><br><sub><b>Devices</b> — every PnP device grouped by class, with live problem codes.</sub></td>
+<td width="50%"><img src="assets/screenshots/updates.png" alt="Updates: installable driver packages with per-row selection and total download size"><br><sub><b>Updates</b> — installable packages from Windows Update and local INF folders.</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src="assets/screenshots/queue.png" alt="Activity: the running queue with download percentage, speed and install phase per driver"><br><sub><b>Activity</b> — the running queue, with speed and install phase per driver.</sub></td>
+<td width="50%"><img src="assets/screenshots/backup.png" alt="Backup and Restore: create a backup, list existing backups, restore from a folder"><br><sub><b>Backup &amp; Restore</b> — export every third-party driver, restore it offline.</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src="assets/screenshots/settings.png" alt="Settings: parallel downloads, safety options, automatic updates, sources, theme and language"><br><sub><b>Settings</b> — parallel downloads, safety, automatic updates, theme and language.</sub></td>
+<td width="50%"><img src="assets/screenshots/about.png" alt="About: version information, the built-in updater and the project links"><br><sub><b>About</b> — version information and the built-in updater.</sub></td>
+</tr>
+</table>
 
-- `dashboard.png` — Dashboard: device/missing/update counters, system summary, quick actions
-- `devices.png` — Devices: full inventory grouped by class, filters and search
-- `updates.png` — Updates: installable packages and selection
-- `queue.png` — Activity: live download/install progress
-- `backup.png` — Backup & Restore
-- `history.png` — History and CSV export
-- `logs.png` — Logs
-- `settings.png` — Settings
-- `about.png` — About and the built-in updater
+### Regenerating the screenshots
+
+Every image above is produced by the application itself, so a UI change can be reflected
+in the documentation with one command:
+
+```powershell
+# From an elevated prompt, after building
+.\DrvNest.exe --capture .\assets\screenshots --lang en
+```
+
+It walks the whole menu, waits for the live pages to fill their charts, and writes one
+PNG per page. `--lang` pins the interface language so the published images do not depend
+on the display language of whoever regenerated them.
+
+> Why a built-in capture at all? DrvNest runs elevated, and User Interface Privilege
+> Isolation stops the (unelevated) Snipping Tool from seeing input aimed at a higher
+> integrity window — pressing Print Screen over DrvNest, Task Manager or Registry Editor
+> does nothing. Capturing from inside the process side-steps that entirely.
 
 ---
 
@@ -163,8 +215,10 @@ The nine screens:
 | **Activity** | The running queue. Download percentage, speed, transferred bytes and the install phase are shown separately for every job. *Cancel all*, *Retry failed*, *Restart now* / *Later*. An interrupted session shows a *Continue* button here. |
 | **Backup & Restore** | *Create backup* (optionally zipped), the list of existing backups (package count, size, date), *Restore*, *Restore from folder*, *Open*, *Delete*. |
 | **History** | A permanent record of every driver operation. Filter by outcome, search, *Export as CSV*, *Clear history*. If a record's pre-update backup still exists you can open its folder. |
+| **System Monitor** | Processor load overall and per logical core, memory broken down into in-use / available / cached / committed, temperature sensors when the machine exposes any, storage capacity with live read and write throughput, and battery. Below that, every running process with its processor share, working set, private bytes, disk throughput and thread count — sortable by processor, memory, disk or name, searchable, and pausable so a row can actually be read. |
+| **Network Monitor** | Live download and upload for the whole machine as charts, the total for this session and since Windows started, the number of open connections, and every adapter with its type, address and link speed. Below that, a per-application table: download and upload rate, session totals, open connections and the remote endpoint. |
 | **Logs** | Live diagnostics. *Copy* puts the log on the clipboard with a version / OS / machine header — exactly what an issue report needs. Open the log file or folder, or clear it. |
-| **Settings** | Parallel download count, retry count, scan on startup, restore point, pre-update backup, resume after restart, automatic restart and its delay, offline mode, optional drivers, local driver folders, history retention, theme, language. |
+| **Settings** | Parallel download count, retry count, scan on startup, restore point, pre-update backup, resume after restart, automatic restart and its delay, offline mode, optional drivers, local driver folders, history retention, **automatic update check, automatic install and pre-releases**, theme, language. |
 | **About** | Version information, *Check for updates*, *Download and install*, release notes, project page and issue links. |
 
 ---
@@ -308,6 +362,48 @@ Yes. Queue state is written atomically to `session.json` on every change, and a 
 `--resume`. A session survives at most 10 restarts; the task and the registry value are removed once
 the queue finishes.
 
+### Why does the temperature card say there is no sensor?
+
+Because on that machine there is not one Windows can read. The only temperature Windows
+exposes without a driver is the ACPI thermal zone the firmware declares for its own fan
+control (`root\WMI:MSAcpi_ThermalZoneTemperature`), and a great many desktop motherboards
+declare none at all. Per-core and GPU temperatures come from a vendor sensor chip over an
+SMBus, which needs a signed kernel driver — that is exactly what HWiNFO and Open Hardware
+Monitor install. DrvNest will not install a kernel driver to fill in a number, so it tells
+you the sensor is missing rather than inventing a plausible 45 °C.
+
+### Why does per-program network usage not add up to the machine total?
+
+Because the two are measured differently, and both are correct.
+
+The machine-wide figure is the sum of the network adapters' own byte counters, so it
+covers everything: TCP, UDP, QUIC, broadcast. The per-application figure comes from TCP
+ESTATS (RFC 4898) via `GetPerTcpConnectionEStats`, which is the only per-process byte
+counter Windows offers without a kernel driver — and it covers TCP only. Video calls,
+much game traffic and DNS are therefore counted in the first number and not in the
+second. The page says so rather than quietly under-reporting.
+
+Enabling ESTATS needs an elevated token. DrvNest always has one; if it is ever refused,
+the table falls back to per-process connection counts and says why.
+
+### Does DrvNest update itself in the background?
+
+It **checks** once a day and tells you, on the *About* menu entry. It does not download
+or install anything unless you turn that on in **Settings → Updates**, and even then:
+
+- the download is verified against the release's `checksums.txt` before it is trusted,
+- the swap happens as DrvNest **closes**, never while a driver queue is running,
+- both the check and the install are skipped entirely in offline and rescue mode.
+
+You can turn the check off completely; the *Check for updates* button keeps working.
+
+### Is the monitor a background service?
+
+No. Neither monitor samples anything until you open its page, and both stop the moment
+you navigate away. DrvNest still installs no service, no driver and no startup entry —
+the only thing it ever registers is the logon task that resumes an interrupted driver
+queue, and that removes itself when the queue finishes.
+
 ### Does DrvNest collect any data?
 
 No. No telemetry, no usage statistics, no device identifiers. Exactly two things leave the machine:
@@ -359,6 +455,6 @@ software is provided "as is"; the consequences of using it are the user's respon
 <sub>
 windows driver updater open source · free driver updater no adware · install drivers after format ·
 offline driver installer usb · driver backup restore windows · missing driver finder ·
-windows 11 driver scanner · pnputil driver export · windows update driver catalog tool ·
+windows 11 driver scanner · pnputil driver export · windows update driver catalog tool, free system monitor windows, cpu ram temperature monitor, per application network usage windows, bandwidth monitor per program, task manager alternative open source ·
 device manager yellow exclamation mark fix
 </sub>

@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>DrvNest — 免费开源的 Windows 驱动程序更新工具、系统与网络监视器</title>
+<meta name="description" content="DrvNest 是一款免费开源的 Windows 10 和 11 驱动程序更新工具，内置系统与网络监视器。它能找出缺失的驱动程序，在重装系统后把它们装上，从 USB 闪存盘离线还原驱动程序，并显示每个程序占用了多少处理器、内存和带宽。">
+
+<link rel="canonical" href="https://ahmetcaglayan.github.io/DrvNest/zh/">
+<link rel="alternate" hreflang="en" href="../">
+<link rel="alternate" hreflang="tr" href="../tr/">
+<link rel="alternate" hreflang="ru" href="../ru/">
+<link rel="alternate" hreflang="zh" href="../zh/">
+<link rel="alternate" hreflang="hi" href="../hi/">
+<link rel="alternate" hreflang="x-default" href="../">
+
+<meta name="author" content="Ahmet Çağlayan">
+<meta name="theme-color" content="#0D1014" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DrvNest">
+<meta property="og:title" content="DrvNest — 免费的 Windows 驱动程序更新工具、系统与网络监视器">
+<meta property="og:description" content="DrvNest 是一款免费开源的 Windows 10 和 11 驱动程序更新工具。它能找出缺失的驱动程序，在重装系统后把它们装上，并从 USB 闪存盘离线还原驱动程序。">
+<meta property="og:url" content="https://ahmetcaglayan.github.io/DrvNest/zh/">
+<meta property="og:image" content="https://ahmetcaglayan.github.io/DrvNest/og-image.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="深色背景上的 DrvNest 徽标和文字标识，下方写着“免费开源的 Windows 驱动程序更新工具”。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="tr_TR">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta property="og:locale:alternate" content="hi_IN">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DrvNest — 免费的 Windows 驱动程序更新工具、系统与网络监视器">
+<meta name="twitter:description" content="免费开源的 Windows 驱动程序更新工具。找出缺失的驱动程序，在重装系统后把它们装上，并从 USB 闪存盘离线还原驱动程序。">
+<meta name="twitter:image" content="https://ahmetcaglayan.github.io/DrvNest/og-image.png">
+<meta name="twitter:image:alt" content="深色背景上的 DrvNest 徽标和文字标识，下方写着“免费开源的 Windows 驱动程序更新工具”。">
+
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "DrvNest",
+  "alternateName": "DrvNest 驱动程序更新工具",
+  "description": "DrvNest 是一款面向 Windows 10 和 Windows 11 的免费开源驱动程序更新工具。它会扫描每个 PnP 设备，报告哪些设备没有驱动程序，从 Windows Update 目录或本地 INF 文件夹安装缺失和过时的驱动程序，在驱动程序安装所需的重启之后继续处理队列，并备份驱动程序，以便在重装系统后从 USB 闪存盘离线还原。",
+  "applicationCategory": "UtilitiesApplication",
+  "applicationSubCategory": "驱动程序更新工具",
+  "operatingSystem": "Windows 10, Windows 11",
+  "softwareVersion": "1.1.0",
+  "downloadUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest",
+  "installUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe",
+  "url": "https://ahmetcaglayan.github.io/DrvNest/",
+  "image": "https://ahmetcaglayan.github.io/DrvNest/og-image.png",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "inLanguage": ["en", "tr", "ru", "zh", "hi"],
+  "codeRepository": "https://github.com/ahmetcaglayan/DrvNest",
+  "programmingLanguage": "C#",
+  "softwareRequirements": "Windows 10 1607 版（内部版本 14393）或更高版本，64 位，需要管理员权限。不需要 .NET 运行时，也不需要 Visual C++ Redistributable。",
+  "permissions": "安装驱动程序、导出驱动程序存储和创建系统还原点都需要管理员权限。",
+  "releaseNotes": "https://github.com/ahmetcaglayan/DrvNest/blob/main/CHANGELOG.md",
+  "featureList": [
+    "通过 SetupAPI 和 CfgMgr32 扫描每个 PnP 设备，不使用 WMI",
+    "根据配置管理器问题代码检测缺失的驱动程序",
+    "通过 Windows Update 代理在 Windows Update 目录中查找驱动程序",
+    "从本地 INF 文件夹、USB 闪存盘或网络共享安装驱动程序",
+    "并行下载，串行安装",
+    "重启后自动继续队列",
+    "创建系统还原点，并在替换每个驱动程序之前先备份",
+    "使用 pnputil 备份和还原每个第三方驱动程序",
+    "面向刚重装且没有网络的机器的离线救援模式",
+    "列出每个设备和硬件 ID 的硬件报告",
+    "实时系统监视器：每个逻辑核心的处理器负载、内存明细、温度传感器、存储和电池",
+    "按程序统计的资源占用：每个进程的处理器占比、工作集、专用字节和磁盘吞吐量",
+    "实时网络监视器：整机的下载与上传、本次会话和自开机以来的总量、每个适配器",
+    "基于 TCP 连接统计的按程序网络占用，含打开的连接数和远程终结点",
+    "每天自动检查更新，可选自动下载并安装，且按 SHA-256 校验",
+    "英语、土耳其语、俄语、简体中文和印地语界面，深色与浅色主题"
+  ],
+  "screenshot": [
+    "https://ahmetcaglayan.github.io/DrvNest/screenshots/dashboard.png",
+    "https://ahmetcaglayan.github.io/DrvNest/screenshots/system.png",
+    "https://ahmetcaglayan.github.io/DrvNest/screenshots/network.png"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "creator": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "maintainer": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "softwareHelp": {
+    "@type": "CreativeWork",
+    "url": "https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/USAGE.md"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "zh",
+  "url": "https://ahmetcaglayan.github.io/DrvNest/",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "DrvNest 真的免费吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "是的。DrvNest 以 MIT 许可发布，完整源代码在 GitHub 上。没有付费版，没有试用期，没有付费之后才解锁的功能，没有广告，也不捆绑第三方软件。扫描和安装是同一个产品。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "我需要安装 .NET 或 Visual C++ Redistributable 吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不需要。整个 .NET 8 运行时以独立单文件发布的形式放在 DrvNest.exe 里，WPF 也自带 vcruntime140_cor3.dll 和 msvcp140_cor3.dll 的私有副本。唯一的要求是 64 位的 Windows 10 1607 版（内部版本 14393）或更高版本。这也是可执行文件约 65 MB 的原因。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "为什么 SmartScreen 或我的杀毒软件会对 DrvNest 报警？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "DrvNest 没有代码签名，因为代码签名证书要花钱。对于任何尚未积累信誉的未签名可执行文件，Windows SmartScreen 和智能应用控制都会发出警告；而一个以管理员身份运行、安装驱动程序并注册计划任务的单文件应用程序，在启发式扫描器眼里就很像恶意软件。老实的应对办法是校验下载的文件：运行 Get-FileHash .\\DrvNest.exe -Algorithm SHA256，把结果和随版本一起发布的 checksums.txt 里 DrvNest.exe 那一行比对。一致就说明这个文件与发布的那个逐字节相同。你也可以自己从源代码构建。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "DrvNest 能在重装系统之后、没有网络的情况下安装驱动程序吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以，它就是为此而生的。重装之前，用备份与还原导出每个第三方驱动程序包，然后把那个文件夹和 DrvNest.exe 一起复制到同一个 USB 闪存盘上。重装之后，运行 DrvNest.exe --rescue：不会联系 Windows Update，只使用本地来源。放在 DrvNest.exe 旁边、名为 Drivers 的文件夹会被自动注册为本地驱动程序库。你自己解压出来的任何厂商驱动程序文件夹也可以，因为其中的 INF 文件会被递归匹配。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "如果某个驱动程序把东西弄坏了，我能回退吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以，有三种办法。DrvNest 会导出它即将替换的那个包，并把路径记入历史记录条目，所以你可以用“从文件夹还原”把它装回去。它还会在一次会话的首次安装之前创建驱动程序类型的系统还原点，你可以通过 Windows 系统还原向导使用它。另外，设备管理器里 Windows 自带的“回退驱动程序”按钮照常可用，与 DrvNest 无关。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "DrvNest 真的能在重启之后继续吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "是的。每次状态变化时，队列都会原子性地写入 session.json；DrvNest 会注册一个名为 DrvNest\\ResumeSession 的登录触发计划任务，在任务计划程序不可用时退回到 HKLM 下的 RunOnce 值。下次登录时，该任务会用 --resume 重新启动 DrvNest，剩下的作业继续进行。一次会话最多能撑过十次重启，队列跑完后，计划任务和 RunOnce 值都会被删除。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "DrvNest 为什么需要管理员权限？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "安装驱动程序是特权操作。用 pnputil 把包添加到驱动程序存储或从中导出、驱动 Windows Update 安装程序、通过 srclient.dll 创建系统还原点，都需要提升的令牌，而且恢复任务注册在 HKLM 下。DrvNest 在应用程序清单里一开始就请求提升，而不是在队列进行到一半时以“拒绝访问”失败。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "DrvNest 会收集数据吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会。没有遥测，没有使用统计，也没有设备标识符。只有两样东西会离开这台机器：一是 Windows Update 查询，它通过 Windows 自带的 Windows Update 代理直接发往 Microsoft，在离线或救援模式下完全跳过；二是你按下“检查更新”时向 GitHub Releases API 发出的一次请求。其余一切都留在你自己机器上的 %ProgramData%\\DrvNest 里。"
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">跳到内容</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="https://ahmetcaglayan.github.io/DrvNest/">
+      <img src="../favicon.svg" width="30" height="30" alt="DrvNest 徽标：一个六边形巢室托着一枚薄荷绿芯片">
+      <span>Drv<span class="mark-nest">Nest</span></span>
+    </a>
+    <nav class="site-nav" aria-label="主导航">
+      <ul>
+        <li><a href="#features">功能</a></li>
+        <li><a href="#monitor">监视器</a></li>
+        <li><a href="#post-format">重装之后</a></li>
+        <li><a href="#compare">横向对比</a></li>
+        <li><a href="#faq">常见问题</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest">GitHub</a></li>
+        <li><a href="#screenshots">屏幕截图</a></li>
+        <li>
+      <details class="lang-menu">
+        <summary aria-label="选择语言">简体中文 ▾</summary>
+        <ul>
+        <li><a href="../" hreflang="en" lang="en">English</a></li>
+        <li><a href="../tr/" hreflang="tr" lang="tr">Türkçe</a></li>
+        <li><a href="../ru/" hreflang="ru" lang="ru">Русский</a></li>
+        <li><a href="../zh/" hreflang="zh" lang="zh" aria-current="true">简体中文</a></li>
+        <li><a href="../hi/" hreflang="hi" lang="hi">हिन्दी</a></li>
+        </ul>
+      </details>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap">
+      <img class="hero-mark" src="../favicon.svg" width="84" height="84" alt="DrvNest 应用程序图标：一个装着芯片的薄荷绿六边形">
+      <h1>重装系统之后照样能用的免费 Windows 驱动程序更新工具</h1>
+      <p class="lede">
+        <strong>DrvNest</strong> 会扫描电脑里的每个设备，告诉你哪些设备没有驱动程序，
+        并从 Windows Update 目录或 USB 闪存盘上的某个文件夹安装缺失和过时的驱动程序。
+        它并行下载，在驱动程序安装所需的重启之后继续跑，也能在完全没有网络连接的情况下
+        把你的旧驱动程序装回去。从 1.1 起，它还会实时显示这台机器和上面的每个程序
+        占用了多少处理器时间、内存和带宽。
+      </p>
+      <p class="meta-line">
+        Windows 10 1607+ 与 Windows 11 · 64 位（x64 和 arm64 版本） · 需要管理员权限 · MIT 许可
+      </p>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe">
+          下载 DrvNest.exe
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/DrvNest">
+          GitHub 上的源代码
+        </a>
+      </div>
+      <p class="cta-note">
+        单个文件，约 65 MB。没有安装程序，不用另外装 .NET 运行时，不用 Visual C++ Redistributable，
+        也不捆绑任何东西。<a href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">全部版本、arm64 版本和 checksums.txt →</a>
+      </p>
+
+      <ul class="pill-row">
+        <li class="pill">无广告软件</li>
+        <li class="pill">无付费版</li>
+        <li class="pill">无遥测</li>
+        <li class="pill">无后台服务</li>
+        <li class="pill">系统与网络监视器</li>
+        <li class="pill">5 种界面语言</li>
+        <li class="pill">深色与浅色主题</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <section id="whats-new">
+    <div class="wrap">
+      <h2>1.1 的新增内容 <span class="badge-new">1.1.0</span></h2>
+      <p class="section-intro">
+        三项新增内容，都是应用程序现在确实做得到的事，而不是承诺以后再做的事。
+      </p>
+
+      <ul class="whatsnew">
+        <li>
+          <h3>系统监视器</h3>
+          <p>
+            处理器负载，每个逻辑核心一条柱；内存明细，细到缓存和已提交字节；
+            固件公开的每一个温度传感器；存储容量以及实时的读写吞吐量；还有电池状态——
+            另外还有一张表，列出每个正在运行的程序和它的开销。
+          </p>
+        </li>
+        <li>
+          <h3>网络监视器</h3>
+          <p>
+            整机的实时下载与上传，本次会话以及自 Windows 启动以来的总量，
+            每个适配器及其地址和链接速度，还有一张按程序统计的表格，显示哪个程序
+            在用网络、有多快、打开着多少个连接。
+          </p>
+        </li>
+        <li>
+          <h3>自动更新</h3>
+          <p>
+            DrvNest 现在每天向 GitHub 问一次有没有更新的版本，并在菜单里告诉你。
+            下载和安装默认是关闭的；即使你把它打开，通过校验的文件也只在应用程序
+            关闭时才替换进去——绝不会在驱动程序队列跑到一半时替换。
+          </p>
+        </li>
+        <li>
+          <h3>五种语言</h3>
+          <p>
+            英语、土耳其语、俄语、简体中文和印地语，全部内置在同一个可执行文件里，
+            切换时不用重启。在 <code>DrvNest.exe</code> 旁边放一个 JSON 文件，
+            仍然可以在不重新构建的情况下添加或修正翻译。
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="screenshots">
+    <div class="wrap">
+      <h2>它长什么样</h2>
+      <p class="section-intro">
+        来自正式发布版本的真实截图，在一台 Windows 11 笔记本电脑上拍摄。
+        它们由构建本身通过
+        <code>DrvNest.exe --capture</code> 重新生成，所以不会过时。
+      </p>
+
+    <div class="shots" role="region" aria-roledescription="轮播" aria-label="DrvNest 屏幕截图">
+      <div class="shots-track" id="shotsTrack" tabindex="0">
+        <figure class="shot" id="shot-0" role="group" aria-roledescription="幻灯片" aria-label="1 / 10">
+          <img src="../screenshots/dashboard.png" width="1240" height="820" loading="eager" decoding="async" alt="仪表板">
+          <figcaption class="shot-caption">
+            <h3>仪表板</h3>
+            <p>所有要紧的数字都在一屏上：找到的设备、缺失的驱动程序、可用的更新和有问题的设备，下面是这台机器自身的操作系统、硬件、处理器和 BIOS 摘要。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-1" role="group" aria-roledescription="幻灯片" aria-label="2 / 10">
+          <img src="../screenshots/system.png" width="1240" height="820" loading="lazy" decoding="async" alt="系统监视器">
+          <figcaption class="shot-caption">
+            <h3>系统监视器</h3>
+            <p>处理器、内存、温度和磁盘活动都是实时图表，每个逻辑核心一条柱。当这台机器没有 Windows 能读取的传感器时，温度卡片会直说，而不是编一个数字出来。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-2" role="group" aria-roledescription="幻灯片" aria-label="3 / 10">
+          <img src="../screenshots/system-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="各程序占用">
+          <figcaption class="shot-caption">
+            <h3>各程序占用</h3>
+            <p>每个正在运行的进程及其处理器占比、工作集、专用字节、磁盘吞吐量和线程数。可按处理器、内存或磁盘排序，按名称或 PID 搜索，也可以暂停表格以便看清某一行。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-3" role="group" aria-roledescription="幻灯片" aria-label="4 / 10">
+          <img src="../screenshots/network.png" width="1240" height="820" loading="lazy" decoding="async" alt="网络监视器">
+          <figcaption class="shot-caption">
+            <h3>网络监视器</h3>
+            <p>整机下载与上传的实时图表、本次会话以及自 Windows 启动以来的总量、打开的连接数，还有每个适配器及其地址和协商出来的链接速度。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-4" role="group" aria-roledescription="幻灯片" aria-label="5 / 10">
+          <img src="../screenshots/network-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="各程序流量">
+          <figcaption class="shot-caption">
+            <h3>各程序流量</h3>
+            <p>此刻是哪个应用程序在用网络、两个方向各有多快、本次会话传了多少、打开着多少个连接——远程终结点显示在工具提示上。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-5" role="group" aria-roledescription="幻灯片" aria-label="6 / 10">
+          <img src="../screenshots/devices.png" width="1240" height="820" loading="lazy" decoding="async" alt="设备">
+          <figcaption class="shot-caption">
+            <h3>设备</h3>
+            <p>每个 PnP 设备按类分组，实时的配置管理器问题代码会翻成一句大白话。可以按有问题、缺驱动程序或使用通用驱动程序来筛选，也可以复制任意硬件 ID。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-6" role="group" aria-roledescription="幻灯片" aria-label="7 / 10">
+          <img src="../screenshots/updates.png" width="1240" height="820" loading="lazy" decoding="async" alt="更新">
+          <figcaption class="shot-caption">
+            <h3>更新</h3>
+            <p>来自 Windows Update 驱动程序目录和本地 INF 文件夹的可安装包并排列出。可以逐行选择，显示下载总大小，也可以隐藏某个更新或干脆忽略某个设备。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-7" role="group" aria-roledescription="幻灯片" aria-label="8 / 10">
+          <img src="../screenshots/queue.png" width="1240" height="820" loading="lazy" decoding="async" alt="活动">
+          <figcaption class="shot-caption">
+            <h3>活动</h3>
+            <p>正在跑的队列：下载百分比、速度、已传输字节数和安装阶段，每个驱动程序一行。被中断的会话在重启之后会在这里显示一个“继续”按钮。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-8" role="group" aria-roledescription="幻灯片" aria-label="9 / 10">
+          <img src="../screenshots/backup.png" width="1240" height="820" loading="lazy" decoding="async" alt="备份与还原">
+          <figcaption class="shot-caption">
+            <h3>备份与还原</h3>
+            <p>重装之前先导出每个第三方驱动程序包，可以选择压成一个 ZIP，之后在完全没有网络连接的情况下把整套装回去。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-9" role="group" aria-roledescription="幻灯片" aria-label="10 / 10">
+          <img src="../screenshots/settings.png" width="1240" height="820" loading="lazy" decoding="async" alt="设置">
+          <figcaption class="shot-caption">
+            <h3>设置</h3>
+            <p>并行下载数、重试、还原点、更新前备份、重启后继续、自动更新、离线模式、本地驱动程序文件夹、历史记录保留、主题和语言。</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="shots-bar">
+      <ul class="shots-dots" id="shotsDots">
+      <li><button type="button" data-slide="0" aria-current="true">仪表板</button></li>
+      <li><button type="button" data-slide="1">系统监视器</button></li>
+      <li><button type="button" data-slide="2">各程序占用</button></li>
+      <li><button type="button" data-slide="3">网络监视器</button></li>
+      <li><button type="button" data-slide="4">各程序流量</button></li>
+      <li><button type="button" data-slide="5">设备</button></li>
+      <li><button type="button" data-slide="6">更新</button></li>
+      <li><button type="button" data-slide="7">活动</button></li>
+      <li><button type="button" data-slide="8">备份与还原</button></li>
+      <li><button type="button" data-slide="9">设置</button></li>
+      </ul>
+      <div class="shots-arrows">
+        <button type="button" id="shotsPrev" aria-label="上一张截图">&#8592;</button>
+        <button type="button" id="shotsNext" aria-label="下一张截图">&#8594;</button>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <section id="problem">
+    <div class="wrap">
+      <h2>它是为什么问题而做的</h2>
+      <div class="prose-2col">
+      <p class="section-intro">
+        你刚刚重装完 Windows。设备管理器里满是黄色感叹号，分辨率不对，没有声音，
+        而最糟的是——没有网络，因为网络适配器同样没有驱动程序。要下载驱动程序得先有网络，
+        要上网又得先有驱动程序。
+      </p>
+      <p class="section-intro">
+        DrvNest 在一个窗口里就打破了这个死循环：它枚举硬件，把硬件和它真正能拿到的驱动程序
+        匹配起来，然后安装。完全没有网络时，它就从你自己带来的文件夹里安装。
+      </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>DrvNest 会做什么</h2>
+      <p class="section-intro">
+        下面每一项都在正式发布的应用程序里——这里没有一份假装成功能列表的路线图。
+      </p>
+      <ul class="cards">
+        <li class="card">
+          <h3>扫描每一个设备</h3>
+          <p>
+            通过 SetupAPI 和 CfgMgr32 而不是 WMI 枚举当前所有 PnP 设备，
+            所以在五分钟前刚格式化的机器上，或者 WMI 存储库已经损坏的机器上，它照样能用。
+          </p>
+        </li>
+        <li class="card">
+          <h3>找出缺失的驱动程序</h3>
+          <p>
+            读取实时的配置管理器问题代码。代码 28、1 和 19 表示“没有驱动程序”；22 是
+            已禁用的设备，14 是在等待重启的设备。筛选器可以让你只看有问题的设备、
+            没有驱动程序的设备，或者正在用通用驱动程序的设备。
+          </p>
+        </li>
+        <li class="card">
+          <h3>使用 Windows Update 驱动程序目录</h3>
+          <p>
+            通过 Windows 自带的 Windows Update 代理 COM API 与 Microsoft Update 通信。
+            不用安装额外的服务，中间也没有第三方驱动程序镜像站。
+          </p>
+        </li>
+        <li class="card">
+          <h3>离线从 USB 闪存盘安装</h3>
+          <p>
+            解析任意文件夹里的 INF 包——USB 闪存盘、网络共享、DrvNest 备份，
+            或者你自己解压出来的厂商下载包——并把它们和你的硬件 ID 匹配起来。
+          </p>
+        </li>
+        <li class="card">
+          <h3>并行下载，一次装一个</h3>
+          <p>
+            默认三个并发下载，可以在一到八之间调整。安装是有意串行的：
+            Windows Update 对第二个并发安装会返回 WU_E_OPERATIONINPROGRESS，
+            而且 PnP 子系统本来也会串行处理。
+          </p>
+        </li>
+        <li class="card">
+          <h3>扛得住重启</h3>
+          <p>
+            每次变化之后队列状态都会写入 <code>session.json</code>，一个由登录触发的
+            计划任务会用 <code>--resume</code> 把 DrvNest 拉回来，所以一个需要重启三次、
+            包含十个驱动程序的队列会自己跑完。
+          </p>
+        </li>
+        <li class="card">
+          <h3>动手改之前先备份</h3>
+          <p>
+            在一次会话的首次安装之前创建一个驱动程序类型的系统还原点，
+            并在每个驱动程序包被替换之前立刻把它导出，路径记在历史记录条目里。
+          </p>
+        </li>
+        <li class="card">
+          <h3>备份并还原你的整套驱动程序</h3>
+          <p>
+            用 <code>pnputil /export-driver</code> 把每个第三方驱动程序包导出到一个
+            文件夹或一个 ZIP，用 <code>pnputil /add-driver /subdirs /install</code> 还原。
+            Microsoft 随系统附带的驱动程序被有意跳过——那些 Windows 会自己重新装上。
+          </p>
+        </li>
+        <li class="card">
+          <h3>写一份硬件报告</h3>
+          <p>
+            把每个设备和硬件 ID 写进一个纯文本文件，这样在别无他法的时候，
+            你可以用 USB 闪存盘把它带到一台能用的电脑上，手动去查驱动程序。
+          </p>
+        </li>
+        <li class="card">
+          <h3>保留一份诚实的历史记录</h3>
+          <p>
+            每个驱动程序操作都作为一行 JSON 对象永久记录，可以按结果筛选，
+            一键导出成 CSV；另外还有一份实时诊断日志，复制按钮会连版本和操作系统信息头
+            一起带上。
+          </p>
+        </li>
+        <li class="card">
+          <h3>校验它自己的更新</h3>
+          <p>
+            内置的更新程序会把下载到的文件和该版本
+            <code>checksums.txt</code> 里的 SHA-256 比对，校验值缺失或对不上时，
+            它拒绝安装任何东西。它绝不在后台悄悄更新。
+          </p>
+        </li>
+        <li class="card">
+          <h3>显示这台机器在做什么</h3>
+          <p>
+            一块实时面板，显示每个逻辑核心的处理器负载、细到缓存和已提交字节的内存、
+            固件真正公开的每一个温度传感器、带真实读写吞吐量的存储容量，以及电池状态。
+            在你打开这一页之前什么都不采样，你一离开它就停。
+          </p>
+        </li>
+        <li class="card">
+          <h3>显示每个程序的开销</h3>
+          <p>
+            每个正在运行的进程的处理器占比、工作集、专用字节、磁盘吞吐量和线程数，
+            测量方式和任务管理器一样。可排序、可搜索、可暂停。
+          </p>
+        </li>
+        <li class="card">
+          <h3>显示带宽去了哪里</h3>
+          <p>
+            整机的实时下载与上传取自适配器自己的计数器，按程序统计的流量取自
+            Windows 的 TCP 连接统计——没有内核驱动程序，不抓包，
+            也没有第三方服务。
+          </p>
+        </li>
+        <li class="card">
+          <h3>让自己保持最新</h3>
+          <p>
+            每天向 GitHub Releases API 发一次请求，有新版本时告诉你。
+            自动下载和安装需要你自己打开，会按 SHA-256 校验，而且只在 DrvNest
+            关闭时才应用。
+          </p>
+        </li>
+        <li class="card">
+          <h3>会说五种语言</h3>
+          <p>
+            英语、土耳其语、俄语、简体中文和印地语，全部在同一个可执行文件里。
+            语言和深色或浅色主题都能在应用程序开着的时候立即切换，不用重启。
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="post-format">
+    <div class="wrap">
+      <h2>重装系统之后安装驱动程序，一步一步来</h2>
+      <p class="section-intro">
+        这就是 DrvNest 存在的理由。重装之前花的那五分钟，
+        决定了重装之后这台机器能不能立刻用起来。
+      </p>
+
+      <figure class="figure">
+<svg viewBox="0 0 1160 258" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="flow-title">驱动程序是怎么装上的</title>
+  <desc id="flow-desc">从左到右五个步骤：扫描设备，与可用的驱动程序包匹配，并行下载，一次装一个，然后重启。一条虚线从重启步骤回到安装步骤，表示队列在重启之后会自动继续。</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--dim)" />
+    </marker>
+  </defs>
+
+  <g font-family="var(--font-sans)">
+    <g><rect x="10" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/><text x="30" y="86" font-size="13" font-weight="700" fill="var(--accent)">01</text><text x="54" y="86" font-size="16" font-weight="600" fill="var(--text)">扫描</text><text x="30" y="118" font-size="14" fill="var(--muted)">SetupAPI + CfgMgr32，</text><text x="30" y="138" font-size="14" fill="var(--muted)">不用 WMI</text></g>
+    <line x1="208" y1="115" x2="234" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="242" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="262" y="86" font-size="13" font-weight="700" fill="var(--dim)">02</text><text x="286" y="86" font-size="16" font-weight="600" fill="var(--text)">匹配</text><text x="262" y="118" font-size="14" fill="var(--muted)">Windows Update 与</text><text x="262" y="138" font-size="14" fill="var(--muted)">本地 INF 文件夹</text></g>
+    <line x1="440" y1="115" x2="466" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="474" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="494" y="86" font-size="13" font-weight="700" fill="var(--dim)">03</text><text x="518" y="86" font-size="16" font-weight="600" fill="var(--text)">下载</text><text x="494" y="118" font-size="14" fill="var(--muted)">最多同时八个，</text><text x="494" y="138" font-size="14" fill="var(--muted)">校验和已核对</text></g>
+    <line x1="672" y1="115" x2="698" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="706" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="726" y="86" font-size="13" font-weight="700" fill="var(--dim)">04</text><text x="750" y="86" font-size="16" font-weight="600" fill="var(--text)">安装</text><text x="726" y="118" font-size="14" fill="var(--muted)">一次只装一个——</text><text x="726" y="138" font-size="14" fill="var(--muted)">Windows 的要求</text></g>
+    <line x1="904" y1="115" x2="930" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="938" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/><text x="958" y="86" font-size="13" font-weight="700" fill="var(--accent)">05</text><text x="982" y="86" font-size="16" font-weight="600" fill="var(--text)">重启</text><text x="958" y="118" font-size="14" fill="var(--muted)">登录任务会把</text><text x="958" y="138" font-size="14" fill="var(--muted)">DrvNest 拉回来</text></g>
+
+    <!-- The queue resumes at the install step after the restart it asked for. -->
+    <path d="M 1044 170 L 1044 216 L 812 216 L 812 174" fill="none" stroke="var(--dim)"
+          stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#arrow)" />
+    <text x="928" y="240" text-anchor="middle" font-size="14" fill="var(--dim)">队列会从中断处自己接着跑</text>
+  </g>
+</svg>
+        <figcaption>
+          整个流程，以及大多数工具跳过的那一环：一个需要重启三次、包含十个驱动程序的
+          队列会自己跑完，因为队列每次变化之后都会写到磁盘上，而且登录任务会用
+          <code>--resume</code> 把 DrvNest 拉回来。
+        </figcaption>
+      </figure>
+
+      <div class="steps">
+        <div class="step-block">
+          <h3>重装之前——大约五分钟</h3>
+          <ol>
+            <li>运行 DrvNest，打开<strong>备份与还原</strong>。</li>
+            <li>点击<strong>创建备份</strong>。系统上的每个第三方驱动程序包都会被导出。</li>
+            <li>如果你想要单个文件，勾选<strong>压缩为 ZIP</strong>。</li>
+            <li>把生成的文件夹<strong>连同 DrvNest.exe</strong> 一起复制到同一个 USB 闪存盘上。</li>
+            <li>可选但很有用：把文件夹命名为 <code>Drivers</code>，放在 <code>DrvNest.exe</code> 旁边。这样 DrvNest 会自动把它注册成本地驱动程序库，不用任何配置。</li>
+          </ol>
+        </div>
+
+        <div class="step-block">
+          <h3>重装之后</h3>
+          <ol>
+            <li>插上闪存盘，运行 <code>DrvNest.exe --rescue</code>。不会联系 Windows Update，只使用本地来源。</li>
+            <li>进入<strong>备份与还原 → 还原</strong>，或者<strong>从文件夹还原</strong>，选择你的备份。每个包都会被添加到驱动程序存储，并绑定到对应的设备。</li>
+            <li>网络适配器有了能用的驱动程序之后，点击<strong>扫描</strong>。</li>
+            <li><strong>仪表板 → 重装后恢复</strong>会把仍然缺失的一切排进队列，这次是从 Windows Update 取。</li>
+            <li>系统要求重启时就答应。DrvNest 会在登录时回来，把队列剩下的部分做完。</li>
+          </ol>
+        </div>
+      </div>
+
+      <p class="callout">
+        <strong>没有备份，没有网络，什么都没准备？</strong>用
+        <strong>仪表板 → 硬件报告</strong>把每个硬件 ID 写进一个文本文件，带到一台能用的电脑上，
+        从厂商那里下载对应的包，解压，把文件夹带回来，用<strong>从文件夹还原</strong>装上。
+        先从网络适配器开始；网络一通，剩下的就交给 Windows Update。
+      </p>
+
+      <h3 class="sub-heading">命令行</h3>
+      <pre><code>DrvNest.exe                 # 正常启动
+DrvNest.exe --rescue        # 离线救援模式 (等同于 --offline)
+DrvNest.exe --resume        # 立刻继续被中断的队列</code></pre>
+    </div>
+  </section>
+
+
+  <section id="monitor">
+    <div class="wrap">
+      <h2>两个数字，不是同一个数字</h2>
+      <p class="section-intro">
+        监视器页面在一件大多数工具悄悄搞错的事情上很小心。整机传输的量和单个程序
+        传输的量是用两种不同的方法测出来的，加起来并不会正好等于同一个总数——
+        所以 DrvNest 把它们分开报告，并说明为什么。
+      </p>
+
+      <figure class="figure">
+<svg viewBox="0 0 1120 300" role="img" aria-labelledby="mon-title mon-desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="mon-title">整机流量和各程序流量是怎么测出来的</title>
+  <desc id="mon-desc">两列。左列是整机，取自网络适配器，包含 TCP、UDP、QUIC 和广播流量。右列是各程序，取自 TCP 连接统计，因此只涵盖 TCP。</desc>
+
+  <g font-family="var(--font-sans)">
+    <!-- machine-wide column -->
+    <rect x="10" y="16" width="530" height="268" rx="14" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
+    <text x="36" y="52" font-size="17" font-weight="600" fill="var(--text)">整台机器</text>
+    <text x="36" y="76" font-size="14" fill="var(--dim)">适配器字节计数器 · 所有协议</text>
+
+    <g><text x="36" y="112" font-size="14" fill="var(--muted)">TCP</text><rect x="186" y="104" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="104" width="91" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="112" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">已计入</text></g>
+    <g><text x="36" y="156" font-size="14" fill="var(--muted)">UDP / QUIC</text><rect x="186" y="148" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="148" width="50" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="156" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">已计入</text></g>
+    <g><text x="36" y="200" font-size="14" fill="var(--muted)">DNS、广播</text><rect x="186" y="192" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="192" width="20" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="200" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">已计入</text></g>
+    <g><text x="36" y="244" font-size="14" fill="var(--muted)">总计</text><rect x="186" y="236" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="236" width="148" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="244" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">精确</text></g>
+
+    <!-- per-application column -->
+    <rect x="580" y="16" width="530" height="268" rx="14" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="606" y="52" font-size="17" font-weight="600" fill="var(--text)">各个程序</text>
+    <text x="606" y="76" font-size="14" fill="var(--dim)">TCP 连接统计 · 仅 TCP</text>
+
+    <g><text x="606" y="112" font-size="14" fill="var(--muted)">chrome</text><rect x="756" y="104" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="104" width="91" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="112" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="156" font-size="14" fill="var(--muted)">DrvNest</text><rect x="756" y="148" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="148" width="41" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="156" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="200" font-size="14" fill="var(--muted)">svchost</text><rect x="756" y="192" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="192" width="20" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="200" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="244" font-size="14" fill="var(--muted)">UDP 流量</text><rect x="756" y="236" width="148" height="9" rx="4.5" fill="var(--bg)"/><text x="1084" y="244" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">无法归属</text></g>
+  </g>
+</svg>
+        <figcaption>
+          整机流量来自网络适配器，涵盖所有协议。各程序流量来自 Windows
+          自己的 TCP 连接统计，所以 UDP——QUIC、大多数视频通话和 DNS——在第一列里，
+          却不在第二列里。
+        </figcaption>
+      </figure>
+
+      <p class="section-intro">
+        温度也是一样地实话实说。Windows 没有通用的温度 API；能拿到的只有固件为操作系统
+        自身的风扇控制而声明的 ACPI 热区。很多台式机根本一个都不声明。真正的
+        每核心和每 GPU 读数来自厂商芯片，要通过 SMBus 读，需要一个已签名的内核
+        驱动程序——HWiNFO 这类工具装的就是这个。DrvNest 不会为了在页面上画一个数字
+        就装一个内核驱动程序，所以这台机器没有传感器时，卡片就直说没有。
+      </p>
+    </div>
+  </section>
+
+  <section id="compare">
+    <div class="wrap">
+      <h2>DrvNest 的对比——以及它不如别人的地方</h2>
+      <p class="section-intro">
+        驱动程序更新工具名声不好，而且大多是自找的：免费扫描找出四十个问题，
+        修复却挡在付费墙后面，还有常驻服务，以及一个会捎带一堆东西的安装程序。
+        DrvNest 是反着做的。它在某些具体方面也确实比商业工具差，这些地方就列在这里，
+        而不是藏起来。
+      </p>
+
+      <div class="table-scroll">
+        <table>
+          <caption class="sr-only">DrvNest 与常见免费驱动程序更新工具套路的对比</caption>
+          <thead>
+            <tr>
+              <th scope="col">&nbsp;</th>
+              <th scope="col">DrvNest</th>
+              <th scope="col">常见的免费软件套路</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>价格</td>
+              <td><span class="yes">免费，MIT 许可</span></td>
+              <td>免费扫描，付费解锁才能安装</td>
+            </tr>
+            <tr>
+              <td>源代码</td>
+              <td><span class="yes">公开、可审计、可自行构建</span></td>
+              <td>闭源</td>
+            </tr>
+            <tr>
+              <td>捆绑的附加东西</td>
+              <td><span class="yes">没有</span></td>
+              <td>常常有一个“电脑清理工具”、工具栏或试用版</td>
+            </tr>
+            <tr>
+              <td>遥测</td>
+              <td><span class="yes">没有</span></td>
+              <td>普遍都有</td>
+            </tr>
+            <tr>
+              <td>后台服务</td>
+              <td><span class="yes">没有——你运行它，它才运行</span></td>
+              <td>常驻代理和定期催你的弹窗</td>
+            </tr>
+            <tr>
+              <td>驱动程序从哪来</td>
+              <td>Microsoft 的 Windows Update 目录，加上你指给它的 INF 文件夹</td>
+              <td>厂商自己运营的驱动程序镜像站</td>
+            </tr>
+            <tr>
+              <td>没有网络也能用</td>
+              <td><span class="yes">可以——救援模式、USB 和本地 INF 文件夹</span></td>
+              <td>很少</td>
+            </tr>
+            <tr>
+              <td>资源与网络监视器</td>
+              <td><span class="yes">内置，按程序统计</span></td>
+              <td>通常没有，或者是另外一个付费产品</td>
+            </tr>
+            <tr>
+              <td>代码签名</td>
+              <td><span class="no">未签名</span>——请核对 checksums.txt 里的 SHA-256</td>
+              <td>通常已签名</td>
+            </tr>
+            <tr>
+              <td>安装体积</td>
+              <td><span class="no">一个约 65 MB 的文件</span>，别的什么都不需要</td>
+              <td>一个小安装程序，外加它的依赖项</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="callout warn">
+        <strong>诚实的小字条款。</strong>DrvNest <strong>没有代码签名</strong>，
+        所以 SmartScreen 和智能应用控制在首次运行时会警告你；正确的做法是核对公布的
+        SHA-256，而不是盲目信任这个文件。它需要管理员权限，只能在 64 位的 Windows 10 1607
+        或更高版本上运行，可执行文件很大是因为整个 .NET 运行时都在里面，而且安装只能一次
+        一个，因为 Windows 不会并行做。安装驱动程序本身就有风险：请把还原点设置保持开启，
+        做好备份，并阅读仓库里的免责声明。
+      </p>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <h2>常见问题</h2>
+      <p class="section-intro">
+        完整列表（包括技术性的问题）在
+        <a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/FAQ.md">docs/FAQ.md</a> 里。
+      </p>
+
+      <div class="faq">
+        <article class="faq-item">
+          <h3>DrvNest 真的免费吗？</h3>
+          <p>
+            是的。DrvNest 以 MIT 许可发布，完整源代码在 GitHub 上。
+            没有付费版，没有试用期，没有付费之后才解锁的功能，没有广告，
+            也不捆绑第三方软件。扫描和安装是同一个产品。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>我需要安装 .NET 或 Visual C++ Redistributable 吗？</h3>
+          <p>
+            不需要。整个 .NET 8 运行时以独立单文件发布的形式放在 <code>DrvNest.exe</code> 里，
+            WPF 也自带
+            <code>vcruntime140_cor3.dll</code> 和 <code>msvcp140_cor3.dll</code> 的私有副本。
+            唯一的要求是 64 位的 Windows 10 1607 版（内部版本 14393）或更高版本。
+            这也是可执行文件约 65 MB 的原因。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>为什么 SmartScreen 或我的杀毒软件会对 DrvNest 报警？</h3>
+          <p>
+            DrvNest <strong>没有代码签名</strong>，因为代码签名证书要花钱。
+            对于任何尚未积累起信誉的未签名可执行文件，Windows SmartScreen 和智能应用控制
+            都会发出警告；而一个以管理员身份运行、安装驱动程序并注册计划任务的
+            单文件应用程序，在启发式扫描器眼里就很像恶意软件。
+          </p>
+          <p>
+            老实的应对办法是校验下载的文件。运行
+            <code>Get-FileHash .\DrvNest.exe -Algorithm SHA256</code>，把结果和随版本一起发布的
+            <code>checksums.txt</code> 里 <code>DrvNest.exe</code> 那一行比对。
+            一致就说明这个文件与发布的那个逐字节相同。你也可以自己从源代码构建。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>DrvNest 能在重装系统之后、没有网络的情况下安装驱动程序吗？</h3>
+          <p>
+            可以，它就是为此而生的。重装之前，用<strong>备份与还原</strong>导出每个
+            第三方驱动程序包，然后把那个文件夹和
+            <code>DrvNest.exe</code> 一起复制到同一个 USB 闪存盘上。重装之后，运行
+            <code>DrvNest.exe --rescue</code>：不会联系 Windows Update，只使用本地来源。
+          </p>
+          <p>
+            放在 <code>DrvNest.exe</code> 旁边、名为 <code>Drivers</code> 的文件夹
+            会被自动注册为本地驱动程序库。你自己解压出来的任何厂商驱动程序文件夹
+            也可以，因为其中的 INF 文件会被递归匹配。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>如果某个驱动程序把东西弄坏了，我能回退吗？</h3>
+          <p>可以，有三种办法。</p>
+          <ol>
+            <li>DrvNest 会导出它即将替换的那个包，并把路径记入历史记录条目，所以你可以用<strong>从文件夹还原</strong>把它装回去。</li>
+            <li>它会在一次会话的首次安装之前创建一个驱动程序类型的系统还原点，你可以通过 Windows 系统还原向导（<code>rstrui.exe</code>）使用它。</li>
+            <li>设备管理器里 Windows 自带的<em>回退驱动程序</em>按钮照常可用，与 DrvNest 无关。</li>
+          </ol>
+        </article>
+
+        <article class="faq-item">
+          <h3>DrvNest 真的能在重启之后继续吗？</h3>
+          <p>
+            是的。每次状态变化时，队列都会原子性地写入 <code>session.json</code>，
+            而且 DrvNest 会注册一个名为
+            <code>DrvNest\ResumeSession</code> 的登录触发计划任务，在任务计划程序
+            不可用时退回到 HKLM 下的 <code>RunOnce</code> 值。下次登录时，该任务会用
+            <code>--resume</code> 重新启动 DrvNest，剩下的作业继续进行。一次会话最多
+            能撑过十次重启，队列跑完后，计划任务和 <code>RunOnce</code> 值都会被删除。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>DrvNest 为什么需要管理员权限？</h3>
+          <p>
+            安装驱动程序是特权操作。用 <code>pnputil</code> 把包添加到驱动程序存储或
+            从中导出、驱动 Windows Update 安装程序、通过 <code>srclient.dll</code> 创建
+            系统还原点，都需要提升的令牌，而且恢复任务注册在 HKLM 下。DrvNest 在
+            应用程序清单里一开始就请求提升，而不是在队列跑到一半时以“拒绝访问”失败。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>温度卡片为什么说没有传感器？</h3>
+          <p>
+            因为那台机器上确实没有 Windows 能读的传感器。Windows 在不装驱动程序的
+            情况下唯一能提供的温度，是固件为自身风扇控制而声明的 ACPI 热区，
+            而相当多的台式机主板一个都不声明。每核心和 GPU 温度来自厂商的传感器芯片，
+            要通过 SMBus 读，这需要一个已签名的内核驱动程序——HWiNFO 和
+            Open Hardware Monitor 装的就是这个。DrvNest 不会为了填一个数字就装
+            内核驱动程序，所以它会告诉你传感器缺失，而不是瞎猜。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>为什么各程序的网络占用加起来不等于整机总量？</h3>
+          <p>
+            这两个数字来自不同的地方，而且都没错。整机总量是各网络适配器
+            自身字节计数器之和，所以它包含一切：TCP、UDP、QUIC、广播。
+            按程序统计的数字来自 Windows 的 TCP 连接统计（ESTATS），
+            那是 Windows 在不装内核驱动程序的前提下提供的唯一按进程计的字节计数器
+            ——而它只涵盖 TCP。所以视频通话、大部分游戏流量和 DNS 在第一个数字里，
+            不在第二个数字里。DrvNest 会在页面上把这一点说明白，而不是悄悄少报。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>DrvNest 会在后台自我更新吗？</h3>
+          <p>
+            它每天检查一次，然后告诉你。除非你在<strong>设置 → 更新</strong>里把它
+            打开，否则它不会安装任何东西；即使打开了，下载的文件也会和该版本的
+            <code>checksums.txt</code> 比对校验，而且只在 DrvNest 关闭时才替换进去
+            ——绝不会在驱动程序队列运行的时候。在离线模式和救援模式下，
+            检查和安装都会被完全跳过。你也可以把检查彻底关掉；关于页面上的按钮照常可用。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>监视器是后台服务吗？</h3>
+          <p>
+            不是。两个监视器在你打开各自的页面之前都不采样，你一离开它们就立刻停。
+            DrvNest 依然不装服务、不装驱动程序、不加启动项——它唯一会注册的东西，
+            就是那个用来继续被中断的驱动程序队列的登录任务，而队列跑完后它会
+            自己删掉自己。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>DrvNest 会收集数据吗？</h3>
+          <p>
+            不会。没有遥测，没有使用统计，也没有设备标识符。只有两样东西会离开这台机器：
+            一是 Windows Update 查询，它通过 Windows 自带的 Windows Update 代理直接
+            发往 Microsoft，在离线或救援模式下完全跳过；二是发往 GitHub Releases API 的
+            请求——你按下<em>检查更新</em>时一次，如果你让自动检查开着，则每天一次。
+            两者都不会发送任何关于你机器的信息；它们只是普通的匿名 HTTPS GET。
+            监视器页面不向任何地方发送东西：上面的每个数字都是本地读出来的，
+            绝不会离开这台电脑。其余一切都留在你自己机器上的
+            <code>%ProgramData%\DrvNest</code> 里。
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="get-it">
+    <div class="wrap">
+      <h2>获取 DrvNest</h2>
+      <p class="section-intro">
+        下载这个可执行文件，放到你喜欢的任何地方，双击运行。要删掉它，删除文件即可，
+        需要的话再删掉 <code>%ProgramData%\DrvNest</code> 文件夹——队列跑完之后，
+        注册表里不会留下任何东西。
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe">
+          下载 DrvNest.exe
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">
+          全部版本和校验和
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="页脚">
+      <ul>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest">代码仓库</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">发布版本</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/USAGE.md">使用指南</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/FAQ.md">常见问题</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/BUILD.md">从源代码构建</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/ARCHITECTURE.md">架构</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/SECURITY.md">安全策略</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/DrvNest/issues">报告问题</a></li>
+        <li><a href="../" hreflang="en" lang="en">English</a></li>
+        <li><a href="../tr/" hreflang="tr" lang="tr">Türkçe</a></li>
+        <li><a href="../ru/" hreflang="ru" lang="ru">Русский</a></li>
+        <li><a href="../hi/" hreflang="hi" lang="hi">हिन्दी</a></li>
+      </ul>
+    </nav>
+
+    <p>
+      DrvNest 是 <a href="https://github.com/ahmetcaglayan">Ahmet Çağlayan</a> 编写的自由软件，
+      以 MIT 许可发布。安装驱动程序本身带有风险，本软件不提供任何担保——
+      请把还原点设置保持开启，并为你在意的一切保留备份。
+    </p>
+    <p>Windows 是 Microsoft Corporation 的商标。本项目与 Microsoft 没有关联。</p>
+
+    <p class="keywords">
+      关键词：Windows 驱动程序更新工具 开源，免费驱动更新 无广告，重装系统后安装驱动程序，
+      USB 离线驱动安装，Windows 驱动备份还原，缺失驱动程序查找，Windows 11 驱动扫描，
+      pnputil 驱动导出，Windows Update 驱动目录工具，Windows 免费系统监视器，
+      开源 CPU 内存 温度监控，Windows 按程序统计网络占用，各程序带宽监控，
+      哪个程序在占用我的网络，任务管理器替代品。
+    </p>
+  </div>
+</footer>
+
+<script>
+/* Screenshot carousel.
+
+   The markup is a scroll-snapping strip, so with JavaScript disabled it degrades to
+   something you can still swipe or scroll through - which is also exactly how it
+   behaves on a touch screen. This only adds the buttons and keeps the labels in sync
+   with whatever is on screen, however the reader got there. */
+(function () {
+  var track = document.getElementById('shotsTrack');
+  var dots  = document.getElementById('shotsDots');
+  if (!track || !dots) return;
+
+  var slides  = Array.prototype.slice.call(track.querySelectorAll('.shot'));
+  var buttons = Array.prototype.slice.call(dots.querySelectorAll('button'));
+  if (!slides.length) return;
+
+  function show(index) {
+    var target = slides[Math.max(0, Math.min(index, slides.length - 1))];
+    track.scrollTo({ left: target.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+  }
+
+  function current() {
+    /* Whichever slide's centre is closest to the viewport centre. */
+    var middle = track.scrollLeft + track.clientWidth / 2;
+    var best = 0, bestGap = Infinity;
+
+    slides.forEach(function (slide, i) {
+      var centre = slide.offsetLeft - track.offsetLeft + slide.clientWidth / 2;
+      var gap = Math.abs(centre - middle);
+      if (gap < bestGap) { bestGap = gap; best = i; }
+    });
+
+    return best;
+  }
+
+  function sync() {
+    var index = current();
+    buttons.forEach(function (button, i) {
+      if (i === index) button.setAttribute('aria-current', 'true');
+      else button.removeAttribute('aria-current');
+    });
+  }
+
+  buttons.forEach(function (button, i) {
+    button.addEventListener('click', function () { show(i); });
+  });
+
+  var prev = document.getElementById('shotsPrev');
+  var next = document.getElementById('shotsNext');
+  if (prev) prev.addEventListener('click', function () { show(current() - 1); });
+  if (next) next.addEventListener('click', function () { show(current() + 1); });
+
+  track.addEventListener('keydown', function (event) {
+    if (event.key === 'ArrowLeft')  { show(current() - 1); event.preventDefault(); }
+    if (event.key === 'ArrowRight') { show(current() + 1); event.preventDefault(); }
+  });
+
+  /* rAF-throttled: the scroll event fires far more often than the labels can matter. */
+  var queued = false;
+  track.addEventListener('scroll', function () {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; sync(); });
+  }, { passive: true });
+
+  sync();
+})();
+</script>
+
+</body>
+</html>

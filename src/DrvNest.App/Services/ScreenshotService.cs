@@ -36,6 +36,14 @@ public static class ScreenshotService
     /// capture correct at any DPI without a single P/Invoke.
     /// </summary>
     public static CaptureResult Capture(Window? window = null)
+        => Capture(window, null, copyToClipboard: true);
+
+    /// <summary>
+    /// As above, but writes to <paramref name="targetPath"/> when one is given and can
+    /// skip the clipboard. Used by capture mode, which writes eleven files in a row and
+    /// has no business touching the user's clipboard eleven times.
+    /// </summary>
+    public static CaptureResult Capture(Window? window, string? targetPath, bool copyToClipboard)
     {
         window ??= Application.Current?.MainWindow;
 
@@ -58,18 +66,29 @@ public static class ScreenshotService
             target.Render(window);
             target.Freeze();
 
-            Directory.CreateDirectory(AppPaths.ReportsDirectory);
+            string path;
 
-            var path = Path.Combine(
-                AppPaths.ReportsDirectory,
-                $"drvnest-{DateTime.Now:yyyy-MM-dd_HHmmss}.png");
+            if (string.IsNullOrWhiteSpace(targetPath))
+            {
+                Directory.CreateDirectory(AppPaths.ReportsDirectory);
+
+                path = Path.Combine(
+                    AppPaths.ReportsDirectory,
+                    $"drvnest-{DateTime.Now:yyyy-MM-dd_HHmmss}.png");
+            }
+            else
+            {
+                path = targetPath!;
+                var folder = Path.GetDirectoryName(path);
+                if (!string.IsNullOrEmpty(folder)) Directory.CreateDirectory(folder);
+            }
 
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(target));
 
             using (var stream = File.Create(path)) encoder.Save(stream);
 
-            bool copied = TryCopy(target);
+            bool copied = copyToClipboard && TryCopy(target);
 
             Log.Info($"Window captured to {path}");
             return new CaptureResult(path, copied, null);

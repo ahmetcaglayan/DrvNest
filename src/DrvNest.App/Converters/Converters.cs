@@ -338,3 +338,39 @@ public sealed class UpdateStateToBrushConverter : IValueConverter
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => Binding.DoNothing;
 }
+
+/// <summary>Maps a temperature band onto a semantic brush.</summary>
+public sealed class ThermalBandToBrushConverter : IValueConverter
+{
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        var key = value switch
+        {
+            Core.Monitoring.ThermalBand.Critical => "Brush.Danger",
+            Core.Monitoring.ThermalBand.Hot => "Brush.Warning",
+            Core.Monitoring.ThermalBand.Warm => "Brush.Info",
+            _ => "Brush.Success"
+        };
+
+        return Application.Current?.TryFindResource(key) as Brush ?? Brushes.Gray;
+    }
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => Binding.DoNothing;
+}
+
+/// <summary>
+/// Green for an adapter that is up, faint grey for one that is not.
+/// A colour rather than a word keeps a list of eight adapters readable at a glance.
+/// </summary>
+public sealed class UpToBrushConverter : IValueConverter
+{
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        var key = value is true ? "Brush.Success" : "Brush.TextFaint";
+        return Application.Current?.TryFindResource(key) as Brush ?? Brushes.Gray;
+    }
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => Binding.DoNothing;
+}

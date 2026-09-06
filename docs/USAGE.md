@@ -15,6 +15,8 @@ DrvNest'in dokuz menüsü, her butonun ne yaptığı ve tipik akışlar.
 7. [Yedekle & Geri Yükle](#7-yedekle--geri-yükle)
 8. [Çevrimdışı / kurtarma modu](#8-çevrimdışı--kurtarma-modu)
 9. [Geçmiş ve CSV dışa aktarma](#9-geçmiş-ve-csv-dışa-aktarma)
+9b. [Sistem İzleme](#9b-sistem-izleme)
+9c. [Ağ İzleme](#9c-ağ-izleme)
 10. [Günlük — hata bildirirken](#10-günlük--hata-bildirirken)
 11. [Ayarların anlamı](#11-ayarların-anlamı)
 12. [Hakkında ve kendi kendini güncelleme](#12-hakkında-ve-kendi-kendini-güncelleme)
@@ -322,6 +324,85 @@ bir çökme en fazla son kaydı etkiler.
 
 ---
 
+## 9b. Sistem İzleme
+
+Bu sayfa açık olmadığı sürece hiçbir şey örneklenmez; sayfadan ayrıldığınız anda örnekleme
+durur. DrvNest'in arka plan servisi yoktur ve bu sayfa da bir tane oluşturmaz.
+
+### Üstteki dört kart
+
+| Kart | Ne gösterir |
+| --- | --- |
+| **İşlemci** | Toplam yük ve son bir dakikanın grafiği. Altında çekirdek/iş parçacığı sayısı ve anlık frekans. |
+| **Bellek** | Kullanım yüzdesi ve kullanılan / toplam fiziksel bellek. |
+| **Sıcaklık** | En sıcak sensörün değeri. Makine ACPI termal bölgesi yayınlamıyorsa sayı yerine nedeni yazar — bkz. SSS. |
+| **Disk etkinliği** | Tüm sabit sürücülerin toplam okuma + yazma hızı. |
+
+### Mantıksal işlemci başına
+
+Her mantıksal işlemci için bir çubuk. Üzerine gelince o çekirdeğin yüzdesi görünür.
+Altında işlem, iş parçacığı ve tanıtıcı sayıları.
+
+### Bellek dağılımı
+
+Kullanımda / kullanılabilir / önbellek / ayrılmış. "Ayrılmış" değeri Görev Yöneticisi'nin
+*Committed* satırının aynısıdır ve fiziksel bellekten büyük olabilir; bu normaldir.
+
+### Depolama ve pil
+
+Her sabit sürücü için doluluk çubuğu, kapasite ve canlı okuma/yazma hızı. Pil kartı
+yalnızca pili olan makinelerde görünür.
+
+### Uygulama bazında tablo
+
+Her çalışan işlem için işlemci payı, bellek (çalışma kümesi), özel bayt, disk hızı ve iş
+parçacığı sayısı.
+
+- **İşlemci / Bellek / Disk / Aygıt** sekmeleri sıralamayı değiştirir.
+- Arama kutusu ada veya PID'ye göre süzer.
+- **Duraklat** tabloyu dondurur; hızla yer değiştiren bir satırı okumak için.
+- **Tümünü göster** varsayılan ilk 40 satır sınırını kaldırır.
+- Windows'un koruduğu işlemler (antimalware servisi gibi) açılamaz; satırları kalır ama
+  değerleri eksiktir. Gizlemek yerine böyle göstermek daha dürüsttür.
+
+> İlk okuma her zaman sıfırdır: işlemci kullanımı bir hızdır ve hız ölçmek için iki örnek
+> gerekir.
+
+Bir işlemi sonlandırmak gerekiyorsa sağ üstteki **Görev Yöneticisi** düğmesi Windows'un
+kendi aracını açar. DrvNest işlem sonlandırmaz — bir sürücü aracının yapması gereken iş
+değildir.
+
+---
+
+## 9c. Ağ İzleme
+
+### Üstteki iki kart ve toplamlar
+
+İnen ve çıkan trafik, son bir dakikanın grafiğiyle. Altındaki şeritte bu oturumun toplamı,
+Windows açıldığından beri inen/çıkan toplam ve açık bağlantı sayısı.
+
+**Sayacı sıfırla** yalnızca oturum toplamlarını sıfırlar; açılıştan beri olan
+bağdaştırıcı toplamları etkilenmez.
+
+### Uygulama bazında tablo
+
+Hangi programın şu anda ne kadar indirdiği ve yüklediği, bu oturumdaki toplamı, açık
+bağlantı sayısı ve karşı uç adresi (fare üzerine gelince).
+
+- **Sadece etkin** boştaki programları gizler.
+- Arama kutusu ada, PID'ye veya uzak adrese göre süzer.
+
+> Bu tablo **yalnızca TCP** trafiğini kapsar. Windows, çekirdek sürücüsü olmadan işlem
+> başına UDP sayacı sunmaz; bu yüzden QUIC, çoğu görüntülü arama ve DNS yukarıdaki makine
+> toplamında vardır ama bu tabloda yoktur. Sayfanın altındaki bilgi kutusu bunu yazar.
+
+### Ağ bağdaştırıcıları
+
+Bağlı olanlar önce. Her satırda tür, IP adresi, anlaşılan bağlantı hızı ve anlık trafik.
+**Tüm bağdaştırıcılar** düğmesi bağlı olmayanları da gösterir.
+
+---
+
 ## 10. Günlük — hata bildirirken
 
 Uygulamanın canlı tanılama akışı. Sürücü hataları neredeyse her zaman anlamsız bir HRESULT
@@ -387,6 +468,16 @@ Değişiklikler **Kaydet**'e basınca uygulanır. (Tema ve dil istisnadır: anı
 | **İsteğe bağlı sürücü güncellemelerini de göster** | Açık | Kapalıyken yalnızca Microsoft'un önerdiği (gizli olmayan, otomatik seçilen) paketler listelenir |
 | **Yerel sürücü klasörleri** | — | `.inf` paketlerinin aranacağı klasörler. **Klasör Ekle** ile ekleyin. `DrvNest.exe` yanındaki `Drivers` klasörü zaten otomatik eklenir. |
 
+### Güncellemeler
+
+| Ayar | Anlamı |
+| --- | --- |
+| **Güncellemeleri otomatik denetle** | Günde bir kez GitHub'a yeni sürüm olup olmadığını sorar ve *Hakkında* menüsünde bir sayı gösterir. Hiçbir şey indirmez. Varsayılan: açık. |
+| **Güncellemeleri otomatik indir ve kur** | Doğrulanmış dosyayı indirir ve DrvNest kapanırken değiştirir. Varsayılan: kapalı. |
+| **Ön sürümleri de dahil et** | Kararlı sürümlerin yanı sıra beta yapıları da önerir. Varsayılan: kapalı. |
+
+Çevrimdışı ve kurtarma modunda her ikisi de tamamen atlanır.
+
 ### Görünüm
 
 | Ayar | Varsayılan | Anlamı |
@@ -438,6 +529,7 @@ Notlar:
 
 ```powershell
 DrvNest.exe [--resume | --rescue | --offline | --updated]
+DrvNest.exe --capture <klasör> [--lang <kod>]
 ```
 
 | Bayrak | Ne yapar |
@@ -446,6 +538,8 @@ DrvNest.exe [--resume | --rescue | --offline | --updated]
 | `--rescue` | Çevrimdışı kurtarma modu: Windows Update sağlayıcısı devre dışı bırakılır, yalnızca yerel klasörler kullanılır. |
 | `--offline` | `--rescue` ile aynı. |
 | `--updated` | Kendi kendini güncelleme sonrasında yeni exe'yi başlatırken kullanılan işaret. Uygulama bunu normal bir açılış gibi ele alır; elle vermenizi gerektiren bir durum yoktur. |
+| `--capture <klasör>` | Bakım bayrağı: bütün menüyü gezer, her sayfayı PNG olarak verilen klasöre yazar ve kapanır. README ve web sitesindeki ekran görüntüleri bununla üretilir. Yönetici olarak çalıştırın; aksi halde ağ sayfası bağlantı başına bayt sayaçlarını açamaz ve görüntüde "Yönetici değil" yazar. |
+| `--lang <kod>` | Yalnızca `--capture` ile anlamlıdır: arayüz dilini sabitler (`en`, `tr`, `ru`, `zh`, `hi`), böylece yayınlanan görüntüler ekran görüntüsünü alan kişinin Windows diline bağlı kalmaz. |
 
 Bayraklar `-resume`, `/resume` gibi yazılabilir; büyük-küçük harf farkı yoktur.
 Tanınmayan bir bayrak yok sayılır ve uygulama normal modda açılır.
