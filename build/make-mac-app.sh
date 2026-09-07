@@ -107,7 +107,7 @@ build_one() {
         echo "  icon built from icon-mac-1024.png"
     fi
 
-    local display="${VERSION:-1.2.0}"
+    local display="${VERSION:-1.3.0}"
 
     cat > "$app/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>

@@ -112,13 +112,42 @@ public static class CaptureRunner
             {
                 Log.Info($"Capture: {page}");
 
+                // A page that fails to render must not leave the previous run's file
+                // behind for the docs to pick up.
+                try { File.Delete(Path.Combine(folder, page + ".png")); }
+                catch { /* Nothing there, which is the normal case. */ }
+
                 await Dispatcher.UIThread.InvokeAsync(() => shell.Navigate(page));
+
+                // The clean-up page measures nothing until it is asked to. Without this
+                // its screenshot is the empty state, which is not what the page is for.
+                if (page == "clean") await Dispatcher.UIThread.InvokeAsync(() => StartCleanupScan(shell));
 
                 int settle = Settle.TryGetValue(page, out int wait) ? wait : 1_500;
                 await Task.Delay(settle);
 
+                // Let every pending layout and binding actually run. Posting at
+                // ContextIdle and awaiting it means everything queued ahead of it -
+                // the content swap, the measure, the arrange - has completed. Without
+                // it a render can catch the *previous* page still in the tree.
+                await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.ContextIdle);
+
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
+                    // Photograph the page we asked for, or none at all. An interrupted
+                    // run once produced a "clean.png" that was actually the dashboard,
+                    // and a wrong screenshot is worse than a missing one: it is not
+                    // obviously wrong, so it ships.
+                    var showing = shell.SelectedNav?.Key;
+
+                    if (!string.Equals(showing, page, StringComparison.Ordinal))
+                    {
+                        Log.Error($"Capture: asked for '{page}' but the shell is showing " +
+                                  $"'{showing ?? "nothing"}'. Skipping, so a wrong image " +
+                                  "cannot be published.");
+                        return;
+                    }
+
                     var path = Path.Combine(folder, page + ".png");
                     Render(window, path);
                 });
@@ -136,6 +165,30 @@ public static class CaptureRunner
                 (Application.Current?.ApplicationLifetime
                     as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)
                 ?.Shutdown());
+        }
+    }
+
+    /// <summary>
+    /// Presses "Scan" on the clean-up page, if that is what is on screen.
+    ///
+    /// Reached through the view's DataContext rather than a reference, because the
+    /// pages are built lazily by their nav item and the runner never holds one.
+    /// </summary>
+    private static void StartCleanupScan(MainViewModel shell)
+    {
+        try
+        {
+            if (shell.CurrentView?.DataContext is not CleanupViewModel cleanup) return;
+
+            if (cleanup.ScanCommand.CanExecute(null))
+            {
+                cleanup.ScanCommand.Execute(null);
+                Log.Info("Capture: clean-up scan started.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Warn($"Capture: could not start the clean-up scan: {ex.Message}");
         }
     }
 
