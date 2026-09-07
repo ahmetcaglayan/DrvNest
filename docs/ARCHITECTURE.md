@@ -563,15 +563,18 @@ this button claims.
 
 ## 9. Localisation
 
-`Hexnest.App/Services/Loc.cs` is a static string table: two `Dictionary<string, string>`
-instances (`Turkish`, `English`) and a `T(key)` lookup that falls back to English and then
-to the key itself.
+`Hexnest.Core/Localization/Loc.cs` is a static string table: two
+`Dictionary<string, string>` instances (`Turkish`, `English`) and a `T(key)` lookup that
+falls back to English and then to the key itself. It lives in `Hexnest.Core` rather than in
+either application, because the Windows and the macOS shells display the same strings.
 
-Russian, Simplified Chinese and Hindi live in `Hexnest.App/Languages/*.json` and are
-compiled into the assembly as embedded resources, which `LoadEmbeddedPacks` reads back out
-of the manifest at startup. They are not more C# dictionaries because three more of those
-would have made `Loc.cs` four thousand lines long, and JSON is what a translator can
-actually edit. They are embedded rather than shipped as files because a `Languages` folder
+The other eight languages live in `Hexnest.Core/Languages/*.json` and are compiled into the
+assembly as embedded resources, which `LoadEmbeddedPacks` reads back out of the manifest at
+startup. They are not more C# dictionaries because eight more of those would have made
+`Loc.cs` ten thousand lines long, and JSON is what a translator can actually edit. Nothing
+registers them by name: a new `<code>.json` in that folder appears in the picker on the
+next build, and `build/check-languages.py` fails the build if it does not carry every key
+English has, with the same `{0}` placeholders and the same line breaks. They are embedded rather than shipped as files because a `Languages` folder
 that has to travel next to the executable on a USB stick would not survive the trip.
 
 A RESX + satellite assembly setup would fight the single-file publish configuration

@@ -39,7 +39,7 @@ Windows 上无需安装程序，任何平台上都没有广告软件。
 [![Stars](https://img.shields.io/github/stars/ahmetcaglayan/Hexnest?style=flat-square)](../../stargazers)
 [![Build](https://img.shields.io/github/actions/workflow/status/ahmetcaglayan/Hexnest/build.yml?style=flat-square&label=Build)](../../actions/workflows/build.yml)
 
-<sub>[🇬🇧 English](README.md) · [🇹🇷 Türkçe](README.tr.md) · [🇷🇺 Русский](README.ru.md) · 🇨🇳 简体中文 · [🇮🇳 हिन्दी](README.hi.md)</sub>
+<sub>[🇬🇧 English](README.md) · [🇹🇷 Türkçe](README.tr.md) · [🇷🇺 Русский](README.ru.md) · 🇨🇳 简体中文 · [🇮🇳 हिन्दी](README.hi.md) · [🇵🇹 Português](README.pt.md) · [🇯🇵 日本語](README.ja.md) · [🇩🇪 Deutsch](README.de.md) · [🇫🇷 Français](README.fr.md) · [🇰🇷 한국어](README.ko.md)</sub>
 
 <br>
 
@@ -557,8 +557,9 @@ Windows 本来就把它准备在那里随时可用。
   它已经带有版本和操作系统的头部信息。
 - **代码：**fork、开分支、提交 pull request。请保持现有风格：不引入 NuGet 依赖
   （单文件的体积和离线运行是有意的选择），`Hexnest.Core` 里不放任何界面代码。
-- **翻译：**新增一种语言就是往 `src/Hexnest.App/Services/Loc.cs` 里加一个字典；
-  参见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
+- **翻译：**新增一种语言就是往 `src/Hexnest.Core/Languages/` 里放一个 JSON 文件，
+  再由 `build/check-languages.py` 对照英文校验；参见
+  [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
 
 ---
 

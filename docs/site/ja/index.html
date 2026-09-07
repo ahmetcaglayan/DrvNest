@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Hexnest — Windows と macOS のための無料のシステムモニタ・クリーンアップ・ドライバー更新ツール</title>
+<meta name="description" content="Hexnest は Windows 10、Windows 11、macOS 12+ に対応した無料・オープンソースのシステムユーティリティです。リアルタイムのシステムモニタ、アプリごとのネットワークモニタ、スタートアップ管理、そして推定ではなく実測するディスククリーンアップ。さらに Windows では、フォーマット後に不足しているドライバーを導入し、USB から完全オフラインで復元できる本格的なドライバー更新ツールにもなります。アドウェアなし、テレメトリなし、有料版なし。">
+
+<link rel="canonical" href="https://ahmetcaglayan.github.io/Hexnest/ja/">
+<link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/Hexnest/">
+<link rel="alternate" hreflang="tr" href="https://ahmetcaglayan.github.io/Hexnest/tr/">
+<link rel="alternate" hreflang="ru" href="https://ahmetcaglayan.github.io/Hexnest/ru/">
+<link rel="alternate" hreflang="zh" href="https://ahmetcaglayan.github.io/Hexnest/zh/">
+<link rel="alternate" hreflang="hi" href="https://ahmetcaglayan.github.io/Hexnest/hi/">
+<link rel="alternate" hreflang="pt" href="https://ahmetcaglayan.github.io/Hexnest/pt/">
+<link rel="alternate" hreflang="ja" href="https://ahmetcaglayan.github.io/Hexnest/ja/">
+<link rel="alternate" hreflang="de" href="https://ahmetcaglayan.github.io/Hexnest/de/">
+<link rel="alternate" hreflang="fr" href="https://ahmetcaglayan.github.io/Hexnest/fr/">
+<link rel="alternate" hreflang="ko" href="https://ahmetcaglayan.github.io/Hexnest/ko/">
+<link rel="alternate" hreflang="x-default" href="https://ahmetcaglayan.github.io/Hexnest/">
+
+<meta name="author" content="Ahmet Çağlayan">
+<meta name="keywords" content="無料 ドライバー更新, windows ドライバー更新 オープンソース, フォーマット後 ドライバー インストール, オフライン ドライバー インストーラー usb, ドライバー バックアップ 復元, システムモニタ windows, mac システムモニタ, アクティビティモニタ 代替, タスクマネージャー 代替, アプリ別 ネットワーク使用量, プログラム別 帯域 モニタ, スタートアップ管理, launchd ログイン項目, ディスク クリーンアップ, mac 空き容量 増やす, xcode derived data 削除, apple silicon システムモニタ, アドウェアなし, オープンソース システムユーティリティ">
+<meta name="applicable-device" content="pc">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="theme-color" content="#0D1014" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Hexnest">
+<meta property="og:title" content="Hexnest — Windows と macOS のための無料のシステムモニタ・クリーンアップ・ドライバー更新ツール">
+<meta property="og:description" content="無料でオープンソース。Windows でも macOS でも使えるリアルタイムのシステム・ネットワークモニタ、スタートアップ管理、ディスククリーンアップ。そしてインターネットのない、フォーマット直後の PC を救うドライバー更新ツール。">
+<meta property="og:url" content="https://ahmetcaglayan.github.io/Hexnest/ja/">
+<meta property="og:image" content="https://ahmetcaglayan.github.io/Hexnest/og-image.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="暗い背景に置かれた Hexnest のロゴとワードマーク。その下に「Windows と macOS のための無料・オープンソースのシステムユーティリティ」の文字。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="tr_TR">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:locale:alternate" content="hi_IN">
+<meta property="og:locale:alternate" content="pt_PT">
+<meta property="og:locale:alternate" content="de_DE">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="ko_KR">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hexnest — Windows と macOS のための無料のシステムモニタ・クリーンアップ・ドライバー更新ツール">
+<meta name="twitter:description" content="Windows と macOS のための無料・オープンソースのシステムユーティリティ。システムとネットワークのモニタ、スタートアップ管理、ディスククリーンアップ、そして Windows ではドライバー更新も。">
+<meta name="twitter:image" content="https://ahmetcaglayan.github.io/Hexnest/og-image.png">
+<meta name="twitter:image:alt" content="暗い背景に置かれた Hexnest のロゴとワードマーク。その下に「Windows と macOS のための無料・オープンソースのシステムユーティリティ」の文字。">
+
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Hexnest",
+  "alternateName": ["Hexnest for Windows", "Hexnest for Mac"],
+  "description": "Hexnest is a free and open-source system utility for Windows 10, Windows 11 and macOS 12 or newer. On both platforms it provides a live system monitor with per-core processor load and per-application resource usage, a network monitor with per-application traffic, a start-up manager and a disk cleaner that measures rather than estimates. On Windows it is also a full driver updater: it scans every PnP device, reports which ones have no driver, installs missing and outdated drivers from the Windows Update catalog or from local INF folders, resumes its queue after the restarts a driver install needs, and backs drivers up so they can be restored offline from a USB stick after a format.",
+  "applicationCategory": "UtilitiesApplication",
+  "applicationSubCategory": "System monitor, disk cleaner and driver updater",
+  "operatingSystem": "Windows 10, Windows 11, macOS 12, macOS 13, macOS 14, macOS 15",
+  "softwareVersion": "1.4.0",
+  "downloadUrl": "https://github.com/ahmetcaglayan/Hexnest/releases/latest",
+  "installUrl": "https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest.exe",
+  "url": "https://ahmetcaglayan.github.io/Hexnest/",
+  "image": "https://ahmetcaglayan.github.io/Hexnest/og-image.png",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "inLanguage": ["en", "tr", "ru", "zh", "hi"],
+  "codeRepository": "https://github.com/ahmetcaglayan/Hexnest",
+  "programmingLanguage": "C#",
+  "softwareRequirements": "Windows 10 version 1607 (build 14393) or newer, 64-bit, with administrator rights; or macOS 12 Monterey or newer on Apple silicon or Intel. No .NET runtime, no Visual C++ Redistributable and no Homebrew or Xcode required.",
+  "permissions": "On Windows, administrator rights are required to install drivers, export the driver store and create a system restore point. On macOS the application never runs as root and only ever changes files inside the user's own home folder.",
+  "releaseNotes": "https://github.com/ahmetcaglayan/Hexnest/blob/main/CHANGELOG.md",
+  "featureList": [
+    "Scans every PnP device with SetupAPI and CfgMgr32, without WMI",
+    "Detects missing drivers from Configuration Manager problem codes",
+    "Finds drivers in the Windows Update catalog through the Windows Update Agent",
+    "Installs drivers from local INF folders, a USB stick or a network share",
+    "Parallel downloads with serialized installs",
+    "Resumes the queue automatically after a reboot",
+    "Creates a system restore point and backs up each driver before replacing it",
+    "Backs up and restores every third-party driver with pnputil",
+    "Offline rescue mode for a freshly formatted machine with no internet",
+    "Hardware report listing every device and hardware id",
+    "Live system monitor: processor load per logical core, memory breakdown, temperature sensors, storage and battery",
+    "Per-application resource usage: processor share, working set, private bytes and disk throughput for every process",
+    "Live network monitor: download and upload for the whole machine, session and since-boot totals, every adapter",
+    "Per-application network usage from TCP connection statistics, with open connection counts and remote endpoints",
+    "Automatic daily update check, with optional automatic download and install verified against SHA-256",
+    "Startup manager: every autostart entry with a switch, written the way Task Manager writes it so nothing is deleted",
+    "Clean-up: temporary files, browser caches, shader caches, crash dumps, Windows Update cache and the Recycle Bin, all measured rather than estimated",
+    "Old downloads and leftover application folders listed item by item and sent to the Recycle Bin",
+    "Memory trim that states plainly what paging out a working set does and does not achieve",
+    "Ten interface languages - English, Turkish, Russian, Simplified Chinese, Hindi, Portuguese, Japanese, German, French and Korean - plus a dark and a light theme",
+    "macOS build with the same monitors, start-up manager and cleaner, built on Avalonia",
+    "macOS start-up manager for launchd login agents, using launchctl overrides so nothing is deleted",
+    "macOS cleaner for application caches, developer caches, Xcode derived data, logs, the Trash, old downloads and iPhone backups",
+    "macOS per-application network usage from the same statistics Activity Monitor reads",
+    "Per-core processor load including the performance and efficiency clusters on Apple silicon"
+  ],
+  "screenshot": [
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/dashboard.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/system.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/network.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/mac-dashboard.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/mac-system.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/mac-clean.png"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "creator": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "maintainer": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "softwareHelp": {
+    "@type": "CreativeWork",
+    "url": "https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/USAGE.md"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "en",
+  "url": "https://ahmetcaglayan.github.io/Hexnest/",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is Hexnest really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Hexnest is released under the MIT licence and the full source code is on GitHub. There is no paid tier, no trial, no feature that unlocks after payment, no advertising and no bundled third-party software. The scan and the installs are the same product."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to install .NET or the Visual C++ Redistributable?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The entire .NET 8 runtime is inside Hexnest.exe as a self-contained single-file publish, and WPF carries its own private copies of vcruntime140_cor3.dll and msvcp140_cor3.dll. The only requirement is 64-bit Windows 10 version 1607 (build 14393) or newer. That is also why the executable is around 65 MB."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does SmartScreen or my antivirus warn about Hexnest?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hexnest is not code-signed, because a code-signing certificate costs money. Windows SmartScreen and Smart App Control show a warning for any unsigned executable that has not built up reputation, and a single-file app that runs as administrator, installs drivers and registers a scheduled task looks like malware to a heuristic scanner. The honest mitigation is to verify the download: run Get-FileHash .\\Hexnest.exe -Algorithm SHA256 and compare the result with the Hexnest.exe line in the checksums.txt published with the release. A match means the file is byte-for-byte the published one. You can also build it yourself from source."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Hexnest install drivers after a format with no internet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and that is what it was built for. Before the format, use Backup and Restore to export every third-party driver package, then copy that folder and Hexnest.exe onto the same USB stick. After the format, start Hexnest.exe --rescue: Windows Update is never contacted and only local sources are used. A folder named Drivers next to Hexnest.exe is registered automatically as a local driver repository. Any vendor driver folder you extracted yourself works too, because its INF files are matched recursively."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I roll back a driver that breaks something?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, in three ways. Hexnest exports the package it is about to replace and records the path in the history entry, so you can reinstall it with Restore from folder. It also creates a driver-type system restore point before the first install of a session, which you can use through the Windows System Restore wizard. And Windows' own Roll Back Driver button in Device Manager keeps working independently of Hexnest."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Hexnest really continue after a reboot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The queue is written atomically to session.json on every state change, and Hexnest registers a logon-triggered scheduled task called Hexnest\\ResumeSession, falling back to an HKLM RunOnce value when Task Scheduler is unavailable. At the next logon the task relaunches Hexnest with --resume and the remaining jobs continue. A session survives at most ten restarts, and the task and RunOnce value are removed when the queue finishes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does Hexnest need administrator rights?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Installing a driver is a privileged operation. Adding packages to or exporting them from the driver store with pnputil, driving the Windows Update installer and creating a system restore point through srclient.dll all require an elevated token, and the resume task is registered under HKLM. Hexnest asks for elevation up front in its application manifest rather than failing with access denied in the middle of a queue."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Hexnest collect any data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. There is no telemetry, no usage statistics and no device identifiers. Exactly two things ever leave the machine: Windows Update queries, which go straight to Microsoft through Windows' own Windows Update Agent and are skipped entirely in offline or rescue mode, and a single request to the GitHub Releases API when you press Check for updates. Everything else stays in %ProgramData%\\Hexnest on your own machine."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">本文へ移動</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="https://ahmetcaglayan.github.io/Hexnest/">
+      <img src="../favicon.svg" width="30" height="30" alt="Hexnest のロゴ: ミントグリーンのマイクロチップを抱く六角形の巣の一室">
+      <span>Hex<span class="mark-nest">nest</span></span>
+    </a>
+    <nav class="site-nav" aria-label="メインメニュー">
+      <ul>
+        <li><a href="#features">機能</a></li>
+        <li><a href="#monitor">モニタ</a></li>
+        <li><a href="#maintenance">メンテナンス</a></li>
+        <li><a href="#post-format">フォーマットの後で</a></li>
+        <li><a href="#compare">他との比較</a></li>
+        <li><a href="#faq">よくある質問</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest">GitHub</a></li>
+        <li><a href="#screenshots">スクリーンショット</a></li>
+        <li>
+      <details class="lang-menu">
+        <summary aria-label="言語を選ぶ">日本語 ▾</summary>
+        <ul>
+        <li><a href="../" hreflang="en" lang="en">English</a></li>
+        <li><a href="../tr/" hreflang="tr" lang="tr">Türkçe</a></li>
+        <li><a href="../ru/" hreflang="ru" lang="ru">Русский</a></li>
+        <li><a href="../zh/" hreflang="zh" lang="zh">简体中文</a></li>
+        <li><a href="../hi/" hreflang="hi" lang="hi">हिन्दी</a></li>
+        <li><a href="../pt/" hreflang="pt" lang="pt">Português</a></li>
+        <li><a href="../ja/" hreflang="ja" lang="ja" aria-current="true">日本語</a></li>
+        <li><a href="../de/" hreflang="de" lang="de">Deutsch</a></li>
+        <li><a href="../fr/" hreflang="fr" lang="fr">Français</a></li>
+        <li><a href="../ko/" hreflang="ko" lang="ko">한국어</a></li>
+        </ul>
+      </details>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap">
+      <img class="hero-mark" src="../favicon.svg" width="84" height="84" alt="Hexnest のアプリケーションアイコン: マイクロチップを抱えたミントグリーンの六角形">
+      <h1>コンピューターが何をしているかを、Windows でも Mac でも 1 つのウィンドウで</h1>
+      <p class="lede">
+        <strong>Hexnest</strong> は、マシン本体と個々のプログラムがプロセッサ時間・メモリ・帯域をどれだけ使っているか、ログイン時に何が勝手に起動するか、ディスク容量が実際どこへ消えたのかをリアルタイムに示します。推定ではなく実測です。Windows では本格的なドライバー更新ツールにもなり、すべてのデバイスを調べ、不足・旧版のドライバーを Windows Update カタログや USB メモリ上のフォルダーから導入し、ドライバーのインストールに必要な再起動をまたいで作業を続け、インターネットがまったくなくても以前のドライバーを元に戻せます。
+      </p>
+      <p class="meta-line">
+        Windows 10 1607 以降と Windows 11 · macOS 12 Monterey 以降 · 64 ビット、Apple シリコンと Intel · MIT ライセンス
+      </p>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest.exe">
+          Windows 版をダウンロード
+        </a>
+        <a class="btn btn-primary btn-mac" href="https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest-arm64.dmg">
+          macOS 版をダウンロード
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/Hexnest">
+          GitHub のソースコード
+        </a>
+      </div>
+      <p class="cta-note">
+        Windows: インストーラー不要の約 65&nbsp;MB の 1 ファイル。macOS: Apple シリコン用のディスクイメージ — アプリケーションフォルダーにドラッグするだけ。どちらもランタイムを先に入れる必要はなく、余計なものは同梱されていません。
+        <a href="https://github.com/ahmetcaglayan/Hexnest/releases/latest">Intel Mac、Windows arm64 版、checksums.txt →</a>
+      </p>
+
+      <ul class="pill-row">
+        <li class="pill">Windows &amp; macOS</li>
+        <li class="pill">アドウェアなし</li>
+        <li class="pill">有料版なし</li>
+        <li class="pill">テレメトリなし</li>
+        <li class="pill">常駐サービスなし</li>
+        <li class="pill">システム &amp; ネットワークモニタ</li>
+        <li class="pill">スタートアップ管理</li>
+        <li class="pill">ディスククリーンアップ</li>
+        <li class="pill">10 の表示言語</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <section id="whats-new">
+    <div class="wrap">
+      <h2>最近追加 <span class="badge-new">1.4.0</span></h2>
+      <p class="section-intro">
+        以下はすべて、配布されているアプリケーションに入っています。機能一覧のふりをしたロードマップはありません。
+      </p>
+
+      <ul class="whatsnew">
+        <li>
+          <h3>スタートアッププログラム</h3>
+          <p>
+            Windows がログイン時に実行する自動起動項目のすべて — レジストリの <code>Run</code>
+            キーと 2 つのスタートアップフォルダー — を、1 つずつスイッチで。無効化はタスクマネージャーが書き込むのと同じ設定を書くので、両者は常に一致し、元のコマンドラインが消えることはありません。存在しないファイルを指す項目には印が付きます。Windows はそれをログインのたびに試し、黙って失敗しています。
+          </p>
+        </li>
+        <li>
+          <h3>クリーンアップ</h3>
+          <p>
+            一時ファイル、サムネイルとアイコンのキャッシュ、7 種類のブラウザー、Windows Update のダウンロードキャッシュ、クラッシュダンプ、シェーダーキャッシュ、保守ログ、そしてごみ箱。サイズはすべて推定ではなく実測なので、チェックボックスの横の数字は本当に戻ってくる容量です。しかも、こちらで勝手にチェックは付けません。
+          </p>
+        </li>
+        <li>
+          <h3>あなたのファイルはあなたのもの</h3>
+          <p>
+            古いダウンロードや、アンインストール済みソフトが残したフォルダーが一括選択されることはありません。サイズと経過期間を添えて 1 件ずつ並び、1 件ずつチェックし、削除ではなくごみ箱へ送られます。残骸の判定はあくまで推測であり、ページにもそう書いてあります。
+          </p>
+        </li>
+        <li>
+          <h3>システムモニタ</h3>
+          <p>
+            論理コアごとのバーで示すプロセッサ負荷、キャッシュ済み・コミット済みバイトまで分解したメモリ、ファームウェアが公開しているすべての温度センサー、読み書きの実測スループット付きのストレージ容量、そしてバッテリー状態。加えて、実行中の全プログラムとその負荷の一覧。
+          </p>
+        </li>
+        <li>
+          <h3>ネットワークモニタ</h3>
+          <p>
+            マシン全体のダウンロードとアップロードをリアルタイムに、今回のセッションと Windows 起動以降の合計、アドレスとリンク速度付きの全アダプター、そしてどのプログラムが接続をどれだけの速度で使い、いくつの接続を開いているかを示すアプリ別の表。
+          </p>
+        </li>
+        <li>
+          <h3>自動更新</h3>
+          <p>
+            Hexnest は 1 日 1 回だけ GitHub に新しいリリースの有無を尋ね、メニューで知らせます。ダウンロードとインストールは既定でオフのままで、オンにしても検証済みのファイルが差し替わるのはアプリの終了時だけ — ドライバーのキューの途中では決してありません。
+          </p>
+        </li>
+        <li>
+          <h3>10 の言語</h3>
+          <p>
+            英語、トルコ語、ロシア語、簡体字中国語、ヒンディー語、ポルトガル語、日本語、ドイツ語、フランス語、韓国語。すべてが単一の実行ファイルに入っており、再起動なしで切り替えられます。 <code>Hexnest.exe</code> の隣に JSON ファイルを置けば、ビルドし直さずに翻訳を追加・修正することも従来どおり可能です。
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="screenshots">
+    <div class="wrap">
+      <h2>見た目はこんな感じ</h2>
+      <p class="section-intro">
+        配布中のアプリケーションから撮った実際のスクリーンショットで、Windows 11 のノート PC で取得したものです。
+        <code>Hexnest.exe --capture</code>でビルド自体から再生成するため、内容が古くなることはありません。
+      </p>
+
+    <div class="shots" role="region" aria-roledescription="カルーセル" aria-label="Hexnest のスクリーンショット">
+      <div class="shots-track" id="shotsTrack" tabindex="0">
+        <figure class="shot" id="shot-0" role="group" aria-roledescription="スライド" aria-label="1 / 12">
+          <img src="../screenshots/dashboard.png" width="1240" height="820" loading="eager" decoding="async" alt="ダッシュボード">
+          <figcaption class="shot-caption">
+            <h3>ダッシュボード</h3>
+            <p>重要な数字が 1 画面に。見つかったデバイス、不足しているドライバー、利用可能な更新、問題のあるデバイス。その下にはマシン自身の OS・ハードウェア・プロセッサ・BIOS の概要。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-1" role="group" aria-roledescription="スライド" aria-label="2 / 12">
+          <img src="../screenshots/system.png" width="1240" height="820" loading="lazy" decoding="async" alt="システムモニタ">
+          <figcaption class="shot-caption">
+            <h3>システムモニタ</h3>
+            <p>プロセッサ、メモリ、温度、ディスク活動をリアルタイムのグラフで表示し、論理コアごとに 1 本のバー。温度カードは、Windows が読めるセンサーがないマシンでは数字をでっち上げず、はっきりそう伝えます。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-2" role="group" aria-roledescription="スライド" aria-label="3 / 12">
+          <img src="../screenshots/system-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="プログラム別の使用量">
+          <figcaption class="shot-caption">
+            <h3>プログラム別の使用量</h3>
+            <p>実行中の全プロセスについて、プロセッサ占有率、ワーキングセット、プライベートバイト、ディスクスループット、スレッド数を表示。プロセッサ・メモリ・ディスクで並べ替え、名前か PID で検索し、行を読むために表を一時停止できます。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-3" role="group" aria-roledescription="スライド" aria-label="4 / 12">
+          <img src="../screenshots/network.png" width="1240" height="820" loading="lazy" decoding="async" alt="ネットワークモニタ">
+          <figcaption class="shot-caption">
+            <h3>ネットワークモニタ</h3>
+            <p>マシン全体のダウンロードとアップロードをリアルタイムのグラフで、今回のセッションと Windows 起動以降の合計、開いている接続の数、そしてアドレスとネゴシエート済みリンク速度付きの全アダプター。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-4" role="group" aria-roledescription="スライド" aria-label="5 / 12">
+          <img src="../screenshots/network-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="プログラム別の通信量">
+          <figcaption class="shot-caption">
+            <h3>プログラム別の通信量</h3>
+            <p>いまどのアプリが接続を使っているか、各方向の速度、今回のセッションでの転送量、開いている接続の数 — 接続先はツールチップに表示します。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-5" role="group" aria-roledescription="スライド" aria-label="6 / 12">
+          <img src="../screenshots/devices.png" width="1240" height="820" loading="lazy" decoding="async" alt="デバイス">
+          <figcaption class="shot-caption">
+            <h3>デバイス</h3>
+            <p>すべての PnP デバイスをクラス別にまとめ、構成マネージャーの問題コードをそのまま平易な文章に翻訳して表示。問題あり、ドライバーなし、汎用ドライバーで絞り込み、ハードウェア ID をコピーできます。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-6" role="group" aria-roledescription="スライド" aria-label="7 / 12">
+          <img src="../screenshots/updates.png" width="1240" height="820" loading="lazy" decoding="async" alt="更新">
+          <figcaption class="shot-caption">
+            <h3>更新</h3>
+            <p>Windows Update のドライバーカタログとローカルの INF フォルダーから、インストール可能なパッケージを並べて表示。行ごとの選択、ダウンロード合計サイズ、特定の更新を隠す・デバイスごと無視するオプション付き。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-7" role="group" aria-roledescription="スライド" aria-label="8 / 12">
+          <img src="../screenshots/queue.png" width="1240" height="820" loading="lazy" decoding="async" alt="アクティビティ">
+          <figcaption class="shot-caption">
+            <h3>アクティビティ</h3>
+            <p>実行中のキュー: ダウンロードの進捗率、速度、転送済みバイト数、インストールの段階を、ドライバー 1 件につき 1 行で。中断されたセッションでは、再起動後ここに「続行」ボタンが出ます。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-8" role="group" aria-roledescription="スライド" aria-label="9 / 12">
+          <img src="../screenshots/backup.png" width="1240" height="820" loading="lazy" decoding="async" alt="バックアップと復元">
+          <figcaption class="shot-caption">
+            <h3>バックアップと復元</h3>
+            <p>フォーマットの前にサードパーティ製ドライバーパッケージをすべて書き出し、必要なら 1 つの ZIP にまとめて、あとからインターネット接続なしで丸ごと戻せます。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-9" role="group" aria-roledescription="スライド" aria-label="10 / 12">
+          <img src="../screenshots/settings.png" width="1240" height="820" loading="lazy" decoding="async" alt="設定">
+          <figcaption class="shot-caption">
+            <h3>設定</h3>
+            <p>並列ダウンロード、再試行、復元ポイント、更新前のバックアップ、再起動後の再開、自動更新、オフラインモード、ローカルのドライバーフォルダー、履歴の保持期間、テーマと言語。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-10" role="group" aria-roledescription="スライド" aria-label="11 / 12">
+          <img src="../screenshots/startup.png" width="1240" height="820" loading="lazy" decoding="async" alt="スタートアッププログラム">
+          <figcaption class="shot-caption">
+            <h3>スタートアッププログラム</h3>
+            <p>
+              Windows の起動時に走るものすべてを、1 つずつスイッチで。発行元は実行ファイル自体から読み取り、コマンドラインをその下に表示します。オフにするとタスクマネージャーが書くのと同じ設定を書くだけで、何も削除しません。
+            </p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-11" role="group" aria-roledescription="スライド" aria-label="12 / 12">
+          <img src="../screenshots/clean.png" width="1240" height="820" loading="lazy" decoding="async" alt="クリーンアップ">
+          <figcaption class="shot-caption">
+            <h3>クリーンアップ</h3>
+            <p>
+              マシン上の各キャッシュを実測したサイズと、いまの選択で解放される容量の累計。ページはチェックなし・合計ゼロの状態で開きます。
+            </p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="shots-bar">
+      <ul class="shots-dots" id="shotsDots">
+      <li><button type="button" data-slide="0" aria-current="true">ダッシュボード</button></li>
+      <li><button type="button" data-slide="1">システムモニタ</button></li>
+      <li><button type="button" data-slide="2">プログラム別の使用量</button></li>
+      <li><button type="button" data-slide="3">ネットワークモニタ</button></li>
+      <li><button type="button" data-slide="4">プログラム別の通信量</button></li>
+      <li><button type="button" data-slide="5">デバイス</button></li>
+      <li><button type="button" data-slide="6">更新</button></li>
+      <li><button type="button" data-slide="7">アクティビティ</button></li>
+      <li><button type="button" data-slide="8">バックアップと復元</button></li>
+      <li><button type="button" data-slide="9">設定</button></li>
+      <li><button type="button" data-slide="10">スタートアッププログラム</button></li>
+      <li><button type="button" data-slide="11">クリーンアップ</button></li>
+      </ul>
+      <div class="shots-arrows">
+        <button type="button" id="shotsPrev" aria-label="前のスクリーンショット">&#8592;</button>
+        <button type="button" id="shotsNext" aria-label="次のスクリーンショット">&#8594;</button>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <section id="problem">
+    <div class="wrap">
+      <h2>これを作った理由となった問題</h2>
+      <div class="prose-2col">
+      <p class="section-intro">
+        Windows を入れ直したばかり。デバイスマネージャーは黄色い感嘆符だらけ、解像度はおかしく、音は出ず、そして何より — インターネットがない。ネットワークアダプターにもドライバーがないからです。ドライバーを落とすにはインターネットが要り、インターネットに出るにはドライバーが要る。
+      </p>
+      <p class="section-intro">
+        Hexnest はこの堂々巡りを 1 つのウィンドウで断ち切ります。ハードウェアを列挙し、実際に取得できるドライバーと突き合わせ、インストールする。ネットワークがまったくない場合は、持ち込んだフォルダーからインストールします。
+      </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>Hexnest にできること</h2>
+      <p class="section-intro">
+        以下はすべて配布中のアプリケーションに入っています。機能一覧のふりをしたロードマップはありません。
+      </p>
+      <ul class="cards">
+        <li class="card">
+          <h3>すべてのデバイスを調べる</h3>
+          <p>
+            存在する PnP デバイスを WMI ではなく SetupAPI と CfgMgr32 で列挙します。だから 5 分前にフォーマットしたばかりのマシンでも、WMI リポジトリが壊れたマシンでも動きます。
+          </p>
+        </li>
+        <li class="card">
+          <h3>不足しているドライバーを見つける</h3>
+          <p>
+            構成マネージャーの問題コードをリアルタイムに読み取ります。コード 28、1、19 は「ドライバーなし」、22 は無効化されたデバイス、14 は再起動待ちです。フィルターで、問題のあるデバイス、ドライバーのないデバイス、汎用ドライバーで動いているデバイスを切り替えて見られます。
+          </p>
+        </li>
+        <li class="card">
+          <h3>Windows Update のドライバーカタログを使う</h3>
+          <p>
+            もともと Windows に入っている Windows Update エージェントの COM API 経由で Microsoft Update と通信します。追加のサービスも、間に入るサードパーティのドライバーミラーもありません。
+          </p>
+        </li>
+        <li class="card">
+          <h3>USB メモリからオフラインでインストール</h3>
+          <p>
+            任意のフォルダー — USB メモリ、ネットワーク共有、Hexnest のバックアップ、自分で展開したメーカー配布物 — にある INF パッケージを解析し、あなたのハードウェア ID と突き合わせます。
+          </p>
+        </li>
+        <li class="card">
+          <h3>並列でダウンロードし、1 件ずつインストール</h3>
+          <p>
+            既定で 3 並列のダウンロード、1 から 8 まで設定可能。インストールを直列にしているのは意図的です。Windows Update は 2 件目の同時インストールに WU_E_OPERATIONINPROGRESS を返しますし、PnP サブシステムはどのみち直列化します。
+          </p>
+        </li>
+        <li class="card">
+          <h3>再起動を乗り越える</h3>
+          <p>
+            キューの状態は変更のたびに <code>session.json</code> へ書き出され、ログイン時に起動されるタスクスケジューラのタスクが <code>--resume</code>付きで Hexnest を呼び戻します。だから 3 回の再起動を要する 10 件のキューも、自力で最後まで終わります。
+          </p>
+        </li>
+        <li class="card">
+          <h3>何かを変える前にバックアップする</h3>
+          <p>
+            セッション最初のインストール前にドライバー種別のシステム復元ポイントを作り、置き換える直前に各ドライバーパッケージを書き出して、そのパスを履歴に記録します。
+          </p>
+        </li>
+        <li class="card">
+          <h3>ドライバー一式のバックアップと復元</h3>
+          <p>
+            サードパーティ製ドライバーパッケージをすべて <code>pnputil /export-driver</code> でフォルダーか ZIP に書き出し、 <code>pnputil /add-driver /subdirs /install</code>で戻します。Microsoft 同梱のドライバーは意図的に除外します — あれは Windows が自分で入れ直すからです。
+          </p>
+        </li>
+        <li class="card">
+          <h3>ハードウェアレポートを書き出す</h3>
+          <p>
+            すべてのデバイスとハードウェア ID をプレーンテキストで保存。USB メモリで動く別のコンピューターへ持って行き、ほかに手立てがないときに手作業でドライバーを調べられます。
+          </p>
+        </li>
+        <li class="card">
+          <h3>正直な履歴を残す</h3>
+          <p>
+            すべてのドライバー操作を 1 行 1 JSON オブジェクトとして恒久的に記録し、結果で絞り込み、ワンクリックで CSV に書き出せます。加えて、バージョンと OS のヘッダー付きでコピーできるリアルタイムの診断ログ。
+          </p>
+        </li>
+        <li class="card">
+          <h3>自分自身の更新を検証する</h3>
+          <p>
+            内蔵の更新機能は、ダウンロードしたものをリリースの
+            <code>checksums.txt</code>にある SHA-256 と照合し、チェックサムが無い場合や一致しない場合は何もインストールしません。バックグラウンドで黙って更新することは決してありません。
+          </p>
+        </li>
+        <li class="card">
+          <h3>マシンの状態を見せる</h3>
+          <p>
+            論理コアごとのプロセッサ負荷、キャッシュ済み・コミット済みバイトまで見えるメモリ、ファームウェアが実際に公開している温度センサー、実測の読み書きスループット付きのストレージ容量、バッテリー状態をリアルタイム表示。ページを開くまで何も計測せず、離れた瞬間に止まります。
+          </p>
+        </li>
+        <li class="card">
+          <h3>各プログラムの負荷を見せる</h3>
+          <p>
+            実行中の全プロセスのプロセッサ占有率、ワーキングセット、プライベートバイト、ディスクスループット、スレッド数を、タスクマネージャーと同じ方法で計測。並べ替え、検索、一時停止ができます。
+          </p>
+        </li>
+        <li class="card">
+          <h3>帯域の行き先を見せる</h3>
+          <p>
+            マシン全体のダウンロードとアップロードはアダプター自身のカウンターから、アプリ別の通信量は Windows の TCP 接続統計から取得します。カーネルドライバーも、パケットキャプチャも、サードパーティのサービスもありません。
+          </p>
+        </li>
+        <li class="card">
+          <h3>自分を最新に保つ</h3>
+          <p>
+            1 日 1 回の GitHub Releases API へのリクエストが、新しいバージョンの有無を知らせます。自動ダウンロードとインストールはオプトインで、SHA-256 で検証され、適用されるのは Hexnest の終了時だけです。
+          </p>
+        </li>
+        <li class="card">
+          <h3>Windows と一緒に起動するものを管理する</h3>
+          <p>
+            レジストリの <code>Run</code> キーと 2 つのスタートアップフォルダーにある自動起動項目のすべてを、1 つずつスイッチで。無効化はタスクマネージャーが書くのと同じ
+            <code>StartupApproved</code> の値を書くだけなので、何も削除されず、2 つのツールは常に一致します。Hexnest をアンインストールしても、スタートアップ項目が半分消えているということは起こりません。
+          </p>
+        </li>
+        <li class="card">
+          <h3>容量を食っているものを実測する</h3>
+          <p>
+            キャッシュ、一時ファイル、クラッシュダンプ、シェーダーキャッシュ、ごみ箱。どれも推定ではなく実測です。既定では何もチェックされず、開かれているファイルは強制せずに飛ばし、再解析ポイントは決してたどりません。
+          </p>
+        </li>
+        <li class="card">
+          <h3>あなた自身のファイルは別扱い</h3>
+          <p>
+            古いダウンロードや、アンインストール済みソフトが残したフォルダーは、サイズと経過期間を添えて 1 件ずつ並び、1 件ずつチェックし、ごみ箱へ送られます — いきなり削除はしません。その判定はあくまで推測であり、Hexnest はそう明言します。
+          </p>
+        </li>
+        <li class="card">
+          <h3>10 の言語を話す</h3>
+          <p>
+            英語、トルコ語、ロシア語、簡体字中国語、ヒンディー語、ポルトガル語、日本語、ドイツ語、フランス語、韓国語が 1 つの実行ファイルに。言語もライト/ダークのテーマも、アプリを開いたまま即座に切り替わり、再起動は要りません。
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="post-format">
+    <div class="wrap">
+      <h2>フォーマット後のドライバー導入、手順どおりに</h2>
+      <p class="section-intro">
+        これこそ Hexnest が存在する理由となる道筋です。フォーマット前に費やす 5 分が、直後にマシンを使える状態にします。
+      </p>
+
+      <figure class="figure">
+<svg viewBox="0 0 1160 258" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="flow-title">ドライバーがインストールされるまで</title>
+  <desc id="flow-desc">左から右へ 5 つの手順: デバイスを調べる、利用可能なドライバーパッケージと突き合わせる、並列でダウンロードする、1 件ずつインストールする、再起動する。破線が再起動の手順からインストールの手順へ戻っており、再起動後にキューが自動で再開することを示しています。</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--dim)" />
+    </marker>
+  </defs>
+
+  <g font-family="var(--font-sans)">
+    <g><rect x="10" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/><text x="30" y="86" font-size="13" font-weight="700" fill="var(--accent)">01</text><text x="54" y="86" font-size="16" font-weight="600" fill="var(--text)">調べる</text><text x="30" y="118" font-size="14" fill="var(--muted)">SetupAPI + CfgMgr32、</text><text x="30" y="138" font-size="14" fill="var(--muted)">WMI は使わない</text></g>
+    <line x1="208" y1="115" x2="234" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="242" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="262" y="86" font-size="13" font-weight="700" fill="var(--dim)">02</text><text x="286" y="86" font-size="16" font-weight="600" fill="var(--text)">突き合わせる</text><text x="262" y="118" font-size="14" fill="var(--muted)">Windows Update と</text><text x="262" y="138" font-size="14" fill="var(--muted)">ローカルの INF フォルダー</text></g>
+    <line x1="440" y1="115" x2="466" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="474" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="494" y="86" font-size="13" font-weight="700" fill="var(--dim)">03</text><text x="518" y="86" font-size="16" font-weight="600" fill="var(--text)">ダウンロード</text><text x="494" y="118" font-size="14" fill="var(--muted)">最大 8 並列、</text><text x="494" y="138" font-size="14" fill="var(--muted)">チェックサム検証済み</text></g>
+    <line x1="672" y1="115" x2="698" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="706" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="726" y="86" font-size="13" font-weight="700" fill="var(--dim)">04</text><text x="750" y="86" font-size="16" font-weight="600" fill="var(--text)">インストール</text><text x="726" y="118" font-size="14" fill="var(--muted)">1 件ずつ —</text><text x="726" y="138" font-size="14" fill="var(--muted)">Windows がそう求める</text></g>
+    <line x1="904" y1="115" x2="930" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="938" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/><text x="958" y="86" font-size="13" font-weight="700" fill="var(--accent)">05</text><text x="982" y="86" font-size="16" font-weight="600" fill="var(--text)">再起動</text><text x="958" y="118" font-size="14" fill="var(--muted)">ログインタスクが</text><text x="958" y="138" font-size="14" fill="var(--muted)">Hexnest を呼び戻す</text></g>
+
+    <!-- The queue resumes at the install step after the restart it asked for. -->
+    <path d="M 1044 170 L 1044 216 L 812 216 L 812 174" fill="none" stroke="var(--dim)"
+          stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#arrow)" />
+    <text x="928" y="240" text-anchor="middle" font-size="14" fill="var(--dim)">キューは中断したところから自力で再開します</text>
+  </g>
+</svg>
+        <figcaption>
+          これが全体の流れで、たいていのツールが省くのがこの部分です。3 回の再起動を要する 10 件のキューが自力で終わるのは、変更のたびにキューがディスクへ書き出され、ログインタスクが Hexnest を <code>--resume</code>付きで呼び戻すからです。
+        </figcaption>
+      </figure>
+
+      <div class="steps">
+        <div class="step-block">
+          <h3>フォーマットの前に — 5 分ほど</h3>
+          <ol>
+            <li>Hexnest を実行して開きます: <strong>バックアップと復元</strong>付きで呼び戻すからです。</li>
+            <li>クリックします: <strong>バックアップを作成</strong>。システム上のサードパーティ製ドライバーパッケージがすべて書き出されます。</li>
+            <li>1 つのファイルにまとめたい場合は <strong>ZIP に圧縮</strong> にチェックを入れます。</li>
+            <li>できあがったフォルダーと <strong>Hexnest.exe を</strong> 同じ USB メモリにコピーします。</li>
+            <li>必須ではありませんが便利です: フォルダー名を <code>Drivers</code> にして、次の場所の隣に置いてください: <code>Hexnest.exe</code>。Hexnest はそれを自動的にローカルのドライバーリポジトリとして登録します。設定は不要です。</li>
+          </ol>
+        </div>
+
+        <div class="step-block">
+          <h3>フォーマットの後で</h3>
+          <ol>
+            <li>USB メモリを挿して実行します: <code>Hexnest.exe --rescue</code>。Windows Update には一切接続せず、ローカルのソースだけを使います。</li>
+            <li>こちらへ: <strong>バックアップと復元 → 復元</strong>、または <strong>フォルダーから復元</strong>を選び、バックアップを指定します。各パッケージがドライバーストアに追加され、対応するデバイスに割り当てられます。</li>
+            <li>ネットワークアダプターのドライバーが動くようになったら、次を押します: <strong>調べる</strong>付きで呼び戻すからです。</li>
+            <li><strong>ダッシュボード → フォーマット後の復旧</strong> 。まだ足りていないものが、今度は Windows Update からキューに入ります。</li>
+            <li>再起動を求められたら受け入れてください。Hexnest はログイン時に戻ってきて、キューの残りを片づけます。</li>
+          </ol>
+        </div>
+      </div>
+
+      <p class="callout">
+        <strong>バックアップも、インターネットも、準備も何もない場合は?</strong> こちらを使ってください:
+        <strong>ダッシュボード → ハードウェアレポート</strong> 。すべてのハードウェア ID をテキストファイルに書き出し、それを動くコンピューターへ持って行き、メーカーから正しいパッケージをダウンロードして展開し、フォルダーを持ち帰って次の方法でインストールします: <strong>フォルダーから復元</strong>。まずネットワークアダプターから始めてください。それさえ動けば、あとは Windows Update が引き受けます。
+      </p>
+
+      <h3 class="sub-heading">コマンドライン</h3>
+      <pre><code>Hexnest.exe                 # 通常の起動
+Hexnest.exe --rescue        # オフラインの復旧モード (--offline と同じ)
+Hexnest.exe --resume        # 中断したキューをすぐ続ける</code></pre>
+    </div>
+  </section>
+
+
+  <section id="monitor">
+    <div class="wrap">
+      <h2>同じ数字ではない 2 つの数字</h2>
+      <p class="section-intro">
+        モニタのページは、たいていのツールが黙って間違えていることに気を配っています。マシン全体が転送した量と、1 つのプログラムが転送した量は測り方が異なり、合計はぴったり一致しません。だから Hexnest は 2 つを分けて示し、その理由も書いています。
+      </p>
+
+      <figure class="figure">
+<svg viewBox="0 0 1120 300" role="img" aria-labelledby="mon-title mon-desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="mon-title">マシン全体とアプリ別の通信量の測り方</title>
+  <desc id="mon-desc">2 つの列。左のマシン全体はネットワークアダプターで測っており、TCP・UDP・QUIC・ブロードキャストを含みます。右のアプリ別は TCP 接続統計から取っているため、TCP のみです。</desc>
+
+  <g font-family="var(--font-sans)">
+    <!-- machine-wide column -->
+    <rect x="10" y="16" width="530" height="268" rx="14" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
+    <text x="36" y="52" font-size="17" font-weight="600" fill="var(--text)">マシン全体</text>
+    <text x="36" y="76" font-size="14" fill="var(--dim)">アダプターのバイトカウンター · すべてのプロトコル</text>
+
+    <g><text x="36" y="112" font-size="14" fill="var(--muted)">TCP</text><rect x="186" y="104" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="104" width="91" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="112" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">計上する</text></g>
+    <g><text x="36" y="156" font-size="14" fill="var(--muted)">UDP / QUIC</text><rect x="186" y="148" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="148" width="50" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="156" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">計上する</text></g>
+    <g><text x="36" y="200" font-size="14" fill="var(--muted)">DNS、ブロードキャスト</text><rect x="186" y="192" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="192" width="20" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="200" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">計上する</text></g>
+    <g><text x="36" y="244" font-size="14" fill="var(--muted)">合計</text><rect x="186" y="236" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="236" width="148" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="244" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">正確</text></g>
+
+    <!-- per-application column -->
+    <rect x="580" y="16" width="530" height="268" rx="14" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="606" y="52" font-size="17" font-weight="600" fill="var(--text)">アプリ別</text>
+    <text x="606" y="76" font-size="14" fill="var(--dim)">TCP 接続統計 · TCP のみ</text>
+
+    <g><text x="606" y="112" font-size="14" fill="var(--muted)">chrome</text><rect x="756" y="104" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="104" width="91" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="112" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="156" font-size="14" fill="var(--muted)">Hexnest</text><rect x="756" y="148" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="148" width="41" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="156" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="200" font-size="14" fill="var(--muted)">svchost</text><rect x="756" y="192" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="192" width="20" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="200" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="244" font-size="14" fill="var(--muted)">UDP の通信</text><rect x="756" y="236" width="148" height="9" rx="4.5" fill="var(--bg)"/><text x="1084" y="244" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">帰属先が分からない</text></g>
+  </g>
+</svg>
+        <figcaption>
+          マシン全体の通信量はネットワークアダプターから取っており、すべてのプロトコルを含みます。アプリ別は Windows 自身の TCP 接続統計から取っているため、UDP — QUIC、ほとんどのビデオ通話、DNS — は 1 列目には入り、2 列目には入りません。
+        </figcaption>
+      </figure>
+
+      <p class="section-intro">
+        同じ誠実さは温度にも当てはまります。Windows には汎用の温度 API がありません。あるのは、OS 自身のファン制御のためにファームウェアが宣言する ACPI サーマルゾーンだけで、デスクトップ機の多くは 1 つも宣言していません。コアごと・GPU ごとの本当の値は SMBus 経由でベンダー製チップから取るもので、署名済みのカーネルドライバーが必要です。HWiNFO のようなツールがそれを入れるのはそのためです。Hexnest はページに数字を描くためだけにカーネルドライバーを入れることはしません。だからセンサーがないマシンでは、カードがそう伝えます。
+      </p>
+    </div>
+  </section>
+
+
+  <section id="maintenance">
+    <div class="wrap">
+      <h2>クリーンアップツールがたいてい間違える 2 つのこと</h2>
+
+      <div class="prose-2col">
+        <p class="section-intro">
+          <strong>スタートアッププログラムの無効化は、削除であってはならない。</strong> Windows は有効フラグを専用のキーに保持しており、 <code>StartupApproved</code>、Hexnest が書き込むのはそれだけです — <code>Run</code> の値も、スタートアップフォルダーのショートカットも、まったくそのまま残ります。だから項目を戻せば元のコマンドラインがバイト単位で復元され、タスクマネージャーと Hexnest は常に一致し、あとで Hexnest を消してもスタートアップ項目が半分なくなることはありません。楽な実装 — 値を消して Hexnest 自身の設定に覚えておく — は、他人のソフトウェアにとって Hexnest を黙って不可欠なものにしてしまいます。
+        </p>
+        <p class="section-intro">
+          <strong>クリーナーが、あなたのファイルについて推測で動いてはならない。</strong> キャッシュは全部か無かでかまいません。自分で再生成されるからです。あなたのファイルは違います。古いダウンロードや、アンインストール済みソフトが残したフォルダーは、サイズと経過期間を添えて 1 件ずつ並び、1 件ずつチェックし、削除ではなくごみ箱へ送られます。残骸の判定は本当に推測です — インストール済みの全プログラム、実行中の全プログラム、Program Files の中身すべてと突き合わせ、6 か月間書き込みがないことを条件にしています — そして行にも推測だと書いてあります。ページ上のサイズはすべて推定ではなく実測なので、合計は本当に戻ってくる容量です。しかもページを開いた時点では、何ひとつチェックされていません。
+        </p>
+      </div>
+
+      <p class="callout">
+        <strong>そしてメモリのボタン。</strong> 「RAM を解放」する類のページは、プロセスのワーキングセットをディスクへ追い出します。使用中の物理メモリは確かに減ります — が、そのプログラムをまた使った瞬間に Windows はそのページを読み戻すので、何も速くならず、追い出されたプログラムは一時的に遅くなります。大量のメモリを一度に要するものを起動する直前には意味がありますが、それ以外では意味がありません。Hexnest はボタンの隣に、そう書いています。
+      </p>
+    </div>
+  </section>
+
+  <section id="compare">
+    <div class="wrap">
+      <h2>Hexnest の比較 — 見劣りする点も含めて</h2>
+      <p class="section-intro">
+        ドライバー更新ツールの評判は悪く、その多くは自業自得です。40 個の問題を見つける無料スキャン、修正の手前に置かれた課金の壁、常駐サービス、そして仲間を連れてくるインストーラー。Hexnest は逆向きに作られています。とはいえ、いくつかの具体的な点では商用ツールに劣ります。それらは埋もれさせず、ここに並べてあります。
+      </p>
+
+      <div class="table-scroll">
+        <table>
+          <caption class="sr-only">Hexnest と、よくある無料ドライバー更新ツールの型との比較</caption>
+          <thead>
+            <tr>
+              <th scope="col">&nbsp;</th>
+              <th scope="col">Hexnest</th>
+              <th scope="col">よくある無料ソフトの型</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>価格</td>
+              <td><span class="yes">無料、MIT ライセンス</span></td>
+              <td>スキャンは無料、インストールには有料の解除が必要</td>
+            </tr>
+            <tr>
+              <td>ソースコード</td>
+              <td><span class="yes">公開、検証可能、ビルド可能</span></td>
+              <td>非公開</td>
+            </tr>
+            <tr>
+              <td>同梱される余計なもの</td>
+              <td><span class="yes">なし</span></td>
+              <td>「PC クリーナー」やツールバー、体験版が付くことが多い</td>
+            </tr>
+            <tr>
+              <td>テレメトリ</td>
+              <td><span class="yes">なし</span></td>
+              <td>たいてい入っている</td>
+            </tr>
+            <tr>
+              <td>常駐サービス</td>
+              <td><span class="yes">なし — 起動したときだけ動く</span></td>
+              <td>常駐エージェントと定期的な催促</td>
+            </tr>
+            <tr>
+              <td>ドライバーの入手元</td>
+              <td>Microsoft の Windows Update カタログと、指定した INF フォルダー</td>
+              <td>ベンダーが運営するドライバーミラー</td>
+            </tr>
+            <tr>
+              <td>インターネットなしで動く</td>
+              <td><span class="yes">はい — 復旧モード、USB、ローカルの INF フォルダー</span></td>
+              <td>ほとんど無理</td>
+            </tr>
+            <tr>
+              <td>リソースとネットワークのモニタ</td>
+              <td><span class="yes">内蔵、プログラム別</span></td>
+              <td>たいてい無い、あるいは別売りの有料製品</td>
+            </tr>
+            <tr>
+              <td>スタートアップ管理</td>
+              <td><span class="yes">はい、しかも何も削除しない</span></td>
+              <td>項目を削除して自分で覚えておくことが多い</td>
+            </tr>
+            <tr>
+              <td>ディスククリーンアップ</td>
+              <td><span class="yes">実測、事前チェックなし</span></td>
+              <td>推定で、たいてい事前にチェック済み</td>
+            </tr>
+            <tr>
+              <td>コード署名</td>
+              <td><span class="no">署名なし</span> — checksums.txt の SHA-256 で検証してください</td>
+              <td>たいてい署名あり</td>
+            </tr>
+            <tr>
+              <td>インストールサイズ</td>
+              <td><span class="no">約 65 MB の 1 ファイル</span> ほかには何も要らない</td>
+              <td>小さなインストーラーと、その依存関係</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="callout warn">
+        <strong>正直に言う注意点。</strong> Hexnest は <strong>コード署名されていません</strong>。そのため初回起動時に SmartScreen と Smart App Control が警告します。対処は、ファイルを盲信するのではなく、公開された SHA-256 を検証することです。管理者権限が必要で、64 ビットの Windows 10 1607 以降でしか動かず、.NET ランタイムを丸ごと内包しているため実行ファイルは大きく、Windows が並列実行を認めないためインストールは 1 件ずつになります。ドライバーの導入には本質的なリスクがあります。復元ポイントの設定は有効のままにし、バックアップを取り、リポジトリの免責事項を読んでください。
+      </p>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <h2>よくある質問</h2>
+      <p class="section-intro">
+        技術的な質問も含めた完全な一覧はこちらにあります:
+        <a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/FAQ.md">docs/FAQ.md</a>付きで呼び戻すからです。
+      </p>
+
+      <div class="faq">
+        <article class="faq-item">
+          <h3>Hexnest は本当に無料ですか?</h3>
+          <p>
+            はい。Hexnest は MIT ライセンスで公開され、ソースコードはすべて GitHub にあります。有料版も、体験版も、支払い後に解除される機能も、広告も、同梱されるサードパーティ製ソフトもありません。スキャンもインストールも同じ 1 つの製品です。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>.NET や Visual C++ 再頒布可能パッケージのインストールは必要ですか?</h3>
+          <p>
+            いいえ。.NET 8 ランタイムはまるごと <code>Hexnest.exe</code> の中に自己完結型の単一ファイルとして入っており、WPF は
+            <code>vcruntime140_cor3.dll</code> と <code>msvcp140_cor3.dll</code>の専用コピーを自前で持っています。必要なのは 64 ビットの Windows 10 バージョン 1607 (ビルド 14393) 以降だけです。実行ファイルが約 65 MB あるのも、そのためです。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>なぜ SmartScreen やウイルス対策ソフトが Hexnest を警告するのですか?</h3>
+          <p>
+            Hexnest は <strong>コード署名されていません</strong>。コード署名証明書にはお金がかかるからです。Windows SmartScreen と Smart App Control は、評判が積み上がっていない未署名の実行ファイルすべてに警告を出します。しかも、管理者として動き、ドライバーを入れ、タスクを登録する単一ファイルのアプリは、ヒューリスティックなスキャナーにはマルウェアそのものに見えます。
+          </p>
+          <p>
+            誠実な対処は、ダウンロードを検証することです。次を実行し、
+            <code>Get-FileHash .\Hexnest.exe -Algorithm SHA256</code> その結果を、リリースと一緒に公開されている
+            <code>Hexnest.exe</code> の中の <code>checksums.txt</code> の行と比べてください。一致すれば、そのファイルは公開されたものとバイト単位で同一です。自分でソースからビルドすることもできます。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>インターネットなしで、フォーマット後にドライバーを入れられますか?</h3>
+          <p>
+            はい、そのために作られました。フォーマットの前に <strong>バックアップと復元</strong> でサードパーティ製ドライバーパッケージをすべて書き出し、そのフォルダーと
+            <code>Hexnest.exe</code> を同じ USB メモリにコピーします。フォーマットの後は、次で起動してください:
+            <code>Hexnest.exe --rescue</code>。Windows Update には一切接続せず、ローカルのソースだけを使います。
+          </p>
+          <p>
+            次の名前のフォルダー: <code>Drivers</code> を、次の隣に置くと: <code>Hexnest.exe</code> 、自動的にローカルのドライバーリポジトリとして登録されます。自分で展開したメーカー配布のドライバーフォルダーでも同じように使えます。INF ファイルを再帰的に照合するからです。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>不具合を起こしたドライバーを元に戻せますか?</h3>
+          <p>はい、3 通りあります。</p>
+          <ol>
+            <li>Hexnest は置き換える直前のパッケージを書き出し、そのパスを履歴に記録します。だから次の方法で入れ直せます: <strong>フォルダーから復元</strong>付きで呼び戻すからです。</li>
+            <li>セッション最初のインストール前にドライバー種別のシステム復元ポイントを作ります。Windows のシステムの復元ウィザード (<code>rstrui.exe</code>) から使えます。</li>
+            <li>Windows 自身の <em>ドライバーを元に戻す</em> ボタンも、デバイスマネージャーで Hexnest とは無関係に使えます。</li>
+          </ol>
+        </article>
+
+        <article class="faq-item">
+          <h3>再起動のあと、本当に続きから再開しますか?</h3>
+          <p>
+            はい。キューは状態が変わるたびにアトミックに <code>session.json</code> へ書き出され、Hexnest はログイン時に起動するタスクを次の名前で登録します:
+            <code>Hexnest\ResumeSession</code>。タスクスケジューラが使えない場合は HKLM の <code>RunOnce</code> 値にフォールバックします。次回ログイン時にそのタスクが Hexnest を
+            <code>--resume</code> 付きで起動し直し、残りの処理が続きます。1 つのセッションが耐えられる再起動は最大 10 回で、キューが終わるとタスクも <code>RunOnce</code> の値も削除されます。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>なぜ Hexnest には管理者権限が必要なのですか?</h3>
+          <p>
+            ドライバーのインストールは特権が要る操作です。 <code>pnputil</code>でドライバーストアにパッケージを追加・書き出しすること、Windows Update のインストーラーを動かすこと、 <code>srclient.dll</code> 経由でシステム復元ポイントを作ること — どれも昇格されたトークンを必要とし、再開用のタスクは HKLM に登録されます。Hexnest はキューの途中で「アクセスが拒否されました」と失敗するのではなく、アプリケーションマニフェストで最初に昇格を要求します。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>スタートアッププログラムを無効にすると、何か削除されますか?</h3>
+          <p>
+            いいえ。Windows は有効フラグを別のキー —
+            <code>...\CurrentVersion\Explorer\StartupApproved\Run</code> とその 2 つの兄弟 — に保持しており、Hexnest が書き込むのはそれだけです。 <code>Run</code>
+            の値も、スタートアップフォルダーのショートカットも、まったくそのまま残るので、項目を戻せば元のコマンドラインがバイト単位で復元されます。
+          </p>
+          <p>
+            つまり、タスクマネージャーと Hexnest は常に一致し、あとで Hexnest を消してもスタートアップ項目が半分なくなることはありません。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>クリーンアップは安全ですか?</h3>
+          <p>安全になるよう作ってあります。しかも「信じてください」ではなく、設計でどう担保しているかを示します:</p>
+          <ul>
+            <li><strong>既定では何もチェックされていません。</strong> ページは合計ゼロの状態で開きます。</li>
+            <li>パスはすべて文字列ではなく既知フォルダー API から取得し、個々の削除はその直前に、自分のカテゴリのルート配下かどうかを再確認します。</li>
+            <li>再解析ポイントは決してたどりません — <code>%LOCALAPPDATA%</code> はジャンクションだらけで、そこへ入り込むことこそ「キャッシュを消す」機能が誰かのドキュメントを消してしまう経路です。</li>
+            <li>開かれているファイルは強制せずに飛ばし、飛ばした数を報告します。</li>
+            <li>あなた自身のファイルは決して一括選択されず、ごみ箱へ送られます。</li>
+          </ul>
+        </article>
+
+        <article class="faq-item">
+          <h3>「メモリを解放」は実際に効果がありますか?</h3>
+          <p>
+            その瞬間の物理メモリを解放します。それだけです。各プロセスのワーキングセットをページファイルへ追い出すよう Windows に頼むので、使用中メモリは確かに減ります — ただしそのページは消えたのではなくディスクにあり、プログラムがそのメモリに触れた瞬間に Windows は読み戻します。使われていないメモリは無駄なメモリではありません。Windows はもともと、それを使える状態に保っていたのです。
+          </p>
+          <p>
+            つまり性能向上の機能ではなく、Hexnest もそう称してはいません。大きな確保をいきなり行うものを起動する直前や、リークしているプログラムが実際どれだけ抱えているかを見るときに役立ちます。このボタンを持つ他のツールは、どれも違うことを主張します。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>なぜ温度カードは「センサーがない」と言うのですか?</h3>
+          <p>
+            そのマシンには、Windows が読めるセンサーが実際にないからです。ドライバーなしで Windows が公開する温度は、ファームウェアが自身のファン制御のために宣言する ACPI サーマルゾーンだけで、デスクトップのマザーボードには 1 つも宣言しないものが非常に多くあります。コアごとや GPU の温度は SMBus 経由でベンダー製のセンサーチップから取るもので、署名済みのカーネルドライバーが必要です — HWiNFO や Open Hardware Monitor が入れているのがそれです。Hexnest は数字を埋めるためだけにカーネルドライバーを入れることはしないので、推測する代わりに「センサーがない」と伝えます。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>なぜプログラム別の通信量はマシン全体の合計になりませんか?</h3>
+          <p>
+            2 つの数字は出どころが違い、どちらも正しいのです。マシン全体はネットワークアダプター自身のバイトカウンターの合計なので、TCP・UDP・QUIC・ブロードキャストのすべてを含みます。アプリ別は Windows の TCP 接続統計 (ESTATS) から取っており、これはカーネルドライバーなしに Windows が提供する唯一のプロセス別バイトカウンターで、TCP しか対象にしません。ビデオ通話、ゲームの通信の大半、DNS が 1 つ目の数字にあって 2 つ目にないのはそのためです。Hexnest は黙って少なく報告するのではなく、ページ上でそう説明します。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Hexnest はバックグラウンドで自動更新しますか?</h3>
+          <p>
+            1 日 1 回確認し、知らせるだけです。次の場所でオンにしない限り、何もインストールしません: <strong>設定 → 更新</strong>。オンにした場合も、ダウンロードはリリースの <code>checksums.txt</code> と照合されたうえで、Hexnest の終了時にだけ差し替えられます — ドライバーのキューが動いている最中には決してありません。オフラインモードと復旧モードでは、確認もインストールも完全に省かれます。確認自体を完全に切ることもできますし、その場合も「バージョン情報」ページのボタンは使えます。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>モニタはバックグラウンドサービスですか?</h3>
+          <p>
+            いいえ。どちらのモニタもページを開くまで何も計測せず、離れた瞬間に止まります。Hexnest はサービスもドライバーもスタートアップ項目もインストールしません — 登録するのは、中断したドライバーのキューを再開するログインタスクだけで、それもキューが終われば自分で消えます。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Hexnest は何かデータを集めますか?</h3>
+          <p>
+            いいえ。テレメトリも、利用統計も、デバイス識別子もありません。マシンの外へ出るのは、ちょうど 2 つだけです。1 つは Windows Update への問い合わせで、Windows 自身の Windows Update エージェント経由で Microsoft に直接届き、オフラインモードや復旧モードでは完全に省かれます。もう 1 つは GitHub Releases API へのリクエストで、 <em>更新を確認</em>を押したときに 1 回、自動確認を有効にしていれば 1 日 1 回です。どちらもあなたのマシンについて何も送りません。ごく普通の匿名の HTTPS GET です。モニタのページはどこへも何も送りません。表示される数字はすべてローカルで読み取られ、コンピューターの外へ出ることはありません。それ以外はすべて、あなたのマシンの <code>%ProgramData%\Hexnest</code> に留まります。
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="get-it">
+    <div class="wrap">
+      <h2>Hexnest を入手する</h2>
+      <p class="section-intro">
+        実行ファイルをダウンロードし、好きな場所に置いてダブルクリックするだけです。削除するときはファイルを消し、必要ならフォルダーも消してください: <code>%ProgramData%\Hexnest</code> 。キューが終わっていれば、レジストリには何も残りません。
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest.exe">
+          Hexnest.exe をダウンロード
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/Hexnest/releases/latest">
+          すべてのリリースとチェックサム
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="フッター">
+      <ul>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest">リポジトリ</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/releases/latest">リリース</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/USAGE.md">使い方ガイド</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/FAQ.md">よくある質問</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/BUILD.md">ソースからビルドする</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/ARCHITECTURE.md">アーキテクチャ</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/SECURITY.md">セキュリティポリシー</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/issues">バグを報告する</a></li>
+        <li><a href="../" hreflang="en" lang="en">English</a></li>
+        <li><a href="../tr/" hreflang="tr" lang="tr">Türkçe</a></li>
+        <li><a href="../ru/" hreflang="ru" lang="ru">Русский</a></li>
+        <li><a href="../zh/" hreflang="zh" lang="zh">简体中文</a></li>
+        <li><a href="../hi/" hreflang="hi" lang="hi">हिन्दी</a></li>
+        <li><a href="../pt/" hreflang="pt" lang="pt">Português</a></li>
+        <li><a href="../de/" hreflang="de" lang="de">Deutsch</a></li>
+        <li><a href="../fr/" hreflang="fr" lang="fr">Français</a></li>
+        <li><a href="../ko/" hreflang="ko" lang="ko">한국어</a></li>
+      </ul>
+    </nav>
+
+    <p>
+      Hexnest は次の作者によるフリーソフトウェアです: <a href="https://github.com/ahmetcaglayan">Ahmet Çağlayan</a>。MIT ライセンスで公開されています。ドライバーの導入には本質的なリスクがあり、本ソフトウェアは無保証で提供されます — 復元ポイントの設定は有効のままにし、大切なものはバックアップを取ってください。
+    </p>
+    <p>Windows は Microsoft Corporation の商標です。本プロジェクトは Microsoft とは関係ありません。</p>
+
+    <p class="keywords">
+      キーワード: windows ドライバー更新 オープンソース, 無料 ドライバー更新 アドウェアなし, フォーマット後 ドライバー インストール, オフライン ドライバー インストーラー usb, ドライバー バックアップ 復元 windows, 不足しているドライバー 検出, windows 11 ドライバー スキャン, pnputil ドライバー エクスポート, windows update ドライバーカタログ ツール, 無料 システムモニタ windows, cpu ram 温度 モニタ オープンソース, アプリ別 ネットワーク使用量 windows, プログラム別 帯域 モニタ, どのプログラムがインターネットを使っているか, タスクマネージャー 代替, スタートアップ管理 windows, スタートアップ プログラム 無効化, 無料 pc クリーナー アドウェアなし, 一時ファイル 削除 windows, ブラウザー キャッシュ クリーナー, アンインストール済みプログラムの残骸 検出.
+    </p>
+  </div>
+</footer>
+
+<script>
+/* Screenshot carousel.
+
+   The markup is a scroll-snapping strip, so with JavaScript disabled it degrades to
+   something you can still swipe or scroll through - which is also exactly how it
+   behaves on a touch screen. This only adds the buttons and keeps the labels in sync
+   with whatever is on screen, however the reader got there. */
+(function () {
+  var track = document.getElementById('shotsTrack');
+  var dots  = document.getElementById('shotsDots');
+  if (!track || !dots) return;
+
+  var slides  = Array.prototype.slice.call(track.querySelectorAll('.shot'));
+  var buttons = Array.prototype.slice.call(dots.querySelectorAll('button'));
+  if (!slides.length) return;
+
+  function show(index) {
+    var target = slides[Math.max(0, Math.min(index, slides.length - 1))];
+    track.scrollTo({ left: target.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+  }
+
+  function current() {
+    /* Whichever slide's centre is closest to the viewport centre. */
+    var middle = track.scrollLeft + track.clientWidth / 2;
+    var best = 0, bestGap = Infinity;
+
+    slides.forEach(function (slide, i) {
+      var centre = slide.offsetLeft - track.offsetLeft + slide.clientWidth / 2;
+      var gap = Math.abs(centre - middle);
+      if (gap < bestGap) { bestGap = gap; best = i; }
+    });
+
+    return best;
+  }
+
+  function sync() {
+    var index = current();
+    buttons.forEach(function (button, i) {
+      if (i === index) button.setAttribute('aria-current', 'true');
+      else button.removeAttribute('aria-current');
+    });
+  }
+
+  buttons.forEach(function (button, i) {
+    button.addEventListener('click', function () { show(i); });
+  });
+
+  var prev = document.getElementById('shotsPrev');
+  var next = document.getElementById('shotsNext');
+  if (prev) prev.addEventListener('click', function () { show(current() - 1); });
+  if (next) next.addEventListener('click', function () { show(current() + 1); });
+
+  track.addEventListener('keydown', function (event) {
+    if (event.key === 'ArrowLeft')  { show(current() - 1); event.preventDefault(); }
+    if (event.key === 'ArrowRight') { show(current() + 1); event.preventDefault(); }
+  });
+
+  /* rAF-throttled: the scroll event fires far more often than the labels can matter. */
+  var queued = false;
+  track.addEventListener('scroll', function () {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; sync(); });
+  }, { passive: true });
+
+  sync();
+})();
+</script>
+
+</body>
+</html>

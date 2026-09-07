@@ -9,6 +9,17 @@ name: build
 #
 # The macOS half is Avalonia over Hexnest.Core's portable net8.0 target, and its .app
 # bundle needs a Mac: iconutil builds the .icns and codesign signs the result.
+#
+# A third job then downloads what the other two uploaded. That exists because the
+# artifact hand-off is otherwise only exercised by release.yml, which runs on a tag -
+# so an upload/download action pair that stopped working together would be discovered
+# at the worst possible moment, after both builds had already succeeded.
+#
+# A fourth job runs the three structural checkers. Ten language packs, ten README
+# translations and ten website pages have to stay the same document in ten languages,
+# and that is not something a reviewer can see in a diff of a language they do not
+# read: a dropped table row or a missing {0} looks like ordinary translated text.
+# The checkers do not need a build, so they run first and fail fast.
 
 on:
   push:
@@ -30,6 +41,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  docs:
+    name: Check the translations and the documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Check the language packs against English
+        run: python3 build/check-languages.py
+
+      - name: Check the translated READMEs against README.md
+        run: python3 build/check-readme.py
+
+      - name: Check the localised site pages against the English page
+        run: python3 build/check-site.py
+
   windows:
     name: Build and smoke-publish for Windows
     runs-on: windows-latest
@@ -169,3 +197,53 @@ jobs:
           path: artifacts/mac/arm64/Hexnest.app
           retention-days: 7
           if-no-files-found: error
+
+  # ===================================================================================
+  # The artifact hand-off release.yml depends on.
+  #
+  # Deliberately mirrors the publish job's download exactly - same pattern, same
+  # merge-multiple - so that a breaking change in either artifact action shows up on
+  # an ordinary push instead of halfway through a release.
+  # ===================================================================================
+  artifacts:
+    name: Verify the artifact hand-off
+    needs: [windows, macos]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download both platforms' artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: staging
+          pattern: Hexnest-*
+          merge-multiple: true
+
+      - name: Verify what arrived
+        run: |
+          echo "Downloaded tree:"
+          find staging -maxdepth 3 | head -20
+
+          # merge-multiple flattens both artifacts into one directory: the Windows
+          # upload contributes Hexnest.exe, the macOS one the .app's own Contents.
+          exe="staging/Hexnest.exe"
+          mac="staging/Contents/MacOS/Hexnest"
+
+          for required in "$exe" "$mac"; do
+            if [ ! -f "$required" ]; then
+              echo "The artifact hand-off is broken: $required did not arrive." >&2
+              exit 1
+            fi
+          done
+
+          # A zero-length or truncated file would mean the round trip corrupted it,
+          # which is the failure mode a mere existence check would sail past.
+          for required in "$exe" "$mac"; do
+            size=$(stat -c%s "$required")
+            echo "$(basename "$required"): $((size / 1048576)) MB"
+            if [ "$size" -lt 1048576 ]; then
+              echo "$required came back as only $size bytes." >&2
+              exit 1
+            fi
+          done
+
+          echo 'Upload and download agree; release.yml can hand artifacts between jobs.'

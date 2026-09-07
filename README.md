@@ -40,7 +40,7 @@ download on Windows, no Visual C++ Redistributable, no Homebrew or Xcode on a Ma
 [![Stars](https://img.shields.io/github/stars/ahmetcaglayan/Hexnest?style=flat-square)](../../stargazers)
 [![Build](https://img.shields.io/github/actions/workflow/status/ahmetcaglayan/Hexnest/build.yml?style=flat-square&label=Build)](../../actions/workflows/build.yml)
 
-<sub>🇬🇧 English · [🇹🇷 Türkçe](README.tr.md) · [🇷🇺 Русский](README.ru.md) · [🇨🇳 简体中文](README.zh.md) · [🇮🇳 हिन्दी](README.hi.md)</sub>
+<sub>🇬🇧 English · [🇹🇷 Türkçe](README.tr.md) · [🇷🇺 Русский](README.ru.md) · [🇨🇳 简体中文](README.zh.md) · [🇮🇳 हिन्दी](README.hi.md) · [🇵🇹 Português](README.pt.md) · [🇯🇵 日本語](README.ja.md) · [🇩🇪 Deutsch](README.de.md) · [🇫🇷 Français](README.fr.md) · [🇰🇷 한국어](README.ko.md)</sub>
 
 <br>
 
@@ -68,7 +68,7 @@ Mac build rather than present and permanently empty.
 | **Per-application network usage** | ✅ TCP only | ✅ via `nettop` |
 | **Start-up manager** | ✅ Run keys + Startup folders | ✅ launchd agents |
 | **Clean-up**, measured not estimated | ✅ | ✅ |
-| **Logs, settings, five languages, dark/light** | ✅ | ✅ |
+| **Logs, settings, ten languages, dark/light** | ✅ | ✅ |
 | **Processor temperature** | ✅ ACPI thermal zones | ❌ not exposed without root |
 | **Per-volume disk throughput** | ✅ | ❌ no per-volume counter |
 | **Memory trim** | ✅ | ❌ macOS compresses instead |
@@ -147,7 +147,7 @@ One file, no installer, no background service, no telemetry.
 | 🧹 **Clean-up** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Temporary files, thumbnail and icon cache, seven browsers' caches, the Windows Update download cache, Delivery Optimization, crash dumps, error reports, shader caches, servicing logs and the Recycle Bin — every one **measured, not estimated**, and **nothing ticked by default**. |
 | 🗂️ **Leftovers and old downloads** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Folders under AppData matching no installed program, no running program and nothing in Program Files, untouched for six months; plus archives and installers in Downloads older than a month. Listed item by item and sent to the **Recycle Bin**, never deleted outright. |
 | 🧠 **Memory trim** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | Pages out process working sets. The page says plainly that this frees physical memory *now* and does not make anything faster — which is the opposite of what every other tool with this button claims. |
-| 🌍 **Five interface languages** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | English, Turkish, Russian, Simplified Chinese and Hindi, all inside the single executable. Switches instantly while the app is open. |
+| 🌍 **Ten interface languages** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | English, Turkish, Russian, Simplified Chinese, Hindi, Portuguese, Japanese, German, French and Korean, all inside the single executable. Switches instantly while the app is open. |
 | 🎨 **Dark / light theme** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Swaps the palette; applied without reopening the window. The Mac build adds a third option, *Follow the system*, which tracks macOS's own light/dark switch. |
 
 ---
@@ -608,8 +608,9 @@ Contributions are welcome.
 - **Code:** fork, branch, open a pull request. Keep the existing style: no NuGet
   dependencies (single-file size and offline operation are deliberate choices), and no UI
   code inside `Hexnest.Core`.
-- **Translation:** adding a language means adding one dictionary to
-  `src/Hexnest.App/Services/Loc.cs`; see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+- **Translation:** adding a language means dropping one JSON file into
+  `src/Hexnest.Core/Languages/`, which `build/check-languages.py` then checks against
+  English; see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ---
 

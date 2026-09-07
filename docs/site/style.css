@@ -908,3 +908,13 @@ tbody tr:last-child td {
 
   .shots-dots { justify-content: center; }
 }
+
+/* --- Korean line breaking ----------------------------------------------------
+   Browsers break Korean at any character by default, which turns a narrow table
+   cell into "소스 코 드" - a word split across two lines. keep-all breaks at
+   spaces instead, the way the language is actually read. Scoped by :lang so it
+   only ever applies to the Korean page, which declares lang="ko" on <html>. */
+
+:lang(ko) {
+  word-break: keep-all;
+}

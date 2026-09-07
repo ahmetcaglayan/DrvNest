@@ -3,7 +3,7 @@
 """
 Structural check for the translated landing pages.
 
-The five language pages are the same document in five languages. Everything except the
+The 10 language pages are the same document in 10 languages. Everything except the
 words has to match: the same elements in the same order, the same ids and classes, the
 same links, the same images, the same inline SVG geometry. A translator who drops a
 </div>, renames a section id or forgets to fix a relative path breaks the page in a way
@@ -26,7 +26,7 @@ from html.parser import HTMLParser
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = os.path.join(ROOT, 'docs', 'site')
 
-LANGUAGES = ['tr', 'ru', 'zh', 'hi']
+LANGUAGES = ['tr', 'ru', 'zh', 'hi', 'pt', 'ja', 'de', 'fr', 'ko']
 
 # Attributes that carry structure rather than words.
 STRUCTURAL = ('id', 'class', 'role', 'type', 'name', 'property', 'rel', 'data-slide',

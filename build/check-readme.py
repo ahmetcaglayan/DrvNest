@@ -20,7 +20,7 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LANGUAGES = ['tr', 'ru', 'zh', 'hi']
+LANGUAGES = ['tr', 'ru', 'zh', 'hi', 'pt', 'ja', 'de', 'fr', 'ko']
 
 FENCE = re.compile(r'^```')
 HEADING = re.compile(r'^(#{1,6})\s')
@@ -118,7 +118,7 @@ def compare(reference: str, candidate: str, code: str) -> list[str]:
             problems.append('%s: image not found on disk: %s' % (code, image))
 
     # The language row must link the other four and not itself.
-    for other in ['', 'tr', 'ru', 'zh', 'hi']:
+    for other in ['', 'tr', 'ru', 'zh', 'hi', 'pt', 'ja', 'de', 'fr', 'ko']:
         target = 'README.md' if other == '' else 'README.%s.md' % other
         if other == code:
             if '(%s)' % target in candidate:

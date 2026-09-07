@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Hexnest — Kostenloser Systemmonitor, Cleaner und Treiber-Updater für Windows und macOS</title>
+<meta name="description" content="Hexnest ist ein kostenloses, quelloffenes Systemwerkzeug für Windows 10, Windows 11 und macOS 12+: ein Live-Systemmonitor, ein Netzwerkmonitor pro Anwendung, ein Autostart-Manager und ein Datenträger-Cleaner, der misst statt schätzt — dazu unter Windows ein vollwertiger Treiber-Updater, der fehlende Treiber nach einer Neuinstallation einspielt und sie offline vom USB-Stick zurückholt. Keine Adware, keine Telemetrie, keine Bezahlstufe.">
+
+<link rel="canonical" href="https://ahmetcaglayan.github.io/Hexnest/de/">
+<link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/Hexnest/">
+<link rel="alternate" hreflang="tr" href="https://ahmetcaglayan.github.io/Hexnest/tr/">
+<link rel="alternate" hreflang="ru" href="https://ahmetcaglayan.github.io/Hexnest/ru/">
+<link rel="alternate" hreflang="zh" href="https://ahmetcaglayan.github.io/Hexnest/zh/">
+<link rel="alternate" hreflang="hi" href="https://ahmetcaglayan.github.io/Hexnest/hi/">
+<link rel="alternate" hreflang="pt" href="https://ahmetcaglayan.github.io/Hexnest/pt/">
+<link rel="alternate" hreflang="ja" href="https://ahmetcaglayan.github.io/Hexnest/ja/">
+<link rel="alternate" hreflang="de" href="https://ahmetcaglayan.github.io/Hexnest/de/">
+<link rel="alternate" hreflang="fr" href="https://ahmetcaglayan.github.io/Hexnest/fr/">
+<link rel="alternate" hreflang="ko" href="https://ahmetcaglayan.github.io/Hexnest/ko/">
+<link rel="alternate" hreflang="x-default" href="https://ahmetcaglayan.github.io/Hexnest/">
+
+<meta name="author" content="Ahmet Çağlayan">
+<meta name="keywords" content="kostenloser treiber updater, windows treiber updater open source, treiber nach formatieren installieren, offline treiber installer usb, treiber sichern wiederherstellen, systemmonitor windows, mac systemmonitor, aktivitätsanzeige alternative, task-manager alternative, netzwerknutzung pro anwendung, bandbreitenmonitor pro programm, autostart manager, launchd anmeldeobjekte, festplatte aufräumen, speicherplatz freigeben mac, xcode derived data löschen, apple silicon systemmonitor, keine adware, quelloffenes systemwerkzeug">
+<meta name="applicable-device" content="pc">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="theme-color" content="#0D1014" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Hexnest">
+<meta property="og:title" content="Hexnest — Kostenloser Systemmonitor, Cleaner und Treiber-Updater für Windows und macOS">
+<meta property="og:description" content="Kostenlos und quelloffen. Ein Live-System- und -Netzwerkmonitor, ein Autostart-Manager und ein Datenträger-Cleaner unter Windows und macOS — dazu ein Treiber-Updater, der einen frisch formatierten PC ohne Internet rettet.">
+<meta property="og:url" content="https://ahmetcaglayan.github.io/Hexnest/de/">
+<meta property="og:image" content="https://ahmetcaglayan.github.io/Hexnest/og-image.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="Das Hexnest-Logo und der Schriftzug auf dunklem Grund, über den Worten: kostenloses, quelloffenes Systemwerkzeug für Windows und macOS.">
+<meta property="og:locale" content="de_DE">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="tr_TR">
+<meta property="og:locale:alternate" content="ru_RU">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:locale:alternate" content="hi_IN">
+<meta property="og:locale:alternate" content="pt_PT">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="ko_KR">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hexnest — Kostenloser Systemmonitor, Cleaner und Treiber-Updater für Windows und macOS">
+<meta name="twitter:description" content="Kostenloses, quelloffenes Systemwerkzeug für Windows und macOS: System- und Netzwerkmonitor, Autostart-Manager, Datenträger-Cleaner — und unter Windows ein Treiber-Updater.">
+<meta name="twitter:image" content="https://ahmetcaglayan.github.io/Hexnest/og-image.png">
+<meta name="twitter:image:alt" content="Das Hexnest-Logo und der Schriftzug auf dunklem Grund, über den Worten: kostenloses, quelloffenes Systemwerkzeug für Windows und macOS.">
+
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Hexnest",
+  "alternateName": ["Hexnest for Windows", "Hexnest for Mac"],
+  "description": "Hexnest is a free and open-source system utility for Windows 10, Windows 11 and macOS 12 or newer. On both platforms it provides a live system monitor with per-core processor load and per-application resource usage, a network monitor with per-application traffic, a start-up manager and a disk cleaner that measures rather than estimates. On Windows it is also a full driver updater: it scans every PnP device, reports which ones have no driver, installs missing and outdated drivers from the Windows Update catalog or from local INF folders, resumes its queue after the restarts a driver install needs, and backs drivers up so they can be restored offline from a USB stick after a format.",
+  "applicationCategory": "UtilitiesApplication",
+  "applicationSubCategory": "System monitor, disk cleaner and driver updater",
+  "operatingSystem": "Windows 10, Windows 11, macOS 12, macOS 13, macOS 14, macOS 15",
+  "softwareVersion": "1.4.0",
+  "downloadUrl": "https://github.com/ahmetcaglayan/Hexnest/releases/latest",
+  "installUrl": "https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest.exe",
+  "url": "https://ahmetcaglayan.github.io/Hexnest/",
+  "image": "https://ahmetcaglayan.github.io/Hexnest/og-image.png",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "inLanguage": ["en", "tr", "ru", "zh", "hi"],
+  "codeRepository": "https://github.com/ahmetcaglayan/Hexnest",
+  "programmingLanguage": "C#",
+  "softwareRequirements": "Windows 10 version 1607 (build 14393) or newer, 64-bit, with administrator rights; or macOS 12 Monterey or newer on Apple silicon or Intel. No .NET runtime, no Visual C++ Redistributable and no Homebrew or Xcode required.",
+  "permissions": "On Windows, administrator rights are required to install drivers, export the driver store and create a system restore point. On macOS the application never runs as root and only ever changes files inside the user's own home folder.",
+  "releaseNotes": "https://github.com/ahmetcaglayan/Hexnest/blob/main/CHANGELOG.md",
+  "featureList": [
+    "Scans every PnP device with SetupAPI and CfgMgr32, without WMI",
+    "Detects missing drivers from Configuration Manager problem codes",
+    "Finds drivers in the Windows Update catalog through the Windows Update Agent",
+    "Installs drivers from local INF folders, a USB stick or a network share",
+    "Parallel downloads with serialized installs",
+    "Resumes the queue automatically after a reboot",
+    "Creates a system restore point and backs up each driver before replacing it",
+    "Backs up and restores every third-party driver with pnputil",
+    "Offline rescue mode for a freshly formatted machine with no internet",
+    "Hardware report listing every device and hardware id",
+    "Live system monitor: processor load per logical core, memory breakdown, temperature sensors, storage and battery",
+    "Per-application resource usage: processor share, working set, private bytes and disk throughput for every process",
+    "Live network monitor: download and upload for the whole machine, session and since-boot totals, every adapter",
+    "Per-application network usage from TCP connection statistics, with open connection counts and remote endpoints",
+    "Automatic daily update check, with optional automatic download and install verified against SHA-256",
+    "Startup manager: every autostart entry with a switch, written the way Task Manager writes it so nothing is deleted",
+    "Clean-up: temporary files, browser caches, shader caches, crash dumps, Windows Update cache and the Recycle Bin, all measured rather than estimated",
+    "Old downloads and leftover application folders listed item by item and sent to the Recycle Bin",
+    "Memory trim that states plainly what paging out a working set does and does not achieve",
+    "Ten interface languages - English, Turkish, Russian, Simplified Chinese, Hindi, Portuguese, Japanese, German, French and Korean - plus a dark and a light theme",
+    "macOS build with the same monitors, start-up manager and cleaner, built on Avalonia",
+    "macOS start-up manager for launchd login agents, using launchctl overrides so nothing is deleted",
+    "macOS cleaner for application caches, developer caches, Xcode derived data, logs, the Trash, old downloads and iPhone backups",
+    "macOS per-application network usage from the same statistics Activity Monitor reads",
+    "Per-core processor load including the performance and efficiency clusters on Apple silicon"
+  ],
+  "screenshot": [
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/dashboard.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/system.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/network.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/mac-dashboard.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/mac-system.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/mac-clean.png"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "creator": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "maintainer": {
+    "@type": "Person",
+    "name": "Ahmet Çağlayan",
+    "url": "https://github.com/ahmetcaglayan"
+  },
+  "softwareHelp": {
+    "@type": "CreativeWork",
+    "url": "https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/USAGE.md"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "en",
+  "url": "https://ahmetcaglayan.github.io/Hexnest/",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is Hexnest really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Hexnest is released under the MIT licence and the full source code is on GitHub. There is no paid tier, no trial, no feature that unlocks after payment, no advertising and no bundled third-party software. The scan and the installs are the same product."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to install .NET or the Visual C++ Redistributable?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The entire .NET 8 runtime is inside Hexnest.exe as a self-contained single-file publish, and WPF carries its own private copies of vcruntime140_cor3.dll and msvcp140_cor3.dll. The only requirement is 64-bit Windows 10 version 1607 (build 14393) or newer. That is also why the executable is around 65 MB."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does SmartScreen or my antivirus warn about Hexnest?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hexnest is not code-signed, because a code-signing certificate costs money. Windows SmartScreen and Smart App Control show a warning for any unsigned executable that has not built up reputation, and a single-file app that runs as administrator, installs drivers and registers a scheduled task looks like malware to a heuristic scanner. The honest mitigation is to verify the download: run Get-FileHash .\\Hexnest.exe -Algorithm SHA256 and compare the result with the Hexnest.exe line in the checksums.txt published with the release. A match means the file is byte-for-byte the published one. You can also build it yourself from source."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can Hexnest install drivers after a format with no internet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and that is what it was built for. Before the format, use Backup and Restore to export every third-party driver package, then copy that folder and Hexnest.exe onto the same USB stick. After the format, start Hexnest.exe --rescue: Windows Update is never contacted and only local sources are used. A folder named Drivers next to Hexnest.exe is registered automatically as a local driver repository. Any vendor driver folder you extracted yourself works too, because its INF files are matched recursively."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I roll back a driver that breaks something?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, in three ways. Hexnest exports the package it is about to replace and records the path in the history entry, so you can reinstall it with Restore from folder. It also creates a driver-type system restore point before the first install of a session, which you can use through the Windows System Restore wizard. And Windows' own Roll Back Driver button in Device Manager keeps working independently of Hexnest."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Hexnest really continue after a reboot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The queue is written atomically to session.json on every state change, and Hexnest registers a logon-triggered scheduled task called Hexnest\\ResumeSession, falling back to an HKLM RunOnce value when Task Scheduler is unavailable. At the next logon the task relaunches Hexnest with --resume and the remaining jobs continue. A session survives at most ten restarts, and the task and RunOnce value are removed when the queue finishes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does Hexnest need administrator rights?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Installing a driver is a privileged operation. Adding packages to or exporting them from the driver store with pnputil, driving the Windows Update installer and creating a system restore point through srclient.dll all require an elevated token, and the resume task is registered under HKLM. Hexnest asks for elevation up front in its application manifest rather than failing with access denied in the middle of a queue."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Hexnest collect any data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. There is no telemetry, no usage statistics and no device identifiers. Exactly two things ever leave the machine: Windows Update queries, which go straight to Microsoft through Windows' own Windows Update Agent and are skipped entirely in offline or rescue mode, and a single request to the GitHub Releases API when you press Check for updates. Everything else stays in %ProgramData%\\Hexnest on your own machine."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="https://ahmetcaglayan.github.io/Hexnest/">
+      <img src="../favicon.svg" width="30" height="30" alt="Hexnest-Logo: eine sechseckige Wabenzelle, die einen minzgrünen Mikrochip umschließt">
+      <span>Hex<span class="mark-nest">nest</span></span>
+    </a>
+    <nav class="site-nav" aria-label="Hauptmenü">
+      <ul>
+        <li><a href="#features">Funktionen</a></li>
+        <li><a href="#monitor">Monitor</a></li>
+        <li><a href="#maintenance">Wartung</a></li>
+        <li><a href="#post-format">Nach dem Formatieren</a></li>
+        <li><a href="#compare">Im Vergleich</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest">GitHub</a></li>
+        <li><a href="#screenshots">Bildschirmfotos</a></li>
+        <li>
+      <details class="lang-menu">
+        <summary aria-label="Sprache wählen">Deutsch ▾</summary>
+        <ul>
+        <li><a href="../" hreflang="en" lang="en">English</a></li>
+        <li><a href="../tr/" hreflang="tr" lang="tr">Türkçe</a></li>
+        <li><a href="../ru/" hreflang="ru" lang="ru">Русский</a></li>
+        <li><a href="../zh/" hreflang="zh" lang="zh">简体中文</a></li>
+        <li><a href="../hi/" hreflang="hi" lang="hi">हिन्दी</a></li>
+        <li><a href="../pt/" hreflang="pt" lang="pt">Português</a></li>
+        <li><a href="../ja/" hreflang="ja" lang="ja">日本語</a></li>
+        <li><a href="../de/" hreflang="de" lang="de" aria-current="true">Deutsch</a></li>
+        <li><a href="../fr/" hreflang="fr" lang="fr">Français</a></li>
+        <li><a href="../ko/" hreflang="ko" lang="ko">한국어</a></li>
+        </ul>
+      </details>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap">
+      <img class="hero-mark" src="../favicon.svg" width="84" height="84" alt="Das Hexnest-Anwendungssymbol: ein minzgrünes Sechseck, das einen Mikrochip hält">
+      <h1>Ein Fenster für alles, was Ihr Computer tut — unter Windows und auf dem Mac</h1>
+      <p class="lede">
+        <strong>Hexnest</strong> zeigt live, was die Maschine und jedes Programm darauf an Prozessorzeit, Arbeitsspeicher und Bandbreite kosten, was sich bei der Anmeldung selbst startet und wohin Ihr Speicherplatz tatsächlich gegangen ist — gemessen, nie geschätzt. Unter Windows ist es außerdem ein vollwertiger Treiber-Updater: Es prüft jedes Gerät, installiert die fehlenden und veralteten Treiber aus dem Windows-Update-Katalog oder aus einem Ordner auf einem USB-Stick, macht nach den Neustarts weiter, die eine Treiberinstallation braucht, und kann Ihre alten Treiber ganz ohne Internet zurückholen.
+      </p>
+      <p class="meta-line">
+        Windows 10 1607+ und Windows 11 · macOS 12 Monterey oder neuer · 64-Bit, Apple Silicon und Intel · MIT-Lizenz
+      </p>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest.exe">
+          Für Windows herunterladen
+        </a>
+        <a class="btn btn-primary btn-mac" href="https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest-arm64.dmg">
+          Für macOS herunterladen
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/Hexnest">
+          Quellcode auf GitHub
+        </a>
+      </div>
+      <p class="cta-note">
+        Windows: eine Datei, rund 65&nbsp;MB, kein Installationsprogramm. macOS: ein Disk-Image für Apple Silicon — ziehen Sie es in „Programme“. Keines von beiden braucht vorher eine installierte Laufzeitumgebung, und nichts wird mitgeliefert.
+        <a href="https://github.com/ahmetcaglayan/Hexnest/releases/latest">Intel-Mac, der Windows-arm64-Build und checksums.txt →</a>
+      </p>
+
+      <ul class="pill-row">
+        <li class="pill">Windows &amp; macOS</li>
+        <li class="pill">Keine Adware</li>
+        <li class="pill">Keine Bezahlstufe</li>
+        <li class="pill">Keine Telemetrie</li>
+        <li class="pill">Kein Hintergrunddienst</li>
+        <li class="pill">System- &amp; Netzwerkmonitor</li>
+        <li class="pill">Autostart-Manager</li>
+        <li class="pill">Datenträger-Aufräumen</li>
+        <li class="pill">10 Oberflächensprachen</li>
+      </ul>
+    </div>
+  </section>
+
+
+  <section id="whats-new">
+    <div class="wrap">
+      <h2>Neu hinzugekommen <span class="badge-new">1.4.0</span></h2>
+      <p class="section-intro">
+        Alles hier steht in der ausgelieferten Anwendung. Es gibt keinen Roadmap-Abschnitt, der sich als Funktionsliste ausgibt.
+      </p>
+
+      <ul class="whatsnew">
+        <li>
+          <h3>Autostart-Programme</h3>
+          <p>
+            Jeder Autostart-Eintrag, den Windows bei der Anmeldung startet — die <code>Run</code>
+            -Schlüssel der Registry und beide Autostart-Ordner — mit je einem Schalter. Deaktivieren schreibt dieselbe Einstellung, die auch der Task-Manager schreibt, sodass beide immer übereinstimmen und die ursprüngliche Befehlszeile nie gelöscht wird. Einträge, die auf eine nicht mehr vorhandene Datei zeigen, werden markiert; Windows versucht sie bei jeder Anmeldung erneut und scheitert stillschweigend.
+          </p>
+        </li>
+        <li>
+          <h3>Aufräumen</h3>
+          <p>
+            Temporäre Dateien, Miniatur- und Symbolcaches, sieben Browser, der Download-Cache von Windows Update, Absturzabbilder, Shader-Caches, Wartungsprotokolle und der Papierkorb. Jede Größe wird gemessen statt geschätzt, sodass die Zahl neben einem Kästchen der Platz ist, der wirklich zurückkommt — und nichts ist für Sie vorangekreuzt.
+          </p>
+        </li>
+        <li>
+          <h3>Ihre Dateien bleiben Ihre</h3>
+          <p>
+            Alte Downloads und Ordner, die deinstallierte Software hinterlassen hat, werden nie im Block ausgewählt. Sie stehen einzeln mit Größe und Alter da, werden einzeln angekreuzt und wandern in den Papierkorb, statt gelöscht zu werden — weil die Erkennung von Übriggebliebenem eine Vermutung ist, und die Seite sagt das auch.
+          </p>
+        </li>
+        <li>
+          <h3>Systemmonitor</h3>
+          <p>
+            Prozessorlast mit einem Balken für jeden logischen Kern, eine Speicheraufschlüsselung bis hinunter zu zwischengespeicherten und zugesicherten Bytes, jeder Temperatursensor, den die Firmware offenlegt, Speicherkapazität mit Live-Lese- und -Schreibdurchsatz und der Akkuzustand — dazu eine Tabelle jedes laufenden Programms und dessen Kosten.
+          </p>
+        </li>
+        <li>
+          <h3>Netzwerkmonitor</h3>
+          <p>
+            Live-Download und -Upload für die ganze Maschine, Summen für diese Sitzung und seit dem Start von Windows, jeder Adapter mit Adresse und Verbindungsgeschwindigkeit und eine Tabelle pro Anwendung, die zeigt, welches Programm die Verbindung nutzt, wie schnell und wie viele Verbindungen es offen hält.
+          </p>
+        </li>
+        <li>
+          <h3>Automatische Updates</h3>
+          <p>
+            Hexnest fragt GitHub jetzt einmal täglich, ob eine neuere Version existiert, und sagt es Ihnen im Menü. Herunterladen und Installieren bleibt standardmäßig aus, und selbst wenn Sie es einschalten, wird die geprüfte Datei erst beim Schließen der Anwendung eingesetzt — nie mitten in einer Treiber-Warteschlange.
+          </p>
+        </li>
+        <li>
+          <h3>Zehn Sprachen</h3>
+          <p>
+            Englisch, Türkisch, Russisch, Vereinfachtes Chinesisch, Hindi, Portugiesisch, Japanisch, Deutsch, Französisch und Koreanisch, alle in der einen ausführbaren Datei und ohne Neustart umschaltbar. Eine JSON-Datei neben <code>Hexnest.exe</code> ergänzt oder korrigiert eine Übersetzung weiterhin ohne Neubau.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="screenshots">
+    <div class="wrap">
+      <h2>Wie es aussieht</h2>
+      <p class="section-intro">
+        Echte Bildschirmfotos aus der ausgelieferten Anwendung, aufgenommen auf einem Windows-11-Notebook. Sie werden mit
+        <code>Hexnest.exe --capture</code>aus dem Build selbst neu erzeugt und können deshalb nicht veralten.
+      </p>
+
+    <div class="shots" role="region" aria-roledescription="Karussell" aria-label="Hexnest-Bildschirmfotos">
+      <div class="shots-track" id="shotsTrack" tabindex="0">
+        <figure class="shot" id="shot-0" role="group" aria-roledescription="Folie" aria-label="1 / 12">
+          <img src="../screenshots/dashboard.png" width="1240" height="820" loading="eager" decoding="async" alt="Übersicht">
+          <figcaption class="shot-caption">
+            <h3>Übersicht</h3>
+            <p>Jede Zahl, auf die es ankommt, auf einem Bildschirm: gefundene Geräte, fehlende Treiber, verfügbare Updates und Problemgeräte, darunter die Zusammenfassung von Betriebssystem, Hardware, Prozessor und BIOS der Maschine selbst.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-1" role="group" aria-roledescription="Folie" aria-label="2 / 12">
+          <img src="../screenshots/system.png" width="1240" height="820" loading="lazy" decoding="async" alt="Systemmonitor">
+          <figcaption class="shot-caption">
+            <h3>Systemmonitor</h3>
+            <p>Prozessor, Arbeitsspeicher, Temperatur und Datenträgeraktivität als Live-Diagramme, mit einem Balken pro logischem Kern. Die Temperaturkarte sagt klar, wenn die Maschine keinen Sensor hat, den Windows lesen kann, statt eine Zahl zu erfinden.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-2" role="group" aria-roledescription="Folie" aria-label="3 / 12">
+          <img src="../screenshots/system-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="Nutzung pro Programm">
+          <figcaption class="shot-caption">
+            <h3>Nutzung pro Programm</h3>
+            <p>Jeder laufende Prozess mit Prozessoranteil, Arbeitssatz, privaten Bytes, Datenträgerdurchsatz und Threadanzahl. Sortieren nach Prozessor, Speicher oder Datenträger, suchen nach Name oder PID, und die Tabelle anhalten, um eine Zeile zu lesen.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-3" role="group" aria-roledescription="Folie" aria-label="4 / 12">
+          <img src="../screenshots/network.png" width="1240" height="820" loading="lazy" decoding="async" alt="Netzwerkmonitor">
+          <figcaption class="shot-caption">
+            <h3>Netzwerkmonitor</h3>
+            <p>Download und Upload für die ganze Maschine als Live-Diagramme, die Summe für diese Sitzung und seit dem Start von Windows, die Anzahl offener Verbindungen und jeder Adapter mit Adresse und ausgehandelter Verbindungsgeschwindigkeit.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-4" role="group" aria-roledescription="Folie" aria-label="5 / 12">
+          <img src="../screenshots/network-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="Datenverkehr pro Programm">
+          <figcaption class="shot-caption">
+            <h3>Datenverkehr pro Programm</h3>
+            <p>Welche Anwendung die Verbindung gerade nutzt, wie schnell in jede Richtung, wie viel sie in dieser Sitzung bewegt hat und wie viele Verbindungen sie offen hält — mit dem entfernten Endpunkt im Tooltip.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-5" role="group" aria-roledescription="Folie" aria-label="6 / 12">
+          <img src="../screenshots/devices.png" width="1240" height="820" loading="lazy" decoding="async" alt="Geräte">
+          <figcaption class="shot-caption">
+            <h3>Geräte</h3>
+            <p>Jedes PnP-Gerät nach Klasse gruppiert, mit Live-Problemcodes des Konfigurations-Managers, übersetzt in klare Sätze. Filtern nach Problem, fehlendem Treiber oder generischem Treiber, und jede Hardware-ID kopieren.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-6" role="group" aria-roledescription="Folie" aria-label="7 / 12">
+          <img src="../screenshots/updates.png" width="1240" height="820" loading="lazy" decoding="async" alt="Updates">
+          <figcaption class="shot-caption">
+            <h3>Updates</h3>
+            <p>Installierbare Pakete aus dem Treiberkatalog von Windows Update und aus lokalen INF-Ordnern, nebeneinander. Auswahl pro Zeile, die gesamte Downloadgröße und die Möglichkeit, ein Update auszublenden oder ein Gerät ganz zu ignorieren.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-7" role="group" aria-roledescription="Folie" aria-label="8 / 12">
+          <img src="../screenshots/queue.png" width="1240" height="820" loading="lazy" decoding="async" alt="Aktivität">
+          <figcaption class="shot-caption">
+            <h3>Aktivität</h3>
+            <p>Die laufende Warteschlange: Downloadprozentsatz, Geschwindigkeit, übertragene Bytes und die Installationsphase, eine Zeile pro Treiber. Eine unterbrochene Sitzung zeigt hier nach dem Neustart eine Schaltfläche „Fortfahren“.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-8" role="group" aria-roledescription="Folie" aria-label="9 / 12">
+          <img src="../screenshots/backup.png" width="1240" height="820" loading="lazy" decoding="async" alt="Sichern &amp; Wiederherstellen">
+          <figcaption class="shot-caption">
+            <h3>Sichern &amp; Wiederherstellen</h3>
+            <p>Exportieren Sie vor dem Formatieren jedes Treiberpaket von Drittanbietern, wahlweise als einzelnes ZIP, und spielen Sie danach den ganzen Satz ganz ohne Internetverbindung zurück.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-9" role="group" aria-roledescription="Folie" aria-label="10 / 12">
+          <img src="../screenshots/settings.png" width="1240" height="820" loading="lazy" decoding="async" alt="Einstellungen">
+          <figcaption class="shot-caption">
+            <h3>Einstellungen</h3>
+            <p>Parallele Downloads, Wiederholungen, Wiederherstellungspunkte, Sicherungen vor dem Update, Fortsetzen nach Neustart, automatische Updates, Offlinemodus, lokale Treiberordner, Verlaufsaufbewahrung, Design und Sprache.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-10" role="group" aria-roledescription="Folie" aria-label="11 / 12">
+          <img src="../screenshots/startup.png" width="1240" height="820" loading="lazy" decoding="async" alt="Autostart-Programme">
+          <figcaption class="shot-caption">
+            <h3>Autostart-Programme</h3>
+            <p>
+              Alles, was beim Start von Windows läuft, mit je einem Schalter, dem aus der ausführbaren Datei selbst gelesenen Herausgeber und der Befehlszeile darunter. Einen auszuschalten schreibt dieselbe Einstellung, die der Task-Manager schreibt, und löscht nichts.
+            </p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-11" role="group" aria-roledescription="Folie" aria-label="12 / 12">
+          <img src="../screenshots/clean.png" width="1240" height="820" loading="lazy" decoding="async" alt="Aufräumen">
+          <figcaption class="shot-caption">
+            <h3>Aufräumen</h3>
+            <p>
+              Gemessene Größen für jeden Cache auf der Maschine, mit einer laufenden Summe dessen, was die aktuelle Auswahl freigeben würde. Die Seite öffnet sich ohne Häkchen und mit einer Summe von null.
+            </p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="shots-bar">
+      <ul class="shots-dots" id="shotsDots">
+      <li><button type="button" data-slide="0" aria-current="true">Übersicht</button></li>
+      <li><button type="button" data-slide="1">Systemmonitor</button></li>
+      <li><button type="button" data-slide="2">Nutzung pro Programm</button></li>
+      <li><button type="button" data-slide="3">Netzwerkmonitor</button></li>
+      <li><button type="button" data-slide="4">Datenverkehr pro Programm</button></li>
+      <li><button type="button" data-slide="5">Geräte</button></li>
+      <li><button type="button" data-slide="6">Updates</button></li>
+      <li><button type="button" data-slide="7">Aktivität</button></li>
+      <li><button type="button" data-slide="8">Sichern &amp; Wiederherstellen</button></li>
+      <li><button type="button" data-slide="9">Einstellungen</button></li>
+      <li><button type="button" data-slide="10">Autostart-Programme</button></li>
+      <li><button type="button" data-slide="11">Aufräumen</button></li>
+      </ul>
+      <div class="shots-arrows">
+        <button type="button" id="shotsPrev" aria-label="Vorheriges Bildschirmfoto">&#8592;</button>
+        <button type="button" id="shotsNext" aria-label="Nächstes Bildschirmfoto">&#8594;</button>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <section id="problem">
+    <div class="wrap">
+      <h2>Das Problem, für das es gebaut wurde</h2>
+      <div class="prose-2col">
+      <p class="section-intro">
+        Sie haben Windows gerade neu installiert. Der Geräte-Manager ist voller gelber Ausrufezeichen, die Auflösung stimmt nicht, es gibt keinen Ton und — am schlimmsten — kein Internet, weil auch der Netzwerkadapter keinen Treiber hat. Sie brauchen das Internet, um einen Treiber zu laden, und einen Treiber, um ins Internet zu kommen.
+      </p>
+      <p class="section-intro">
+        Hexnest durchbricht diese Schleife aus einem einzigen Fenster: Es zählt die Hardware auf, gleicht sie mit Treibern ab, die es tatsächlich erreichen kann, und installiert sie. Wenn es gar kein Netzwerk gibt, installiert es aus einem Ordner, den Sie mitgebracht haben.
+      </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>Was Hexnest tut</h2>
+      <p class="section-intro">
+        Alles davon steckt in der ausgelieferten Anwendung — es gibt keinen Roadmap-Abschnitt, der sich als Funktionsliste ausgibt.
+      </p>
+      <ul class="cards">
+        <li class="card">
+          <h3>Prüft jedes Gerät</h3>
+          <p>
+            Zählt alle vorhandenen PnP-Geräte über SetupAPI und CfgMgr32 statt über WMI auf, sodass es auch auf einer Maschine funktioniert, die vor fünf Minuten formatiert wurde oder deren WMI-Repository defekt ist.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Findet die fehlenden Treiber</h3>
+          <p>
+            Liest die Live-Problemcodes des Konfigurations-Managers. Code 28, 1 und 19 bedeuten „kein Treiber“; 22 ist ein deaktiviertes Gerät und 14 eines, das auf einen Neustart wartet. Filter zeigen Problemgeräte, Geräte ohne Treiber oder Geräte mit einem generischen Treiber.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Nutzt den Treiberkatalog von Windows Update</h3>
+          <p>
+            Spricht mit Microsoft Update über die COM-API des Windows-Update-Agents, die ohnehin zu Windows gehört. Kein zusätzlicher Dienst, kein fremder Treiber-Spiegelserver dazwischen.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Installiert offline vom USB-Stick</h3>
+          <p>
+            Liest die INF-Pakete in einem beliebigen Ordner — einem USB-Stick, einer Netzwerkfreigabe, einer Hexnest-Sicherung oder einem entpackten Hersteller-Download — und ordnet sie Ihren Hardware-IDs zu.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Lädt parallel, installiert nacheinander</h3>
+          <p>
+            Standardmäßig drei gleichzeitige Downloads, einstellbar von eins bis acht. Installationen laufen bewusst nacheinander: Windows Update gibt bei einer zweiten gleichzeitigen Installation WU_E_OPERATIONINPROGRESS zurück, und das PnP-Subsystem serialisiert ohnehin.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Übersteht die Neustarts</h3>
+          <p>
+            Der Zustand der Warteschlange wird nach jeder Änderung in <code>session.json</code> geschrieben, und eine bei der Anmeldung ausgelöste geplante Aufgabe holt Hexnest mit <code>--resume</code>zurück, sodass sich eine Warteschlange mit zehn Treibern, die drei Neustarts braucht, selbst zu Ende bringt.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Sichert, bevor es etwas ändert</h3>
+          <p>
+            Ein Systemwiederherstellungspunkt vom Typ „Treiber“ vor der ersten Installation einer Sitzung und ein Export jedes Treiberpakets unmittelbar bevor es ersetzt wird, mit dem Pfad im Verlaufseintrag.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Sichert Ihren ganzen Treibersatz und stellt ihn wieder her</h3>
+          <p>
+            Exportiert jedes Treiberpaket von Drittanbietern mit <code>pnputil /export-driver</code> in einen Ordner oder ein ZIP und stellt es mit <code>pnputil /add-driver /subdirs /install</code>wieder her. Die mitgelieferten Treiber von Microsoft werden bewusst übersprungen — die installiert Windows selbst neu.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Schreibt einen Hardwarebericht</h3>
+          <p>
+            Jedes Gerät und jede Hardware-ID in einer einfachen Textdatei, sodass Sie sie auf einem USB-Stick zu einem funktionierenden Computer tragen und die Treiber von Hand nachschlagen können, wenn sonst nichts verfügbar ist.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Führt einen ehrlichen Verlauf</h3>
+          <p>
+            Eine dauerhafte Aufzeichnung jedes Treibervorgangs als ein JSON-Objekt pro Zeile, filterbar nach Ergebnis und mit einem Klick als CSV exportierbar, dazu ein Live-Diagnoseprotokoll mit Kopierschaltfläche samt Version und Betriebssystem-Kopfzeile.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Prüft seine eigenen Updates</h3>
+          <p>
+            Der eingebaute Updater vergleicht den Download mit dem SHA-256 in der
+            <code>checksums.txt</code>der Version und installiert nichts, wenn die Prüfsumme fehlt oder nicht passt. Im Hintergrund wird nie still aktualisiert.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Zeigt, was die Maschine tut</h3>
+          <p>
+            Ein Live-Panel für Prozessorlast pro logischem Kern, Arbeitsspeicher bis hinunter zu zwischengespeicherten und zugesicherten Bytes, jeden Temperatursensor, den die Firmware wirklich offenlegt, Speicherkapazität mit echtem Lese- und Schreibdurchsatz und den Akkuzustand. Nichts wird abgetastet, bevor Sie die Seite öffnen, und es hört auf, sobald Sie sie verlassen.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Zeigt, was jedes Programm kostet</h3>
+          <p>
+            Prozessoranteil, Arbeitssatz, private Bytes, Datenträgerdurchsatz und Threadanzahl für jeden laufenden Prozess, gemessen wie der Task-Manager sie misst. Sortierbar, durchsuchbar und anhaltbar.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Zeigt, wohin die Bandbreite geht</h3>
+          <p>
+            Live-Download und -Upload für die ganze Maschine aus den eigenen Zählern der Adapter und Datenverkehr pro Anwendung aus den TCP-Verbindungsstatistiken von Windows — kein Kerneltreiber, keine Paketaufzeichnung, kein fremder Dienst.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Hält sich selbst aktuell</h3>
+          <p>
+            Eine Anfrage pro Tag an die GitHub-Releases-API sagt Ihnen, wenn eine neue Version existiert. Automatisches Herunterladen und Installieren ist optional, wird gegen SHA-256 geprüft und immer erst angewendet, wenn Hexnest sich schließt.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Verwaltet, was mit Windows startet</h3>
+          <p>
+            Jeder Autostart-Eintrag aus den <code>Run</code> -Schlüsseln der Registry und beiden Autostart-Ordnern, mit je einem Schalter. Deaktivieren schreibt denselben
+            <code>StartupApproved</code> -Wert, den auch der Task-Manager schreibt, sodass nichts gelöscht wird und beide Werkzeuge immer übereinstimmen — und wer Hexnest deinstalliert, dem fehlt nie die Hälfte seiner Autostart-Programme.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Misst, was Platz belegt</h3>
+          <p>
+            Caches, temporäre Dateien, Absturzabbilder, Shader-Caches und der Papierkorb, jedes einzeln gemessen statt geschätzt. Nichts ist standardmäßig angekreuzt, geöffnete Dateien werden übersprungen statt erzwungen, und Reparse-Punkten wird nie gefolgt.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Hält Ihre eigenen Dateien getrennt</h3>
+          <p>
+            Alte Downloads und Ordner, die deinstallierte Software hinterlassen hat, stehen einzeln mit Größe und Alter da, werden einzeln angekreuzt und wandern in den Papierkorb — nie endgültig gelöscht, denn diese Erkennung ist eine Vermutung, und Hexnest sagt das.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Spricht zehn Sprachen</h3>
+          <p>
+            Englisch, Türkisch, Russisch, Vereinfachtes Chinesisch, Hindi, Portugiesisch, Japanisch, Deutsch, Französisch und Koreanisch, alle in der einen ausführbaren Datei. Sprache und helles oder dunkles Design wechseln beide sofort bei geöffneter Anwendung, ohne Neustart.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="post-format">
+    <div class="wrap">
+      <h2>Treiber nach dem Formatieren installieren, Schritt für Schritt</h2>
+      <p class="section-intro">
+        Das ist der Ablauf, für den es Hexnest gibt. Die fünf Minuten, die Sie vor dem Formatieren aufwenden, machen die Maschine unmittelbar danach benutzbar.
+      </p>
+
+      <figure class="figure">
+<svg viewBox="0 0 1160 258" role="img" aria-labelledby="flow-title flow-desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="flow-title">Wie ein Treiber installiert wird</title>
+  <desc id="flow-desc">Fünf Schritte von links nach rechts: die Geräte prüfen, sie mit verfügbaren Treiberpaketen abgleichen, parallel herunterladen, nacheinander installieren und neu starten. Eine gestrichelte Linie führt vom Neustart-Schritt zurück zum Installations-Schritt und zeigt, dass die Warteschlange nach dem Neustart automatisch weiterläuft.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--dim)" />
+    </marker>
+  </defs>
+
+  <g font-family="var(--font-sans)">
+    <g><rect x="10" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/><text x="30" y="86" font-size="13" font-weight="700" fill="var(--accent)">01</text><text x="54" y="86" font-size="16" font-weight="600" fill="var(--text)">Prüfen</text><text x="30" y="118" font-size="14" fill="var(--muted)">SetupAPI + CfgMgr32,</text><text x="30" y="138" font-size="14" fill="var(--muted)">nie WMI</text></g>
+    <line x1="208" y1="115" x2="234" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="242" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="262" y="86" font-size="13" font-weight="700" fill="var(--dim)">02</text><text x="286" y="86" font-size="16" font-weight="600" fill="var(--text)">Abgleichen</text><text x="262" y="118" font-size="14" fill="var(--muted)">Windows Update und</text><text x="262" y="138" font-size="14" fill="var(--muted)">lokale INF-Ordner</text></g>
+    <line x1="440" y1="115" x2="466" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="474" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="494" y="86" font-size="13" font-weight="700" fill="var(--dim)">03</text><text x="518" y="86" font-size="16" font-weight="600" fill="var(--text)">Herunterladen</text><text x="494" y="118" font-size="14" fill="var(--muted)">Bis zu acht gleichzeitig,</text><text x="494" y="138" font-size="14" fill="var(--muted)">Prüfsumme geprüft</text></g>
+    <line x1="672" y1="115" x2="698" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="706" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="726" y="86" font-size="13" font-weight="700" fill="var(--dim)">04</text><text x="750" y="86" font-size="16" font-weight="600" fill="var(--text)">Installieren</text><text x="726" y="118" font-size="14" fill="var(--muted)">Eines nach dem anderen —</text><text x="726" y="138" font-size="14" fill="var(--muted)">Windows besteht darauf</text></g>
+    <line x1="904" y1="115" x2="930" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
+    <g><rect x="938" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/><text x="958" y="86" font-size="13" font-weight="700" fill="var(--accent)">05</text><text x="982" y="86" font-size="16" font-weight="600" fill="var(--text)">Neu starten</text><text x="958" y="118" font-size="14" fill="var(--muted)">Anmeldeaufgabe holt</text><text x="958" y="138" font-size="14" fill="var(--muted)">Hexnest zurück</text></g>
+
+    <!-- The queue resumes at the install step after the restart it asked for. -->
+    <path d="M 1044 170 L 1044 216 L 812 216 L 812 174" fill="none" stroke="var(--dim)"
+          stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#arrow)" />
+    <text x="928" y="240" text-anchor="middle" font-size="14" fill="var(--dim)">die Warteschlange macht dort weiter, wo sie aufgehört hat</text>
+  </g>
+</svg>
+        <figcaption>
+          Der ganze Ablauf, und der Teil, den die meisten Werkzeuge auslassen: Eine Warteschlange mit zehn Treibern, die drei Neustarts braucht, bringt sich selbst zu Ende, weil die Warteschlange nach jeder Änderung auf die Festplatte geschrieben wird und eine Anmeldeaufgabe Hexnest mit <code>--resume</code>zurückholt.
+        </figcaption>
+      </figure>
+
+      <div class="steps">
+        <div class="step-block">
+          <h3>Vor dem Formatieren — etwa fünf Minuten</h3>
+          <ol>
+            <li>Starten Sie Hexnest und öffnen Sie <strong>Sichern &amp; Wiederherstellen</strong>zurückholt.</li>
+            <li>Klicken Sie auf <strong>Sicherung erstellen</strong>. Jedes Treiberpaket von Drittanbietern auf dem System wird exportiert.</li>
+            <li>Setzen Sie ein Häkchen bei <strong>Als ZIP komprimieren</strong> , wenn Sie eine einzige Datei möchten.</li>
+            <li>Kopieren Sie den entstandenen Ordner <strong>und Hexnest.exe</strong> auf denselben USB-Stick.</li>
+            <li>Optional, aber nützlich: Nennen Sie den Ordner <code>Drivers</code> und legen Sie ihn neben <code>Hexnest.exe</code>. Hexnest registriert ihn dann automatisch als lokales Treiber-Repository, ganz ohne Konfiguration.</li>
+          </ol>
+        </div>
+
+        <div class="step-block">
+          <h3>Nach dem Formatieren</h3>
+          <ol>
+            <li>Stecken Sie den Stick ein und starten Sie <code>Hexnest.exe --rescue</code>. Windows Update wird nie kontaktiert; es werden nur lokale Quellen genutzt.</li>
+            <li>Gehen Sie zu <strong>Sichern &amp; Wiederherstellen → Wiederherstellen</strong>, oder <strong>Aus Ordner wiederherstellen</strong>, und wählen Sie Ihre Sicherung. Jedes Paket wird dem Treiberspeicher hinzugefügt und seinen Geräten zugeordnet.</li>
+            <li>Sobald der Netzwerkadapter einen funktionierenden Treiber hat, drücken Sie <strong>Prüfen</strong>zurückholt.</li>
+            <li><strong>Übersicht → Wiederherstellung nach dem Formatieren</strong> ; das stellt alles noch Fehlende in die Warteschlange, diesmal aus Windows Update.</li>
+            <li>Nehmen Sie den Neustart an, wenn er verlangt wird. Hexnest kommt bei der Anmeldung zurück und erledigt den Rest der Warteschlange.</li>
+          </ol>
+        </div>
+      </div>
+
+      <p class="callout">
+        <strong>Keine Sicherung, kein Internet, nichts vorbereitet?</strong> Verwenden Sie
+        <strong>Übersicht → Hardwarebericht</strong> , um jede Hardware-ID in eine Textdatei zu schreiben, tragen Sie sie zu einem funktionierenden Computer, laden Sie die richtigen Pakete beim Hersteller herunter, entpacken Sie sie, bringen Sie die Ordner zurück und installieren Sie sie mit <strong>Aus Ordner wiederherstellen</strong>. Fangen Sie mit dem Netzwerkadapter an; sobald der läuft, erledigt Windows Update den Rest.
+      </p>
+
+      <h3 class="sub-heading">Befehlszeile</h3>
+      <pre><code>Hexnest.exe                 # normaler Start
+Hexnest.exe --rescue        # Offline-Rettungsmodus (wie --offline)
+Hexnest.exe --resume        # unterbrochene Warteschlange sofort fortsetzen</code></pre>
+    </div>
+  </section>
+
+
+  <section id="monitor">
+    <div class="wrap">
+      <h2>Zwei Zahlen, die nicht dieselbe Zahl sind</h2>
+      <p class="section-intro">
+        Die Monitorseiten sind sorgfältig bei etwas, das die meisten Werkzeuge stillschweigend falsch machen. Was die ganze Maschine überträgt und was ein einzelnes Programm überträgt, wird auf zwei verschiedene Arten gemessen, und beides ergibt nicht genau dieselbe Summe — deshalb weist Hexnest sie getrennt aus und sagt auch, warum.
+      </p>
+
+      <figure class="figure">
+<svg viewBox="0 0 1120 300" role="img" aria-labelledby="mon-title mon-desc" xmlns="http://www.w3.org/2000/svg">
+  <title id="mon-title">Wie maschinenweiter und anwendungsbezogener Datenverkehr gemessen werden</title>
+  <desc id="mon-desc">Zwei Spalten. Die linke Spalte, maschinenweit, wird an den Netzwerkadaptern gemessen und enthält TCP-, UDP-, QUIC- und Broadcast-Verkehr. Die rechte Spalte, pro Anwendung, stammt aus den TCP-Verbindungsstatistiken und umfasst daher nur TCP.</desc>
+
+  <g font-family="var(--font-sans)">
+    <!-- machine-wide column -->
+    <rect x="10" y="16" width="530" height="268" rx="14" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/>
+    <text x="36" y="52" font-size="17" font-weight="600" fill="var(--text)">Die ganze Maschine</text>
+    <text x="36" y="76" font-size="14" fill="var(--dim)">Byte-Zähler der Adapter · jedes Protokoll</text>
+
+    <g><text x="36" y="112" font-size="14" fill="var(--muted)">TCP</text><rect x="186" y="104" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="104" width="91" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="112" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">gezählt</text></g>
+    <g><text x="36" y="156" font-size="14" fill="var(--muted)">UDP / QUIC</text><rect x="186" y="148" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="148" width="50" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="156" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">gezählt</text></g>
+    <g><text x="36" y="200" font-size="14" fill="var(--muted)">DNS, Broadcast</text><rect x="186" y="192" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="192" width="20" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="200" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">gezählt</text></g>
+    <g><text x="36" y="244" font-size="14" fill="var(--muted)">Gesamt</text><rect x="186" y="236" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="186" y="236" width="148" height="9" rx="4.5" fill="var(--info)"/><text x="514" y="244" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">exakt</text></g>
+
+    <!-- per-application column -->
+    <rect x="580" y="16" width="530" height="268" rx="14" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="606" y="52" font-size="17" font-weight="600" fill="var(--text)">Pro Anwendung</text>
+    <text x="606" y="76" font-size="14" fill="var(--dim)">TCP-Verbindungsstatistiken · nur TCP</text>
+
+    <g><text x="606" y="112" font-size="14" fill="var(--muted)">chrome</text><rect x="756" y="104" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="104" width="91" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="112" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="156" font-size="14" fill="var(--muted)">Hexnest</text><rect x="756" y="148" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="148" width="41" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="156" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="200" font-size="14" fill="var(--muted)">svchost</text><rect x="756" y="192" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="192" width="20" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="200" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="244" font-size="14" fill="var(--muted)">UDP-Verkehr</text><rect x="756" y="236" width="148" height="9" rx="4.5" fill="var(--bg)"/><text x="1084" y="244" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">nicht zuordenbar</text></g>
+  </g>
+</svg>
+        <figcaption>
+          Der maschinenweite Verkehr stammt von den Netzwerkadaptern und deckt jedes Protokoll ab. Der anwendungsbezogene Verkehr stammt aus den TCP-Verbindungsstatistiken von Windows, weshalb UDP — QUIC, die meisten Videoanrufe und DNS — in der ersten Spalte steht und nicht in der zweiten.
+        </figcaption>
+      </figure>
+
+      <p class="section-intro">
+        Dieselbe Ehrlichkeit gilt für die Temperatur. Windows hat keine allgemeine Temperatur-API; was es gibt, ist die ACPI-Thermalzone, die die Firmware für die eigene Lüftersteuerung des Betriebssystems deklariert. Viele Desktops deklarieren überhaupt keine. Echte Werte pro Kern und pro GPU kommen von einem Herstellerchip über einen SMBus und brauchen einen signierten Kerneltreiber — deshalb installieren Werkzeuge wie HWiNFO einen. Hexnest installiert keinen Kerneltreiber, um eine Zahl auf eine Seite zu malen; wenn die Maschine also keinen Sensor hat, sagt die Karte das.
+      </p>
+    </div>
+  </section>
+
+
+  <section id="maintenance">
+    <div class="wrap">
+      <h2>Die zwei Dinge, die ein Aufräumwerkzeug meistens falsch macht</h2>
+
+      <div class="prose-2col">
+        <p class="section-intro">
+          <strong>Ein Autostart-Programm zu deaktivieren sollte es nicht löschen.</strong> Windows hält das Aktiviert-Kennzeichen in einem eigenen Schlüssel, <code>StartupApproved</code>, und das ist das Einzige, was Hexnest schreibt — der <code>Run</code> -Wert oder die Verknüpfung im Autostart-Ordner bleibt genau da, wo sie ist. Den Eintrag wieder einzuschalten stellt die ursprüngliche Befehlszeile also Byte für Byte wieder her, Task-Manager und Hexnest stimmen immer überein, und Hexnest später zu löschen lässt die Maschine nie ohne die Hälfte ihrer Autostart-Programme zurück. Die einfachere Umsetzung — den Wert löschen und ihn sich in Hexnests eigenen Einstellungen merken — macht Hexnest stillschweigend zum tragenden Teil fremder Software.
+        </p>
+        <p class="section-intro">
+          <strong>Ein Cleaner sollte bei Ihren Dateien nicht raten.</strong> Caches sind alles oder nichts, weil ein Cache sich selbst wieder aufbaut. Ihre eigenen Dateien nicht: Alte Downloads und Ordner, die deinstallierte Software hinterlassen hat, stehen einzeln mit Größe und Alter da, werden einzeln angekreuzt und wandern in den Papierkorb, statt gelöscht zu werden. Die Erkennung von Übriggebliebenem ist wirklich eine Vermutung — sie prüft den Ordner gegen jedes installierte Programm, jedes laufende Programm und alles in „Programme“ und verlangt sechs Monate ohne Schreibzugriff — und die Zeile sagt, dass es eine Vermutung ist. Jede Größe auf der Seite wird gemessen statt geschätzt, sodass die Summe der Platz ist, der wirklich zurückkommt, und beim Öffnen der Seite ist überhaupt nichts angekreuzt.
+        </p>
+      </div>
+
+      <p class="callout">
+        <strong>Und die Speicher-Schaltfläche.</strong> „RAM freigeben“-Seiten lagern die Arbeitssätze von Prozessen auf die Festplatte aus. Der belegte physische Speicher sinkt tatsächlich — und Windows liest diese Seiten sofort zurück, sobald die Programme wieder benutzt werden, es macht also nichts schneller und die ausgelagerten Programme kurzzeitig langsamer. Es lohnt sich unmittelbar vor etwas, das auf einen Schlag viel Speicher braucht, und sonst nicht. Hexnest sagt das auf der Seite, direkt neben der Schaltfläche.
+      </p>
+    </div>
+  </section>
+
+  <section id="compare">
+    <div class="wrap">
+      <h2>Wie Hexnest abschneidet — und wo es schwächelt</h2>
+      <p class="section-intro">
+        Treiber-Updater haben einen schlechten Ruf, und der ist größtenteils verdient: ein kostenloser Scan, der vierzig Probleme findet, eine Bezahlschranke vor der Lösung, ein residenter Dienst und ein Installationsprogramm, das Freunde mitbringt. Hexnest ist andersherum gebaut. Es ist in einigen konkreten Punkten auch schlechter als kommerzielle Werkzeuge, und die stehen hier, statt vergraben zu sein.
+      </p>
+
+      <div class="table-scroll">
+        <table>
+          <caption class="sr-only">Hexnest im Vergleich mit dem üblichen Freeware-Treiber-Updater-Muster</caption>
+          <thead>
+            <tr>
+              <th scope="col">&nbsp;</th>
+              <th scope="col">Hexnest</th>
+              <th scope="col">Das übliche Freeware-Muster</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Preis</td>
+              <td><span class="yes">Kostenlos, MIT-Lizenz</span></td>
+              <td>Kostenloser Scan, kostenpflichtige Freischaltung zum Installieren</td>
+            </tr>
+            <tr>
+              <td>Quellcode</td>
+              <td><span class="yes">Öffentlich, prüfbar, baubar</span></td>
+              <td>Geschlossen</td>
+            </tr>
+            <tr>
+              <td>Mitgelieferte Extras</td>
+              <td><span class="yes">Keine</span></td>
+              <td>Oft ein „PC-Cleaner“, eine Symbolleiste oder eine Testversion</td>
+            </tr>
+            <tr>
+              <td>Telemetrie</td>
+              <td><span class="yes">Keine</span></td>
+              <td>Häufig vorhanden</td>
+            </tr>
+            <tr>
+              <td>Hintergrunddienst</td>
+              <td><span class="yes">Keiner — es läuft, wenn Sie es starten</span></td>
+              <td>Residenter Agent und regelmäßige Erinnerungen</td>
+            </tr>
+            <tr>
+              <td>Woher die Treiber kommen</td>
+              <td>Microsofts Windows-Update-Katalog, dazu INF-Ordner, auf die Sie es zeigen</td>
+              <td>Ein herstellereigener Treiber-Spiegelserver</td>
+            </tr>
+            <tr>
+              <td>Funktioniert ohne Internet</td>
+              <td><span class="yes">Ja — Rettungsmodus, USB und lokale INF-Ordner</span></td>
+              <td>Selten</td>
+            </tr>
+            <tr>
+              <td>Ressourcen- und Netzwerkmonitor</td>
+              <td><span class="yes">Eingebaut, pro Programm</span></td>
+              <td>Meist nicht vorhanden oder ein separates kostenpflichtiges Produkt</td>
+            </tr>
+            <tr>
+              <td>Autostart-Manager</td>
+              <td><span class="yes">Ja, und es löscht nichts</span></td>
+              <td>Löscht oft den Eintrag und merkt ihn sich selbst</td>
+            </tr>
+            <tr>
+              <td>Datenträger-Aufräumen</td>
+              <td><span class="yes">Gemessen, nichts vorangekreuzt</span></td>
+              <td>Geschätzt und meist vorangekreuzt</td>
+            </tr>
+            <tr>
+              <td>Codesignatur</td>
+              <td><span class="no">Nicht signiert</span> — prüfen Sie den SHA-256 in checksums.txt</td>
+              <td>Meist signiert</td>
+            </tr>
+            <tr>
+              <td>Installationsgröße</td>
+              <td><span class="no">Eine Datei mit ~65 MB</span> die sonst nichts braucht</td>
+              <td>Ein kleines Installationsprogramm plus seine Abhängigkeiten</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="callout warn">
+        <strong>Das ehrliche Kleingedruckte.</strong> Hexnest ist <strong>nicht codesigniert</strong>, deshalb warnen SmartScreen und Smart App Control beim ersten Start; die Lösung ist, den veröffentlichten SHA-256 zu prüfen, statt der Datei blind zu vertrauen. Es braucht Administratorrechte, es läuft nur auf 64-Bit-Windows 10 1607 oder neuer, die ausführbare Datei ist groß, weil die ganze .NET-Laufzeitumgebung darin steckt, und Installationen laufen nacheinander, weil Windows sie nicht parallel ausführt. Treiber zu installieren ist grundsätzlich riskant: Lassen Sie die Einstellung für den Wiederherstellungspunkt an, halten Sie Sicherungen bereit und lesen Sie den Haftungsausschluss im Repository.
+      </p>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <h2>Häufig gestellte Fragen</h2>
+      <p class="section-intro">
+        Die vollständige Liste, auch mit den technischen Fragen, steht in
+        <a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/FAQ.md">docs/FAQ.md</a>zurückholt.
+      </p>
+
+      <div class="faq">
+        <article class="faq-item">
+          <h3>Ist Hexnest wirklich kostenlos?</h3>
+          <p>
+            Ja. Hexnest steht unter der MIT-Lizenz und der vollständige Quellcode liegt auf GitHub. Es gibt keine Bezahlstufe, keine Testversion, keine Funktion, die sich nach einer Zahlung freischaltet, keine Werbung und keine mitgelieferte Fremdsoftware. Der Scan und die Installationen sind dasselbe Produkt.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Muss ich .NET oder das Visual C++ Redistributable installieren?</h3>
+          <p>
+            Nein. Die gesamte .NET-8-Laufzeitumgebung steckt in <code>Hexnest.exe</code> als Self-contained-Single-File-Publish, und WPF bringt seine eigenen privaten Kopien von
+            <code>vcruntime140_cor3.dll</code> und <code>msvcp140_cor3.dll</code>mit. Die einzige Voraussetzung ist 64-Bit-Windows 10 Version 1607 (Build 14393) oder neuer. Auch deshalb ist die ausführbare Datei rund 65 MB groß.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Warum warnt SmartScreen oder mein Virenscanner vor Hexnest?</h3>
+          <p>
+            Hexnest ist <strong>nicht codesigniert</strong>, weil ein Codesignaturzertifikat Geld kostet. Windows SmartScreen und Smart App Control zeigen bei jeder unsignierten ausführbaren Datei ohne aufgebaute Reputation eine Warnung, und eine Single-File-App, die als Administrator läuft, Treiber installiert und eine geplante Aufgabe registriert, sieht für einen heuristischen Scanner wie Schadsoftware aus.
+          </p>
+          <p>
+            Die ehrliche Abhilfe ist, den Download zu prüfen. Führen Sie
+            <code>Get-FileHash .\Hexnest.exe -Algorithm SHA256</code> aus und vergleichen Sie das Ergebnis mit der
+            <code>Hexnest.exe</code> -Zeile in der <code>checksums.txt</code> , die mit der Version veröffentlicht wurde. Stimmt sie überein, ist die Datei Byte für Byte die veröffentlichte. Sie können sie auch selbst aus dem Quellcode bauen.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Kann Hexnest nach dem Formatieren ohne Internet Treiber installieren?</h3>
+          <p>
+            Ja, dafür wurde es gebaut. Verwenden Sie vor dem Formatieren <strong>Sichern &amp; Wiederherstellen</strong> , um jedes Treiberpaket von Drittanbietern zu exportieren, und kopieren Sie dann diesen Ordner und
+            <code>Hexnest.exe</code> auf denselben USB-Stick. Starten Sie nach dem Formatieren
+            <code>Hexnest.exe --rescue</code>: Windows Update wird nie kontaktiert und es werden nur lokale Quellen genutzt.
+          </p>
+          <p>
+            Ein Ordner namens <code>Drivers</code> neben <code>Hexnest.exe</code> wird automatisch als lokales Treiber-Repository registriert. Jeder selbst entpackte Herstellerordner funktioniert ebenso, weil seine INF-Dateien rekursiv abgeglichen werden.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Kann ich einen Treiber zurücknehmen, der etwas kaputt macht?</h3>
+          <p>Ja, auf drei Wegen.</p>
+          <ol>
+            <li>Hexnest exportiert das Paket, das es ersetzen will, und hält den Pfad im Verlaufseintrag fest, sodass Sie es wieder einspielen können mit <strong>Aus Ordner wiederherstellen</strong>zurückholt.</li>
+            <li>Es legt vor der ersten Installation einer Sitzung einen Systemwiederherstellungspunkt vom Typ „Treiber“ an, den Sie über den Windows-Assistenten für die Systemwiederherstellung nutzen können (<code>rstrui.exe</code>).</li>
+            <li>Die Windows-eigene Schaltfläche <em>Treiber zurücksetzen</em> im Geräte-Manager funktioniert unabhängig von Hexnest weiter.</li>
+          </ol>
+        </article>
+
+        <article class="faq-item">
+          <h3>Macht Hexnest nach einem Neustart wirklich weiter?</h3>
+          <p>
+            Ja. Die Warteschlange wird bei jeder Zustandsänderung atomar in <code>session.json</code> geschrieben, und Hexnest registriert eine bei der Anmeldung ausgelöste geplante Aufgabe namens
+            <code>Hexnest\ResumeSession</code>, die auf einen HKLM- <code>RunOnce</code> -Wert zurückfällt, wenn die Aufgabenplanung nicht verfügbar ist. Bei der nächsten Anmeldung startet die Aufgabe Hexnest mit
+            <code>--resume</code> neu und die restlichen Aufträge laufen weiter. Eine Sitzung übersteht höchstens zehn Neustarts, und die Aufgabe sowie der <code>RunOnce</code> -Wert werden entfernt, wenn die Warteschlange fertig ist.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Warum braucht Hexnest Administratorrechte?</h3>
+          <p>
+            Einen Treiber zu installieren ist ein privilegierter Vorgang. Pakete mit <code>pnputil</code>in den Treiberspeicher aufzunehmen oder daraus zu exportieren, den Windows-Update-Installer zu steuern und über <code>srclient.dll</code> einen Systemwiederherstellungspunkt anzulegen, verlangen alle ein erhöhtes Token, und die Fortsetzungsaufgabe wird unter HKLM registriert. Hexnest fordert die Rechteerhöhung gleich im Anwendungsmanifest an, statt mitten in einer Warteschlange mit „Zugriff verweigert“ zu scheitern.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Löscht das Deaktivieren eines Autostart-Programms etwas?</h3>
+          <p>
+            Nein. Windows hält das Aktiviert-Kennzeichen in einem eigenen Schlüssel —
+            <code>...\CurrentVersion\Explorer\StartupApproved\Run</code> und seinen zwei Geschwistern — und das ist das Einzige, was Hexnest schreibt. Der <code>Run</code>
+            -Wert oder die Verknüpfung im Autostart-Ordner bleibt genau da, wo sie ist, sodass das Wiedereinschalten des Eintrags die ursprüngliche Befehlszeile Byte für Byte wiederherstellt.
+          </p>
+          <p>
+            Es bedeutet außerdem, dass Task-Manager und Hexnest übereinstimmen und dass demjenigen, der Hexnest später löscht, nie die Hälfte seiner Autostart-Programme fehlt.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Ist das Aufräumen sicher?</h3>
+          <p>Es ist darauf gebaut, und das Design sagt wie, statt Sie um Vertrauen zu bitten:</p>
+          <ul>
+            <li><strong>Nichts ist standardmäßig angekreuzt.</strong> Die Seite öffnet sich mit einer Summe von null.</li>
+            <li>Jeder Pfad kommt aus einer Known-Folder-API, nicht aus einer Zeichenkette, und jede einzelne Löschung wird unmittelbar davor erneut gegen die Wurzeln ihrer eigenen Kategorie geprüft.</li>
+            <li>Reparse-Punkten wird nie gefolgt — <code>%LOCALAPPDATA%</code> ist voller Junctions, und in eine hineinzulaufen ist der Weg, auf dem eine „Cache leeren“-Funktion am Ende die Dokumente von jemandem löscht.</li>
+            <li>Geöffnete Dateien werden übersprungen statt erzwungen, und die Zahl der übersprungenen wird gemeldet.</li>
+            <li>Ihre eigenen Dateien werden nie im Block ausgewählt, und sie wandern in den Papierkorb.</li>
+          </ul>
+        </article>
+
+        <article class="faq-item">
+          <h3>Bringt „Arbeitsspeicher freigeben“ wirklich etwas?</h3>
+          <p>
+            Es gibt jetzt sofort physischen Speicher frei, und das ist alles. Es bittet Windows, den Arbeitssatz jedes Prozesses in die Auslagerungsdatei zu schreiben, sodass der belegte Speicher wirklich sinkt — und diese Seiten sind nicht weg, sie liegen auf der Festplatte, und Windows liest sie sofort zurück, sobald das Programm diesen Speicher wieder anfasst. Ungenutzter Speicher ist kein verschwendeter Speicher; Windows hielt ihn ohnehin schon verfügbar.
+          </p>
+          <p>
+            Es ist also keine Leistungsfunktion, und Hexnest gibt sie auch nicht als solche aus. Nützlich ist sie unmittelbar bevor Sie etwas starten, das auf einen Schlag viel Speicher braucht, oder um zu sehen, wie viel ein leckendes Programm wirklich hält. Jedes andere Werkzeug mit dieser Schaltfläche behauptet etwas anderes.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Warum sagt die Temperaturkarte, es gebe keinen Sensor?</h3>
+          <p>
+            Weil es auf dieser Maschine keinen gibt, den Windows lesen kann. Die einzige Temperatur, die Windows ohne Treiber offenlegt, ist die ACPI-Thermalzone, die die Firmware für die eigene Lüftersteuerung deklariert, und sehr viele Desktop-Mainboards deklarieren gar keine. Temperaturen pro Kern und für die GPU kommen von einem Herstellersensor über einen SMBus, was einen signierten Kerneltreiber braucht — genau den installieren HWiNFO und Open Hardware Monitor. Hexnest installiert keinen Kerneltreiber, um eine Zahl auszufüllen, und sagt Ihnen deshalb lieber, dass der Sensor fehlt, statt zu raten.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Warum ergibt die Netzwerknutzung pro Programm nicht die Maschinensumme?</h3>
+          <p>
+            Die beiden Zahlen kommen aus verschiedenen Quellen, und beide stimmen. Die Maschinensumme ist die Summe der eigenen Byte-Zähler der Netzwerkadapter und enthält daher alles: TCP, UDP, QUIC, Broadcast. Der Wert pro Anwendung stammt aus den TCP-Verbindungsstatistiken von Windows (ESTATS), dem einzigen Byte-Zähler pro Prozess, den Windows ohne Kerneltreiber anbietet — und der erfasst nur TCP. Videoanrufe, der meiste Spieleverkehr und DNS stecken deshalb in der ersten Zahl und nicht in der zweiten. Hexnest sagt das auf der Seite, statt stillschweigend zu wenig zu melden.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Aktualisiert sich Hexnest im Hintergrund selbst?</h3>
+          <p>
+            Es prüft einmal am Tag und sagt es Ihnen. Es installiert nichts, solange Sie das nicht unter <strong>Einstellungen → Updates</strong>einschalten, und selbst dann wird der Download gegen die <code>checksums.txt</code> der Version geprüft und erst eingesetzt, wenn Hexnest sich schließt — nie während eine Treiber-Warteschlange läuft. Im Offline- und im Rettungsmodus entfallen Prüfung und Installation vollständig. Sie können die Prüfung auch ganz abschalten; die Schaltfläche auf der Seite „Über“ funktioniert weiter.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Ist der Monitor ein Hintergrunddienst?</h3>
+          <p>
+            Nein. Keiner der beiden Monitore tastet etwas ab, bevor Sie seine Seite öffnen, und beide hören auf, sobald Sie weggehen. Hexnest installiert weiterhin keinen Dienst, keinen Treiber und keinen Autostart-Eintrag — das Einzige, was es je registriert, ist die Anmeldeaufgabe, die eine unterbrochene Treiber-Warteschlange fortsetzt, und die entfernt sich selbst, wenn die Warteschlange fertig ist.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Sammelt Hexnest irgendwelche Daten?</h3>
+          <p>
+            Nein. Es gibt keine Telemetrie, keine Nutzungsstatistik und keine Gerätekennungen. Genau zwei Dinge verlassen je die Maschine: Windows-Update-Abfragen, die über den Windows-eigenen Windows-Update-Agent direkt an Microsoft gehen und im Offline- oder Rettungsmodus vollständig entfallen, und Anfragen an die GitHub-Releases-API — eine, wenn Sie auf <em>Nach Updates suchen</em>drücken, und eine pro Tag von der automatischen Prüfung, wenn Sie sie anlassen. Keine von beiden sendet etwas über Ihre Maschine; es sind gewöhnliche anonyme HTTPS-GETs. Die Monitorseiten senden nirgendwohin etwas: Jede Zahl darauf wird lokal gelesen und verlässt den Computer nie. Alles andere bleibt in <code>%ProgramData%\Hexnest</code> auf Ihrer eigenen Maschine.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="get-it">
+    <div class="wrap">
+      <h2>Hexnest holen</h2>
+      <p class="section-intro">
+        Laden Sie die ausführbare Datei herunter, legen Sie sie hin, wo Sie mögen, und doppelklicken Sie darauf. Zum Entfernen löschen Sie die Datei und wahlweise den Ordner <code>%ProgramData%\Hexnest</code> — in der Registry bleibt nichts zurück, sobald eine Warteschlange fertig ist.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest.exe">
+          Hexnest.exe herunterladen
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/Hexnest/releases/latest">
+          Alle Versionen und Prüfsummen
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Fußzeile">
+      <ul>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest">Repository</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/releases/latest">Releases</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/USAGE.md">Anleitung</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/FAQ.md">FAQ</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/BUILD.md">Aus dem Quellcode bauen</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/ARCHITECTURE.md">Architektur</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/SECURITY.md">Sicherheitsrichtlinie</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/issues">Fehler melden</a></li>
+        <li><a href="../" hreflang="en" lang="en">English</a></li>
+        <li><a href="../tr/" hreflang="tr" lang="tr">Türkçe</a></li>
+        <li><a href="../ru/" hreflang="ru" lang="ru">Русский</a></li>
+        <li><a href="../zh/" hreflang="zh" lang="zh">简体中文</a></li>
+        <li><a href="../hi/" hreflang="hi" lang="hi">हिन्दी</a></li>
+        <li><a href="../pt/" hreflang="pt" lang="pt">Português</a></li>
+        <li><a href="../ja/" hreflang="ja" lang="ja">日本語</a></li>
+        <li><a href="../fr/" hreflang="fr" lang="fr">Français</a></li>
+        <li><a href="../ko/" hreflang="ko" lang="ko">한국어</a></li>
+      </ul>
+    </nav>
+
+    <p>
+      Hexnest ist freie Software von <a href="https://github.com/ahmetcaglayan">Ahmet Çağlayan</a>, veröffentlicht unter der MIT-Lizenz. Treiber zu installieren birgt ein grundsätzliches Risiko, und die Software kommt ohne Gewährleistung — lassen Sie die Einstellung für den Wiederherstellungspunkt an und sichern Sie alles, was Ihnen wichtig ist.
+    </p>
+    <p>Windows ist eine Marke der Microsoft Corporation. Dieses Projekt steht in keiner Verbindung zu Microsoft.</p>
+
+    <p class="keywords">
+      Schlagwörter: windows treiber updater open source, kostenloser treiber updater ohne adware, treiber nach formatieren installieren, offline treiber installer usb, treiber sichern wiederherstellen windows, fehlende treiber finden, windows 11 treiber scanner, pnputil treiber export, windows update treiberkatalog werkzeug, kostenloser systemmonitor windows, cpu ram temperatur monitor open source, netzwerknutzung pro anwendung windows, bandbreitenmonitor pro programm, welches programm nutzt mein internet, task-manager alternative, autostart manager windows, autostart programme deaktivieren, kostenloser pc cleaner ohne adware, temporäre dateien löschen windows, browser cache leeren, übrig gebliebene dateien deinstallierter programme finden.
+    </p>
+  </div>
+</footer>
+
+<script>
+/* Screenshot carousel.
+
+   The markup is a scroll-snapping strip, so with JavaScript disabled it degrades to
+   something you can still swipe or scroll through - which is also exactly how it
+   behaves on a touch screen. This only adds the buttons and keeps the labels in sync
+   with whatever is on screen, however the reader got there. */
+(function () {
+  var track = document.getElementById('shotsTrack');
+  var dots  = document.getElementById('shotsDots');
+  if (!track || !dots) return;
+
+  var slides  = Array.prototype.slice.call(track.querySelectorAll('.shot'));
+  var buttons = Array.prototype.slice.call(dots.querySelectorAll('button'));
+  if (!slides.length) return;
+
+  function show(index) {
+    var target = slides[Math.max(0, Math.min(index, slides.length - 1))];
+    track.scrollTo({ left: target.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+  }
+
+  function current() {
+    /* Whichever slide's centre is closest to the viewport centre. */
+    var middle = track.scrollLeft + track.clientWidth / 2;
+    var best = 0, bestGap = Infinity;
+
+    slides.forEach(function (slide, i) {
+      var centre = slide.offsetLeft - track.offsetLeft + slide.clientWidth / 2;
+      var gap = Math.abs(centre - middle);
+      if (gap < bestGap) { bestGap = gap; best = i; }
+    });
+
+    return best;
+  }
+
+  function sync() {
+    var index = current();
+    buttons.forEach(function (button, i) {
+      if (i === index) button.setAttribute('aria-current', 'true');
+      else button.removeAttribute('aria-current');
+    });
+  }
+
+  buttons.forEach(function (button, i) {
+    button.addEventListener('click', function () { show(i); });
+  });
+
+  var prev = document.getElementById('shotsPrev');
+  var next = document.getElementById('shotsNext');
+  if (prev) prev.addEventListener('click', function () { show(current() - 1); });
+  if (next) next.addEventListener('click', function () { show(current() + 1); });
+
+  track.addEventListener('keydown', function (event) {
+    if (event.key === 'ArrowLeft')  { show(current() - 1); event.preventDefault(); }
+    if (event.key === 'ArrowRight') { show(current() + 1); event.preventDefault(); }
+  });
+
+  /* rAF-throttled: the scroll event fires far more often than the labels can matter. */
+  var queued = false;
+  track.addEventListener('scroll', function () {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; sync(); });
+  }, { passive: true });
+
+  sync();
+})();
+</script>
+
+</body>
+</html>

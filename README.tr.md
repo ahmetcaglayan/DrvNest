@@ -40,7 +40,7 @@ Windows'ta .NET indirmesi, Visual C++ Redistributable, Mac'te Homebrew veya Xcod
 [![Stars](https://img.shields.io/github/stars/ahmetcaglayan/Hexnest?style=flat-square)](../../stargazers)
 [![Build](https://img.shields.io/github/actions/workflow/status/ahmetcaglayan/Hexnest/build.yml?style=flat-square&label=Build)](../../actions/workflows/build.yml)
 
-<sub>[🇬🇧 English](README.md) · 🇹🇷 Türkçe · [🇷🇺 Русский](README.ru.md) · [🇨🇳 简体中文](README.zh.md) · [🇮🇳 हिन्दी](README.hi.md)</sub>
+<sub>[🇬🇧 English](README.md) · 🇹🇷 Türkçe · [🇷🇺 Русский](README.ru.md) · [🇨🇳 简体中文](README.zh.md) · [🇮🇳 हिन्दी](README.hi.md) · [🇵🇹 Português](README.pt.md) · [🇯🇵 日本語](README.ja.md) · [🇩🇪 Deutsch](README.de.md) · [🇫🇷 Français](README.fr.md) · [🇰🇷 한국어](README.ko.md)</sub>
 
 <br>
 
@@ -607,8 +607,9 @@ Katkılar memnuniyetle karşılanır.
 - **Kod:** depoyu çatallayın, bir dal açın, değişikliğinizi gönderin. Mevcut kod stilini
   koruyun: NuGet bağımlılığı eklemeyin (tek dosya boyutu ve çevrimdışı çalışabilirlik
   bilinçli bir tercihtir), `Hexnest.Core` içine arayüz kodu koymayın.
-- **Çeviri:** yeni bir dil eklemek `src/Hexnest.App/Services/Loc.cs` içine bir sözlük
-  eklemekten ibarettir; ayrıntılar [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) içinde.
+- **Çeviri:** yeni bir dil eklemek `src/Hexnest.Core/Languages/` klasörüne bir JSON
+  dosyası bırakmaktan ibarettir; `build/check-languages.py` onu İngilizceyle karşılaştırır.
+  Ayrıntılar [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) içinde.
 
 ---
 

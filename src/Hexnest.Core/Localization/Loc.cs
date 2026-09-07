@@ -68,12 +68,24 @@ public static class Loc
         Options.Add(new LanguageOption("en", "English", "English"));
         Options.Add(new LanguageOption("tr", "Türkçe", "Turkish"));
 
-        // Russian, Chinese and Hindi ship inside the executable as JSON rather than as
-        // more C# dictionaries. Three more of those would have made this file four
+        // The other eight languages ship inside the executable as JSON rather than as
+        // more C# dictionaries. Eight more of those would have made this file ten
         // thousand lines long for no benefit, and JSON is what a translator can edit.
         LoadEmbeddedPacks();
 
         LoadExternalPacks();
+
+        // Both loaders append in whatever order the manifest and the directory hand
+        // them over, which is neither alphabetical nor stable across builds. With three
+        // packs that was invisible; with ten it is a picker in no order at all. Sorted
+        // by the name the user actually reads, skipping "System" so it stays on top.
+        //
+        // Ordinal, not culture-aware: a Turkish machine and a German one must offer the
+        // same list in the same order, and ordinal also groups the scripts sensibly -
+        // Latin names alphabetically, then Cyrillic, Devanagari, CJK and Hangul.
+        Options.Sort(1, Options.Count - 1,
+            Comparer<LanguageOption>.Create(
+                (a, b) => string.CompareOrdinal(a.NativeName, b.NativeName)));
     }
 
     /// <summary>The language currently displayed, e.g. "en". Never "auto".</summary>

@@ -5,6 +5,48 @@ All notable changes to Hexnest are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-09-07
+
+### Added
+
+- **Five more interface languages: Portuguese, Japanese, German, French and Korean.**
+  Both applications now ship ten, and the picker lists them in a stable order rather
+  than in whatever order the assembly manifest happened to enumerate - invisible with
+  three packs, a menu in no order at all with ten.
+- **The website and the README in all ten languages.** `docs/site/{pt,ja,de,fr,ko}/`
+  and `README.{pt,ja,de,fr,ko}.md` join the existing five, with the language pickers,
+  the `hreflang` links, the OpenGraph locales and the sitemap updated across every
+  page rather than only the ones a search-and-replace happened to match.
+- **The three structural checkers now run in CI.** `check-languages.py`,
+  `check-readme.py` and `check-site.py` are a new `docs` job in `build.yml`. A
+  translation that drops a table row, loses a `{0}` or flattens a two-paragraph
+  dialog into one line is not something a reviewer can catch in a language they do
+  not read.
+- **The artifact hand-off is exercised on every push.** A new `artifacts` job
+  downloads what the Windows and macOS jobs uploaded and checks both binaries
+  arrived intact. Previously `upload-artifact`/`download-artifact` were only paired
+  in `release.yml`, which runs on a tag - so a break would have surfaced during a
+  release, after both builds had already succeeded.
+
+### Fixed
+
+- `hreflang` links on the Turkish, Chinese and Hindi pages were relative
+  (`../tr/`). Search engines ignore a relative `hreflang`, so those three pages
+  were not actually declaring their alternates. All ten pages now use absolute URLs.
+- The Hindi page was missing its `og:locale:alternate` list entirely, because the
+  anchor the update looked for is the page's own locale and therefore never present
+  on that page.
+- The site and the README described five interface languages in three places each.
+
+### Changed
+
+- Adding a language no longer means touching any code: a `<code>.json` dropped into
+  `src/Hexnest.Core/Languages/` appears in the picker on the next build.
+  `docs/ARCHITECTURE.md` and the contribution notes said otherwise and pointed at a
+  path that moved to `Hexnest.Core` in 1.3.0.
+- Korean text on the website breaks at word boundaries (`word-break: keep-all`)
+  rather than mid-word, which a narrow table column made obvious.
+
 ## [1.3.0] - 2026-09-07
 
 ### Added
@@ -299,7 +341,8 @@ adapter may not have a driver either.
   runs as SYSTEM or as a different administrator account. Falls back to the user
   profile when ProgramData is not writable.
 
-[Unreleased]: https://github.com/ahmetcaglayan/Hexnest/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/ahmetcaglayan/Hexnest/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/ahmetcaglayan/Hexnest/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/ahmetcaglayan/Hexnest/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/ahmetcaglayan/Hexnest/releases/tag/v1.2.0
 [1.1.0]: https://github.com/ahmetcaglayan/Hexnest/releases/tag/v1.1.0

@@ -40,7 +40,7 @@
 [![Stars](https://img.shields.io/github/stars/ahmetcaglayan/Hexnest?style=flat-square)](../../stargazers)
 [![Build](https://img.shields.io/github/actions/workflow/status/ahmetcaglayan/Hexnest/build.yml?style=flat-square&label=Build)](../../actions/workflows/build.yml)
 
-<sub>[🇬🇧 English](README.md) · [🇹🇷 Türkçe](README.tr.md) · 🇷🇺 Русский · [🇨🇳 简体中文](README.zh.md) · [🇮🇳 हिन्दी](README.hi.md)</sub>
+<sub>[🇬🇧 English](README.md) · [🇹🇷 Türkçe](README.tr.md) · 🇷🇺 Русский · [🇨🇳 简体中文](README.zh.md) · [🇮🇳 हिन्दी](README.hi.md) · [🇵🇹 Português](README.pt.md) · [🇯🇵 日本語](README.ja.md) · [🇩🇪 Deutsch](README.de.md) · [🇫🇷 Français](README.fr.md) · [🇰🇷 한국어](README.ko.md)</sub>
 
 <br>
 
@@ -618,8 +618,9 @@ Windows Server?» и остальные вопросы:
 - **Код:** сделайте форк, создайте ветку, откройте pull request. Придерживайтесь сложившегося
   стиля: без зависимостей NuGet (размер одного файла и работа без сети — сознательный выбор) и
   без кода интерфейса внутри `Hexnest.Core`.
-- **Перевод:** чтобы добавить язык, нужно добавить один словарь в
-  `src/Hexnest.App/Services/Loc.cs`; см. [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+- **Перевод:** чтобы добавить язык, нужно положить один файл JSON в
+  `src/Hexnest.Core/Languages/`, который `build/check-languages.py` сверяет с
+  английским; см. [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ---
 
