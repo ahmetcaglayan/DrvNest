@@ -69,6 +69,7 @@ Mac build rather than present and permanently empty.
 | **Start-up manager** | ✅ Run keys + Startup folders | ✅ launchd agents |
 | **Clean-up**, measured not estimated | ✅ | ✅ |
 | **Logs, settings, ten languages, dark/light** | ✅ | ✅ |
+| **Battery health and sleep blockers** | ❌ | ✅ |
 | **Processor temperature** | ✅ ACPI thermal zones | ❌ not exposed without root |
 | **Per-volume disk throughput** | ✅ | ❌ no per-volume counter |
 | **Memory trim** | ✅ | ❌ macOS compresses instead |
@@ -82,6 +83,10 @@ Mac build rather than present and permanently empty.
 
 A ❌ above is a thing the platform does not have, not a thing Hexnest has skipped. Every one of
 them is explained where it appears in the application itself.
+
+One row runs the other way. Battery wear and the list of processes holding the machine
+awake are on the Mac and not on Windows, and it is the only ❌ in the table that means
+"not built yet" rather than "not available": Windows exposes both through `powercfg`.
 
 ---
 
@@ -139,6 +144,7 @@ One file, no installer, no background service, no telemetry.
 | 📄 **Hardware report** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | Writes every device and hardware id to a plain text file — carry it on a USB stick to a working computer and look the drivers up by hand. |
 | 🆙 **Built-in updater** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | Downloads the new release from GitHub, **verifies its SHA-256** (and refuses to install when the release publishes no `checksums.txt`), then swaps the executable in place. |
 | 📈 **System monitor** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Processor load overall and per logical core (`NtQuerySystemInformation`), memory down to cached and committed bytes (`GlobalMemoryStatusEx` + `GetPerformanceInfo`), ACPI thermal zones, per-volume read/write throughput (`IOCTL_DISK_PERFORMANCE`) and battery state. Nothing is sampled until the page is opened, and it stops the moment you leave it. |
+| 🔋 **Battery health and sleep blockers** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Cycle count, the maximum capacity macOS itself reports, condition and the battery pack's own temperature from `ioreg`, plus every power assertion from `pmset`: which process is stopping the Mac sleeping, what it asked for and how long it has been asking. Read when the page opens rather than on a timer, because a page that sampled once a second would spend battery to report on the battery. |
 | 🧮 **Per-application resource usage** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Processor share, working set, private bytes, disk throughput and thread count for every process, measured exactly the way Task Manager measures them: the delta in the process' own kernel + user time between two samples, divided by the wall clock and the logical processor count. |
 | 🌐 **Network monitor** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Machine-wide download and upload from the adapters' own counters, session and since-boot totals, open connection count, and every adapter with its address and negotiated link speed. |
 | 🔎 **Per-application network usage** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Which program is transferring what, from `GetExtendedTcpTable` plus TCP ESTATS (`GetPerTcpConnectionEStats`). TCP only — Windows has no per-process UDP counter without a kernel driver, and the page says so instead of under-reporting quietly. |
@@ -248,16 +254,20 @@ of date.
 <td width="50%"><img src="assets/screenshots/mac-system.png" alt="System Monitor on macOS: processor and memory charts, a bar per logical core, storage, battery and the process table"><br><sub><b>System Monitor</b> — a bar per core, including the P and E clusters on Apple silicon.</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-power.png" alt="Battery and Power on macOS: maximum capacity, charge cycles, condition and battery temperature, above the list of processes holding the Mac awake"><br><sub><b>Battery &amp; Power</b> — cycle count and wear, and which application is stopping the Mac sleeping.</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-network.png" alt="Network Monitor on macOS: live download and upload charts, session and since-boot totals, adapters and per-application traffic"><br><sub><b>Network Monitor</b> — per-application traffic from the same source Activity Monitor uses.</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-startup.png" alt="Startup Programs on macOS: every launchd agent and daemon with a switch, its label, command and where it starts from"><br><sub><b>Startup Programs</b> — launchd agents with a switch each; system jobs shown, not touched.</sub></td>
-</tr>
-<tr>
 <td width="50%"><img src="assets/screenshots/mac-clean.png" alt="Clean Up on macOS: measured sizes for application caches, developer caches, logs, the Trash, old downloads and leftovers"><br><sub><b>Clean Up</b> — caches, Xcode derived data, iPhone backups. Measured, and nothing ticked.</sub></td>
-<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="Settings on macOS: language, theme including follow-the-system, update options and the data folders"><br><sub><b>Settings</b> — the same options, plus a theme that follows macOS at sunrise and sunset.</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="Settings on macOS: language, theme including follow-the-system, update options and the data folders"><br><sub><b>Settings</b> — the same options, plus a theme that follows macOS at sunrise and sunset.</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-logs.png" alt="Logs on macOS: live diagnostics with the log file path and copy, reveal and clear actions"><br><sub><b>Logs</b> — live diagnostics, one click to the clipboard for an issue report.</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-about.png" alt="About on macOS: version, machine and processor information, the update check and the project links"><br><sub><b>About</b> — version, machine, and an update check that opens the download.</sub></td>
+<td width="50%"></td>
 </tr>
 </table>
 
@@ -300,6 +310,7 @@ display language of whoever regenerated them.
 | **Backup & Restore** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | *Create backup* (optionally zipped), the list of existing backups (package count, size, date), *Restore*, *Restore from folder*, *Open*, *Delete*. |
 | **History** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | A permanent record of every driver operation. Filter by outcome, search, *Export as CSV*, *Clear history*. If a record's pre-update backup still exists you can open its folder. |
 | **System Monitor** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Processor load overall and per logical core, memory broken down into in-use / available / cached / committed, temperature sensors when the machine exposes any, storage capacity with live read and write throughput, and battery. Below that, every running process with its processor share, working set, private bytes, disk throughput and thread count — sortable by processor, memory, disk or name, searchable, and pausable so a row can actually be read. |
+| **Battery & Power** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Maximum capacity, charge cycles, condition and the battery's own temperature, each with its source named: Apple's percentage is not a plain ratio of the capacities, so a computed one is labelled as computed, and the temperature is the battery pack rather than the processor. Below that, every process holding the Mac awake with the assertion it took and how long it has held it, with the ones macOS holds itself kept separate. |
 | **Network Monitor** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Live download and upload for the whole machine as charts, the total for this session and since Windows started, the number of open connections, and every adapter with its type, address and link speed. Below that, a per-application table: download and upload rate, session totals, open connections and the remote endpoint. |
 | **Startup Programs** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Every autostart entry Hexnest can safely toggle, with the program name from the executable's version resource, its publisher, the command line, the size and where it starts from. A switch per row; disabling writes the same setting Task Manager writes and deletes nothing. Entries pointing at a file that no longer exists are flagged, security software is marked and asks before being switched off, and there are filters for on, off and broken plus a search. |
 | **Clean Up** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Measured sizes for temporary files, thumbnail and icon caches, seven browsers, the Windows Update download cache, Delivery Optimization, crash dumps, error reports, shader caches, Windows logs, Hexnest's own cache and the Recycle Bin. Nothing is ticked by default. Old downloads and leftover AppData folders are listed item by item and go to the Recycle Bin. Plus a memory trim that is honest about what it does. |
@@ -307,7 +318,7 @@ display language of whoever regenerated them.
 | **Settings** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Parallel download count, retry count, scan on startup, restore point, pre-update backup, resume after restart, automatic restart and its delay, offline mode, optional drivers, local driver folders, history retention, **automatic update check, automatic install and pre-releases**, theme, language. |
 | **About** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Version information, *Check for updates*, release notes, project page and issue links. The Windows build also downloads and installs the update; the Mac build opens the download instead, because rewriting a running `.app` breaks its signature. |
 
-The Mac build's sidebar is the eight rows above marked macOS, in that order. *Devices*,
+The Mac build's sidebar is the nine rows above marked macOS, in that order. *Devices*,
 *Updates*, *Activity*, *Backup & Restore* and *History* are absent there rather than empty.
 
 ---

@@ -25,7 +25,7 @@ public static class CaptureRunner
     /// <summary>Pages to photograph, in menu order.</summary>
     private static readonly string[] Pages =
     {
-        "dashboard", "system", "network", "startup", "clean", "logs", "settings", "about"
+        "dashboard", "system", "power", "network", "startup", "clean", "logs", "settings", "about"
     };
 
     /// <summary>

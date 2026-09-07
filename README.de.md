@@ -69,6 +69,7 @@ statt vorhanden und dauerhaft leer zu sein.
 | **Autostart-Manager** | ✅ Run-Schlüssel + Autostart-Ordner | ✅ launchd-Agents |
 | **Aufräumen**, gemessen statt geschätzt | ✅ | ✅ |
 | **Protokolle, Einstellungen, zehn Sprachen, hell/dunkel** | ✅ | ✅ |
+| **Akkuzustand und was den Ruhezustand verhindert** | ❌ | ✅ |
 | **Prozessortemperatur** | ✅ ACPI-Thermalzonen | ❌ ohne root nicht zugänglich |
 | **Datenträgerdurchsatz pro Volume** | ✅ | ❌ kein Zähler pro Volume |
 | **Speicher freigeben** | ✅ | ❌ macOS komprimiert stattdessen |
@@ -82,6 +83,11 @@ statt vorhanden und dauerhaft leer zu sein.
 
 Ein ❌ oben steht für etwas, das die Plattform nicht hat, nicht für etwas, das Hexnest ausgelassen hätte. Jeder
 dieser Punkte wird in der Anwendung an der Stelle erklärt, an der er auftaucht.
+
+Eine Zeile läuft andersherum. Akkuverschleiß und die Liste der Prozesse, die den Rechner
+wach halten, gibt es auf dem Mac und nicht unter Windows, und es ist das einzige ❌ der
+Tabelle, das "noch nicht gebaut" statt "nicht verfügbar" heißt: Windows legt beides über
+`powercfg` offen.
 
 ---
 
@@ -139,6 +145,7 @@ Eine Datei, kein Installationsprogramm, kein Hintergrunddienst, keine Telemetrie
 | 📄 **Hardwarebericht** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | Schreibt jedes Gerät und jede Hardware-ID in eine einfache Textdatei — nehmen Sie sie auf einem USB-Stick zu einem funktionierenden Computer mit und schlagen Sie die Treiber von Hand nach. |
 | 🆙 **Eingebauter Updater** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | Lädt die neue Version von GitHub, **prüft ihren SHA-256** (und installiert nicht, wenn die Version keine `checksums.txt` veröffentlicht) und tauscht die ausführbare Datei dann aus. |
 | 📈 **Systemmonitor** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Prozessorlast insgesamt und pro logischem Kern (`NtQuerySystemInformation`), Arbeitsspeicher bis hinunter zu zwischengespeicherten und zugesicherten Bytes (`GlobalMemoryStatusEx` + `GetPerformanceInfo`), ACPI-Thermalzonen, Lese-/Schreibdurchsatz pro Volume (`IOCTL_DISK_PERFORMANCE`) und Akkuzustand. Nichts wird abgetastet, bevor die Seite geöffnet wird, und es hört auf, sobald Sie sie verlassen. |
+| 🔋 **Akkuzustand und was den Ruhezustand verhindert** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Aus `ioreg` die Ladezyklen, die maximale Kapazität, die macOS selbst meldet, der Zustand und die Temperatur des Akkus; aus `pmset` jede Power Assertion: welcher Prozess den Mac am Schlafen hindert, worum er gebeten hat und seit wann. Gelesen beim Öffnen der Seite statt auf einem Timer, denn eine Seite, die im Sekundentakt abtastet, würde Akku verbrauchen, um über den Akku zu berichten. |
 | 🧮 **Ressourcennutzung pro Anwendung** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Prozessoranteil, Arbeitssatz, private Bytes, Datenträgerdurchsatz und Threadanzahl für jeden Prozess, gemessen genau so, wie der Task-Manager sie misst: die Differenz der Kernel- und Benutzerzeit des Prozesses zwischen zwei Messungen, geteilt durch die verstrichene Zeit und die Anzahl der logischen Prozessoren. |
 | 🌐 **Netzwerkmonitor** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Maschinenweiter Download und Upload aus den eigenen Zählern der Adapter, Summen für die Sitzung und seit dem Start, Anzahl offener Verbindungen und jeder Adapter mit Adresse und ausgehandelter Verbindungsgeschwindigkeit. |
 | 🔎 **Netzwerknutzung pro Anwendung** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Welches Programm was überträgt, aus `GetExtendedTcpTable` plus TCP-ESTATS (`GetPerTcpConnectionEStats`). Nur TCP — Windows hat ohne Kerneltreiber keinen UDP-Zähler pro Prozess, und die Seite sagt das, statt stillschweigend zu wenig zu melden. |
@@ -248,16 +255,20 @@ veralten.
 <td width="50%"><img src="assets/screenshots/mac-system.png" alt="Systemmonitor unter macOS: Diagramme für Prozessor und Arbeitsspeicher, ein Balken pro logischem Kern, Datenträger, Akku und die Prozesstabelle"><br><sub><b>Systemmonitor</b> — ein Balken pro Kern, inklusive der P- und E-Cluster auf Apple Silicon.</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-power.png" alt="Akku und Energie unter macOS: maximale Kapazität, Ladezyklen, Zustand und Akkutemperatur, darüber die Liste der Prozesse, die den Mac wach halten"><br><sub><b>Akku und Energie</b> — Ladezyklen und Verschleiß, und welche Anwendung den Mac wach hält.</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-network.png" alt="Netzwerkmonitor unter macOS: Live-Diagramme für Download und Upload, Summen für die Sitzung und seit dem Start, Adapter und Datenverkehr pro Anwendung"><br><sub><b>Netzwerkmonitor</b> — Datenverkehr pro Anwendung aus derselben Quelle, die auch die Aktivitätsanzeige nutzt.</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-startup.png" alt="Autostart-Programme unter macOS: jeder launchd-Agent und -Daemon mit einem Schalter, seinem Label, Befehl und Startort"><br><sub><b>Autostart-Programme</b> — launchd-Agents mit je einem Schalter; Systemjobs werden gezeigt, nicht angefasst.</sub></td>
-</tr>
-<tr>
 <td width="50%"><img src="assets/screenshots/mac-clean.png" alt="Aufräumen unter macOS: gemessene Größen für Anwendungscaches, Entwicklercaches, Protokolle, den Papierkorb, alte Downloads und Übriggebliebenes"><br><sub><b>Aufräumen</b> — Caches, Xcode Derived Data, iPhone-Sicherungen. Gemessen, und nichts angekreuzt.</sub></td>
-<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="Einstellungen unter macOS: Sprache, Design inklusive „dem System folgen“, Update-Optionen und die Datenordner"><br><sub><b>Einstellungen</b> — dieselben Optionen, dazu ein Design, das macOS bei Sonnenauf- und -untergang folgt.</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="Einstellungen unter macOS: Sprache, Design inklusive „dem System folgen“, Update-Optionen und die Datenordner"><br><sub><b>Einstellungen</b> — dieselben Optionen, dazu ein Design, das macOS bei Sonnenauf- und -untergang folgt.</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-logs.png" alt="Protokolle unter macOS: Live-Diagnose mit dem Pfad der Protokolldatei sowie Aktionen zum Kopieren, Anzeigen und Leeren"><br><sub><b>Protokolle</b> — Live-Diagnose, ein Klick in die Zwischenablage für einen Fehlerbericht.</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-about.png" alt="Über unter macOS: Version, Informationen zu Maschine und Prozessor, die Update-Prüfung und die Projektlinks"><br><sub><b>Über</b> — Version, Maschine und eine Update-Prüfung, die den Download öffnet.</sub></td>
+<td width="50%"></td>
 </tr>
 </table>
 
@@ -300,6 +311,7 @@ Anzeigesprache dessen abhängen, der sie neu erzeugt hat.
 | **Sichern & Wiederherstellen** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | *Sicherung erstellen* (wahlweise gezippt), die Liste vorhandener Sicherungen (Paketanzahl, Größe, Datum), *Wiederherstellen*, *Aus Ordner wiederherstellen*, *Öffnen*, *Löschen*. |
 | **Verlauf** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | Eine dauerhafte Aufzeichnung jedes Treibervorgangs. Nach Ergebnis filtern, suchen, *Als CSV exportieren*, *Verlauf leeren*. Wenn die Sicherung vor dem Update zu einem Eintrag noch existiert, können Sie deren Ordner öffnen. |
 | **Systemmonitor** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Prozessorlast insgesamt und pro logischem Kern, Arbeitsspeicher aufgeschlüsselt in belegt / verfügbar / zwischengespeichert / zugesichert, Temperatursensoren, sofern die Maschine welche offenlegt, Datenträgerkapazität mit Live-Lese- und -Schreibdurchsatz und Akku. Darunter jeder laufende Prozess mit Prozessoranteil, Arbeitssatz, privaten Bytes, Datenträgerdurchsatz und Threadanzahl — sortierbar nach Prozessor, Speicher, Datenträger oder Name, durchsuchbar und anhaltbar, damit sich eine Zeile wirklich lesen lässt. |
+| **Akku und Energie** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Maximale Kapazität, Ladezyklen, Zustand und die Temperatur des Akkus, jeweils mit genannter Quelle: Apples Prozentwert ist kein einfaches Verhältnis der Kapazitäten, deshalb wird ein berechneter als berechnet ausgewiesen, und die Temperatur ist die des Akkus, nicht des Prozessors. Darunter jeder Prozess, der den Mac wach hält, mit der Assertion und ihrer Dauer; was macOS selbst hält, steht getrennt. |
 | **Netzwerkmonitor** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Live-Download und -Upload für die ganze Maschine als Diagramme, die Summe für diese Sitzung und seit dem Start von Windows, die Anzahl offener Verbindungen und jeder Adapter mit Typ, Adresse und Verbindungsgeschwindigkeit. Darunter eine Tabelle pro Anwendung: Download- und Uploadrate, Sitzungssummen, offene Verbindungen und der entfernte Endpunkt. |
 | **Autostart-Programme** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Jeder Autostart-Eintrag, den Hexnest sicher umschalten kann, mit dem Programmnamen aus der Versionsressource der ausführbaren Datei, dem Herausgeber, der Befehlszeile, der Größe und dem Startort. Ein Schalter pro Zeile; Deaktivieren schreibt dieselbe Einstellung wie der Task-Manager und löscht nichts. Einträge, die auf eine nicht mehr vorhandene Datei zeigen, werden markiert, Sicherheitssoftware wird gekennzeichnet und fragt vor dem Abschalten nach, und es gibt Filter für ein, aus und defekt sowie eine Suche. |
 | **Aufräumen** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Gemessene Größen für temporäre Dateien, Miniatur- und Symbolcaches, sieben Browser, den Download-Cache von Windows Update, die Übermittlungsoptimierung, Absturzabbilder, Fehlerberichte, Shader-Caches, Windows-Protokolle, Hexnests eigenen Cache und den Papierkorb. Standardmäßig ist nichts angekreuzt. Alte Downloads und übrig gebliebene AppData-Ordner werden einzeln aufgelistet und wandern in den Papierkorb. Dazu ein Freigeben von Speicher, das ehrlich sagt, was es tut. |
@@ -307,7 +319,7 @@ Anzeigesprache dessen abhängen, der sie neu erzeugt hat.
 | **Einstellungen** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Anzahl paralleler Downloads, Anzahl der Wiederholungen, Prüfen beim Start, Wiederherstellungspunkt, Sicherung vor dem Update, Fortsetzen nach Neustart, automatischer Neustart und dessen Verzögerung, Offlinemodus, optionale Treiber, lokale Treiberordner, Aufbewahrung des Verlaufs, **automatische Update-Prüfung, automatische Installation und Vorabversionen**, Design, Sprache. |
 | **Über** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Versionsinformationen, *Nach Updates suchen*, Versionshinweise, Projektseite und Links zu den Issues. Der Windows-Build lädt und installiert das Update auch; der Mac-Build öffnet stattdessen den Download, weil das Überschreiben einer laufenden `.app` deren Signatur zerstört. |
 
-Die Seitenleiste des Mac-Builds besteht aus den acht oben mit macOS markierten Zeilen, in dieser Reihenfolge. *Geräte*,
+Die Seitenleiste des Mac-Builds besteht aus den neun oben mit macOS markierten Zeilen, in dieser Reihenfolge. *Geräte*,
 *Updates*, *Aktivität*, *Sichern & Wiederherstellen* und *Verlauf* fehlen dort, statt leer zu sein.
 
 ---

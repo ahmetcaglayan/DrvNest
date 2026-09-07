@@ -66,7 +66,7 @@
   "applicationCategory": "UtilitiesApplication",
   "applicationSubCategory": "System monitor, disk cleaner and driver updater",
   "operatingSystem": "Windows 10, Windows 11, macOS 12, macOS 13, macOS 14, macOS 15",
-  "softwareVersion": "1.4.0",
+  "softwareVersion": "1.5.0",
   "downloadUrl": "https://github.com/ahmetcaglayan/Hexnest/releases/latest",
   "installUrl": "https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest.exe",
   "url": "https://ahmetcaglayan.github.io/Hexnest/",
@@ -104,7 +104,8 @@
     "macOS start-up manager for launchd login agents, using launchctl overrides so nothing is deleted",
     "macOS cleaner for application caches, developer caches, Xcode derived data, logs, the Trash, old downloads and iPhone backups",
     "macOS per-application network usage from the same statistics Activity Monitor reads",
-    "Per-core processor load including the performance and efficiency clusters on Apple silicon"
+    "Per-core processor load including the performance and efficiency clusters on Apple silicon",
+    "macOS のバッテリー健全性 - 充放電回数、最大容量、状態、バッテリー温度 - と、Mac を起こしたままにしているプロセスの一覧"
   ],
   "screenshot": [
     "https://ahmetcaglayan.github.io/Hexnest/screenshots/dashboard.png",
@@ -305,7 +306,7 @@
 
   <section id="whats-new">
     <div class="wrap">
-      <h2>最近追加 <span class="badge-new">1.4.0</span></h2>
+      <h2>最近追加 <span class="badge-new">1.5.0</span></h2>
       <p class="section-intro">
         以下はすべて、配布されているアプリケーションに入っています。機能一覧のふりをしたロードマップはありません。
       </p>
@@ -354,6 +355,12 @@
             英語、トルコ語、ロシア語、簡体字中国語、ヒンディー語、ポルトガル語、日本語、ドイツ語、フランス語、韓国語。すべてが単一の実行ファイルに入っており、再起動なしで切り替えられます。 <code>Hexnest.exe</code> の隣に JSON ファイルを置けば、ビルドし直さずに翻訳を追加・修正することも従来どおり可能です。
           </p>
         </li>
+        <li>
+          <h3>バッテリーと電源</h3>
+          <p>
+            Windows に対応するページのない macOS 専用のページです。問いがノート型のものだからです。充放電回数、macOS 自身が報告する最大容量、状態、バッテリー自身の温度 — その下には、Mac を起こしたままにしている各プロセスと、取得したアサーション、保持時間。タイマーではなくページを開いたときに読み取ります。毎秒サンプリングするページは、バッテリーの話をするためにバッテリーを消費してしまうからです。
+          </p>
+
       </ul>
     </div>
   </section>

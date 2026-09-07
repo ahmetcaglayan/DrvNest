@@ -69,6 +69,7 @@ Mac ビルドから外してあります。
 | **スタートアップ管理** | ✅ Run キー + スタートアップフォルダー | ✅ launchd エージェント |
 | **クリーンアップ**、推定ではなく実測 | ✅ | ✅ |
 | **ログ、設定、10 言語、ダーク/ライト** | ✅ | ✅ |
+| **バッテリーの健全性とスリープを妨げるもの** | ❌ | ✅ |
 | **プロセッサ温度** | ✅ ACPI サーマルゾーン | ❌ root なしでは取得不可 |
 | **ボリューム別のディスクスループット** | ✅ | ❌ ボリューム別カウンターなし |
 | **メモリ解放** | ✅ | ❌ macOS は代わりに圧縮する |
@@ -82,6 +83,10 @@ Mac ビルドから外してあります。
 
 上の ❌ はプラットフォームに存在しないものであって、Hexnest が省いたものではありません。どれも、
 アプリケーション内でそれが現れる場所に説明があります。
+
+1 行だけ向きが逆です。バッテリーの劣化と、マシンを起こしたままにしているプロセスの一覧は
+Mac にあり Windows にありません。表の中でこれだけが「利用できない」ではなく「まだ作って
+いない」を意味する ❌ です。Windows も `powercfg` で両方を出せます。
 
 ---
 
@@ -139,6 +144,7 @@ Hexnest はそれを 1 つのウィンドウで解決します:
 | 📄 **ハードウェアレポート** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | すべてのデバイスとハードウェア ID をプレーンテキストに書き出します — USB メモリで動く別のコンピューターへ持って行き、手作業でドライバーを調べられます。 |
 | 🆙 **内蔵アップデーター** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | GitHub から新しいリリースをダウンロードし、**その SHA-256 を検証**して (リリースが `checksums.txt` を公開していない場合はインストールを拒否)、実行ファイルをその場で入れ替えます。 |
 | 📈 **システムモニタ** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | プロセッサ負荷を全体と論理コアごとに (`NtQuerySystemInformation`)、メモリをキャッシュ済み・コミット済みバイトまで (`GlobalMemoryStatusEx` + `GetPerformanceInfo`)、ACPI サーマルゾーン、ボリューム別の読み書きスループット (`IOCTL_DISK_PERFORMANCE`)、バッテリー状態。ページを開くまで何も計測せず、離れた瞬間に止まります。 |
+| 🔋 **バッテリーの健全性とスリープを妨げるもの** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | `ioreg` から充放電回数、macOS 自身が報告する最大容量、状態、バッテリー自身の温度を、`pmset` からすべてのパワーアサーションを読みます。どのプロセスが Mac をスリープさせていないか、何を求め、いつから求めているか。タイマーではなくページを開いたときに読み取ります。毎秒サンプリングするページは、バッテリーの話をするためにバッテリーを消費してしまうからです。 |
 | 🧮 **アプリ別のリソース使用量** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | すべてのプロセスのプロセッサ占有率、ワーキングセット、プライベートバイト、ディスクスループット、スレッド数を、タスクマネージャーとまったく同じ方法で計測します。2 回のサンプル間のカーネル + ユーザー時間の差を、経過時間と論理プロセッサ数で割った値です。 |
 | 🌐 **ネットワークモニタ** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | マシン全体のダウンロードとアップロードをアダプター自身のカウンターから、セッションと起動以降の合計、開いている接続の数、そしてアドレスとネゴシエート済みリンク速度付きの全アダプター。 |
 | 🔎 **アプリ別のネットワーク使用量** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | どのプログラムが何を転送しているかを `GetExtendedTcpTable` と TCP ESTATS (`GetPerTcpConnectionEStats`) から取得します。TCP のみ — Windows にはカーネルドライバーなしのプロセス別 UDP カウンターがなく、黙って少なく報告する代わりにページでそう明言します。 |
@@ -248,16 +254,20 @@ Hexnest.exe --resume        # continue an interrupted queue straight away
 <td width="50%"><img src="assets/screenshots/mac-system.png" alt="macOS 版のシステムモニタ: プロセッサとメモリのグラフ、論理コアごとのバー、ストレージ、バッテリー、プロセス表"><br><sub><b>システムモニタ</b> — コアごとに 1 本のバー。Apple シリコンの P クラスタと E クラスタも含みます。</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-power.png" alt="macOS のバッテリーと電源: 最大容量、充放電回数、状態、バッテリー温度と、その下に Mac を起こしたままにしているプロセスの一覧"><br><sub><b>バッテリーと電源</b> — 充放電回数と劣化、そしてどのアプリが Mac をスリープさせていないか。</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-network.png" alt="macOS 版のネットワークモニタ: ダウンロードとアップロードのリアルタイムグラフ、セッションと起動以降の合計、アダプター、アプリ別の通信量"><br><sub><b>ネットワークモニタ</b> — アクティビティモニタと同じ情報源から取るアプリ別の通信量。</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-startup.png" alt="macOS 版のスタートアッププログラム: すべての launchd エージェントとデーモンにスイッチ、ラベル、コマンド、起動元を表示"><br><sub><b>スタートアッププログラム</b> — launchd エージェントに 1 つずつスイッチ。システムのジョブは表示のみで触りません。</sub></td>
-</tr>
-<tr>
 <td width="50%"><img src="assets/screenshots/mac-clean.png" alt="macOS 版のクリーンアップ: アプリのキャッシュ、開発者キャッシュ、ログ、ゴミ箱、古いダウンロード、残骸の実測サイズ"><br><sub><b>クリーンアップ</b> — キャッシュ、Xcode の derived data、iPhone のバックアップ。実測で、チェックは付きません。</sub></td>
-<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="macOS 版の設定: 言語、システムに合わせる設定を含むテーマ、更新オプション、データフォルダー"><br><sub><b>設定</b> — 同じ選択肢に加え、日の出と日の入りで macOS に追随するテーマ。</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="macOS 版の設定: 言語、システムに合わせる設定を含むテーマ、更新オプション、データフォルダー"><br><sub><b>設定</b> — 同じ選択肢に加え、日の出と日の入りで macOS に追随するテーマ。</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-logs.png" alt="macOS 版のログ: ログファイルのパスと、コピー・表示・消去の操作が並ぶリアルタイム診断"><br><sub><b>ログ</b> — リアルタイム診断。ワンクリックで不具合報告用にクリップボードへ。</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-about.png" alt="macOS 版のバージョン情報: バージョン、マシンとプロセッサの情報、更新の確認、プロジェクトのリンク"><br><sub><b>バージョン情報</b> — バージョン、マシン、そしてダウンロードを開く更新確認。</sub></td>
+<td width="50%"></td>
 </tr>
 </table>
 
@@ -300,6 +310,7 @@ PNG を 1 枚書き出します。`--lang` で表示言語を固定するため�
 | **バックアップと復元** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | *バックアップを作成* (任意で ZIP 圧縮)、既存バックアップの一覧 (パッケージ数、サイズ、日付)、*復元*、*フォルダーから復元*、*開く*、*削除*。 |
 | **履歴** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | すべてのドライバー操作の恒久的な記録。結果で絞り込み、検索、*CSV で書き出し*、*履歴を消去*。更新前のバックアップが残っていれば、そのフォルダーを開けます。 |
 | **システムモニタ** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | プロセッサ負荷を全体と論理コアごとに、メモリを使用中 / 利用可能 / キャッシュ済み / コミット済みに分けて、温度センサーがあるマシンではその値、実測の読み書きスループット付きのストレージ容量、そしてバッテリー。その下に、実行中の全プロセスをプロセッサ占有率、ワーキングセット、プライベートバイト、ディスクスループット、スレッド数とともに表示 — プロセッサ、メモリ、ディスク、名前で並べ替えでき、検索でき、行をきちんと読めるよう一時停止もできます。 |
+| **バッテリーと電源** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 最大容量、充放電回数、状態、バッテリー自身の温度を、それぞれ出どころを明記して表示します。Apple の百分率は容量の単純な比ではないため、算出した値は算出と明示され、温度はプロセッサではなくバッテリーのものです。その下に、Mac を起こしたままにしている各プロセスと、取得したアサーション、保持時間。macOS 自身が保持するものは分けてあります。 |
 | **ネットワークモニタ** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | マシン全体のダウンロードとアップロードをリアルタイムのグラフで、今回のセッションと Windows 起動以降の合計、開いている接続の数、種類・アドレス・リンク速度付きの全アダプター。その下にアプリ別の表: ダウンロードとアップロードの速度、セッション合計、開いている接続、接続先。 |
 | **スタートアッププログラム** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Hexnest が安全に切り替えられるすべての自動起動項目を、実行ファイルのバージョン情報から読んだプログラム名、発行元、コマンドライン、サイズ、起動元とともに表示。行ごとにスイッチがあり、無効化はタスクマネージャーと同じ設定を書くだけで何も削除しません。存在しないファイルを指す項目には印が付き、セキュリティソフトには印が付いて切る前に確認し、オン・オフ・破損のフィルターと検索があります。 |
 | **クリーンアップ** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 一時ファイル、サムネイルとアイコンのキャッシュ、7 種類のブラウザー、Windows Update のダウンロードキャッシュ、配信の最適化、クラッシュダンプ、エラーレポート、シェーダーキャッシュ、Windows のログ、Hexnest 自身のキャッシュ、ごみ箱の実測サイズ。既定では何もチェックされていません。古いダウンロードと AppData に残ったフォルダーは 1 件ずつ並び、ごみ箱へ送られます。さらに、何をするのかを正直に述べたメモリ解放。 |
@@ -307,7 +318,7 @@ PNG を 1 枚書き出します。`--lang` で表示言語を固定するため�
 | **設定** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 並列ダウンロード数、再試行回数、起動時の検査、復元ポイント、更新前のバックアップ、再起動後の再開、自動再起動とその待ち時間、オフラインモード、任意ドライバー、ローカルのドライバーフォルダー、履歴の保持期間、**自動更新チェック、自動インストール、プレリリース**、テーマ、言語。 |
 | **バージョン情報** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | バージョン情報、*更新を確認*、リリースノート、プロジェクトページと課題へのリンク。Windows ビルドは更新のダウンロードとインストールも行います。Mac ビルドは代わりにダウンロードページを開きます。実行中の `.app` を書き換えると署名が壊れるからです。 |
 
-Mac ビルドのサイドバーは、上で macOS と記された 8 行をこの順に並べたものです。*デバイス*、
+Mac ビルドのサイドバーは、上で macOS と記された 9 行をこの順に並べたものです。*デバイス*、
 *更新*、*アクティビティ*、*バックアップと復元*、*履歴* は、空で置かれるのではなく存在しません。
 
 ---

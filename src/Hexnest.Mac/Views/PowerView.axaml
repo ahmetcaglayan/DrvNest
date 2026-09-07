@@ -1,0 +1,158 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Hexnest.Mac.ViewModels"
+             xmlns:s="clr-namespace:Hexnest.Mac.Services"
+             x:Class="Hexnest.Mac.Views.PowerView"
+             x:DataType="vm:PowerViewModel">
+
+    <ScrollViewer Classes="page">
+        <StackPanel Spacing="14">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{Binding Title}" Classes="h1" />
+                    <TextBlock Text="{Binding Subtitle}" Classes="caption wrap" Margin="0,3,0,0" />
+                </StackPanel>
+
+                <Button Grid.Column="1" Classes="ghost"
+                        Content="{s:Loc common.refresh}"
+                        Command="{Binding RefreshCommand}"
+                        VerticalAlignment="Top" />
+            </Grid>
+
+            <Border Classes="card-flat">
+                <TextBlock Text="{Binding Explain}" Classes="caption wrap" />
+            </Border>
+
+            <!-- ====================================================== BATTERY -->
+
+            <Border Classes="card-flat" IsVisible="{Binding !HasBattery}">
+                <TextBlock Text="{Binding NoBatteryText}" Classes="caption wrap" />
+            </Border>
+
+            <StackPanel Spacing="14" IsVisible="{Binding HasBattery}">
+
+                <TextBlock Text="{s:Loc power.batteryHeading}" Classes="h2" />
+
+                <!--
+                  Four facts across. Star columns rather than Auto so the row does not
+                  reflow every time a value changes width, which is what made the About
+                  page's fact row jitter.
+                -->
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="12">
+
+                    <Border Grid.Column="0" Classes="card">
+                        <StackPanel>
+                            <TextBlock Text="{s:Loc power.maximumCapacity}" Classes="caption" />
+                            <TextBlock Text="{Binding MaximumCapacity}" Classes="metric" Margin="0,4,0,0" />
+                            <TextBlock Text="{Binding MaximumCapacityNote}" Classes="faint wrap"
+                                       Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Classes="card">
+                        <StackPanel>
+                            <TextBlock Text="{s:Loc power.cycleCount}" Classes="caption" />
+                            <TextBlock Text="{Binding CycleCount}" Classes="metric" Margin="0,4,0,0" />
+                            <TextBlock Text="{Binding Capacities}" Classes="faint wrap" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="2" Classes="card">
+                        <StackPanel>
+                            <TextBlock Text="{s:Loc power.condition}" Classes="caption" />
+                            <TextBlock Text="{Binding Condition}" Classes="metric" Margin="0,4,0,0" />
+                            <TextBlock Text="{s:Loc power.conditionGood}" Classes="faint wrap"
+                                       Margin="0,4,0,0" IsVisible="{Binding ConditionIsGood}" />
+                            <TextBlock Text="{s:Loc power.conditionCheck}" Classes="faint wrap"
+                                       Margin="0,4,0,0" IsVisible="{Binding !ConditionIsGood}" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="3" Classes="card">
+                        <StackPanel>
+                            <TextBlock Text="{s:Loc power.temperature}" Classes="caption" />
+                            <TextBlock Text="{Binding Temperature}" Classes="metric" Margin="0,4,0,0"
+                                       IsVisible="{Binding HasTemperature}" />
+                            <TextBlock Text="{s:Loc power.unknown}" Classes="metric" Margin="0,4,0,0"
+                                       IsVisible="{Binding !HasTemperature}" />
+                            <TextBlock Text="{s:Loc power.temperatureNote}" Classes="faint wrap"
+                                       Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <Border Classes="card-flat">
+                    <TextBlock Text="{Binding Adapter}" Classes="caption wrap" />
+                </Border>
+            </StackPanel>
+
+            <!-- ======================================================== SLEEP -->
+
+            <TextBlock Text="{s:Loc power.sleepHeading}" Classes="h2" Margin="0,6,0,0" />
+
+            <Border Classes="card-flat">
+                <StackPanel>
+                    <TextBlock Text="{Binding SleepSummary}" Classes="body wrap" />
+                    <TextBlock Text="{s:Loc power.sleepExplain}" Classes="faint wrap" Margin="0,7,0,0" />
+                </StackPanel>
+            </Border>
+
+            <ItemsControl ItemsSource="{Binding Applications}" IsVisible="{Binding HasApplications}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:AssertionRow">
+                        <Border Classes="row">
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+
+                                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Spacing="8">
+                                    <TextBlock Text="{Binding Process}" Classes="body" />
+                                    <Border Classes="badge">
+                                        <TextBlock Text="{Binding Effect}" />
+                                    </Border>
+                                </StackPanel>
+
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Held}"
+                                           Classes="caption" VerticalAlignment="Center" />
+
+                                <!--
+                                  The assertion's own name is the useful half: "Electron"
+                                  or "Handoff" says more than the type does. It goes on
+                                  its own wrapping line because some are a sentence long.
+                                -->
+                                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                           Text="{Binding Reason}" Classes="faint wrap"
+                                           Margin="0,4,0,0" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Border Classes="card-flat" IsVisible="{Binding NothingHoldingAwake}">
+                <TextBlock Text="{s:Loc power.sleepNone}" Classes="caption wrap" />
+            </Border>
+
+            <!-- The ones macOS holds itself, kept separate and collapsed by default. -->
+            <Expander Header="{s:Loc power.systemHeading}" IsVisible="{Binding HasSystem}">
+                <ItemsControl ItemsSource="{Binding System}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:AssertionRow">
+                            <Border Classes="row-alt">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{Binding Process}" Classes="body" />
+                                        <TextBlock Text="{Binding Reason}" Classes="faint wrap"
+                                                   Margin="0,3,0,0" />
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1" Text="{Binding Held}" Classes="caption"
+                                               VerticalAlignment="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Expander>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

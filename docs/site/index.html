@@ -66,7 +66,7 @@
   "applicationCategory": "UtilitiesApplication",
   "applicationSubCategory": "System monitor, disk cleaner and driver updater",
   "operatingSystem": "Windows 10, Windows 11, macOS 12, macOS 13, macOS 14, macOS 15",
-  "softwareVersion": "1.4.0",
+  "softwareVersion": "1.5.0",
   "downloadUrl": "https://github.com/ahmetcaglayan/Hexnest/releases/latest",
   "installUrl": "https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest.exe",
   "url": "https://ahmetcaglayan.github.io/Hexnest/",
@@ -104,7 +104,8 @@
     "macOS start-up manager for launchd login agents, using launchctl overrides so nothing is deleted",
     "macOS cleaner for application caches, developer caches, Xcode derived data, logs, the Trash, old downloads and iPhone backups",
     "macOS per-application network usage from the same statistics Activity Monitor reads",
-    "Per-core processor load including the performance and efficiency clusters on Apple silicon"
+    "Per-core processor load including the performance and efficiency clusters on Apple silicon",
+    "macOS battery health - charge cycles, maximum capacity, condition and battery temperature - and the list of processes holding the Mac awake"
   ],
   "screenshot": [
     "https://ahmetcaglayan.github.io/Hexnest/screenshots/dashboard.png",
@@ -311,7 +312,7 @@
 
   <section id="whats-new">
     <div class="wrap">
-      <h2>Recently added <span class="badge-new">1.4.0</span></h2>
+      <h2>Recently added <span class="badge-new">1.5.0</span></h2>
       <p class="section-intro">
         Everything below is in the shipping application. There is no roadmap section here
         pretending to be a feature list.
@@ -383,6 +384,12 @@
             rebuild.
           </p>
         </li>
+        <li>
+          <h3>Battery &amp; Power</h3>
+          <p>
+            A macOS page with no Windows counterpart, because the questions are a laptop's. Charge cycles, the maximum capacity macOS itself reports, condition and the battery pack's own temperature — and underneath, every process holding the Mac awake, with the assertion it took and how long it has held it. Read when the page opens rather than on a timer: a page that sampled once a second would spend battery to report on the battery.
+          </p>
+
       </ul>
     </div>
   </section>

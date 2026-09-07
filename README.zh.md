@@ -66,6 +66,7 @@ Hexnest 是一个产品、两个窗口。共用的引擎——监视器、清理
 | **启动项管理** | ✅ Run 键 + 启动文件夹 | ✅ launchd 代理 |
 | **清理**，实测而非估算 | ✅ | ✅ |
 | **日志、设置、十种语言、深浅色主题** | ✅ | ✅ |
+| **电池健康与阻止睡眠的程序** | ❌ | ✅ |
 | **处理器温度** | ✅ ACPI 热区 | ❌ 非 root 无法读取 |
 | **按卷的磁盘吞吐** | ✅ | ❌ 没有按卷的计数器 |
 | **释放内存** | ✅ | ❌ macOS 改用内存压缩 |
@@ -79,6 +80,10 @@ Hexnest 是一个产品、两个窗口。共用的引擎——监视器、清理
 
 上面的 ❌ 是平台没有的东西，不是 Hexnest 略过的东西。每一条都在应用里出现的地方
 本身作了说明。
+
+有一行方向相反。电池损耗和让机器保持唤醒的进程列表在 Mac 上有、在 Windows 上没有，
+而这是表中唯一一个意思是「还没做」而不是「做不到」的 ❌：Windows 通过 `powercfg`
+同样能给出这两样。
 
 ---
 
@@ -130,6 +135,7 @@ Hexnest 在一个窗口里解决这些问题：
 | 📄 **硬件报告** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | 把所有设备和硬件 ID 写进一个纯文本文件——用 U 盘把它带到一台能上网的电脑上，手动查找驱动程序。 |
 | 🆙 **内置更新程序** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | 从 GitHub 下载新版本，**校验它的 SHA-256**（发行版没有发布 `checksums.txt` 时拒绝安装），然后就地替换可执行文件。 |
 | 📈 **系统监视器** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 处理器的总体负载和每个逻辑处理器的负载（`NtQuerySystemInformation`）、细到已缓存和已提交字节的内存（`GlobalMemoryStatusEx` + `GetPerformanceInfo`）、ACPI 热区、按卷统计的读写吞吐量（`IOCTL_DISK_PERFORMANCE`）和电池状态。页面打开之前不采集任何数据，你一离开就停止。 |
+| 🔋 **电池健康与阻止睡眠的程序** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 从 `ioreg` 读取充电循环次数、macOS 自己报告的最大容量、状况和电池自身温度；再从 `pmset` 读取每一条电源断言：哪个进程在阻止 Mac 睡眠、请求了什么、请求了多久。打开页面时读取而不是定时轮询，因为每秒采样的页面会为了报告电量而消耗电量。 |
 | 🧮 **按程序统计的资源占用** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 每个进程的处理器份额、工作集、专用字节、磁盘吞吐量和线程数，测量方式与任务管理器完全一致：取两次采样之间进程自身内核时间加用户时间的增量，再除以实际经过的时间和逻辑处理器数。 |
 | 🌐 **网络监视器** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 来自网络适配器自身计数器的整机下载和上传、本次会话以及开机以来的合计、打开的连接数，以及每个网络适配器的地址和协商出的链接速度。 |
 | 🔎 **按程序统计的网络占用** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 哪个程序在传输什么，数据来自 `GetExtendedTcpTable` 加上 TCP ESTATS（`GetPerTcpConnectionEStats`）。只涵盖 TCP——不安装内核驱动程序，Windows 就没有按进程统计的 UDP 计数器，页面会直接说明这一点，而不是悄悄少报。 |
@@ -232,16 +238,20 @@ Hexnest.exe --resume        # continue an interrupted queue straight away
 <td width="50%"><img src="assets/screenshots/mac-system.png" alt="macOS 上的系统监视：处理器与内存图表、每个逻辑核心一根柱、存储、电池和进程表"><br><sub><b>系统监视</b>——每核一根柱，Apple 芯片上包括性能核与能效核。</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-power.png" alt="macOS 上的电池与电源：最大容量、充电循环、状况和电池温度，下面是让 Mac 保持唤醒的进程列表"><br><sub><b>电池与电源</b> — 循环次数与损耗，以及是哪个应用程序在阻止 Mac 睡眠。</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-network.png" alt="macOS 上的网络监视：实时上下行图表、本次会话与开机以来的总量、网卡和按程序的流量"><br><sub><b>网络监视</b>——按程序的流量，数据来源与「活动监视器」相同。</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-startup.png" alt="macOS 上的启动项：每个 launchd 代理和守护进程，带开关、标签、命令和启动位置"><br><sub><b>启动项</b>——launchd 代理各有一个开关；系统任务只展示，不改动。</sub></td>
-</tr>
-<tr>
 <td width="50%"><img src="assets/screenshots/mac-clean.png" alt="macOS 上的清理：应用缓存、开发者缓存、日志、废纸篓、旧下载和残留的实测大小"><br><sub><b>清理</b>——缓存、Xcode derived data、iPhone 备份。实测，且默认一项都不勾。</sub></td>
-<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="macOS 上的设置：语言、含「跟随系统」的主题、更新选项和数据文件夹"><br><sub><b>设置</b>——同样的选项，外加一个日出日落跟随 macOS 的主题。</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="macOS 上的设置：语言、含「跟随系统」的主题、更新选项和数据文件夹"><br><sub><b>设置</b>——同样的选项，外加一个日出日落跟随 macOS 的主题。</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-logs.png" alt="macOS 上的日志：带日志文件路径的实时诊断，以及复制、显示和清除操作"><br><sub><b>日志</b>——实时诊断，一键复制到剪贴板用于问题反馈。</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-about.png" alt="macOS 上的关于：版本、机器与处理器信息、更新检查和项目链接"><br><sub><b>关于</b>——版本、机器，以及一个会打开下载页的更新检查。</sub></td>
+<td width="50%"></td>
 </tr>
 </table>
 
@@ -280,6 +290,7 @@ Hexnest.exe --resume        # continue an interrupted queue straight away
 | **备份和还原** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | *创建备份*（可选压缩）、现有备份的列表（包数量、大小、日期）、*还原*、*从文件夹还原*、*打开*、*删除*。 |
 | **历史记录** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | 每一次驱动程序操作的长期记录。可按结果筛选、可搜索，*导出为 CSV*、*清除历史记录*。如果某条记录的更新前备份还在，可以打开它所在的文件夹。 |
 | **系统监视器** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 处理器的总体负载和每个逻辑处理器的负载，内存细分为使用中 / 可用 / 已缓存 / 已提交，机器公开温度传感器时显示传感器，存储容量以及实时的读写吞吐量，还有电池。下方是每个正在运行的进程及其处理器份额、工作集、专用字节、磁盘吞吐量和线程数——可按处理器、内存、磁盘或名称排序，可搜索，也可以暂停，好让某一行真的能被看清。 |
+| **电池与电源** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 最大容量、充电循环、状况和电池自身温度，每一项都注明来源：Apple 的百分比并不是容量的简单比值，所以推算出来的会标为推算；温度是电池的，不是处理器的。下面列出每个让 Mac 保持唤醒的进程、它取得的断言以及持有了多久，macOS 自己持有的单独分开。 |
 | **网络监视器** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 整机的实时下载和上传图表、本次会话以及自 Windows 启动以来的合计、打开的连接数，以及每个网络适配器的类型、地址和链接速度。下方是一张按程序分列的表格：下载和上传速率、本次会话合计、打开的连接数和远程端点。 |
 | **启动项** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Hexnest 能安全开关的每一个自启动项，显示取自可执行文件版本资源的程序名、它的发布者、命令行、大小和启动来源。每行一个开关；禁用时写入的是任务管理器同样会写的设置，什么都不删除。指向已不存在的文件的项会被标出来，安全软件会被标记，关掉之前会先询问；另有已开启、已关闭和已失效的筛选器以及搜索。 |
 | **清理** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 临时文件、缩略图和图标缓存、七种浏览器、Windows Update 下载缓存、传递优化、崩溃转储、错误报告、着色器缓存、Windows 日志、Hexnest 自己的缓存和回收站，全都给出实测的大小。默认一项都不勾选。旧下载和残留的 AppData 文件夹逐项列出，并送进回收站。此外还有一个内存收缩功能，它对自己做的事直言不讳。 |
@@ -287,7 +298,7 @@ Hexnest.exe --resume        # continue an interrupted queue straight away
 | **设置** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 并行下载数、重试次数、启动时扫描、还原点、更新前备份、重启后继续、自动重启及其延迟、离线模式、可选的驱动程序、本地驱动程序文件夹、历史记录保留时间，**自动检查更新、自动安装和预发布版本**，主题，语言。 |
 | **关于** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 版本信息、*检查更新*、*下载并安装*、版本说明、项目页面和问题反馈链接。 |
 
-Mac 版的侧边栏就是上面标了 macOS 的那八行，顺序相同。*设备*、*更新*、*活动*、*备份与还原*
+Mac 版的侧边栏就是上面标了 macOS 的那九行，顺序相同。*设备*、*更新*、*活动*、*备份与还原*
 和*历史*在那里不是空的，而是根本没有。
 
 ---

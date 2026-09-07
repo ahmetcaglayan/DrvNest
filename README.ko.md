@@ -69,6 +69,7 @@ Mac 빌드에서 빠져 있습니다.
 | **시작프로그램 관리자** | ✅ Run 키 + 시작프로그램 폴더 | ✅ launchd 에이전트 |
 | **정리**, 추정이 아니라 실측 | ✅ | ✅ |
 | **로그, 설정, 열 개 언어, 어두운/밝은 테마** | ✅ | ✅ |
+| **배터리 상태와 잠자기를 막는 것** | ❌ | ✅ |
 | **프로세서 온도** | ✅ ACPI 열 영역 | ❌ root 없이는 불가 |
 | **볼륨별 디스크 처리량** | ✅ | ❌ 볼륨별 카운터 없음 |
 | **메모리 확보** | ✅ | ❌ macOS는 대신 압축함 |
@@ -82,6 +83,10 @@ Mac 빌드에서 빠져 있습니다.
 
 위의 ❌ 는 플랫폼에 없는 것이지, Hexnest가 건너뛴 것이 아닙니다. 하나하나 모두
 애플리케이션 안에서 그것이 나오는 자리에 설명되어 있습니다.
+
+한 줄만 방향이 반대입니다. 배터리 소모도와 컴퓨터를 깨어 있게 하는 프로세스 목록은 Mac에
+있고 Windows에는 없습니다. 표에서 "사용할 수 없음"이 아니라 "아직 만들지 않음"을 뜻하는
+유일한 ❌ 이며, Windows도 `powercfg`로 둘 다 제공합니다.
 
 ---
 
@@ -139,6 +144,7 @@ Hexnest는 그것을 창 하나에서 해결합니다:
 | 📄 **하드웨어 보고서** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | 모든 장치와 하드웨어 ID를 일반 텍스트 파일로 기록합니다 — USB 메모리에 담아 동작하는 컴퓨터로 가져가 손으로 드라이버를 찾아볼 수 있습니다. |
 | 🆙 **내장 업데이트 기능** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | GitHub에서 새 릴리스를 내려받아 **SHA-256을 검증**하고(릴리스에 `checksums.txt`가 없으면 설치를 거부합니다), 실행 파일을 제자리에서 교체합니다. |
 | 📈 **시스템 모니터** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 프로세서 부하를 전체와 논리 코어별로(`NtQuerySystemInformation`), 메모리를 캐시된 바이트와 커밋된 바이트까지(`GlobalMemoryStatusEx` + `GetPerformanceInfo`), ACPI 열 영역, 볼륨별 읽기·쓰기 처리량(`IOCTL_DISK_PERFORMANCE`), 배터리 상태. 페이지를 열기 전에는 아무것도 측정하지 않고, 페이지를 떠나는 순간 멈춥니다. |
+| 🔋 **배터리 상태와 잠자기를 막는 것** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | `ioreg`에서 충전 주기, macOS가 직접 알려 주는 최대 용량, 상태, 배터리 자체 온도를 읽고, `pmset`에서 모든 전원 어서션을 읽습니다. 어떤 프로세스가 Mac을 잠들지 못하게 하는지, 무엇을 요청했는지, 얼마나 오래 요청했는지. 타이머가 아니라 페이지를 열 때 읽습니다. 매초 측정하는 페이지는 배터리 이야기를 하려고 배터리를 쓰게 되기 때문입니다. |
 | 🧮 **앱별 리소스 사용량** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 모든 프로세스의 프로세서 점유율, 작업 집합, 개인 바이트, 디스크 처리량, 스레드 수를 작업 관리자와 똑같은 방식으로 잽니다. 두 표본 사이의 커널 + 사용자 시간 차이를 경과 시간과 논리 프로세서 수로 나눈 값입니다. |
 | 🌐 **네트워크 모니터** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 컴퓨터 전체의 다운로드와 업로드를 어댑터 자체 카운터에서, 세션과 부팅 이후 합계, 열려 있는 연결 수, 그리고 주소와 협상된 링크 속도가 함께 나오는 모든 어댑터. |
 | 🔎 **앱별 네트워크 사용량** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 어느 프로그램이 무엇을 주고받는지 `GetExtendedTcpTable`과 TCP ESTATS(`GetPerTcpConnectionEStats`)에서 가져옵니다. TCP만 — Windows에는 커널 드라이버 없이 쓸 수 있는 프로세스별 UDP 카운터가 없고, 페이지는 조용히 적게 보고하는 대신 그 사실을 밝힙니다. |
@@ -248,16 +254,20 @@ Hexnest.exe --resume        # continue an interrupted queue straight away
 <td width="50%"><img src="assets/screenshots/mac-system.png" alt="macOS의 시스템 모니터: 프로세서와 메모리 그래프, 논리 코어마다 막대, 저장 장치, 배터리, 프로세스 표"><br><sub><b>시스템 모니터</b> — 코어마다 막대 하나. 애플 실리콘의 P·E 클러스터까지 포함.</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-power.png" alt="macOS의 배터리 및 전원: 최대 용량, 충전 주기, 상태, 배터리 온도와 그 아래 Mac을 깨어 있게 하는 프로세스 목록"><br><sub><b>배터리 및 전원</b> — 충전 주기와 소모도, 그리고 어떤 응용 프로그램이 Mac을 잠들지 못하게 하는지.</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-network.png" alt="macOS의 네트워크 모니터: 실시간 다운로드·업로드 그래프, 세션과 부팅 이후 합계, 어댑터, 앱별 트래픽"><br><sub><b>네트워크 모니터</b> — 활성 상태 보기와 같은 출처에서 가져온 앱별 트래픽.</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-startup.png" alt="macOS의 시작프로그램: 모든 launchd 에이전트와 데몬에 스위치, 레이블, 명령, 시작 위치 표시"><br><sub><b>시작프로그램</b> — launchd 에이전트마다 스위치 하나. 시스템 작업은 보여 주기만 하고 건드리지 않습니다.</sub></td>
-</tr>
-<tr>
 <td width="50%"><img src="assets/screenshots/mac-clean.png" alt="macOS의 정리: 앱 캐시, 개발자 캐시, 로그, 휴지통, 오래된 다운로드, 남은 파일의 실측 크기"><br><sub><b>정리</b> — 캐시, Xcode derived data, iPhone 백업. 실측이며 체크된 것은 없습니다.</sub></td>
-<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="macOS의 설정: 언어, 시스템 따르기를 포함한 테마, 업데이트 옵션, 데이터 폴더"><br><sub><b>설정</b> — 같은 선택지에 더해, 해 뜨고 질 때 macOS를 따라가는 테마.</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="macOS의 설정: 언어, 시스템 따르기를 포함한 테마, 업데이트 옵션, 데이터 폴더"><br><sub><b>설정</b> — 같은 선택지에 더해, 해 뜨고 질 때 macOS를 따라가는 테마.</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-logs.png" alt="macOS의 로그: 로그 파일 경로와 복사·표시·지우기 작업이 있는 실시간 진단"><br><sub><b>로그</b> — 실시간 진단. 한 번의 클릭으로 문제 보고용 클립보드 복사.</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-about.png" alt="macOS의 정보: 버전, 컴퓨터와 프로세서 정보, 업데이트 확인, 프로젝트 링크"><br><sub><b>정보</b> — 버전, 컴퓨터, 그리고 다운로드를 여는 업데이트 확인.</sub></td>
+<td width="50%"></td>
 </tr>
 </table>
 
@@ -300,6 +310,7 @@ Hexnest.exe --resume        # continue an interrupted queue straight away
 | **백업 및 복원** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | *백업 만들기*(선택적으로 압축), 기존 백업 목록(패키지 수, 크기, 날짜), *복원*, *폴더에서 복원*, *열기*, *삭제*. |
 | **기록** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | 모든 드라이버 작업의 영구 기록. 결과로 거르기, 검색, *CSV로 내보내기*, *기록 지우기*. 업데이트 전 백업이 아직 남아 있으면 그 폴더를 열 수 있습니다. |
 | **시스템 모니터** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 프로세서 부하를 전체와 논리 코어별로, 메모리를 사용 중 / 사용 가능 / 캐시됨 / 커밋됨으로 나누어, 컴퓨터가 온도 센서를 공개하면 그 값을, 실시간 읽기·쓰기 처리량이 함께 나오는 저장 장치 용량과 배터리를 보여 줍니다. 그 아래에는 실행 중인 모든 프로세스를 프로세서 점유율, 작업 집합, 개인 바이트, 디스크 처리량, 스레드 수와 함께 — 프로세서·메모리·디스크·이름으로 정렬하고, 검색하고, 한 줄을 제대로 읽도록 잠시 멈출 수도 있습니다. |
+| **배터리 및 전원** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 최대 용량, 충전 주기, 상태, 배터리 자체 온도를 각각 출처와 함께 보여 줍니다. Apple의 백분율은 용량의 단순 비율이 아니므로 계산한 값은 계산했다고 표시하며, 온도는 프로세서가 아니라 배터리의 것입니다. 그 아래에는 Mac을 깨어 있게 하는 각 프로세스와 그 어서션, 유지 시간이 나오고, macOS가 직접 잡고 있는 것은 따로 둡니다. |
 | **네트워크 모니터** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 컴퓨터 전체의 실시간 다운로드와 업로드를 그래프로, 이번 세션과 Windows 시작 이후의 합계, 열려 있는 연결 수, 종류·주소·링크 속도가 함께 나오는 모든 어댑터. 그 아래에 앱별 표: 다운로드와 업로드 속도, 세션 합계, 열린 연결, 원격 주소. |
 | **시작프로그램** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Hexnest가 안전하게 바꿀 수 있는 모든 자동 시작 항목을, 실행 파일의 버전 리소스에서 읽은 프로그램 이름, 게시자, 명령줄, 크기, 시작 위치와 함께 보여 줍니다. 줄마다 스위치가 있고, 사용 안 함으로 바꾸면 작업 관리자가 쓰는 것과 같은 설정을 쓸 뿐 아무것도 지우지 않습니다. 더 이상 없는 파일을 가리키는 항목에는 표시가 붙고, 보안 소프트웨어는 표시되며 끄기 전에 확인하고, 켜짐·꺼짐·손상 필터와 검색이 있습니다. |
 | **정리** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 임시 파일, 축소판과 아이콘 캐시, 브라우저 일곱 종, Windows Update 다운로드 캐시, 배달 최적화, 크래시 덤프, 오류 보고서, 셰이더 캐시, Windows 로그, Hexnest 자체 캐시, 휴지통의 실측 크기. 기본으로 체크된 것은 없습니다. 오래된 다운로드와 AppData에 남은 폴더는 하나씩 나열되어 휴지통으로 갑니다. 여기에 무엇을 하는지 정직하게 밝히는 메모리 확보까지. |
@@ -307,7 +318,7 @@ Hexnest.exe --resume        # continue an interrupted queue straight away
 | **설정** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 동시 다운로드 수, 재시도 횟수, 시작할 때 검사, 복원 지점, 업데이트 전 백업, 재시작 후 이어하기, 자동 재시작과 그 지연 시간, 오프라인 모드, 선택적 드라이버, 로컬 드라이버 폴더, 기록 보관 기간, **자동 업데이트 확인, 자동 설치, 시험판**, 테마, 언어. |
 | **정보** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 버전 정보, *업데이트 확인*, 릴리스 노트, 프로젝트 페이지와 이슈 링크. Windows 빌드는 업데이트를 내려받아 설치까지 합니다. Mac 빌드는 대신 다운로드를 여는데, 실행 중인 `.app`을 덮어쓰면 서명이 깨지기 때문입니다. |
 
-Mac 빌드의 사이드바는 위에서 macOS로 표시된 여덟 줄을 그 순서대로 담고 있습니다. *장치*,
+Mac 빌드의 사이드바는 위에서 macOS로 표시된 아홉 줄을 그 순서대로 담고 있습니다. *장치*,
 *업데이트*, *작업*, *백업 및 복원*, *기록* 은 비어 있는 것이 아니라 아예 없습니다.
 
 ---

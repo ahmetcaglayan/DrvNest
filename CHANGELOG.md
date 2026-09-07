@@ -5,6 +5,40 @@ All notable changes to Hexnest are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-09-07
+
+### Added
+
+- **Battery and Power, a macOS page with no Windows counterpart.** Charge cycles, the
+  maximum capacity macOS itself reports, condition and the battery pack's own
+  temperature, and underneath, every process holding the Mac awake with the assertion
+  it took and how long it has held it.
+
+  It answers two questions the application could not answer before: is this battery
+  wearing out, and why does this Mac keep waking up. Activity Monitor puts a tick in a
+  "Preventing Sleep" column; this names the process, what it asked for and how long it
+  has been asking.
+
+  Sources are `ioreg`, `system_profiler` and `pmset` - all first party, none needing
+  any privilege, in keeping with the rest of the Mac build. Read when the page opens
+  rather than on a timer: a page that sampled once a second would spend battery to
+  report on the battery.
+
+  Two details worth stating. The maximum-capacity percentage is the one macOS reports,
+  not one computed here - Apple's figure is not a plain ratio of the capacities, and a
+  second number disagreeing with System Settings would read as a bug - and when macOS
+  offers no figure the computed one is labelled as computed. The temperature is the
+  battery pack's, clearly labelled as such: macOS still exposes no processor
+  temperature without a kernel driver, and the System Monitor still says so rather
+  than showing this number in its place.
+
+### Fixed
+
+- Durations from `pmset` are not clamped to a day, and `TimeSpan.TryParseExact` with
+  the "c" format refuses anything past 23 hours. An assertion held since boot -
+  "162:52:08" is an ordinary reading - parsed as nothing, so the column would have
+  emptied on exactly the entries worth looking at.
+
 ## [1.4.0] - 2026-09-07
 
 ### Added
@@ -397,7 +431,8 @@ adapter may not have a driver either.
   runs as SYSTEM or as a different administrator account. Falls back to the user
   profile when ProgramData is not writable.
 
-[Unreleased]: https://github.com/ahmetcaglayan/Hexnest/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/ahmetcaglayan/Hexnest/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/ahmetcaglayan/Hexnest/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/ahmetcaglayan/Hexnest/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/ahmetcaglayan/Hexnest/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/ahmetcaglayan/Hexnest/releases/tag/v1.2.0

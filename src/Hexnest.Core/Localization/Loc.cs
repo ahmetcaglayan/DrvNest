@@ -26,7 +26,7 @@ public sealed record LanguageOption(string Code, string NativeName, string Engli
 /// showing a raw identifier. Turkish ships built in.
 ///
 /// Extra languages do not require a rebuild. Drop a JSON file next to the executable
-/// under <c>Languages\&lt;code&gt;.json</c> (or into %ProgramData%\Hexnest\Languages)
+/// under <c>Languages&lt;code&gt;.json</c> (or into %ProgramData%\Hexnest\Languages)
 /// shaped like:
 ///
 ///   {
@@ -905,6 +905,40 @@ public static class Loc
         ["clean.mac.leftoversDesc"] = "Folders under Application Support that match no installed or running application and have had nothing written to them for six months.",
         ["clean.mac.leftoversNote"] = "Your own files. Judged by the newest file inside the folder, not the folder's own date, and everything selected goes to the Trash.",
 
+        // Power (macOS only)
+        ["nav.power"] = "Battery & Power",
+        ["power.subtitle"] = "Battery wear, and what is keeping this Mac awake",
+        ["power.explain"] = "Read when this page opens, not on a timer: none of it changes minute to minute, and a page that sampled once a second would cost battery to tell you about your battery.",
+        ["power.batteryHeading"] = "Battery",
+        ["power.maximumCapacity"] = "Maximum capacity",
+        ["power.capacityFromMacOs"] = "The figure macOS reports.",
+        ["power.capacityDerived"] = "Worked out from the capacities, because macOS did not report one. It can differ by a point or two from System Settings.",
+        ["power.cycleCount"] = "Charge cycles",
+        ["power.capacities"] = "{0} of {1} mAh",
+        ["power.condition"] = "Condition",
+        ["power.conditionGood"] = "macOS considers this battery healthy.",
+        ["power.conditionCheck"] = "macOS is not reporting this battery as normal. Worth having it looked at.",
+        ["power.temperature"] = "Battery temperature",
+        ["power.temperatureNote"] = "The battery pack, not the processor. macOS exposes no processor temperature without a kernel driver.",
+        ["power.celsius"] = "{0} °C",
+        ["power.adapterWatts"] = "Power adapter attached: {0} W.",
+        ["power.adapterNone"] = "No power adapter attached.",
+        ["power.noBattery"] = "This Mac has no battery, so there is nothing to report here. The sleep list below still works.",
+        ["power.unknown"] = "Not reported",
+        ["power.sleepHeading"] = "Keeping this Mac awake",
+        ["power.sleepExplain"] = "A power assertion is a program telling macOS not to sleep. Activity Monitor shows a tick in a column; this shows which program, what it asked for, and how long it has been asking.",
+        ["power.sleepClear"] = "No application is holding this Mac awake.",
+        ["power.sleepOne"] = "{0} is holding this Mac awake.",
+        ["power.sleepMany"] = "{0} applications are holding this Mac awake.",
+        ["power.sleepNone"] = "Nothing here to act on. If the Mac still will not sleep, it is something below rather than an application.",
+        ["power.systemHeading"] = "Held by macOS itself",
+        ["power.blocksSystem"] = "blocks sleep",
+        ["power.blocksDisplay"] = "blocks display sleep",
+        ["power.heldDays"] = "{0}d {1}h {2}m",
+        ["power.heldHours"] = "{0}h {1}m",
+        ["power.heldMinutes"] = "{0}m",
+        ["power.heldMoments"] = "just now",
+
     };
 
     /// <summary>Turkish, shipped in the box.</summary>
@@ -1399,6 +1433,40 @@ public static class Loc
         ["mac.revealInFinder"] = "Finder'da göster",
         ["mac.trashNote"] = "Kendi dosyalarınız Çöp'e gider; siz boşaltana kadar geri alınabilir.",
         ["mac.noMemoryTrim"] = "macOS belleği sürekli sıkıştırır ve başka bir sürecin çalışma kümesini boşaltmak için bir yol sunmaz; burada basılacak bir şey yoktur.",
+
+        // Güç (yalnızca macOS)
+        ["nav.power"] = "Pil ve Güç",
+        ["power.subtitle"] = "Pil yıpranması ve bu Mac'i uyanık tutan şeyler",
+        ["power.explain"] = "Bu sayfa açıldığında okunur, zamanlayıcıyla değil: buradaki hiçbir şey dakikadan dakikaya değişmez ve saniyede bir örnekleyen bir sayfa, size pilinizi anlatmak için pil harcardı.",
+        ["power.batteryHeading"] = "Pil",
+        ["power.maximumCapacity"] = "Azami kapasite",
+        ["power.capacityFromMacOs"] = "macOS'un bildirdiği değer.",
+        ["power.capacityDerived"] = "macOS bir değer bildirmediği için kapasitelerden hesaplandı. Sistem Ayarları'ndakinden bir iki puan farklı olabilir.",
+        ["power.cycleCount"] = "Şarj döngüsü",
+        ["power.capacities"] = "{1} mAh'in {0} mAh'i",
+        ["power.condition"] = "Durum",
+        ["power.conditionGood"] = "macOS bu pili sağlıklı sayıyor.",
+        ["power.conditionCheck"] = "macOS bu pili normal olarak bildirmiyor. Baktırmakta fayda var.",
+        ["power.temperature"] = "Pil sıcaklığı",
+        ["power.temperatureNote"] = "Pilin kendisi, işlemci değil. macOS, çekirdek sürücüsü olmadan işlemci sıcaklığını vermez.",
+        ["power.celsius"] = "{0} °C",
+        ["power.adapterWatts"] = "Bağlı güç adaptörü: {0} W.",
+        ["power.adapterNone"] = "Bağlı güç adaptörü yok.",
+        ["power.noBattery"] = "Bu Mac'te pil yok, dolayısıyla burada bildirilecek bir şey de yok. Aşağıdaki uyku listesi yine de çalışır.",
+        ["power.unknown"] = "Bildirilmedi",
+        ["power.sleepHeading"] = "Bu Mac'i uyanık tutanlar",
+        ["power.sleepExplain"] = "Güç beyanı (assertion), bir programın macOS'a uyuma demesidir. Etkinlik Monitörü bir sütunda tik gösterir; burada hangi program, ne istediği ve ne zamandır istediği yazar.",
+        ["power.sleepClear"] = "Hiçbir uygulama bu Mac'i uyanık tutmuyor.",
+        ["power.sleepOne"] = "{0} bu Mac'i uyanık tutuyor.",
+        ["power.sleepMany"] = "{0} uygulama bu Mac'i uyanık tutuyor.",
+        ["power.sleepNone"] = "Burada müdahale edilecek bir şey yok. Mac hâlâ uyumuyorsa sebep bir uygulama değil, aşağıdakilerden biridir.",
+        ["power.systemHeading"] = "macOS'un kendi tuttukları",
+        ["power.blocksSystem"] = "uykuyu engelliyor",
+        ["power.blocksDisplay"] = "ekran uykusunu engelliyor",
+        ["power.heldDays"] = "{0}g {1}sa {2}dk",
+        ["power.heldHours"] = "{0}sa {1}dk",
+        ["power.heldMinutes"] = "{0}dk",
+        ["power.heldMoments"] = "az önce",
         ["set.themeSystem"] = "Sistemi izle",
         ["set.themeSystemHint"] = "Gün doğumu ve gün batımında macOS ile birlikte değişir.",
 

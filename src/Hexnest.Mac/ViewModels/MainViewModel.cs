@@ -98,12 +98,16 @@ public sealed class MainViewModel : ViewModelBase
     /// shown as empty pages that never fill in.
     ///
     /// What remains is everything Hexnest does that is not about drivers, and all of it
-    /// works here properly rather than approximately.
+    /// works here properly rather than approximately - plus one page that exists only
+    /// here. Battery wear and the list of processes holding the machine awake are
+    /// questions a laptop raises and a desktop does not, and macOS answers both without
+    /// asking for a single privilege.
     /// </summary>
     private void BuildNavigation()
     {
         NavItems.Add(new NavItem("dashboard", "nav.dashboard", "Icon.Dashboard", () => new DashboardView()));
         NavItems.Add(new NavItem("system",    "nav.system",    "Icon.System",    () => new SystemMonitorView()));
+        NavItems.Add(new NavItem("power",     "nav.power",     "Icon.Battery",   () => new PowerView()));
         NavItems.Add(new NavItem("network",   "nav.network",   "Icon.Network",   () => new NetworkMonitorView()));
         NavItems.Add(new NavItem("startup",   "nav.startup",   "Icon.Startup",   () => new StartupView()));
         NavItems.Add(new NavItem("clean",     "nav.clean",     "Icon.Clean",     () => new CleanupView()));

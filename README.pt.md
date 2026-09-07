@@ -69,6 +69,7 @@ Mac em vez de presentes e permanentemente vazias.
 | **Gestor de arranque** | ✅ chaves Run + pastas Arranque | ✅ agentes launchd |
 | **Limpeza**, medida e não estimada | ✅ | ✅ |
 | **Registos, definições, dez idiomas, escuro/claro** | ✅ | ✅ |
+| **Saúde da bateria e o que impede a suspensão** | ❌ | ✅ |
 | **Temperatura do processador** | ✅ zonas térmicas ACPI | ❌ inacessível sem root |
 | **Débito de disco por volume** | ✅ | ❌ sem contador por volume |
 | **Libertar memória** | ✅ | ❌ o macOS comprime em vez disso |
@@ -82,6 +83,10 @@ Mac em vez de presentes e permanentemente vazias.
 
 Um ❌ acima é algo que a plataforma não tem, não algo que o Hexnest tenha deixado de fazer. Cada um
 deles é explicado no ponto em que aparece dentro da própria aplicação.
+
+Uma linha corre ao contrário. O desgaste da bateria e a lista de processos que mantêm a
+máquina acordada existem no Mac e não no Windows, e é o único ❌ da tabela que significa
+"ainda por fazer" e não "não disponível": o Windows dá ambos através do `powercfg`.
 
 ---
 
@@ -139,6 +144,7 @@ Um ficheiro, sem instalador, sem serviço em segundo plano, sem telemetria.
 | 📄 **Relatório de hardware** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | Escreve todos os dispositivos e IDs de hardware num ficheiro de texto simples — leve-o numa pen USB até um computador que funcione e procure os controladores à mão. |
 | 🆙 **Atualizador incorporado** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | Transfere a nova versão do GitHub, **verifica o seu SHA-256** (e recusa instalar quando a versão não publica um `checksums.txt`), e depois substitui o executável no lugar. |
 | 📈 **Monitor de sistema** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Carga do processador no total e por núcleo lógico (`NtQuerySystemInformation`), memória até aos bytes em cache e consolidados (`GlobalMemoryStatusEx` + `GetPerformanceInfo`), zonas térmicas ACPI, débito de leitura/escrita por volume (`IOCTL_DISK_PERFORMANCE`) e estado da bateria. Nada é amostrado até a página ser aberta, e para no momento em que a deixa. |
+| 🔋 **Saúde da bateria e o que impede a suspensão** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Do `ioreg`, os ciclos de carga, a capacidade máxima que o próprio macOS indica, o estado e a temperatura da própria bateria; do `pmset`, cada power assertion: que processo está a impedir o Mac de suspender, o que pediu e há quanto tempo pede. Lido quando a página abre e não por temporizador, porque uma página que medisse a cada segundo gastaria bateria para falar da bateria. |
 | 🧮 **Utilização de recursos por aplicação** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Fatia de processador, conjunto de trabalho, bytes privados, débito de disco e número de threads para cada processo, medidos exatamente como o Gestor de Tarefas os mede: a diferença do tempo de kernel + utilizador do próprio processo entre duas amostras, dividida pelo tempo decorrido e pelo número de processadores lógicos. |
 | 🌐 **Monitor de rede** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Transferência e envio de toda a máquina a partir dos contadores das próprias placas, totais da sessão e desde o arranque, número de ligações abertas, e todas as placas com o seu endereço e velocidade negociada. |
 | 🔎 **Utilização de rede por aplicação** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Que programa está a transferir o quê, a partir de `GetExtendedTcpTable` mais as ESTATS de TCP (`GetPerTcpConnectionEStats`). Apenas TCP — o Windows não tem contador de UDP por processo sem um controlador de kernel, e a página di-lo em vez de reportar a menos em silêncio. |
@@ -248,16 +254,20 @@ desatualizadas.
 <td width="50%"><img src="assets/screenshots/mac-system.png" alt="Monitor de sistema no macOS: gráficos de processador e memória, uma barra por núcleo lógico, armazenamento, bateria e a tabela de processos"><br><sub><b>Monitor de sistema</b> — uma barra por núcleo, incluindo os grupos P e E no Apple Silicon.</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-power.png" alt="Bateria e energia no macOS: capacidade máxima, ciclos de carga, estado e temperatura da bateria, por cima da lista de processos que mantêm o Mac acordado"><br><sub><b>Bateria e energia</b> — ciclos e desgaste, e que aplicação está a impedir o Mac de suspender.</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-network.png" alt="Monitor de rede no macOS: gráficos ao vivo de transferência e envio, totais da sessão e desde o arranque, placas e tráfego por aplicação"><br><sub><b>Monitor de rede</b> — tráfego por aplicação a partir da mesma fonte que o Monitor de Atividade usa.</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-startup.png" alt="Programas de arranque no macOS: todos os agentes e daemons launchd com um interruptor, a etiqueta, o comando e a origem"><br><sub><b>Programas de arranque</b> — agentes launchd com um interruptor cada; as tarefas do sistema são mostradas, não tocadas.</sub></td>
-</tr>
-<tr>
 <td width="50%"><img src="assets/screenshots/mac-clean.png" alt="Limpeza no macOS: tamanhos medidos para caches de aplicações, caches de programação, registos, o Lixo, transferências antigas e resíduos"><br><sub><b>Limpeza</b> — caches, dados derivados do Xcode, cópias do iPhone. Medido, e nada assinalado.</sub></td>
-<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="Definições no macOS: idioma, tema incluindo seguir o sistema, opções de atualização e as pastas de dados"><br><sub><b>Definições</b> — as mesmas opções, mais um tema que segue o macOS ao nascer e ao pôr do sol.</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="Definições no macOS: idioma, tema incluindo seguir o sistema, opções de atualização e as pastas de dados"><br><sub><b>Definições</b> — as mesmas opções, mais um tema que segue o macOS ao nascer e ao pôr do sol.</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-logs.png" alt="Registos no macOS: diagnóstico em direto com o caminho do ficheiro de registo e as ações copiar, mostrar e limpar"><br><sub><b>Registos</b> — diagnóstico em direto, um clique para a área de transferência para um relatório de erro.</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-about.png" alt="Acerca no macOS: versão, informação da máquina e do processador, a verificação de atualizações e as ligações do projeto"><br><sub><b>Acerca</b> — versão, máquina, e uma verificação de atualizações que abre a transferência.</sub></td>
+<td width="50%"></td>
 </tr>
 </table>
 
@@ -300,6 +310,7 @@ idioma de quem as gerou de novo.
 | **Cópias & restauro** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | *Criar cópia* (opcionalmente comprimida), a lista de cópias existentes (número de pacotes, tamanho, data), *Restaurar*, *Restaurar de uma pasta*, *Abrir*, *Eliminar*. |
 | **Histórico** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | Um registo permanente de todas as operações sobre controladores. Filtrar por resultado, procurar, *Exportar para CSV*, *Limpar histórico*. Se a cópia anterior à atualização ainda existir, pode abrir a respetiva pasta. |
 | **Monitor de sistema** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Carga do processador no total e por núcleo lógico, memória dividida em em uso / disponível / em cache / consolidada, sensores de temperatura quando a máquina expõe algum, capacidade de armazenamento com débito de leitura e escrita em direto, e bateria. Por baixo, todos os processos em execução com a sua fatia de processador, conjunto de trabalho, bytes privados, débito de disco e número de threads — ordenáveis por processador, memória, disco ou nome, pesquisáveis, e com pausa para que uma linha possa mesmo ser lida. |
+| **Bateria e energia** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Capacidade máxima, ciclos de carga, estado e temperatura da própria bateria, cada um com a sua origem indicada: a percentagem da Apple não é uma razão simples entre as capacidades, por isso uma calculada é assinalada como calculada, e a temperatura é a da bateria e não a do processador. Abaixo, todos os processos que mantêm o Mac acordado, com a assertion que tomaram e há quanto tempo a mantêm; os do próprio macOS ficam à parte. |
 | **Monitor de rede** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Transferência e envio em direto para toda a máquina em gráficos, o total desta sessão e desde o arranque do Windows, o número de ligações abertas, e todas as placas com o tipo, endereço e velocidade de ligação. Por baixo, uma tabela por aplicação: taxa de transferência e envio, totais da sessão, ligações abertas e o ponto remoto. |
 | **Programas de arranque** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Todas as entradas de arranque que o Hexnest pode alternar em segurança, com o nome do programa lido do recurso de versão do executável, o editor, a linha de comandos, o tamanho e a origem. Um interruptor por linha; desativar escreve a mesma definição que o Gestor de Tarefas escreve e não apaga nada. As entradas que apontam para um ficheiro que já não existe são assinaladas, o software de segurança é marcado e pergunta antes de ser desligado, e há filtros para ligado, desligado e avariado além de uma procura. |
 | **Limpeza** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Tamanhos medidos para ficheiros temporários, caches de miniaturas e ícones, sete navegadores, a cache de transferências do Windows Update, a Otimização da Entrega, despejos de falhas, relatórios de erro, caches de shaders, registos do Windows, a cache do próprio Hexnest e a Reciclagem. Nada é assinalado por predefinição. As transferências antigas e as pastas residuais em AppData são listadas item a item e vão para a Reciclagem. Mais uma libertação de memória que é honesta sobre o que faz. |
@@ -307,7 +318,7 @@ idioma de quem as gerou de novo.
 | **Definições** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Número de transferências em paralelo, número de tentativas, analisar ao arrancar, ponto de restauro, cópia antes da atualização, retomar após reinício, reinício automático e o seu atraso, modo offline, controladores opcionais, pastas de controladores locais, retenção do histórico, **verificação automática de atualizações, instalação automática e pré-lançamentos**, tema, idioma. |
 | **Acerca** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Informação da versão, *Procurar atualizações*, notas de lançamento, página do projeto e ligações para os problemas. A versão para Windows também transfere e instala a atualização; a versão para Mac abre a transferência, porque reescrever uma `.app` em execução quebra a sua assinatura. |
 
-A barra lateral da versão para Mac são as oito linhas acima marcadas com macOS, por essa ordem. *Dispositivos*,
+A barra lateral da versão para Mac são as nove linhas acima marcadas com macOS, por essa ordem. *Dispositivos*,
 *Atualizações*, *Atividade*, *Cópias & restauro* e *Histórico* estão ali ausentes em vez de vazios.
 
 ---

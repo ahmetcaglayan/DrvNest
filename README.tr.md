@@ -69,6 +69,7 @@ sürekli boş durmak yerine hiç bulunmuyor.
 | **Başlangıç yöneticisi** | ✅ Run anahtarları + klasörler | ✅ launchd ajanları |
 | **Temizlik**, tahmin değil ölçüm | ✅ | ✅ |
 | **Günlük, ayarlar, on dil, koyu/açık tema** | ✅ | ✅ |
+| **Pil sağlığı ve uykuyu engelleyenler** | ❌ | ✅ |
 | **İşlemci sıcaklığı** | ✅ ACPI termal bölgeleri | ❌ root olmadan verilmiyor |
 | **Birim başına disk trafiği** | ✅ | ❌ birim sayacı yok |
 | **Bellek boşaltma** | ✅ | ❌ macOS bunun yerine sıkıştırır |
@@ -82,6 +83,10 @@ sürekli boş durmak yerine hiç bulunmuyor.
 
 Yukarıdaki bir ❌, Hexnest'in atladığı bir şey değil, platformun sahip olmadığı bir
 şeydir. Her biri uygulamanın kendi içinde, göründüğü yerde açıklanır.
+
+Bir satır ters yönde işliyor. Pil yıpranması ve makineyi uyanık tutan süreçlerin listesi Mac
+tarafında var, Windows tarafında yok; tablodaki ❌ işaretleri arasında "mevcut değil" değil de
+"henüz yapılmadı" anlamına gelen tek işaret bu: Windows ikisini de `powercfg` ile veriyor.
 
 ---
 
@@ -140,6 +145,7 @@ Tek dosya, kurulum yok, arka planda çalışan servis yok, telemetri yok.
 | 📄 **Donanım raporu** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | Tüm aygıtları ve donanım kimliklerini düz metin dosyasına yazar. USB bellekle çalışan bir bilgisayara taşıyıp sürücüleri elle arayabilirsiniz. |
 | 🆙 **Kendi kendini güncelleme** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | GitHub'dan yeni sürümü indirir, **SHA-256 doğrulaması** yapar (sürüm `checksums.txt` yayımlamamışsa kurulumu reddeder) ve exe'yi yerinde değiştirir. |
 | 📈 **Sistem izleme** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Genel ve mantıksal çekirdek başına işlemci yükü (`NtQuerySystemInformation`), önbellek ve ayrılmış bayta kadar inen bellek dağılımı (`GlobalMemoryStatusEx` + `GetPerformanceInfo`), ACPI termal bölgeleri, birim başına okuma/yazma hızı (`IOCTL_DISK_PERFORMANCE`) ve pil durumu. Sayfa açılana kadar hiçbir örnekleme yapılmaz; sayfadan çıktığınız anda da durur. |
+| 🔋 **Pil sağlığı ve uykuyu engelleyenler** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | `ioreg`'den şarj döngüsü, macOS'un kendi bildirdiği azami kapasite, durum ve pilin kendi sıcaklığı; ayrıca `pmset`'ten her güç beyanı: hangi süreç Mac'i uyutmuyor, ne istedi ve ne zamandır istiyor. Zamanlayıcıyla değil sayfa açıldığında okunur; çünkü saniyede bir örnekleyen bir sayfa, pili anlatmak için pil harcardı. |
 | 🧮 **Uygulama bazında kaynak kullanımı** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Her işlem için işlemci payı, bellek kullanımı, özel baytlar, disk hızı ve iş parçacığı sayısı; tam olarak Görev Yöneticisi'nin ölçtüğü yöntemle: işlemin iki örnekleme arasındaki kendi çekirdek + kullanıcı süresi farkı, geçen süreye ve mantıksal işlemci sayısına bölünür. |
 | 🌐 **Ağ izleme** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Bağdaştırıcıların kendi sayaçlarından tüm bilgisayarın indirme ve yüklemesi, oturum ve açılıştan beri toplamları, açık bağlantı sayısı ve adresiyle, anlaşılan bağlantı hızıyla birlikte tüm bağdaştırıcılar. |
 | 🔎 **Uygulama bazında ağ kullanımı** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Hangi programın ne aktardığı; `GetExtendedTcpTable` ve TCP ESTATS (`GetPerTcpConnectionEStats`) üzerinden. Yalnızca TCP — Windows, çekirdek sürücüsü olmadan işlem başına UDP sayacı sunmaz ve sayfa bunu sessizce eksik göstermek yerine açıkça yazar. |
@@ -248,16 +254,20 @@ Yayınlanan yapının gerçek ekran görüntüleri. Uygulamanın kendisinden yen
 <td width="50%"><img src="assets/screenshots/mac-system.png" alt="macOS'ta sistem izleme: işlemci ve bellek grafikleri, mantıksal çekirdek başına bir çubuk, depolama, pil ve süreç tablosu"><br><sub><b>Sistem İzleme</b> — çekirdek başına bir çubuk; Apple silicon'da P ve E kümeleri dahil.</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-power.png" alt="macOS'ta Pil ve Güç: azami kapasite, şarj döngüsü, durum ve pil sıcaklığı; altında Mac'i uyanık tutan süreçlerin listesi"><br><sub><b>Pil ve Güç</b> — şarj döngüsü ve yıpranma, ve Mac'i hangi uygulamanın uyutmadığı.</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-network.png" alt="macOS'ta ağ izleme: canlı indirme ve yükleme grafikleri, oturum ve açılıştan beri toplamlar, bağdaştırıcılar ve uygulama başına trafik"><br><sub><b>Ağ İzleme</b> — uygulama başına trafik, Etkinlik Monitörü ile aynı kaynaktan.</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-startup.png" alt="macOS'ta başlangıç programları: her launchd ajanı ve servisi bir anahtarla, etiketi, komutu ve nereden başladığı"><br><sub><b>Başlangıç Programları</b> — launchd ajanları için birer anahtar; sistem işleri gösterilir, dokunulmaz.</sub></td>
-</tr>
-<tr>
 <td width="50%"><img src="assets/screenshots/mac-clean.png" alt="macOS'ta temizlik: uygulama önbellekleri, geliştirici önbellekleri, günlükler, Çöp, eski indirmeler ve artıklar için ölçülmüş boyutlar"><br><sub><b>Temizlik</b> — önbellekler, Xcode derived data, iPhone yedekleri. Ölçülmüş ve hiçbiri işaretli değil.</sub></td>
-<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="macOS'ta ayarlar: dil, sistemi izleyen tema seçeneği dahil tema, güncelleme seçenekleri ve veri klasörleri"><br><sub><b>Ayarlar</b> — aynı seçenekler, artı gün doğumu ve batımında macOS'u izleyen bir tema.</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="macOS'ta ayarlar: dil, sistemi izleyen tema seçeneği dahil tema, güncelleme seçenekleri ve veri klasörleri"><br><sub><b>Ayarlar</b> — aynı seçenekler, artı gün doğumu ve batımında macOS'u izleyen bir tema.</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-logs.png" alt="macOS'ta günlük: günlük dosyası yolu ile canlı tanılama ve kopyala, göster, temizle eylemleri"><br><sub><b>Günlük</b> — canlı tanılama; hata bildirimi için tek tıkla panoya.</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-about.png" alt="macOS'ta hakkında: sürüm, bilgisayar ve işlemci bilgisi, güncelleme denetimi ve proje bağlantıları"><br><sub><b>Hakkında</b> — sürüm, bilgisayar ve indirmeyi açan bir güncelleme denetimi.</sub></td>
+<td width="50%"></td>
 </tr>
 </table>
 
@@ -299,6 +309,7 @@ görüntü diline bağlı kalmaz.
 | **Yedekle & Geri Yükle** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | *Yedek Oluştur* (isteğe bağlı ZIP), mevcut yedeklerin listesi (paket sayısı, boyut, tarih), *Geri Yükle*, *Klasörden Geri Yükle*, *Aç*, *Sil*. |
 | **Geçmiş** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | Yapılan tüm sürücü işlemlerinin kalıcı kaydı. Sonuca göre filtre, arama, *CSV Olarak Dışa Aktar*, *Geçmişi Temizle*. Bir kaydın güncelleme öncesi yedeği duruyorsa klasörü açabilirsiniz. |
 | **Sistem İzleme** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Genel ve mantıksal çekirdek başına işlemci yükü; kullanımda / kullanılabilir / önbellek / ayrılmış olarak ayrıştırılmış bellek; makine yayınlıyorsa sıcaklık sensörleri; canlı okuma ve yazma hızıyla depolama kapasitesi; pil. Altında çalışan her işlem, işlemci payı, bellek kullanımı, özel baytları, disk hızı ve iş parçacığı sayısıyla — işlemciye, belleğe, diske veya ada göre sıralanabilir, aranabilir ve bir satır gerçekten okunabilsin diye duraklatılabilir. |
+| **Pil ve Güç** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Azami kapasite, şarj döngüsü, durum ve pilin kendi sıcaklığı; her birinin kaynağı belirtilerek. Apple'ın yüzdesi kapasitelerin düz bir oranı değildir, bu yüzden hesaplanmış bir değer hesaplanmış olarak etiketlenir; sıcaklık da işlemcinin değil pilin sıcaklığıdır. Altında, Mac'i uyanık tutan her süreç, aldığı beyan ve ne zamandır tuttuğu; macOS'un kendi tuttukları ayrı tutularak. |
 | **Ağ İzleme** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Tüm bilgisayarın canlı indirme ve yüklemesi grafik olarak, bu oturumun ve Windows açıldığından beri olan toplamı, açık bağlantı sayısı ve türü, adresi ve bağlantı hızıyla birlikte tüm bağdaştırıcılar. Altında uygulama bazında bir tablo: indirme ve yükleme hızı, oturum toplamları, açık bağlantılar ve karşı uç adresi. |
 | **Başlangıç Programları** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Hexnest'in güvenle açıp kapatabildiği tüm otomatik başlangıç kayıtları; program adı exe'nin sürüm kaynağından, yayımcısı, komut satırı, boyutu ve nereden başladığı ile birlikte. Her satırda bir anahtar; kapatmak Görev Yöneticisi'nin yazdığı ayarın aynısını yazar ve hiçbir şey silmez. Artık var olmayan bir dosyayı gösteren kayıtlar işaretlenir, güvenlik yazılımları ayrıca belirtilir ve kapatılmadan önce sorulur; açık, kapalı ve bozuk için filtreler ile bir arama vardır. |
 | **Temizlik** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Geçici dosyalar, küçük resim ve simge önbellekleri, yedi tarayıcı, Windows Update indirme önbelleği, Teslim İyileştirme, çökme dökümleri, hata raporları, shader önbellekleri, Windows günlükleri, Hexnest'in kendi önbelleği ve Geri Dönüşüm Kutusu için ölçülmüş boyutlar. Sizin yerinize hiçbir şey işaretlenmez. Eski indirmeler ve artık AppData klasörleri tek tek listelenir ve Geri Dönüşüm Kutusu'na gider. Bir de ne yaptığı konusunda dürüst olan bir bellek boşaltma. |
@@ -306,7 +317,7 @@ görüntü diline bağlı kalmaz.
 | **Ayarlar** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Aynı anda indirme sayısı, tekrar deneme sayısı, açılışta tarama, geri yükleme noktası, güncelleme öncesi yedek, yeniden başlatma sonrası devam, otomatik yeniden başlatma ve gecikmesi, çevrimdışı mod, isteğe bağlı sürücüler, yerel sürücü klasörleri, geçmiş saklama süresi, **otomatik güncelleme denetimi, otomatik kurulum ve ön sürümler**, tema, dil. |
 | **Hakkında** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Sürüm bilgisi, *Güncellemeleri Kontrol Et*, *İndir ve Kur*, sürüm notları, proje sayfası ve hata bildirme bağlantıları. |
 
-Mac yapısının kenar çubuğu, yukarıdaki macOS işaretli sekiz satırdan bu sırayla oluşur.
+Mac yapısının kenar çubuğu, yukarıdaki macOS işaretli dokuz satırdan bu sırayla oluşur.
 *Aygıtlar*, *Güncellemeler*, *İşlemler*, *Yedekle & Geri Yükle* ve *Geçmiş* orada boş değil, hiç yoktur.
 
 ---

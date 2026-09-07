@@ -68,6 +68,7 @@ Hexnest एक ही उत्पाद है, दो विंडो के �
 | **स्टार्ट-अप प्रबंधक** | ✅ Run कुंजियाँ + फ़ोल्डर | ✅ launchd एजेंट |
 | **सफ़ाई**, अनुमान नहीं, मापी हुई | ✅ | ✅ |
 | **लॉग, सेटिंग्स, दस भाषाएँ, गहरा/हल्का** | ✅ | ✅ |
+| **बैटरी की सेहत और स्लीप रोकने वाले** | ❌ | ✅ |
 | **प्रोसेसर तापमान** | ✅ ACPI थर्मल ज़ोन | ❌ root के बिना उपलब्ध नहीं |
 | **प्रति-वॉल्यूम डिस्क थ्रूपुट** | ✅ | ❌ प्रति-वॉल्यूम काउंटर नहीं |
 | **मेमोरी ट्रिम** | ✅ | ❌ macOS इसके बजाय संपीड़न करता है |
@@ -81,6 +82,10 @@ Hexnest एक ही उत्पाद है, दो विंडो के �
 
 ऊपर का ❌ वह चीज़ है जो प्लैटफ़ॉर्म के पास नहीं है, वह नहीं जिसे Hexnest ने छोड़ दिया।
 इनमें से हर एक को ऐप्लिकेशन के भीतर, जहाँ वह दिखता है, वहीं समझाया गया है।
+
+एक पंक्ति उल्टी दिशा में चलती है। बैटरी की टूट-फूट और मशीन को जगाए रखने वाली प्रक्रियाओं की
+सूची Mac पर है, Windows पर नहीं — और तालिका का यही एकमात्र ❌ है जिसका मतलब "उपलब्ध नहीं" के
+बजाय "अभी बनाया नहीं" है: Windows दोनों `powercfg` के ज़रिये देता है।
 
 ---
 
@@ -139,6 +144,7 @@ Hexnest यह सब एक ही विंडो से हल कर दे�
 | 📄 **हार्डवेयर रिपोर्ट** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | हर डिवाइस और हार्डवेयर आईडी को एक सादा टेक्स्ट फ़ाइल में लिख देता है — उसे USB स्टिक पर किसी चालू कंप्यूटर तक ले जाइए और ड्राइवर हाथ से खोज लीजिए। |
 | 🆙 **बिल्ट-इन अपडेटर** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | नई रिलीज़ GitHub से डाउनलोड करता है, **उसका SHA-256 जाँचता है** (और अगर रिलीज़ के साथ `checksums.txt` प्रकाशित नहीं हुआ है तो इंस्टॉल करने से मना कर देता है), फिर एक्ज़ीक्यूटेबल को उसी जगह बदल देता है। |
 | 📈 **सिस्टम मॉनिटर** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | कुल मिलाकर और हर लॉजिकल कोर के हिसाब से प्रोसेसर लोड (`NtQuerySystemInformation`), कैश्ड और कमिटेड बाइट्स तक टूटी हुई मेमोरी (`GlobalMemoryStatusEx` + `GetPerformanceInfo`), ACPI थर्मल ज़ोन, हर वॉल्यूम का रीड/राइट थ्रूपुट (`IOCTL_DISK_PERFORMANCE`) और बैटरी की स्थिति। पेज खुलने से पहले कुछ भी सैंपल नहीं किया जाता, और पेज छोड़ते ही यह रुक जाता है। |
+| 🔋 **बैटरी की सेहत और स्लीप रोकने वाले** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | `ioreg` से चार्ज साइकल, macOS द्वारा बताई गई अधिकतम क्षमता, स्थिति और बैटरी का अपना तापमान; साथ ही `pmset` से हर पावर असर्शन: कौन-सी प्रक्रिया Mac को सोने नहीं दे रही, उसने क्या माँगा और कब से माँग रही है। टाइमर से नहीं, पेज खुलने पर पढ़ा जाता है, क्योंकि हर सेकंड नमूना लेने वाला पेज बैटरी बताने के लिए बैटरी ही खर्च करता। |
 | 🧮 **प्रति-ऐप्लिकेशन संसाधन उपयोग** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | हर प्रोसेस का प्रोसेसर हिस्सा, वर्किंग सेट, प्राइवेट बाइट्स, डिस्क थ्रूपुट और थ्रेड संख्या — ठीक उसी तरह मापी गई जैसे कार्य प्रबंधक मापता है: दो सैंपल के बीच प्रोसेस के अपने कर्नेल + यूज़र समय का अंतर, बीते वास्तविक समय और लॉजिकल प्रोसेसरों की संख्या से भाग देकर। |
 | 🌐 **नेटवर्क मॉनिटर** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | एडेप्टरों के अपने काउंटरों से पूरी मशीन का डाउनलोड और अपलोड, सेशन का और बूट के बाद से का कुल, खुले कनेक्शनों की संख्या, और हर एडेप्टर अपने पते और तय हुई लिंक स्पीड के साथ। |
 | 🔎 **प्रति-ऐप्लिकेशन नेटवर्क उपयोग** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | कौन-सा प्रोग्राम कितना डेटा भेज-ले रहा है, यह `GetExtendedTcpTable` और TCP ESTATS (`GetPerTcpConnectionEStats`) से आता है। सिर्फ़ TCP — कर्नेल ड्राइवर के बिना Windows में प्रति-प्रोसेस UDP काउंटर है ही नहीं, और पेज चुपचाप कम आँकड़े दिखाने के बजाय यह बात साफ़ लिख देता है। |
@@ -247,16 +253,20 @@ Hexnest.exe --resume        # बीच में रुकी कतार स�
 <td width="50%"><img src="assets/screenshots/mac-system.png" alt="macOS पर सिस्टम मॉनिटर: प्रोसेसर और मेमोरी चार्ट, हर लॉजिकल कोर के लिए एक बार, स्टोरेज, बैटरी और प्रोसेस तालिका"><br><sub><b>सिस्टम मॉनिटर</b> — हर कोर के लिए एक बार, Apple silicon पर P और E क्लस्टर समेत।</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-power.png" alt="macOS पर बैटरी और पावर: अधिकतम क्षमता, चार्ज साइकल, स्थिति और बैटरी तापमान, और नीचे Mac को जगाए रखने वाली प्रक्रियाओं की सूची"><br><sub><b>बैटरी और पावर</b> — साइकल और टूट-फूट, और कौन-सा ऐप्लिकेशन Mac को सोने नहीं दे रहा।</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-network.png" alt="macOS पर नेटवर्क मॉनिटर: लाइव डाउनलोड और अपलोड चार्ट, सत्र और बूट से कुल, अडैप्टर और प्रति-एप्लिकेशन ट्रैफ़िक"><br><sub><b>नेटवर्क मॉनिटर</b> — प्रति-एप्लिकेशन ट्रैफ़िक, वही स्रोत जो Activity Monitor उपयोग करता है।</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-startup.png" alt="macOS पर स्टार्ट-अप प्रोग्राम: हर launchd एजेंट और डीमन एक स्विच, लेबल, कमांड और शुरू होने की जगह के साथ"><br><sub><b>स्टार्ट-अप प्रोग्राम</b> — launchd एजेंट के लिए एक-एक स्विच; सिस्टम जॉब दिखते हैं, छुए नहीं जाते।</sub></td>
-</tr>
-<tr>
 <td width="50%"><img src="assets/screenshots/mac-clean.png" alt="macOS पर सफ़ाई: एप्लिकेशन कैश, डेवलपर कैश, लॉग, ट्रैश, पुराने डाउनलोड और अवशेषों के मापे हुए आकार"><br><sub><b>सफ़ाई</b> — कैश, Xcode derived data, iPhone बैकअप। मापे हुए, और कुछ भी पहले से चुना नहीं।</sub></td>
-<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="macOS पर सेटिंग्स: भाषा, 'सिस्टम का अनुसरण' समेत थीम, अपडेट विकल्प और डेटा फ़ोल्डर"><br><sub><b>सेटिंग्स</b> — वही विकल्प, साथ में सूर्योदय-सूर्यास्त पर macOS का अनुसरण करने वाली थीम।</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/mac-settings.png" alt="macOS पर सेटिंग्स: भाषा, 'सिस्टम का अनुसरण' समेत थीम, अपडेट विकल्प और डेटा फ़ोल्डर"><br><sub><b>सेटिंग्स</b> — वही विकल्प, साथ में सूर्योदय-सूर्यास्त पर macOS का अनुसरण करने वाली थीम।</sub></td>
 <td width="50%"><img src="assets/screenshots/mac-logs.png" alt="macOS पर लॉग: लॉग फ़ाइल पथ के साथ लाइव डायग्नोस्टिक्स और कॉपी, दिखाएँ, साफ़ करें क्रियाएँ"><br><sub><b>लॉग</b> — लाइव डायग्नोस्टिक्स, इशू रिपोर्ट के लिए एक क्लिक में क्लिपबोर्ड पर।</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/mac-about.png" alt="macOS पर परिचय: संस्करण, मशीन और प्रोसेसर की जानकारी, अपडेट जाँच और प्रोजेक्ट लिंक"><br><sub><b>परिचय</b> — संस्करण, मशीन, और एक अपडेट जाँच जो डाउनलोड खोल देती है।</sub></td>
+<td width="50%"></td>
 </tr>
 </table>
 
@@ -298,6 +308,7 @@ PNG लिखते हैं। `--lang` इंटरफ़ेस भाषा 
 | **बैकअप और रीस्टोर** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | *बैकअप बनाएँ* (चाहें तो ZIP में), मौजूदा बैकअप की सूची (पैकेज संख्या, आकार, तारीख़), *रीस्टोर*, *फ़ोल्डर से रीस्टोर करें*, *खोलें*, *हटाएँ*। |
 | **इतिहास** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | हर ड्राइवर कार्रवाई का स्थायी रिकॉर्ड। नतीजे के हिसाब से फ़िल्टर, खोज, *CSV के रूप में एक्सपोर्ट करें*, *इतिहास मिटाएँ*। किसी रिकॉर्ड का अपडेट-से-पहले वाला बैकअप अब भी मौजूद हो तो आप उसका फ़ोल्डर खोल सकते हैं। |
 | **सिस्टम मॉनिटर** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | कुल मिलाकर और हर लॉजिकल कोर के हिसाब से प्रोसेसर लोड, इस्तेमाल में / उपलब्ध / कैश्ड / कमिटेड में बँटी मेमोरी, मशीन जितने तापमान सेंसर दिखाती हो वे, लाइव रीड और राइट थ्रूपुट के साथ स्टोरेज क्षमता, और बैटरी। उसके नीचे हर चल रही प्रोसेस अपने प्रोसेसर हिस्से, वर्किंग सेट, प्राइवेट बाइट्स, डिस्क थ्रूपुट और थ्रेड संख्या के साथ — प्रोसेसर, मेमोरी, डिस्क या नाम से क्रमबद्ध, खोजी जा सकने वाली, और रोकी भी जा सकने वाली, ताकि कोई पंक्ति सचमुच पढ़ी जा सके। |
+| **बैटरी और पावर** | <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | अधिकतम क्षमता, चार्ज साइकल, स्थिति और बैटरी का अपना तापमान — हर एक के स्रोत के नाम के साथ: Apple का प्रतिशत क्षमताओं का सीधा अनुपात नहीं है, इसलिए निकाला गया मान निकाला हुआ बताया जाता है, और तापमान प्रोसेसर का नहीं बैटरी का है। नीचे, Mac को जगाए रखने वाली हर प्रक्रिया, उसका असर्शन और कब से पकड़े है; जो macOS ने खुद पकड़े हैं वे अलग रखे गए हैं। |
 | **नेटवर्क मॉनिटर** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | पूरी मशीन का लाइव डाउनलोड और अपलोड चार्ट के रूप में, इस सेशन का और Windows शुरू होने के बाद से का कुल, खुले कनेक्शनों की संख्या, और हर एडेप्टर अपने प्रकार, पते और लिंक स्पीड के साथ। उसके नीचे एक प्रति-ऐप्लिकेशन तालिका: डाउनलोड और अपलोड की दर, सेशन का कुल, खुले कनेक्शन और दूरस्थ एंडपॉइंट। |
 | **स्टार्टअप प्रोग्राम** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | हर वह ऑटोस्टार्ट प्रविष्टि जिसे Hexnest सुरक्षित तरीक़े से चालू-बंद कर सकता है — एक्ज़ीक्यूटेबल के वर्ज़न रिसोर्स से लिया गया प्रोग्राम का नाम, उसका प्रकाशक, कमांड लाइन, आकार और वह कहाँ से चलता है, इन सबके साथ। हर पंक्ति के लिए एक स्विच; बंद करने पर वही सेटिंग लिखी जाती है जो कार्य प्रबंधक लिखता है, और कुछ भी मिटाया नहीं जाता। जो प्रविष्टियाँ ऐसी फ़ाइल की ओर इशारा करती हैं जो अब मौजूद नहीं है, वे चिह्नित होती हैं, सुरक्षा सॉफ़्टवेयर पर निशान लगता है और उसे बंद करने से पहले पूछा जाता है, और चालू, बंद तथा टूटी प्रविष्टियों के फ़िल्टर के साथ खोज भी है। |
 | **सफ़ाई** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | टेम्परेरी फ़ाइलों, थंबनेल और आइकन कैश, सात ब्राउज़रों, Windows Update के डाउनलोड कैश, डिलीवरी ऑप्टिमाइज़ेशन, क्रैश डंप, त्रुटि रिपोर्ट, शेडर कैश, Windows लॉग, Hexnest के अपने कैश और रीसायकल बिन के मापे हुए आकार। डिफ़ॉल्ट रूप से कुछ भी चुना हुआ नहीं होता। पुराने डाउनलोड और AppData में बचे हुए फ़ोल्डर एक-एक करके सूची में आते हैं और रीसायकल बिन में जाते हैं। साथ में मेमोरी खाली करने की सुविधा, जो अपने काम के बारे में ईमानदार है। |
@@ -305,7 +316,7 @@ PNG लिखते हैं। `--lang` इंटरफ़ेस भाषा 
 | **सेटिंग्स** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | समानांतर डाउनलोड की संख्या, दोबारा कोशिश की संख्या, शुरू होते ही स्कैन, पुनर्स्थापना बिंदु, अपडेट से पहले बैकअप, रीस्टार्ट के बाद फिर से शुरू करना, अपने आप रीस्टार्ट और उसकी देरी, ऑफ़लाइन मोड, वैकल्पिक ड्राइवर, लोकल ड्राइवर फ़ोल्डर, इतिहास कितने समय रखा जाए, **अपने आप अपडेट जाँच, अपने आप इंस्टॉल और प्री-रिलीज़**, थीम, भाषा। |
 | **परिचय** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | संस्करण की जानकारी, *अपडेट जाँचें*, *डाउनलोड करके इंस्टॉल करें*, रिलीज़ नोट्स, प्रोजेक्ट पेज और issue के लिंक। |
 
-Mac बिल्ड का साइडबार ऊपर macOS चिह्नित आठ पंक्तियाँ ही हैं, उसी क्रम में। *डिवाइस*,
+Mac बिल्ड का साइडबार ऊपर macOS चिह्नित नौ पंक्तियाँ ही हैं, उसी क्रम में। *डिवाइस*,
 *अपडेट*, *गतिविधि*, *बैकअप और रीस्टोर* तथा *इतिहास* वहाँ ख़ाली नहीं, बल्कि हैं ही नहीं।
 
 ---

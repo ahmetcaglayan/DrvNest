@@ -151,6 +151,92 @@ public sealed class BatteryMetrics
     public TimeSpan? Remaining { get; init; }
 }
 
+/// <summary>
+/// What the battery is, as opposed to how full it is right now.
+///
+/// Every field is nullable because every one of them is a thing some Mac declines to
+/// report. A desktop Mac reports none of them, and the page shows nothing rather than
+/// zeroes.
+/// </summary>
+public sealed class BatteryHealth
+{
+    /// <summary>Full charge cycles the battery has been through.</summary>
+    public int? CycleCount { get; init; }
+
+    /// <summary>What the battery held when it was new, in mAh.</summary>
+    public int? DesignCapacityMah { get; init; }
+
+    /// <summary>What a full charge holds today, in mAh.</summary>
+    public int? FullChargeCapacityMah { get; init; }
+
+    /// <summary>The percentage of its original capacity the battery still holds.</summary>
+    public int? MaximumCapacityPercent { get; init; }
+
+    /// <summary>
+    /// True when <see cref="MaximumCapacityPercent"/> was computed from the capacities
+    /// rather than read from macOS. Apple's own figure is not a plain ratio, so a
+    /// derived number can differ from the one in System Settings by a point or two and
+    /// the page says which it is showing.
+    /// </summary>
+    public bool MaximumCapacityIsDerived { get; init; }
+
+    /// <summary>macOS's own verdict, e.g. "Normal" or "Service Recommended".</summary>
+    public string? Condition { get; init; }
+
+    /// <summary>Wattage of the attached power adapter, when one is attached.</summary>
+    public int? AdapterWatts { get; init; }
+
+    /// <summary>
+    /// The battery pack's own temperature sensor, in degrees Celsius.
+    ///
+    /// This is not the processor temperature. macOS exposes no processor temperature
+    /// without a signed kernel driver, which Hexnest will not install, and showing the
+    /// battery's reading under a "temperature" heading would be exactly the kind of
+    /// plausible wrong number the System Monitor refuses to invent.
+    /// </summary>
+    public double? TemperatureCelsius { get; init; }
+
+    /// <summary>True when there is anything at all worth showing.</summary>
+    public bool HasAnything =>
+        CycleCount is not null || MaximumCapacityPercent is not null ||
+        Condition is not null || TemperatureCelsius is not null;
+}
+
+/// <summary>
+/// One power assertion: a process telling macOS not to go to sleep.
+/// </summary>
+public sealed class PowerAssertion
+{
+    public int ProcessId { get; init; }
+
+    public string ProcessName { get; init; } = string.Empty;
+
+    /// <summary>
+    /// The assertion type, e.g. <c>PreventUserIdleSystemSleep</c>. Left as the name
+    /// macOS uses: it is what every other document about this subject calls it, and a
+    /// friendlier invented name would make the page harder to search for, not easier.
+    /// </summary>
+    public string Kind { get; init; } = string.Empty;
+
+    /// <summary>The name the process gave its assertion, when it gave one.</summary>
+    public string? Name { get; init; }
+
+    /// <summary>How long it has been held.</summary>
+    public TimeSpan? Held { get; init; }
+
+    /// <summary>
+    /// True for the assertions macOS itself always holds - powerd while the display is
+    /// on, WindowServer on every keystroke. They are the machine working normally, and
+    /// they would bury the one application actually keeping the Mac awake.
+    /// </summary>
+    public bool IsSystem { get; init; }
+
+    /// <summary>True when this assertion stops the whole machine sleeping, not just the display.</summary>
+    public bool BlocksSystemSleep =>
+        Kind.Contains("SystemSleep", StringComparison.Ordinal) ||
+        Kind.Contains("NoIdleSleep", StringComparison.Ordinal);
+}
+
 // =====================================================================================
 // Per process
 // =====================================================================================
