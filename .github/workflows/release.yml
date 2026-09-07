@@ -305,7 +305,7 @@ jobs:
 
     steps:
       - name: Download every platform's assets
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           path: staging
           pattern: dist-*
