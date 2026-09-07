@@ -592,7 +592,7 @@ Cheap, and it removes a whole class of stale-text bugs.
 ### Adding a language
 
 Nothing in the shell needs to change. Write
-`src/Hexnest.App/Languages/<code>.json` as a flat object of the same keys as the English
+`src/Hexnest.Core/Languages/<code>.json` as a flat object of the same keys as the English
 table, plus `_name` (the language's own name, for the picker) and `_englishName`:
 
 ```json

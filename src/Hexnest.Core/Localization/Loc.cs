@@ -150,23 +150,39 @@ public static class Loc
         return DetectSystemLanguage();
     }
 
-    /// <summary>The machine's UI language if a pack exists for it, otherwise English.</summary>
+    /// <summary>The machine's display language if a pack exists for it, otherwise English.</summary>
     public static string DetectSystemLanguage()
     {
+        // CurrentUICulture first, InstalledUICulture only as a fallback.
+        //
+        // The two are not synonyms. CurrentUICulture is the language the user reads
+        // their operating system in, which is the question being asked here.
+        // InstalledUICulture is a weaker signal: on .NET it resolves through the user
+        // default culture, which on Windows follows the Region setting rather than the
+        // display language. Setting Region to your own country while leaving Windows
+        // in English is the normal way to get local dates, currency and paper size,
+        // and asking InstalledUICulture first would answer that user in a language
+        // their Windows is not in.
+        //
+        // Order matters more now than it did: with three packs a wrong guess usually
+        // fell through to English anyway, and with ten it usually lands on a language.
         try
         {
-            var culture = CultureInfo.InstalledUICulture;
+            var display = CultureInfo.CurrentUICulture;
 
-            var full = culture.Name.ToLowerInvariant();
-            if (full.Length > 0 && Packs.ContainsKey(full)) return full;
+            if (Match(display) is { } matched) return matched;
 
-            var neutral = culture.TwoLetterISOLanguageName.ToLowerInvariant();
-            if (Packs.ContainsKey(neutral)) return neutral;
-
-            // CurrentUICulture can differ from InstalledUICulture on a machine whose
-            // user overrode the display language; honour that too.
-            var current = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToLowerInvariant();
-            if (Packs.ContainsKey(current)) return current;
+            // Only when there is no display language to read at all - an invariant
+            // culture, which is what a machine with globalisation-invariant mode or a
+            // stripped container reports - is the region-derived culture worth asking.
+            //
+            // It is deliberately not asked when the display language is simply one
+            // Hexnest has no pack for. Somebody reading Windows in Swedish is better
+            // served by English than by whatever their Region setting implies, and
+            // answering them in the language of their billing address is the same
+            // mistake as reading the Region setting in the first place.
+            if (display.Name.Length == 0 && Match(CultureInfo.InstalledUICulture) is { } fallback)
+                return fallback;
         }
         catch (Exception ex)
         {
@@ -174,6 +190,15 @@ public static class Loc
         }
 
         return DefaultLanguage;
+
+        static string? Match(CultureInfo culture)
+        {
+            var full = culture.Name.ToLowerInvariant();
+            if (full.Length > 0 && Packs.ContainsKey(full)) return full;
+
+            var neutral = culture.TwoLetterISOLanguageName.ToLowerInvariant();
+            return neutral.Length > 0 && Packs.ContainsKey(neutral) ? neutral : null;
+        }
     }
 
     // =====================================================================================
@@ -251,7 +276,25 @@ public static class Loc
         {
             if (!Directory.Exists(folder)) continue;
 
-            foreach (var file in Directory.EnumerateFiles(folder, "*.json"))
+            // Listed eagerly and inside its own try. EnumerateFiles is lazy, so with a
+            // foreach over it the directory read happens in the loop header, outside
+            // the per-file catch below - and a Languages folder that exists but cannot
+            // be listed would throw out of this static constructor and stop the
+            // application from starting at all, which is the one thing the loader
+            // promises never to do.
+            string[] files;
+
+            try
+            {
+                files = Directory.GetFiles(folder, "*.json");
+            }
+            catch (Exception ex)
+            {
+                Log.Warn($"Could not read the language folder {folder}: {ex.Message}");
+                continue;
+            }
+
+            foreach (var file in files)
             {
                 try
                 {

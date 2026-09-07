@@ -34,26 +34,38 @@ public static class AppInfo
     public const string ReleaseAssetArm64 = "Hexnest-arm64.exe";
 
     /// <summary>
-    /// Asset name published for macOS. One universal disk image covering Apple silicon
-    /// and Intel, because a Mac user who has to work out which of two files they need
-    /// is a Mac user who has already been let down.
+    /// Asset names published for macOS. Two disk images rather than one universal
+    /// binary: each carries its own copy of the .NET runtime, so merging them would
+    /// double every user's download to save one decision on the download page.
     /// </summary>
-    public const string ReleaseAssetMac = "Hexnest.dmg";
+    public const string ReleaseAssetMacArm64 = "Hexnest-arm64.dmg";
+
+    /// <inheritdoc cref="ReleaseAssetMacArm64"/>
+    public const string ReleaseAssetMacX64 = "Hexnest-x64.dmg";
 
     /// <summary>Checksum file published alongside the binaries.</summary>
     public const string ChecksumAsset = "checksums.txt";
 
     /// <summary>
-    /// The asset this build would update itself from, chosen by the platform and
-    /// architecture it is actually running on.
+    /// The asset this build would update itself from.
+    ///
+    /// Chosen by the machine's architecture rather than the running process': an Intel
+    /// build running on Apple silicon through Rosetta should be offered the native
+    /// build, not another translated one.
     /// </summary>
-    public static string ReleaseAssetForThisPlatform =>
-        OperatingSystem.IsMacOS()
-            ? ReleaseAssetMac
-            : System.Runtime.InteropServices.RuntimeInformation.OSArchitecture
-              == System.Runtime.InteropServices.Architecture.Arm64
-                ? ReleaseAssetArm64
-                : ReleaseAssetX64;
+    public static string ReleaseAssetForThisPlatform
+    {
+        get
+        {
+            bool arm64 = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture
+                         == System.Runtime.InteropServices.Architecture.Arm64;
+
+            if (OperatingSystem.IsMacOS())
+                return arm64 ? ReleaseAssetMacArm64 : ReleaseAssetMacX64;
+
+            return arm64 ? ReleaseAssetArm64 : ReleaseAssetX64;
+        }
+    }
 
     public static string RepositoryUrl => $"https://github.com/{RepositoryOwner}/{RepositoryName}";
 

@@ -10,7 +10,7 @@
 #   ./build/make-mac-app.sh                       both architectures, .app only
 #   ./build/make-mac-app.sh --arch arm64          just Apple silicon
 #   ./build/make-mac-app.sh --dmg                 also build the disk image
-#   ./build/make-mac-app.sh --version 1.3.0       stamp a version
+#   ./build/make-mac-app.sh --version 1.4.0       override the version stamp
 #
 # A universal binary is deliberately not produced. `lipo`-ing two self-contained .NET
 # runtimes together doubles the download for every user in order to save one click on
@@ -51,6 +51,19 @@ command -v "$DOTNET" >/dev/null 2>&1 || { echo "The .NET 8 SDK was not found." >
 # the SVG at build time: see build/make-mac-icon.py for why there is no rasteriser
 # here to convert it with.
 # ---------------------------------------------------------------------------------
+repository_version() {
+    local props="$ROOT/Directory.Build.props"
+    local version
+    version="$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' "$props" | head -1)"
+
+    if [[ -z "$version" ]]; then
+        echo "Could not read <Version> from $props." >&2
+        exit 1
+    fi
+
+    echo "$version"
+}
+
 make_icon() {
     local iconset="$1/Hexnest.iconset"
     local master="$ASSETS/icon-mac-1024.png"
@@ -107,7 +120,11 @@ build_one() {
         echo "  icon built from icon-mac-1024.png"
     fi
 
-    local display="${VERSION:-1.3.0}"
+    # Falls back to the repository's own version rather than to a number written
+    # here, which was already a release out of date the first time anyone read it.
+    # Info.plist is what the Finder and the About page show, so a stale default is
+    # not cosmetic: it silently ships a bundle claiming to be the previous release.
+    local display="${VERSION:-$(repository_version)}"
 
     cat > "$app/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>

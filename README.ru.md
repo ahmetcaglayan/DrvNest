@@ -68,7 +68,7 @@ Hexnest — один продукт с двумя окнами. Общий дв�
 | **Сетевой трафик по приложениям** | ✅ только TCP | ✅ через `nettop` |
 | **Менеджер автозапуска** | ✅ ключи Run + папки | ✅ агенты launchd |
 | **Очистка**, измеренная, а не оценённая | ✅ | ✅ |
-| **Журнал, настройки, пять языков, тёмная/светлая тема** | ✅ | ✅ |
+| **Журнал, настройки, десять языков, тёмная/светлая тема** | ✅ | ✅ |
 | **Температура процессора** | ✅ тепловые зоны ACPI | ❌ недоступна без root |
 | **Скорость диска по томам** | ✅ | ❌ нет счётчика по томам |
 | **Освобождение памяти** | ✅ | ❌ macOS вместо этого сжимает |
@@ -149,7 +149,7 @@ Hexnest решает это в одном окне:
 | 🧹 **Очистка** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Временные файлы, кэш эскизов и значков, кэш семи браузеров, кэш загрузок Windows Update, кэш «Оптимизации доставки», аварийные дампы, отчёты об ошибках, кэш шейдеров, журналы обслуживания и Корзина — каждый пункт **измерен, а не оценён приблизительно**, и **ничего не отмечено заранее**. |
 | 🗂️ **Оставшиеся папки и старые загрузки** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Папки внутри AppData, которые не соответствуют ни одной установленной программе, ни одной запущенной программе и ничему в Program Files и к которым полгода никто не обращался; плюс архивы и установщики в папке «Загрузки» старше месяца. Перечисляются по отдельности и отправляются в **Корзину**, а не удаляются сразу и безвозвратно. |
 | 🧠 **Сокращение рабочих наборов** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | Выгружает рабочие наборы процессов на диск. Страница прямо сообщает, что это освобождает физическую память *сейчас* и ничего при этом не ускоряет, — то есть ровно обратное тому, что заявляет любая другая программа с такой кнопкой. |
-| 🌍 **Пять языков интерфейса** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Английский, турецкий, русский, упрощённый китайский и хинди — все внутри одного исполняемого файла. Переключаются мгновенно, не закрывая программу. |
+| 🌍 **Десять языков интерфейса** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Английский, турецкий, русский, упрощённый китайский, хинди, португальский, японский, немецкий, французский и корейский — все внутри одного исполняемого файла. Переключаются мгновенно, не закрывая программу. |
 | 🎨 **Тёмная и светлая темы** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Подменяется словарь палитры; применяется без повторного открытия окна. |
 
 ---

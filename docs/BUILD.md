@@ -112,7 +112,7 @@ is the name the built-in updater looks for when it runs on an ARM64 machine.
 
 ### Setting the version
 
-`Directory.Build.props` holds the single source of truth (`<Version>1.1.0</Version>`).
+`Directory.Build.props` holds the single source of truth, in its `<Version>` element.
 CI overrides it from the release tag so the tag and the version shown inside the app can
 never drift apart:
 

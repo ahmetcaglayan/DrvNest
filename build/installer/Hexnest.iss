@@ -12,9 +12,14 @@
 ;  USB stick on a machine that was formatted five minutes ago.
 ; =============================================================================
 
-; Overridable from the command line; the default keeps a bare `iscc` working.
+; The version comes from the command line and has no default. Both callers already
+; pass it - release.yml and build/make-release.ps1 both run iscc with
+; /DMyAppVersion - so nothing is lost, and a literal here would be stale the moment
+; the next version shipped: it sat at 1.3.0 through the 1.4.0 release and would have
+; registered the new build in Add/Remove Programs under the old number. Failing
+; loudly is better than stamping a number nobody chose.
 #ifndef MyAppVersion
-  #define MyAppVersion "1.3.0"
+  #error MyAppVersion is not defined. Pass /DMyAppVersion=<version>, or build the installer through build/make-release.ps1, which reads it from Directory.Build.props.
 #endif
 
 #define MyAppName "Hexnest"

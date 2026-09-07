@@ -67,7 +67,7 @@ Hexnest एक ही उत्पाद है, दो विंडो के �
 | **प्रति-एप्लिकेशन नेटवर्क उपयोग** | ✅ केवल TCP | ✅ `nettop` से |
 | **स्टार्ट-अप प्रबंधक** | ✅ Run कुंजियाँ + फ़ोल्डर | ✅ launchd एजेंट |
 | **सफ़ाई**, अनुमान नहीं, मापी हुई | ✅ | ✅ |
-| **लॉग, सेटिंग्स, पाँच भाषाएँ, गहरा/हल्का** | ✅ | ✅ |
+| **लॉग, सेटिंग्स, दस भाषाएँ, गहरा/हल्का** | ✅ | ✅ |
 | **प्रोसेसर तापमान** | ✅ ACPI थर्मल ज़ोन | ❌ root के बिना उपलब्ध नहीं |
 | **प्रति-वॉल्यूम डिस्क थ्रूपुट** | ✅ | ❌ प्रति-वॉल्यूम काउंटर नहीं |
 | **मेमोरी ट्रिम** | ✅ | ❌ macOS इसके बजाय संपीड़न करता है |
@@ -147,7 +147,7 @@ Hexnest यह सब एक ही विंडो से हल कर दे�
 | 🧹 **सफ़ाई** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | टेम्परेरी फ़ाइलें, थंबनेल और आइकन कैश, सात ब्राउज़रों के कैश, Windows Update का डाउनलोड कैश, डिलीवरी ऑप्टिमाइज़ेशन, क्रैश डंप, त्रुटि रिपोर्ट, शेडर कैश, सर्विसिंग लॉग और रीसायकल बिन — हर एक **मापा हुआ, अनुमान नहीं**, और **डिफ़ॉल्ट रूप से कुछ भी चुना हुआ नहीं**। |
 | 🗂️ **बचे हुए फ़ोल्डर और पुराने डाउनलोड** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | AppData के अंदर वे फ़ोल्डर जो किसी इंस्टॉल किए हुए प्रोग्राम, किसी चल रहे प्रोग्राम और Program Files की किसी चीज़ से मेल नहीं खाते और जिन्हें छह महीने से छुआ नहीं गया; साथ ही Downloads में पड़ी वे आर्काइव और इंस्टॉलर फ़ाइलें जो एक महीने से पुरानी हैं। इन्हें एक-एक करके सूची में दिखाया जाता है और **रीसायकल बिन** में भेजा जाता है, सीधे मिटाया कभी नहीं जाता। |
 | 🧠 **मेमोरी खाली करना** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | प्रोसेस के वर्किंग सेट पेज-आउट कर देता है। पेज साफ़-साफ़ लिखता है कि इससे *इसी वक़्त* फ़िज़िकल मेमोरी खाली होती है और कुछ भी तेज़ नहीं होता — जो इस बटन वाले हर दूसरे टूल के दावे के ठीक उलट है। |
-| 🌍 **पाँच इंटरफ़ेस भाषाएँ** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | अंग्रेज़ी, तुर्की, रूसी, सरलीकृत चीनी और हिन्दी — सभी उसी एक एक्ज़ीक्यूटेबल के अंदर। ऐप खुला रहते ही तुरंत बदल जाती हैं। |
+| 🌍 **दस इंटरफ़ेस भाषाएँ** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | अंग्रेज़ी, तुर्की, रूसी, सरलीकृत चीनी, हिन्दी, पुर्तगाली, जापानी, जर्मन, फ़्रेंच और कोरियाई — सभी उसी एक एक्ज़ीक्यूटेबल के अंदर। ऐप खुला रहते ही तुरंत बदल जाती हैं। |
 | 🎨 **डार्क / लाइट थीम** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | पैलेट डिक्शनरी बदल देता है; विंडो दोबारा खोले बिना लागू हो जाती है। |
 
 ---

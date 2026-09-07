@@ -96,19 +96,27 @@ Contracts you must honour:
 
 ## Adding a language
 
-The UI strings live in one file: `src/Hexnest.App/Services/Loc.cs`. There is no
-RESX and there are no satellite assemblies, deliberately - satellite assemblies
-fight the single-file publish, and this app has a few hundred strings rather than
-a few thousand.
+English is the master and lives in `src/Hexnest.Core/Localization/Loc.cs`, as a
+plain `Dictionary<string, string>`. There is no RESX and there are no satellite
+assemblies, deliberately - satellite assemblies fight the single-file publish, and
+this app has a few hundred strings rather than a few thousand.
 
-1. Copy the `English` dictionary in `Loc.cs` and translate the values. Keys never
-   change.
-2. Add the language to the `switch` in `SetLanguage` and to the culture mapping
-   just below it.
-3. Add the option to the language picker in the settings page.
-4. Allow the new code in `AppSettings.Normalize()`
-   (`src/Hexnest.Core/Models/AppSettings.cs`), which currently clamps `Language`
-   to `tr` or `en`.
+Adding a language does not mean touching any code:
+
+1. Copy an existing pack from `src/Hexnest.Core/Languages/` to `<code>.json` and
+   translate the values. Keys never change. Keep `_name` (the language's own name,
+   which is what the picker shows) and `_englishName`.
+2. Run `python3 build/check-languages.py`. It compares your pack against English
+   and fails on missing keys, on `{0}` placeholders that did not survive the
+   translation, and on multi-line strings that were flattened into one paragraph.
+3. Build. That is all: the pack is embedded by a wildcard in `Hexnest.Core.csproj`,
+   discovered at startup by `LoadEmbeddedPacks`, and sorted into the picker by the
+   name you put in `_name`. Both applications pick it up, because both read the
+   same `Loc`.
+
+A pack does not even have to be built in. A `Languages/<code>.json` dropped next to
+the executable, or into the data folder, is merged over the built-in one at startup -
+which is how a translation can be corrected without a rebuild.
 
 Missing keys fall back to English and then to the key itself, so a partial
 translation is still usable - but please finish the dictionary before opening the

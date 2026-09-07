@@ -10,13 +10,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **Five more interface languages: Portuguese, Japanese, German, French and Korean.**
-  Both applications now ship ten, and the picker lists them in a stable order rather
-  than in whatever order the assembly manifest happened to enumerate - invisible with
-  three packs, a menu in no order at all with ten.
+  Both applications now ship ten. Adding one no longer means touching any code: a
+  `<code>.json` dropped into `src/Hexnest.Core/Languages/` is embedded by a wildcard,
+  discovered at startup and sorted into the picker on the next build.
 - **The website and the README in all ten languages.** `docs/site/{pt,ja,de,fr,ko}/`
   and `README.{pt,ja,de,fr,ko}.md` join the existing five, with the language pickers,
   the `hreflang` links, the OpenGraph locales and the sitemap updated across every
   page rather than only the ones a search-and-replace happened to match.
+- **`build/check-languages.py`**, which compares every pack against English: missing
+  keys, `{0}` placeholders that did not survive translation, multi-line strings
+  flattened into one paragraph, and values left in English. It caught two packs that
+  had double-escaped their `\n` and `\"`, which would have printed the escape
+  sequences on screen in a confirmation dialog.
+- **The Mac About page reports the architecture of the running process** rather than
+  of the machine, and says so when the Intel build is running on Apple silicon under
+  Rosetta - previously it reported "Arm64" while running translated, which is exactly
+  when a user needs to be told to fetch the other download.
+- **A redrawn social card** (`assets/og-image.svg`), used both as the site's
+  `og:image` and as the repository's social preview, so the two cannot disagree.
 - **The three structural checkers now run in CI.** `check-languages.py`,
   `check-readme.py` and `check-site.py` are a new `docs` job in `build.yml`. A
   translation that drops a table row, loses a `{0}` or flattens a two-paragraph
@@ -33,20 +44,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- `hreflang` links on the Turkish, Chinese and Hindi pages were relative
-  (`../tr/`). Search engines ignore a relative `hreflang`, so those three pages
-  were not actually declaring their alternates. All ten pages now use absolute URLs.
-- The Hindi page was missing its `og:locale:alternate` list entirely, because the
-  anchor the update looked for is the page's own locale and therefore never present
-  on that page.
-- The site and the README described five interface languages in three places each.
+- **The Russian, Simplified Chinese and Hindi packs were 64 strings short.** They
+  had never been updated for 1.3.0, so the entire macOS interface and the dashboard
+  hardware summary fell back to English for those three languages. All three are now
+  complete, and `check-languages.py` makes the same gap a build failure rather than
+  something only a speaker of the language would notice.
+- **`hreflang` links on the Turkish, Chinese and Hindi pages were relative**
+  (`../tr/`). Search engines ignore a relative `hreflang`, so those three pages were
+  not declaring their alternates at all. All ten pages now use absolute URLs.
+- **The Hindi page never received the five new `og:locale:alternate` entries**,
+  because the anchor the update searched for is that page's own locale and so is
+  never present on it.
+- **The structured data claimed the application speaks five languages** - on all ten
+  pages, English included - and the five new pages declared themselves to be in
+  English. Both `inLanguage` fields are now right on every page.
+- **`AppInfo` named a macOS release asset that has never existed**, `Hexnest.dmg`,
+  described as a universal image. The release publishes `Hexnest-arm64.dmg` and
+  `Hexnest-x64.dmg`, and the selector now picks between them by the machine's
+  architecture, so a translated Intel build is offered the native one.
+- **The site and the README still described five interface languages**, and only the
+  English pair was corrected at first: the Turkish, Russian, Chinese and Hindi pages
+  and READMEs kept saying five, and their `softwareVersion` and release badge kept
+  saying 1.3.0. `check-site.py` now asserts that every page states the same version
+  as the English one, which is the check that would have caught it.
+- **`CITATION.cff` was never bumped** past 1.3.0, so GitHub's "Cite this repository"
+  widget would have handed out the wrong version for the new release.
+- **The Inno Setup script defaulted to a hardcoded `1.3.0`.** Both callers already
+  pass `/DMyAppVersion`, so it now fails loudly instead of silently registering the
+  new build under the previous version in Add/Remove Programs. `make-mac-app.sh` had
+  the same stale default and now reads `Directory.Build.props`.
+- **`CONTRIBUTING.md`, `docs/ARCHITECTURE.md` and `docs/BUILD.md` described a layout
+  that moved in 1.3.0**, pointing at `src/Hexnest.App/Services/Loc.cs` and
+  `src/Hexnest.App/Languages/`, and giving four steps for adding a language that no
+  longer apply.
+- **"System" language detection asked the wrong question.** It read
+  `InstalledUICulture` first, which resolves through the user default culture and on
+  Windows follows the Region setting rather than the display language - so a machine
+  running Windows in English with the Region set to another country could open in a
+  language its owner does not read their operating system in. It now asks
+  `CurrentUICulture`, and consults the region-derived culture only when there is no
+  display language at all. A display language with no pack falls back to English
+  rather than to whatever the Region implies. `pt-BR`, `fr-CA` and `zh-TW` resolve to
+  their packs; `sv-SE` resolves to English.
+- **A `Languages` folder that exists but cannot be listed stopped the application
+  from starting.** `Directory.EnumerateFiles` is lazy, so the directory read happened
+  in the `foreach` header, outside the per-file `catch` - and an exception there left
+  `Loc`'s static constructor throwing `TypeInitializationException` with no message,
+  in the one code path whose stated contract is that a broken pack can never prevent
+  startup.
 
 ### Changed
 
-- Adding a language no longer means touching any code: a `<code>.json` dropped into
-  `src/Hexnest.Core/Languages/` appears in the picker on the next build.
-  `docs/ARCHITECTURE.md` and the contribution notes said otherwise and pointed at a
-  path that moved to `Hexnest.Core` in 1.3.0.
+- The language picker lists languages in a stable order, sorted by the name the user
+  reads. Both loaders previously appended in whatever order the assembly manifest and
+  the directory happened to hand them over: invisible with three packs, a menu in no
+  order at all with ten. Sorted ordinally, so a Turkish machine and a German one show
+  the same list.
 - Korean text on the website breaks at word boundaries (`word-break: keep-all`)
   rather than mid-word, which a narrow table column made obvious.
 

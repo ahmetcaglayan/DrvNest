@@ -68,7 +68,7 @@ sürekli boş durmak yerine hiç bulunmuyor.
 | **Uygulama başına ağ kullanımı** | ✅ yalnızca TCP | ✅ `nettop` ile |
 | **Başlangıç yöneticisi** | ✅ Run anahtarları + klasörler | ✅ launchd ajanları |
 | **Temizlik**, tahmin değil ölçüm | ✅ | ✅ |
-| **Günlük, ayarlar, beş dil, koyu/açık tema** | ✅ | ✅ |
+| **Günlük, ayarlar, on dil, koyu/açık tema** | ✅ | ✅ |
 | **İşlemci sıcaklığı** | ✅ ACPI termal bölgeleri | ❌ root olmadan verilmiyor |
 | **Birim başına disk trafiği** | ✅ | ❌ birim sayacı yok |
 | **Bellek boşaltma** | ✅ | ❌ macOS bunun yerine sıkıştırır |
@@ -148,7 +148,7 @@ Tek dosya, kurulum yok, arka planda çalışan servis yok, telemetri yok.
 | 🧹 **Temizlik** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Geçici dosyalar, küçük resim ve simge önbelleği, yedi tarayıcının önbellekleri, Windows Update indirme önbelleği, Teslim İyileştirme, çökme dökümleri, hata raporları, shader önbellekleri, bakım günlükleri ve Geri Dönüşüm Kutusu — hepsinin boyutu **tahmin edilmez, ölçülür** ve **sizin yerinize hiçbiri işaretlenmez**. |
 | 🗂️ **Artık klasörler ve eski indirmeler** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | AppData altında; kurulu hiçbir programa, çalışan hiçbir programa ve Program Files içindeki hiçbir şeye uymayan, altı aydır dokunulmamış klasörler; ayrıca İndirilenler klasöründe bir aydan eski arşivler ve kurulum dosyaları. Tek tek listelenir ve doğrudan silinmez, **Geri Dönüşüm Kutusu**'na gönderilir. |
 | 🧠 **Bellek boşaltma** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | İşlemlerin çalışma kümelerini disk belleğine alır. Sayfa açıkça yazar: bu işlem fiziksel belleği *şu anda* boşaltır ve hiçbir şeyi hızlandırmaz — bu düğmeye sahip diğer her programın iddia ettiğinin tam tersi. |
-| 🌍 **Beş arayüz dili** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | İngilizce, Türkçe, Rusça, Basitleştirilmiş Çince ve Hintçe; hepsi tek exe'nin içinde. Uygulama açıkken anında değişir. |
+| 🌍 **On arayüz dili** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | İngilizce, Türkçe, Rusça, Basitleştirilmiş Çince, Hintçe, Portekizce, Japonca, Almanca, Fransızca ve Korece; hepsi tek exe'nin içinde. Uygulama açıkken anında değişir. |
 | 🎨 **Koyu / açık tema** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | Palet sözlüğü değiştirilir, pencere yeniden açılmadan uygulanır. |
 
 ---

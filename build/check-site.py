@@ -101,8 +101,33 @@ def read(path: str) -> str:
         return handle.read()
 
 
+VERSIONED = [
+    ('schema.org softwareVersion', re.compile(r'"softwareVersion":\s*"([^"]+)"')),
+    ('the "recently added" badge', re.compile(r'<span class="badge-new">([^<]+)</span>')),
+]
+
+
+def versions(text: str) -> dict:
+    """The version numbers a page states about the application."""
+    found = {}
+    for label, pattern in VERSIONED:
+        match = pattern.search(text)
+        found[label] = match.group(1).strip() if match else None
+    return found
+
+
 def compare(reference: str, candidate: str, code: str) -> list[str]:
     problems: list[str] = []
+
+    # Versions first, because this is the failure the structural check cannot see and
+    # the one that actually reaches a reader. Releasing 1.4.0 bumped the English page
+    # and left four translations claiming 1.3.0 was the newest release - identical
+    # markup, different facts - and every structural check passed the whole time.
+    for label, expected in versions(reference).items():
+        actual = versions(candidate)[label]
+        if expected != actual:
+            problems.append('%s: %s says %r, English says %r'
+                            % (code, label, actual, expected))
 
     a, b = Skeleton(), Skeleton()
     a.feed(reference)

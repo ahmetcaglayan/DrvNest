@@ -65,7 +65,7 @@ Hexnest 是一个产品、两个窗口。共用的引擎——监视器、清理
 | **每个程序的网络用量** | ✅ 仅 TCP | ✅ 通过 `nettop` |
 | **启动项管理** | ✅ Run 键 + 启动文件夹 | ✅ launchd 代理 |
 | **清理**，实测而非估算 | ✅ | ✅ |
-| **日志、设置、五种语言、深浅色主题** | ✅ | ✅ |
+| **日志、设置、十种语言、深浅色主题** | ✅ | ✅ |
 | **处理器温度** | ✅ ACPI 热区 | ❌ 非 root 无法读取 |
 | **按卷的磁盘吞吐** | ✅ | ❌ 没有按卷的计数器 |
 | **释放内存** | ✅ | ❌ macOS 改用内存压缩 |
@@ -138,7 +138,7 @@ Hexnest 在一个窗口里解决这些问题：
 | 🧹 **清理** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 临时文件、缩略图和图标缓存、七种浏览器的缓存、Windows Update 下载缓存、传递优化、崩溃转储、错误报告、着色器缓存、系统维护日志和回收站——每一项都是**实测，不是估算**，而且**默认一项都不勾选**。 |
 | 🗂️ **残留文件夹和旧下载** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | AppData 下与任何已安装的程序、任何正在运行的程序以及 Program Files 里的任何东西都对不上、并且六个月没有动过的文件夹；再加上“下载”文件夹里超过一个月的压缩包和安装程序。逐项列出，送进**回收站**，绝不直接删除。 |
 | 🧠 **内存收缩** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> | 把进程的工作集换出去。页面上明说：这只是*当下*释放物理内存，并不会让任何东西变快——这和其他每一个带这个按钮的工具所宣称的正好相反。 |
-| 🌍 **五种界面语言** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 英语、土耳其语、俄语、简体中文和印地语，全部装在同一个可执行文件里。程序开着的时候切换，立即生效。 |
+| 🌍 **十种界面语言** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 英语、土耳其语、俄语、简体中文、印地语、葡萄牙语、日语、德语、法语和韩语，全部装在同一个可执行文件里。程序开着的时候切换，立即生效。 |
 | 🎨 **深色 / 浅色主题** | <img src="https://img.shields.io/badge/-Windows-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows"> <img src="https://img.shields.io/badge/-macOS-1D1D1F?style=flat-square&logo=apple&logoColor=white" alt="macOS"> | 更换调色板字典；无需重新打开窗口即可应用。 |
 
 ---
