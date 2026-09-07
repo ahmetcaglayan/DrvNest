@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-    Generates src/DrvNest.App/Assets/drvnest.ico from scratch.
+    Generates src/Hexnest.App/Assets/hexnest.ico from scratch.
 
 .DESCRIPTION
-    Draws the DrvNest mark programmatically with System.Drawing (GDI+) at
+    Draws the Hexnest mark programmatically with System.Drawing (GDI+) at
     16, 24, 32, 48, 64, 128 and 256 px, then writes a single multi-resolution
     .ico file by hand (ICONDIR + ICONDIRENTRY records + PNG payloads).
 
@@ -31,7 +31,7 @@ Add-Type -AssemblyName System.Drawing
 
 if ([string]::IsNullOrWhiteSpace($OutputPath)) {
     $repoRoot   = Split-Path -Parent $PSScriptRoot
-    $OutputPath = Join-Path $repoRoot 'src\DrvNest.App\Assets\drvnest.ico'
+    $OutputPath = Join-Path $repoRoot 'src\Hexnest.App\Assets\hexnest.ico'
 }
 
 $outputDir = Split-Path -Parent $OutputPath

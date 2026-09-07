@@ -1,5 +1,5 @@
 # =============================================================================
-#  DrvNest coding conventions
+#  Hexnest coding conventions
 #
 #  These describe the style the existing code already uses. Everything is a
 #  suggestion, never an error: EnforceCodeStyleInBuild is off in

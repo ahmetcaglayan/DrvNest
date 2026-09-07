@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="Hexnest">
+  <title>Hexnest</title>
+
+  <!--
+    The macOS application icon.
+
+    A separate file from assets/logo.svg on purpose. Apple's icon grid expects the
+    artwork to sit on a 1024pt canvas with a wide transparent margin around it, in a
+    rounded rectangle of a very specific proportion - the shape every other icon in
+    the Dock has. Handing macOS the square logo instead produces an icon that is
+    correct but visibly larger and squarer than its neighbours, which is exactly what
+    "it does not quite sit right" looks like.
+
+    Canvas   1024
+    Plate     824 centred, so 100pt of clear margin on every side
+    Radius    185, which is the continuous-corner radius Apple uses at this size
+
+    Everything inside the plate is the logo mark, scaled from its own 256pt grid.
+  -->
+
+  <defs>
+    <linearGradient id="hnSurface" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1C232D"/>
+      <stop offset="0.55" stop-color="#12171E"/>
+      <stop offset="1" stop-color="#0B0E12"/>
+    </linearGradient>
+
+    <radialGradient id="hnGlow" cx="0.5" cy="0.46" r="0.5">
+      <stop offset="0" stop-color="#35D8A4" stop-opacity="0.24"/>
+      <stop offset="0.6" stop-color="#35D8A4" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#35D8A4" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="hnMint" x1="0.12" y1="0" x2="0.88" y2="1">
+      <stop offset="0" stop-color="#5BF0BF"/>
+      <stop offset="0.55" stop-color="#35D8A4"/>
+      <stop offset="1" stop-color="#22B98A"/>
+    </linearGradient>
+
+    <linearGradient id="hnChip" x1="0.1" y1="0" x2="0.75" y2="1">
+      <stop offset="0" stop-color="#6BF3CA"/>
+      <stop offset="1" stop-color="#2AC694"/>
+    </linearGradient>
+
+    <!-- The plate doubles as a clip, so the glow cannot bleed past the corners. -->
+    <clipPath id="hnPlate">
+      <rect x="100" y="100" width="824" height="824" rx="185" ry="185"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#hnPlate)">
+    <rect x="100" y="100" width="824" height="824" fill="url(#hnSurface)"/>
+    <circle cx="512" cy="474" r="410" fill="url(#hnGlow)"/>
+  </g>
+
+  <!--
+    A hairline inside the edge. Without it the plate dissolves into a dark Dock, and
+    with a heavier stroke it reads as a border rather than as a lit edge.
+  -->
+  <rect x="102" y="102" width="820" height="820" rx="184" ry="184"
+        fill="none" stroke="#2A323D" stroke-width="4"/>
+
+  <!--
+    The mark, from the 256pt logo grid: translate(100,100) then scale by 824/256.
+    Keeping the original coordinates means the two files cannot drift apart.
+  -->
+  <g transform="translate(100,100) scale(3.21875)">
+
+    <!-- chip pins -->
+    <g fill="url(#hnMint)">
+      <rect x="105" y="46" width="14" height="20" rx="5"/>
+      <rect x="137" y="46" width="14" height="20" rx="5"/>
+      <rect x="105" y="190" width="14" height="20" rx="5"/>
+      <rect x="137" y="190" width="14" height="20" rx="5"/>
+    </g>
+
+    <!-- nest cell -->
+    <path d="M196 128 L162 186.89 L94 186.89 L60 128 L94 69.11 L162 69.11 Z"
+          fill="none" stroke="url(#hnMint)" stroke-width="15" stroke-linejoin="round"/>
+
+    <!-- chip body -->
+    <rect x="99" y="99" width="58" height="58" rx="14" ry="14" fill="url(#hnChip)"/>
+    <rect x="116" y="116" width="24" height="24" rx="6" ry="6" fill="#0B1F19"/>
+  </g>
+</svg>

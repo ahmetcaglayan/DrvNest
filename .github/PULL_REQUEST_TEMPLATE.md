@@ -11,9 +11,9 @@ which device and hardware ID you tried it against.
 
 ## Checklist
 
-- [ ] Builds clean: `dotnet build src/DrvNest.sln -c Release`
+- [ ] Builds clean: `dotnet build src/Hexnest.sln -c Release`
 - [ ] The single-file publish still works: `pwsh build\publish.ps1`
-- [ ] `DrvNest.Core` gained no NuGet dependency and no UI reference
+- [ ] `Hexnest.Core` gained no NuGet dependency and no UI reference
 - [ ] New user-visible strings go through `Loc.T(...)` in **both** English and Turkish
 - [ ] Tested on a real machine if this touches scanning, installing, backup or
       resume-after-reboot

@@ -1,0 +1,66 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Hexnest.Mac</RootNamespace>
+    <AssemblyName>Hexnest</AssemblyName>
+
+    <AssemblyTitle>Hexnest</AssemblyTitle>
+    <Description>System monitor, network monitor, start-up manager and clean-up tool for macOS.</Description>
+
+    <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+    <ApplicationManifest />
+  </PropertyGroup>
+
+  <!--
+    Why Avalonia and not WPF.
+
+    WPF is a Windows library. It is not that it runs badly on macOS; there is no
+    macOS implementation of it and there never will be. Every option that keeps the
+    existing XAML views therefore comes down to a cross-platform XAML framework, and
+    Avalonia is the one whose markup, binding, styling and MVVM model are close
+    enough to WPF's that Hexnest.Core, the view models and the visual language all
+    survive the crossing largely intact.
+
+    The alternative would have been a second application written against AppKit,
+    which would have shared nothing with the Windows build and drifted from it
+    within one release.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.20" />
+  </ItemGroup>
+
+  <!--
+    Publish settings.
+
+    Self-contained for the same reason the Windows build is: somebody downloading a
+    utility should not have to install a runtime first. Trimming is off because the
+    view models are bound to reflectively and Avalonia resolves a good deal of its
+    own markup the same way.
+
+    Single file is deliberately *not* set. A .app bundle is already a single icon in
+    Finder as far as the user is concerned, and packing the runtime into one
+    executable inside it would only make code signing harder.
+  -->
+  <PropertyGroup>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">osx-arm64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <DebugType>embedded</DebugType>
+    <ApplicationIcon />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hexnest.Core\Hexnest.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+</Project>

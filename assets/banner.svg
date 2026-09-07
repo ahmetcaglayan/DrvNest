@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" width="1280" height="320" role="img" aria-label="DrvNest - Scan, install and update every Windows driver">
-  <title>DrvNest</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" width="1280" height="320" role="img" aria-label="Hexnest - Scan, install and update every Windows driver">
+  <title>Hexnest</title>
   <defs>
     <linearGradient id="bnBg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#131A22"/>
@@ -65,13 +65,13 @@
 
   <!-- wordmark -->
   <text x="272" y="150" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif"
-        font-size="82" font-weight="700" letter-spacing="-1.5" fill="#E8EDF4">Drv<tspan fill="#35D8A4">Nest</tspan></text>
+        font-size="82" font-weight="700" letter-spacing="-1.5" fill="#E8EDF4">Hex<tspan fill="#35D8A4">nest</tspan></text>
 
   <text x="275" y="196" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif"
-        font-size="26" font-weight="400" fill="#94A3B4">Scan, install and update every Windows driver</text>
+        font-size="26" font-weight="400" fill="#94A3B4">Monitor, clean and tune your machine — Windows and macOS</text>
 
   <text x="275" y="234" font-family="Segoe UI, Inter, Helvetica, Arial, sans-serif"
-        font-size="17" font-weight="400" letter-spacing="0.4" fill="#7A8899">Self-contained · No .NET required · Works offline</text>
+        font-size="17" font-weight="400" letter-spacing="0.4" fill="#7A8899">Self-contained · No runtime to install · No adware</text>
 
   <rect x="0" y="316" width="1280" height="4" fill="url(#bnRule)"/>
 </svg>

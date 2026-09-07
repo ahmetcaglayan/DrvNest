@@ -11,7 +11,7 @@
 <details open>
 <summary><b>.NET kurmam gerekiyor mu?</b></summary>
 
-**Hayır.** .NET 8 çalışma zamanının tamamı `DrvNest.exe`'nin içindedir (self-contained,
+**Hayır.** .NET 8 çalışma zamanının tamamı `Hexnest.exe`'nin içindedir (self-contained,
 tek dosya yayını). Makinede hiç .NET olmasa bile çalışır.
 
 Aynı şekilde **Visual C++ Redistributable de gerekmez**: WPF'in çalışma zamanı paketi
@@ -23,8 +23,8 @@ Tek gereksinim: **Windows 10 sürüm 1607 (yapı 14393) veya üstü**, 64-bit.
 <details>
 <summary><b>Kurulum sihirbazı yok mu?</b></summary>
 
-Yok, gerekmiyor. `DrvNest.exe` tek dosyadır: indirin, istediğiniz yere koyun, çift tıklayın.
-Kaldırmak için dosyayı silin ve isterseniz `%ProgramData%\DrvNest` klasörünü kaldırın.
+Yok, gerekmiyor. `Hexnest.exe` tek dosyadır: indirin, istediğiniz yere koyun, çift tıklayın.
+Kaldırmak için dosyayı silin ve isterseniz `%ProgramData%\Hexnest` klasörünü kaldırın.
 </details>
 
 <details>
@@ -33,7 +33,7 @@ Kaldırmak için dosyayı silin ve isterseniz `%ProgramData%\DrvNest` klasörün
 Büyük ölçüde evet. Aygıt taraması, Windows Update sorguları, yerel INF kurulumu, yedekleme
 ve geri yükleme normal çalışır.
 
-**Sistem Geri Yükleme Server SKU'larında bulunmaz.** DrvNest bunu bir hata olarak görmez:
+**Sistem Geri Yükleme Server SKU'larında bulunmaz.** Hexnest bunu bir hata olarak görmez:
 geri yükleme noktası oluşturma denemesi başarısız olur, günlüğe bir uyarı yazılır ve kuyruk
 devam eder. Bu durumda **Güncellemeden önce mevcut sürücüyü yedekle** ayarını açık tutmanız
 daha da önemlidir; geri dönüş yolunuz o olur.
@@ -46,7 +46,7 @@ Windows 10 1607'den eski sürümler ve 32-bit Windows desteklenmez.
 <details>
 <summary><b>Neden yönetici yetkisi istiyor?</b></summary>
 
-Sürücü kurmak ayrıcalıklı bir işlemdir. DrvNest'in kullandığı üç mekanizmanın **üçü de**
+Sürücü kurmak ayrıcalıklı bir işlemdir. Hexnest'in kullandığı üç mekanizmanın **üçü de**
 yükseltilmiş bir belirteç ister:
 
 - `pnputil` ile sürücü deposuna paket eklemek/dışa aktarmak,
@@ -64,7 +64,7 @@ ortasında "erişim reddedildi" ile durmaktı; bu daha dürüst.
 
 Bu beklenen bir durum ve sebebi teknik:
 
-- `DrvNest.exe` **kod imzalama sertifikasıyla imzalanmamıştır** (sertifika ücretlidir).
+- `Hexnest.exe` **kod imzalama sertifikasıyla imzalanmamıştır** (sertifika ücretlidir).
   Windows SmartScreen imzasız ve henüz "itibar" kazanmamış her exe için
   *"Windows bilgisayarınızı korudu"* ekranını gösterir.
 - Dosya **tek dosya, kendi kendine yeten** bir yayındır: çalışırken içindeki yerel
@@ -82,7 +82,7 @@ imzasız uygulamaları uyarmak yerine doğrudan **engeller**
 (`0x800711C7 — Uygulama Denetimi ilkesi bu dosyayı engelledi`). Bu, format sonrası
 senaryosunda karşınıza çıkabilecek gerçek bir durumdur.
 
-DrvNest'in **tek dosya** olarak yayımlanmasının bir sebebi de budur: birden çok gevşek
+Hexnest'in **tek dosya** olarak yayımlanmasının bir sebebi de budur: birden çok gevşek
 `.dll` dosyası içeren bir yayın Smart App Control tarafından engellenir, tek dosyalı
 sürüm ise çalışır (bu davranış Windows 11 25H2 üzerinde test edilerek doğrulanmıştır).
 Yine de engellenirse:
@@ -97,10 +97,10 @@ Yine de engellenirse:
 Her sürümle birlikte bir `checksums.txt` yayımlanır. PowerShell'de:
 
 ```powershell
-Get-FileHash .\DrvNest.exe -Algorithm SHA256
+Get-FileHash .\Hexnest.exe -Algorithm SHA256
 ```
 
-Çıkan değeri sürüm sayfasındaki `checksums.txt` içindeki `DrvNest.exe` satırıyla
+Çıkan değeri sürüm sayfasındaki `checksums.txt` içindeki `Hexnest.exe` satırıyla
 karşılaştırın. Tutuyorsa dosya birebir yayımlanan dosyadır.
 
 Aynı doğrulamayı uygulamanın kendi güncelleyicisi de otomatik yapar ve tutmazsa kurulumu
@@ -122,7 +122,7 @@ Makineden dışarı çıkan yalnızca iki trafik vardır:
    bastığınızda.
 
 Tüm kayıtlar (`settings.json`, `session.json`, `history.jsonl`, günlükler, yedekler)
-`%ProgramData%\DrvNest` altında, sizin makinenizde kalır.
+`%ProgramData%\Hexnest` altında, sizin makinenizde kalır.
 </details>
 
 ### Kullanım
@@ -136,7 +136,7 @@ Tüm kayıtlar (`settings.json`, `session.json`, `history.jsonl`, günlükler, y
   `WU_E_OPERATIONINPROGRESS` (0x80240016) hatası döner.
 - PnP alt sistemi `pnputil` çağrılarını zaten kendi içinde sıraya sokar.
 
-DrvNest bunu tek bir global kilitle dürüstçe modeller: aynı anda en fazla bir kurulum.
+Hexnest bunu tek bir global kilitle dürüstçe modeller: aynı anda en fazla bir kurulum.
 Aksini yapmak daha güzel görünen bir ilerleme çubuğu ve bir yığın sahte hata üretirdi.
 
 **İndirmeler ise gerçekten paraleldir** (varsayılan 3, ayarlanabilir 1–8), çünkü indirme
@@ -146,15 +146,15 @@ ağ işidir ve üst üste binmesi işe yarar.
 <details>
 <summary><b>İnternet yokken ne yapmalıyım?</b></summary>
 
-Bu, DrvNest'in asıl tasarlandığı senaryo.
+Bu, Hexnest'in asıl tasarlandığı senaryo.
 
 **En iyisi — formattan önce hazırlanmak:**
 
 1. Format öncesi **Yedekle & Geri Yükle → Yedek Oluştur**.
-2. Yedeği ve `DrvNest.exe`'yi aynı USB belleğe koyun.
-3. Format sonrası `DrvNest.exe --rescue` ile açın ve **Geri Yükle**'ye basın.
+2. Yedeği ve `Hexnest.exe`'yi aynı USB belleğe koyun.
+3. Format sonrası `Hexnest.exe --rescue` ile açın ve **Geri Yükle**'ye basın.
 
-`DrvNest.exe` ile aynı klasördeki **`Drivers`** adlı klasör otomatik olarak yerel sürücü
+`Hexnest.exe` ile aynı klasördeki **`Drivers`** adlı klasör otomatik olarak yerel sürücü
 havuzu sayılır — ayar yapmanız gerekmez.
 
 **Hazırlanamadıysanız:**
@@ -173,14 +173,14 @@ havuzu sayılır — ayar yapmanız gerekmez.
 
 Evet, üç ayrı yol var:
 
-1. **DrvNest'in aldığı yedekten.** *Güncellemeden önce mevcut sürücüyü yedekle* ayarı açıksa
+1. **Hexnest'in aldığı yedekten.** *Güncellemeden önce mevcut sürücüyü yedekle* ayarı açıksa
    (varsayılan), değiştirilen paket kurulumdan hemen önce dışa aktarılır ve yolu geçmiş
    kaydına yazılır. **Geçmiş** ekranından yedek klasörünü açın, sonra
    **Yedekle & Geri Yükle → Klasörden Geri Yükle** ile kurun.
 2. **Sistem geri yükleme noktasından.** Oturumdaki ilk kurulumdan önce bir tane oluşturulur.
    Windows'un *Sistem Geri Yükleme* sihirbazıyla (`rstrui.exe`) kurulum öncesine dönün.
 3. **Aygıt Yöneticisi'nden.** Aygıt → Özellikler → Sürücü → *Sürücüyü Geri Al*. Windows'un
-   kendi mekanizmasıdır ve DrvNest'ten bağımsız çalışır.
+   kendi mekanizmasıdır ve Hexnest'ten bağımsız çalışır.
 
 Bu yüzden geri yükleme noktası ayarını kapatmamanız önerilir.
 </details>
@@ -189,11 +189,11 @@ Bu yüzden geri yükleme noktası ayarını kapatmamanız önerilir.
 <summary><b>Yeniden başlatma sonrası gerçekten devam ediyor mu?</b></summary>
 
 Evet. Kuyruğun durumu her değişiklikte `session.json`'a atomik olarak yazılır ve yeniden
-başlatmadan önce zorla diske aktarılır. DrvNest ayrıca oturum açılışına bağlı bir
-zamanlanmış görev (`DrvNest\ResumeSession`, en yüksek yetkiyle) kaydeder; Görev Zamanlayıcı
+başlatmadan önce zorla diske aktarılır. Hexnest ayrıca oturum açılışına bağlı bir
+zamanlanmış görev (`Hexnest\ResumeSession`, en yüksek yetkiyle) kaydeder; Görev Zamanlayıcı
 kullanılamıyorsa `HKLM\...\RunOnce` yedeğe geçer.
 
-Makine açıldığında görev DrvNest'i `--resume` ile başlatır ve kalan işler devam eder.
+Makine açıldığında görev Hexnest'i `--resume` ile başlatır ve kalan işler devam eder.
 
 Sınırlar: bir oturum en fazla **10 yeniden başlatma** taşır, sonrasında güvenlik gereği
 bırakılır. Oturum dosyası başka bir makinede oluşturulmuşsa yok sayılır. Kuyruk bittiğinde
@@ -215,7 +215,7 @@ Pencere açılır açılmaz sessizce sürücü kurmaya başlamak savunulabilir b
 
 Muhtemel sebepler:
 
-- **Zaten günceldir.** Windows Update kurulu olandan eski bir sürüm önerdiğinde DrvNest o
+- **Zaten günceldir.** Windows Update kurulu olandan eski bir sürüm önerdiğinde Hexnest o
   adayı otomatik eler; bilerek sürüm düşürmez.
 - **Windows Update o aygıt için bir şey sunmuyordur.** Ekran kartı ve yonga seti
   sürücülerinin en yenisi çoğu zaman yalnızca üreticinin sitesindedir. Bu paketleri
@@ -233,8 +233,8 @@ Muhtemel sebepler:
 
 1. *Güncellemeleri Kontrol Et* → GitHub Releases API'sine bir istek; sürüm numaraları
    karşılaştırılır.
-2. *İndir ve Kur* → mimarinize uygun dosya indirilir (`DrvNest.exe` veya
-   `DrvNest-arm64.exe`).
+2. *İndir ve Kur* → mimarinize uygun dosya indirilir (`Hexnest.exe` veya
+   `Hexnest-arm64.exe`).
 3. Dosyanın **SHA-256** özeti sürümün `checksums.txt` dosyasıyla karşılaştırılır.
    **Sağlama toplamı yoksa veya tutmuyorsa dosya silinir ve kurulum reddedilir.**
 4. Doğrulama geçerse çalışan exe `.old` uzantısıyla yeniden adlandırılır (Windows çalışan
@@ -251,12 +251,12 @@ Kopyalama başarısız olursa orijinal exe geri konur.
 <summary><b>Bir başlangıç programını kapatmak bir şey siler mi?</b></summary>
 
 Hayır. Windows, bir başlangıç kaydının açık/kapalı bilgisini ayrı bir anahtarda tutar —
-`...\CurrentVersion\Explorer\StartupApproved\Run` ve iki kardeşi — ve DrvNest'in yazdığı
+`...\CurrentVersion\Explorer\StartupApproved\Run` ve iki kardeşi — ve Hexnest'in yazdığı
 tek şey budur. `Run` değeri veya Başlangıç klasöründeki kısayol olduğu yerde kalır; bu
 yüzden kaydı tekrar açtığınızda özgün komut satırı bit bit geri gelir.
 
-Bu aynı zamanda Görev Yöneticisi ile DrvNest'in her zaman aynı şeyi göstermesi demektir.
-Ve DrvNest'i sonradan silseniz bile bilgisayar başlangıç programlarının yarısından olmaz,
+Bu aynı zamanda Görev Yöneticisi ile Hexnest'in her zaman aynı şeyi göstermesi demektir.
+Ve Hexnest'i sonradan silseniz bile bilgisayar başlangıç programlarının yarısından olmaz,
 çünkü hiçbiri hiçbir yere gitmedi.
 </details>
 
@@ -276,7 +276,7 @@ söyleyerek yapıyor:
 - Açık olan dosyalar zorlanmaz, atlanır ve atlanan sayısı raporlanır.
 - Kendi dosyalarınız asla toplu seçilmez ve Geri Dönüşüm Kutusu'na gider.
 
-Artık klasör tespiti DrvNest'in tahmin yürüttüğü tek yerdir ve satırda bunu yazar.
+Artık klasör tespiti Hexnest'in tahmin yürüttüğü tek yerdir ve satırda bunu yazar.
 </details>
 
 <details>
@@ -290,7 +290,7 @@ diskteler ve program o belleğe tekrar dokunduğu anda Windows onları geri okur
 yerde bırakmaktan yavaştır. Kullanılmayan bellek boşa giden bellek değildir; Windows onu
 zaten kullanılabilir tutuyordu.
 
-Yani bu bir performans özelliği değildir ve DrvNest onu öyle sunmaz. Çok bellek isteyen bir
+Yani bu bir performans özelliği değildir ve Hexnest onu öyle sunmaz. Çok bellek isteyen bir
 işe başlamadan hemen önce ya da sızıntı yapan bir programın gerçekte ne kadar tuttuğunu
 görmek için işe yarar. Bu düğmeye sahip diğer bütün araçlar aksini iddia eder.
 </details>
@@ -306,7 +306,7 @@ masaüstü anakart hiç tanımlamaz. Çekirdek başına ve GPU sıcaklıkları, 
 üretici sensör yongasından gelir; bunun için imzalı bir çekirdek sürücüsü gerekir —
 HWiNFO ve Open Hardware Monitor tam olarak bunu kurar.
 
-DrvNest bir sayfaya sayı yazmak için çekirdek sürücüsü kurmaz. Bu yüzden makul görünen bir
+Hexnest bir sayfaya sayı yazmak için çekirdek sürücüsü kurmaz. Bu yüzden makul görünen bir
 45 °C uydurmak yerine sensörün olmadığını söyler.
 </details>
 
@@ -323,7 +323,7 @@ trafiği ve DNS bu yüzden ilk sayıya dahildir, ikincisine değil.
 
 Sayfa bunu açıkça yazar; sessizce eksik raporlamaz.
 
-ESTATS'ı etkinleştirmek yönetici yetkisi ister. DrvNest her zaman yönetici olarak çalışır;
+ESTATS'ı etkinleştirmek yönetici yetkisi ister. Hexnest her zaman yönetici olarak çalışır;
 yine de reddedilirse tablo işlem başına bağlantı sayısına düşer ve nedenini söyler.
 </details>
 
@@ -333,7 +333,7 @@ yine de reddedilirse tablo işlem başına bağlantı sayısına düşer ve nede
 Hayır. İki izleyici de siz sayfasını açana kadar hiçbir şey örneklemez ve sayfadan
 ayrıldığınız anda durur.
 
-DrvNest hâlâ hiçbir servis, sürücü veya başlangıç kaydı kurmaz. Kaydettiği tek şey,
+Hexnest hâlâ hiçbir servis, sürücü veya başlangıç kaydı kurmaz. Kaydettiği tek şey,
 yarım kalmış bir sürücü kuyruğunu sürdüren oturum açma görevidir ve kuyruk bitince o da
 kendini siler.
 </details>
@@ -344,14 +344,14 @@ kendini siler.
 Çünkü işlemci kullanımı Windows'un sakladığı bir değer değil, bir hızdır; hız ölçmek için
 iki örnek gerekir.
 
-DrvNest, Görev Yöneticisi ile aynı yöntemi kullanır: bir işlemin kendi çekirdek + kullanıcı
+Hexnest, Görev Yöneticisi ile aynı yöntemi kullanır: bir işlemin kendi çekirdek + kullanıcı
 süresinin iki örnek arasındaki farkını, geçen gerçek süreye ve mantıksal işlemci sayısına
 böler. İlk örneğin karşılaştıracağı bir öncesi olmadığı için sonuç sıfırdır; ikinci
 örnekten itibaren değerler gerçektir.
 </details>
 
 <details>
-<summary><b>DrvNest güncellemeleri arka planda kuruyor mu?</b></summary>
+<summary><b>Hexnest güncellemeleri arka planda kuruyor mu?</b></summary>
 
 **Denetler**, kurmaz. Günde bir kez GitHub'a sorar ve *Hakkında* menü öğesinde bir sayı
 gösterir.
@@ -360,7 +360,7 @@ gösterir.
 Açsanız bile:
 
 - indirilen dosya, sürümün `checksums.txt` değeriyle SHA-256 olarak doğrulanır,
-- değişim DrvNest **kapanırken** yapılır, çalışan bir sürücü kuyruğunun ortasında asla,
+- değişim Hexnest **kapanırken** yapılır, çalışan bir sürücü kuyruğunun ortasında asla,
 - çevrimdışı ve kurtarma modunda hem denetim hem kurulum tamamen atlanır.
 
 Denetimi tamamen kapatabilirsiniz; *Güncellemeleri denetle* düğmesi çalışmaya devam eder.
@@ -401,16 +401,16 @@ oluşturulur.
 <details>
 <summary><b>Uygulamayı kaldırınca geride ne kalıyor?</b></summary>
 
-`DrvNest.exe` dosyasını silin. Geriye kalanlar:
+`Hexnest.exe` dosyasını silin. Geriye kalanlar:
 
-- `%ProgramData%\DrvNest` klasörü (ayarlar, geçmiş, günlükler, yedekler) — elle silin.
+- `%ProgramData%\Hexnest` klasörü (ayarlar, geçmiş, günlükler, yedekler) — elle silin.
 - Kayıt defterinde **hiçbir şey kalmaz**: zamanlanmış görev ve `RunOnce` kaydı, kuyruk
   tamamlandığında uygulama tarafından zaten silinir.
 
 Kuyruk yarıda kalmışken uygulamayı sildiyseniz, zamanlanmış görevi elle kaldırabilirsiniz:
 
 ```powershell
-schtasks /Delete /TN "DrvNest\ResumeSession" /F
+schtasks /Delete /TN "Hexnest\ResumeSession" /F
 ```
 </details>
 
@@ -423,7 +423,7 @@ schtasks /Delete /TN "DrvNest\ResumeSession" /F
 <details open>
 <summary><b>Do I need to install .NET?</b></summary>
 
-**No.** The entire .NET 8 runtime is inside `DrvNest.exe` (self-contained, single-file
+**No.** The entire .NET 8 runtime is inside `Hexnest.exe` (self-contained, single-file
 publish). It runs on a machine with no .NET at all.
 
 **No Visual C++ Redistributable either**: WPF's runtime pack carries its own private
@@ -435,8 +435,8 @@ The only requirement is **Windows 10 version 1607 (build 14393) or newer**, 64-b
 <details>
 <summary><b>Is there an installer?</b></summary>
 
-No, and none is needed. `DrvNest.exe` is one file: download it, put it wherever you like,
-double-click. To remove it, delete the file and optionally the `%ProgramData%\DrvNest`
+No, and none is needed. `Hexnest.exe` is one file: download it, put it wherever you like,
+double-click. To remove it, delete the file and optionally the `%ProgramData%\Hexnest`
 folder.
 </details>
 
@@ -446,7 +446,7 @@ folder.
 Mostly yes. Device scanning, Windows Update queries, local INF installs, backup and restore
 all work normally.
 
-**System Restore does not exist on Server SKUs.** DrvNest does not treat that as an error:
+**System Restore does not exist on Server SKUs.** Hexnest does not treat that as an error:
 the restore-point attempt fails, a warning goes to the log, and the queue continues. On
 Server it is therefore even more important to leave **Back up the current driver before
 updating** switched on — that is your way back.
@@ -459,7 +459,7 @@ Windows releases older than 10 1607, and 32-bit Windows, are not supported.
 <details>
 <summary><b>Why does it require administrator rights?</b></summary>
 
-Installing a driver is a privileged operation. All three mechanisms DrvNest uses need an
+Installing a driver is a privileged operation. All three mechanisms Hexnest uses need an
 elevated token:
 
 - adding to and exporting from the driver store with `pnputil`,
@@ -477,7 +477,7 @@ failing with "access denied" in the middle of a queue; asking honestly is better
 
 Expected, and the reasons are technical:
 
-- `DrvNest.exe` is **not code-signed** (certificates cost money). SmartScreen shows its
+- `Hexnest.exe` is **not code-signed** (certificates cost money). SmartScreen shows its
   *"Windows protected your PC"* screen for any unsigned executable that has not yet built
   up reputation.
 - It is a **single-file self-contained** publish, so it extracts its native libraries to a
@@ -491,9 +491,9 @@ To get past SmartScreen: *More info* → *Run anyway*.
 **About Smart App Control.** On clean Windows 11 installations this is on by default, and
 it is stricter than SmartScreen: instead of warning, it **blocks** unsigned applications
 outright (`0x800711C7 — this file was blocked by an Application Control policy`). That is
-a real possibility in exactly the post-format scenario DrvNest targets.
+a real possibility in exactly the post-format scenario Hexnest targets.
 
-It is also one of the reasons DrvNest ships as a **single file**: a publish made of many
+It is also one of the reasons Hexnest ships as a **single file**: a publish made of many
 loose `.dll` files gets blocked by Smart App Control, while the single-file build runs
 (verified on Windows 11 25H2). If it is still blocked:
 
@@ -507,10 +507,10 @@ loose `.dll` files gets blocked by Smart App Control, while the single-file buil
 `checksums.txt`. In PowerShell:
 
 ```powershell
-Get-FileHash .\DrvNest.exe -Algorithm SHA256
+Get-FileHash .\Hexnest.exe -Algorithm SHA256
 ```
 
-Compare the result with the `DrvNest.exe` line in the release's `checksums.txt`. A match
+Compare the result with the `Hexnest.exe` line in the release's `checksums.txt`. A match
 means the file is byte-for-byte the published one.
 
 The built-in updater performs the same check automatically and refuses to install anything
@@ -532,7 +532,7 @@ Exactly two things leave the machine:
 2. **One request to the GitHub Releases API** — only when you press *Check for updates*.
 
 Everything else (`settings.json`, `session.json`, `history.jsonl`, logs, backups) stays in
-`%ProgramData%\DrvNest` on your machine.
+`%ProgramData%\Hexnest` on your machine.
 </details>
 
 ### Usage
@@ -546,7 +546,7 @@ Because Windows does not allow it.
   starts while one is running.
 - The PnP subsystem serializes `pnputil` calls internally regardless.
 
-DrvNest models that honestly with a single global lock: at most one install at a time.
+Hexnest models that honestly with a single global lock: at most one install at a time.
 Doing otherwise would produce a prettier progress bar and a pile of spurious failures.
 
 **Downloads really are parallel** (3 by default, configurable 1–8), because downloading is
@@ -556,15 +556,15 @@ network-bound and genuinely benefits from overlapping.
 <details>
 <summary><b>What do I do without an internet connection?</b></summary>
 
-This is the scenario DrvNest was built for.
+This is the scenario Hexnest was built for.
 
 **Best case — prepare before the format:**
 
 1. Before formatting: **Backup & Restore → Create backup**.
-2. Copy the backup and `DrvNest.exe` onto the same USB stick.
-3. After the format, run `DrvNest.exe --rescue` and press **Restore**.
+2. Copy the backup and `Hexnest.exe` onto the same USB stick.
+3. After the format, run `Hexnest.exe --rescue` and press **Restore**.
 
-A folder named **`Drivers`** next to `DrvNest.exe` is automatically registered as a local
+A folder named **`Drivers`** next to `Hexnest.exe` is automatically registered as a local
 driver repository — no configuration required.
 
 **If you did not prepare:**
@@ -583,14 +583,14 @@ Start with the network adapter; once that works, Windows Update handles the rest
 
 Yes, three ways:
 
-1. **From DrvNest's own backup.** With *Back up the current driver before updating* on (the
+1. **From Hexnest's own backup.** With *Back up the current driver before updating* on (the
    default), the package being replaced is exported immediately before the install and its
    path is stored in the history record. Open the backup folder from **History**, then use
    **Backup & Restore → Restore from folder**.
 2. **From the system restore point.** One is created before the first install of a session.
    Use Windows' *System Restore* wizard (`rstrui.exe`).
 3. **From Device Manager.** Device → Properties → Driver → *Roll Back Driver*. This is
-   Windows' own mechanism and works independently of DrvNest.
+   Windows' own mechanism and works independently of Hexnest.
 
 Which is why leaving the restore-point setting on is recommended.
 </details>
@@ -599,11 +599,11 @@ Which is why leaving the restore-point setting on is recommended.
 <summary><b>Does it really resume after a reboot?</b></summary>
 
 Yes. Queue state is written atomically to `session.json` on every change and force-flushed
-before a restart is scheduled. DrvNest registers a logon-triggered scheduled task
-(`DrvNest\ResumeSession`, highest privileges), falling back to `HKLM\...\RunOnce` when Task
+before a restart is scheduled. Hexnest registers a logon-triggered scheduled task
+(`Hexnest\ResumeSession`, highest privileges), falling back to `HKLM\...\RunOnce` when Task
 Scheduler is unavailable.
 
-At logon the task starts DrvNest with `--resume` and the remaining jobs continue.
+At logon the task starts Hexnest with `--resume` and the remaining jobs continue.
 
 Limits: a session survives at most **10 restarts** before it is abandoned as a safety valve,
 and a session file created on a different machine is ignored. When the queue finishes, the
@@ -626,7 +626,7 @@ Silently installing drivers the moment a window opens is not a defensible defaul
 Likely reasons:
 
 - **It is already current.** When Windows Update offers a version older than the installed
-  one, DrvNest drops that candidate; it never downgrades on purpose.
+  one, Hexnest drops that candidate; it never downgrades on purpose.
 - **Windows Update simply has nothing for that device.** The newest GPU and chipset drivers
   often exist only on the vendor's own site. Download them and install with **Restore from
   folder**.
@@ -640,8 +640,8 @@ Likely reasons:
 From the **About** page, always on your click:
 
 1. *Check for updates* → one request to the GitHub Releases API; versions are compared.
-2. *Download and install* → the file matching your architecture is fetched (`DrvNest.exe`
-   or `DrvNest-arm64.exe`).
+2. *Download and install* → the file matching your architecture is fetched (`Hexnest.exe`
+   or `Hexnest-arm64.exe`).
 3. Its **SHA-256** is compared against the release's `checksums.txt`. **A missing or
    mismatching checksum means the file is deleted and the update refused.**
 4. On success the running executable is renamed with a `.old` suffix (Windows allows a
@@ -659,12 +659,12 @@ the copy fails, the original executable is put back.
 
 No. Windows keeps the enabled flag in a separate key —
 `...\CurrentVersion\Explorer\StartupApproved\Run` and its two siblings — and that is the
-only thing DrvNest writes. The `Run` value, or the shortcut in the Startup folder, stays
+only thing Hexnest writes. The `Run` value, or the shortcut in the Startup folder, stays
 exactly where it is, so switching the entry back on restores the original command line byte
 for byte.
 
-It also means Task Manager and DrvNest agree with each other in both directions, and that
-deleting DrvNest later never leaves the machine missing half its startup programs, because
+It also means Task Manager and Hexnest agree with each other in both directions, and that
+deleting Hexnest later never leaves the machine missing half its startup programs, because
 none of those entries ever went anywhere.
 </details>
 
@@ -682,7 +682,7 @@ It is built to be, and the design says how rather than asking you to trust it:
 - Files that are open are skipped rather than forced, and the number skipped is reported.
 - Your own files are never bulk-selected, and they go to the Recycle Bin.
 
-The leftover detection is the one place DrvNest is guessing, and the row says so.
+The leftover detection is the one place Hexnest is guessing, and the row says so.
 </details>
 
 <details>
@@ -696,7 +696,7 @@ are on disk, and the moment the program touches that memory again Windows reads 
 which is slower than leaving them alone. Unused memory is not wasted memory; Windows was
 already keeping it available.
 
-So it is not a performance feature and DrvNest does not present it as one. It is useful
+So it is not a performance feature and Hexnest does not present it as one. It is useful
 immediately before starting something that needs a large allocation, or to see how much a
 leaking program is really holding. Every other tool with this button claims otherwise.
 </details>
@@ -712,7 +712,7 @@ great many desktop motherboards declare none at all. Per-core and GPU temperatur
 from a vendor sensor chip over an SMBus, which needs a signed kernel driver — exactly what
 HWiNFO and Open Hardware Monitor install.
 
-DrvNest will not install a kernel driver to draw a number on a page, so it tells you the
+Hexnest will not install a kernel driver to draw a number on a page, so it tells you the
 sensor is missing instead of inventing a plausible 45 °C.
 </details>
 
@@ -729,7 +729,7 @@ much game traffic and DNS are therefore in the first number and not in the secon
 
 The page says so rather than quietly under-reporting.
 
-Enabling ESTATS needs an elevated token. DrvNest always has one; if it is ever refused, the
+Enabling ESTATS needs an elevated token. Hexnest always has one; if it is ever refused, the
 table falls back to per-process connection counts and says why.
 </details>
 
@@ -739,7 +739,7 @@ table falls back to per-process connection counts and says why.
 No. Neither monitor samples anything until you open its page, and both stop the moment you
 navigate away.
 
-DrvNest still installs no service, no driver and no startup entry. The only thing it ever
+Hexnest still installs no service, no driver and no startup entry. The only thing it ever
 registers is the logon task that resumes an interrupted driver queue, and that removes
 itself when the queue finishes.
 </details>
@@ -750,14 +750,14 @@ itself when the queue finishes.
 Because processor usage is not a value Windows stores, it is a rate — and a rate needs two
 samples.
 
-DrvNest measures it the way Task Manager does: the change in a process' own kernel + user
+Hexnest measures it the way Task Manager does: the change in a process' own kernel + user
 time between two samples, divided by the wall clock time that elapsed and by the number of
 logical processors. The first sample has nothing to compare against, so it reads zero;
 from the second one on, the numbers are real.
 </details>
 
 <details>
-<summary><b>Does DrvNest install updates in the background?</b></summary>
+<summary><b>Does Hexnest install updates in the background?</b></summary>
 
 It **checks**; it does not install. Once a day it asks GitHub and shows a count on the
 *About* menu entry.
@@ -766,7 +766,7 @@ It downloads and installs nothing unless you turn that on in **Settings → Upda
 even then:
 
 - the download is verified against the release's `checksums.txt` (SHA-256) before it is trusted,
-- the swap happens as DrvNest **closes**, never in the middle of a running driver queue,
+- the swap happens as Hexnest **closes**, never in the middle of a running driver queue,
 - both the check and the install are skipped entirely in offline and rescue mode.
 
 You can turn the check off completely; the *Check for updates* button keeps working.
@@ -808,15 +808,15 @@ WMI `SystemRestore` class.
 <details>
 <summary><b>What is left behind if I remove it?</b></summary>
 
-Delete `DrvNest.exe`. What remains:
+Delete `Hexnest.exe`. What remains:
 
-- The `%ProgramData%\DrvNest` folder (settings, history, logs, backups) — delete it manually.
+- The `%ProgramData%\Hexnest` folder (settings, history, logs, backups) — delete it manually.
 - **Nothing in the registry**: the scheduled task and the `RunOnce` value are removed by the
   application as soon as a queue finishes.
 
 If you deleted the application while a queue was still pending, remove the task by hand:
 
 ```powershell
-schtasks /Delete /TN "DrvNest\ResumeSession" /F
+schtasks /Delete /TN "Hexnest\ResumeSession" /F
 ```
 </details>

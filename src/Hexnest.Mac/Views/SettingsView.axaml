@@ -1,0 +1,105 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Hexnest.Mac.ViewModels"
+             xmlns:s="clr-namespace:Hexnest.Mac.Services"
+             x:Class="Hexnest.Mac.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+
+    <ScrollViewer Classes="page">
+        <StackPanel Spacing="14">
+
+            <StackPanel>
+                <TextBlock Text="{Binding Title}" Classes="h1" />
+                <TextBlock Text="{Binding Subtitle}" Classes="caption wrap" Margin="0,3,0,0" />
+            </StackPanel>
+
+            <!-- ============================================== APPEARANCE -->
+            <Border Classes="card">
+                <StackPanel Spacing="14">
+                    <TextBlock Text="{s:Loc set.appearance}" Classes="h2" />
+
+                    <Grid ColumnDefinitions="260,*">
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="{s:Loc set.language}" />
+                            <TextBlock Text="{s:Loc mac.languageHint}" Classes="faint wrap" Margin="0,3,0,0" />
+                        </StackPanel>
+
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding Languages}"
+                                  SelectedItem="{Binding Language, Mode=TwoWay}"
+                                  MinWidth="240"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center" />
+                    </Grid>
+
+                    <Border Classes="divider" />
+
+                    <Grid ColumnDefinitions="260,*">
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="{s:Loc set.theme}" />
+                            <TextBlock Text="{Binding ThemeHint}" Classes="faint wrap" Margin="0,3,0,0" />
+                        </StackPanel>
+
+                        <ComboBox Grid.Column="1"
+                                  ItemsSource="{Binding Themes}"
+                                  SelectedValue="{Binding Theme, Mode=TwoWay}"
+                                  SelectedValueBinding="{Binding Code}"
+                                  MinWidth="240"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- ================================================= UPDATES -->
+            <Border Classes="card">
+                <StackPanel Spacing="14">
+                    <TextBlock Text="{s:Loc set.updates}" Classes="h2" />
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                            <TextBlock Text="{s:Loc set.autoCheck}" />
+                            <TextBlock Text="{s:Loc mac.autoCheckHint}" Classes="faint wrap" Margin="0,3,0,0" />
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1" IsChecked="{Binding AutoCheckUpdates, Mode=TwoWay}"
+                                      VerticalAlignment="Center" />
+                    </Grid>
+
+                    <Border Classes="divider" />
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                            <TextBlock Text="{s:Loc set.prerelease}" />
+                            <TextBlock Text="{s:Loc set.prereleaseHint}" Classes="faint wrap" Margin="0,3,0,0" />
+                        </StackPanel>
+                        <ToggleSwitch Grid.Column="1" IsChecked="{Binding IncludePrerelease, Mode=TwoWay}"
+                                      VerticalAlignment="Center" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- ==================================================== DATA -->
+            <Border Classes="card">
+                <StackPanel Spacing="14">
+                    <TextBlock Text="{s:Loc set.dataFolder}" Classes="h2" />
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0" Text="{Binding DataFolder}" Classes="mono faint wrap"
+                                   VerticalAlignment="Center" Margin="0,0,14,0" />
+                        <Button Grid.Column="1" Classes="ghost" Content="{s:Loc mac.revealInFinder}"
+                                Command="{Binding OpenDataFolderCommand}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0" Text="{Binding LogFolder}" Classes="mono faint wrap"
+                                   VerticalAlignment="Center" Margin="0,0,14,0" />
+                        <Button Grid.Column="1" Classes="ghost" Content="{s:Loc log.openFolder}"
+                                Command="{Binding OpenLogFolderCommand}" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

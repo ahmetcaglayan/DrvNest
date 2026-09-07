@@ -4,7 +4,7 @@
 Extracts the English string table from Loc.cs as JSON.
 
 The starting point for a new translation: run this, translate the values, save the result
-as src/DrvNest.App/Languages/<code>.json with "_name" and "_englishName" added, and the
+as src/Hexnest.App/Languages/<code>.json with "_name" and "_englishName" added, and the
 next build embeds it. See docs/ARCHITECTURE.md, "Adding a language".
 
     python build/extract-strings.py > de.json
@@ -15,7 +15,7 @@ import io, json, re, sys
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-src = os.path.join(ROOT, 'src', 'DrvNest.App', 'Services', 'Loc.cs')
+src = os.path.join(ROOT, 'src', 'Hexnest.App', 'Services', 'Loc.cs')
 out = sys.argv[1] if len(sys.argv) > 1 else None
 
 s = io.open(src, encoding='utf-8').read()

@@ -1,0 +1,99 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Hexnest.Mac.ViewModels"
+             xmlns:s="clr-namespace:Hexnest.Mac.Services"
+             x:Class="Hexnest.Mac.Views.AboutView"
+             x:DataType="vm:AboutViewModel">
+
+    <ScrollViewer Classes="page">
+        <StackPanel Spacing="14">
+
+            <StackPanel>
+                <TextBlock Text="{Binding Title}" Classes="h1" />
+                <TextBlock Text="{Binding Subtitle}" Classes="caption wrap" Margin="0,3,0,0" />
+            </StackPanel>
+
+            <!--
+                Identity.
+
+                The three facts sit in their own columns across the card rather than in
+                a narrow label/value list down the left, which left most of the card
+                empty and made the page look unfinished.
+            -->
+            <Border Classes="card">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="44" Height="44" CornerRadius="12"
+                                Background="{DynamicResource Brush.Accent}">
+                            <Path Data="{StaticResource Icon.Brand}"
+                                  Stroke="{DynamicResource Brush.AccentText}" StrokeThickness="1.8"
+                                  StrokeJoin="Round" Width="21" Height="21" Stretch="Uniform"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+
+                        <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding ProductName}" Classes="h1" />
+                            <TextBlock Text="{Binding Tagline}" Classes="caption wrap" Margin="0,3,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Border Classes="divider" Margin="0,16" />
+
+                    <Grid ColumnDefinitions="Auto,*,2*">
+                        <StackPanel Grid.Column="0" Margin="0,0,40,0">
+                            <TextBlock Text="{s:Loc common.version}" Classes="faint" />
+                            <TextBlock Text="{Binding VersionText}" Classes="mono" Margin="0,4,0,0" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Margin="0,0,40,0">
+                            <TextBlock Text="{s:Loc mon.cpu}" Classes="faint" />
+                            <TextBlock Text="{Binding ProcessorText}" Classes="wrap" Margin="0,4,0,0" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="{s:Loc dash.system}" Classes="faint" />
+                            <TextBlock Text="{Binding MachineText}" Classes="wrap" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Updates and links, side by side, so neither card is mostly whitespace -->
+            <Grid ColumnDefinitions="*,14,*">
+
+                <Border Grid.Column="0" Classes="card">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc about.checkUpdates}" Classes="h2" />
+                        <TextBlock Text="{Binding Status}" Classes="caption wrap" Margin="0,7,0,0" />
+
+                        <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,14,0,0">
+                            <Button Classes="primary" Content="{s:Loc about.checkUpdates}"
+                                    Command="{Binding CheckCommand}" />
+                            <Button Classes="ghost" Content="{s:Loc about.download}"
+                                    Command="{Binding DownloadCommand}"
+                                    IsVisible="{Binding HasUpdate}" />
+                        </StackPanel>
+
+                        <TextBlock Text="{s:Loc mac.checksumNote}" Classes="faint wrap" Margin="0,14,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Classes="card">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc about.license}" Classes="h2" />
+                        <TextBlock Text="{Binding LicenseText}" Classes="caption wrap" Margin="0,7,0,0" />
+
+                        <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,14,0,0">
+                            <Button Classes="ghost" Content="{s:Loc about.repo}"
+                                    Command="{Binding OpenRepositoryCommand}" />
+                            <Button Classes="ghost" Content="{s:Loc about.issues}"
+                                    Command="{Binding OpenIssuesCommand}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

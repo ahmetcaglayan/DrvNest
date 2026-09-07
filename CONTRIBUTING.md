@@ -1,6 +1,6 @@
-# Contributing to DrvNest
+# Contributing to Hexnest
 
-Thanks for taking the time. DrvNest exists for one moment: the first boot after a
+Thanks for taking the time. Hexnest exists for one moment: the first boot after a
 format, when the network adapter has no driver and nothing else on the machine
 works either. Every decision in this repository comes back to that.
 
@@ -9,15 +9,15 @@ works either. Every decision in this repository comes back to that.
 You need **Windows** and the **.NET 8 SDK**. That is the whole list.
 
 ```powershell
-git clone https://github.com/ahmetcaglayan/DrvNest.git
-cd DrvNest
-dotnet build src/DrvNest.sln -c Release
+git clone https://github.com/ahmetcaglayan/Hexnest.git
+cd Hexnest
+dotnet build src/Hexnest.sln -c Release
 ```
 
 Windows is not negotiable as a build platform:
 
 - The app is WPF, and every project targets `net8.0-windows`.
-- `DrvNest.Core` calls SetupAPI, CfgMgr32, srclient and the Windows Update Agent.
+- `Hexnest.Core` calls SetupAPI, CfgMgr32, srclient and the Windows Update Agent.
 
 Nothing beyond the .NET 8 SDK is needed, though: there are no NuGet packages, and the
 COM interop is hand-written rather than generated, so `dotnet build` alone is enough.
@@ -27,8 +27,8 @@ To produce the real artifact - one self-contained file with the .NET runtime
 inside it:
 
 ```powershell
-pwsh build\publish.ps1                       # dist\DrvNest.exe
-pwsh build\publish.ps1 -Runtime win-arm64    # dist\DrvNest-arm64.exe
+pwsh build\publish.ps1                       # dist\Hexnest.exe
+pwsh build\publish.ps1 -Runtime win-arm64    # dist\Hexnest-arm64.exe
 ```
 
 `build\make-release.ps1 -Version 1.2.3` does both architectures, the optional
@@ -50,18 +50,18 @@ Nothing here is enforced by the build. `TreatWarningsAsErrors` is off and every
 style rule is a suggestion, on purpose: a contributor on a slightly older SDK
 patch should never be blocked from compiling.
 
-## The one hard rule: `DrvNest.Core` stays clean
+## The one hard rule: `Hexnest.Core` stays clean
 
-`DrvNest.Core` has **no NuGet dependencies and no UI**. Not "few". None.
+`Hexnest.Core` has **no NuGet dependencies and no UI**. Not "few". None.
 
-- No `PackageReference` in `DrvNest.Core.csproj`. Everything is BCL, P/Invoke into
+- No `PackageReference` in `Hexnest.Core.csproj`. Everything is BCL, P/Invoke into
   SetupAPI / CfgMgr32 / srclient, or the Windows Update Agent COM API that already
   ships with Windows.
 - No `System.Windows`, no WPF types, no `Dispatcher`, no `MessageBox`. Core reports
   through events, return values and `Log`; the UI decides what to show.
-- No `Console.WriteLine` either - `DrvNest.Cli` and `DrvNest.App` both consume Core.
+- No `Console.WriteLine` either - `Hexnest.Cli` and `Hexnest.App` both consume Core.
 
-This is what lets DrvNest be one 65 MB file that runs on a machine with no
+This is what lets Hexnest be one 65 MB file that runs on a machine with no
 runtime installed, no redistributable and no internet. A single package
 reference that drags in a native dependency breaks that promise.
 
@@ -74,12 +74,12 @@ A provider is a source of driver packages: a vendor catalog, a network share,
 WSUS, a driver pack archive. The job engine and the UI only ever see
 `IDriverProvider`, so a new source needs no changes in either.
 
-1. Add a value to `ProviderKind` in `src/DrvNest.Core/Models/Enums.cs`.
+1. Add a value to `ProviderKind` in `src/Hexnest.Core/Models/Enums.cs`.
 2. Implement `IDriverProvider`
-   (`src/DrvNest.Core/Abstractions/IDriverProvider.cs`) in
-   `src/DrvNest.Core/Providers/`. Read `LocalRepositoryProvider` first - it is
+   (`src/Hexnest.Core/Abstractions/IDriverProvider.cs`) in
+   `src/Hexnest.Core/Providers/`. Read `LocalRepositoryProvider` first - it is
    the simpler of the two existing ones.
-3. Register it where the providers are composed in `DrvNest.App/Services/AppHost.cs`.
+3. Register it where the providers are composed in `Hexnest.App/Services/AppHost.cs`.
 
 Contracts you must honour:
 
@@ -96,7 +96,7 @@ Contracts you must honour:
 
 ## Adding a language
 
-The UI strings live in one file: `src/DrvNest.App/Services/Loc.cs`. There is no
+The UI strings live in one file: `src/Hexnest.App/Services/Loc.cs`. There is no
 RESX and there are no satellite assemblies, deliberately - satellite assemblies
 fight the single-file publish, and this app has a few hundred strings rather than
 a few thousand.
@@ -107,7 +107,7 @@ a few thousand.
    just below it.
 3. Add the option to the language picker in the settings page.
 4. Allow the new code in `AppSettings.Normalize()`
-   (`src/DrvNest.Core/Models/AppSettings.cs`), which currently clamps `Language`
+   (`src/Hexnest.Core/Models/AppSettings.cs`), which currently clamps `Language`
    to `tr` or `en`.
 
 Missing keys fall back to English and then to the key itself, so a partial
@@ -119,7 +119,7 @@ language; users will be comparing your text against Device Manager.
 
 - One change per PR. A driver provider and a UI redesign are two PRs.
 - Say **what** broke and **how** you reproduced it. For driver bugs include the
-  hardware ID and the relevant lines from `%ProgramData%\DrvNest\logs\drvnest.log`.
+  hardware ID and the relevant lines from `%ProgramData%\Hexnest\logs\hexnest.log`.
 - Build Release before pushing. CI runs on `windows-latest` and does a real
   single-file publish, so a change that only breaks under `PublishSingleFile`
   will be caught - but finding it locally is faster.
@@ -127,10 +127,10 @@ language; users will be comparing your text against Device Manager.
   resume-after-reboot path. These are hard to reason about and easy to get subtly
   wrong; a VM with a snapshot is fine.
 - If you change what the release publishes, check `AppInfo.cs` and
-  `SelfUpdateService.cs` first. The updater looks for exactly `DrvNest.exe`,
-  `DrvNest-arm64.exe` and `checksums.txt`, and it refuses to install a release
+  `SelfUpdateService.cs` first. The updater looks for exactly `Hexnest.exe`,
+  `Hexnest-arm64.exe` and `checksums.txt`, and it refuses to install a release
   without a checksum file. Renaming an asset silently breaks updates for everyone
-  already running DrvNest.
+  already running Hexnest.
 - New UI strings go through `Loc.T(...)` in both languages. No hardcoded text.
 
 ## Reporting bugs

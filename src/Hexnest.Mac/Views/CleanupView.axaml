@@ -1,0 +1,159 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Hexnest.Mac.ViewModels"
+             xmlns:s="clr-namespace:Hexnest.Mac.Services"
+             x:Class="Hexnest.Mac.Views.CleanupView"
+             x:DataType="vm:CleanupViewModel">
+
+    <ScrollViewer Classes="page">
+        <StackPanel Spacing="14">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{Binding Title}" Classes="h1" />
+                    <TextBlock Text="{Binding Subtitle}" Classes="caption wrap" Margin="0,3,0,0" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Top">
+                    <Button Classes="ghost" Content="{s:Loc common.cancel}"
+                            Command="{Binding CancelCommand}" IsVisible="{Binding IsBusy}" />
+                    <Button Classes="primary" Content="{s:Loc common.scan}"
+                            Command="{Binding ScanCommand}" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Empty state, before the first measurement -->
+            <Border Classes="card" IsVisible="{Binding ShowEmptyState}">
+                <StackPanel>
+                    <TextBlock Text="{s:Loc clean.footnote}" Classes="body wrap" />
+                    <TextBlock Text="{Binding MemoryNote}" Classes="faint wrap" Margin="0,10,0,0" />
+                </StackPanel>
+            </Border>
+
+            <!-- Progress -->
+            <Border Classes="card-flat" IsVisible="{Binding IsBusy}">
+                <StackPanel>
+                    <TextBlock Text="{Binding ProgressText}" Classes="body" />
+                    <ProgressBar IsIndeterminate="True" Margin="0,10,0,0" />
+                </StackPanel>
+            </Border>
+
+            <!-- Totals and bulk selection -->
+            <Border Classes="card" IsVisible="{Binding HasScanned}">
+                <Grid ColumnDefinitions="Auto,Auto,*,Auto">
+                    <StackPanel Grid.Column="0" Margin="0,0,26,0">
+                        <TextBlock Text="{s:Loc clean.found}" Classes="faint" />
+                        <TextBlock Text="{Binding FoundText}" Classes="metric" Margin="0,4,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="0,0,26,0">
+                        <TextBlock Text="{s:Loc clean.selected}" Classes="faint" />
+                        <TextBlock Text="{Binding SelectedText}" Classes="metric" Margin="0,4,0,0"
+                                   Foreground="{DynamicResource Brush.Accent}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8"
+                                VerticalAlignment="Center">
+                        <Button Classes="ghost" Content="{s:Loc clean.selectSafe}"
+                                Command="{Binding SelectSafeCommand}"
+                                ToolTip.Tip="{s:Loc clean.selectSafeHint}" />
+                        <Button Classes="ghost" Content="{s:Loc common.selectNone}"
+                                Command="{Binding SelectNoneCommand}" />
+                    </StackPanel>
+
+                    <Button Grid.Column="3" Classes="danger"
+                            Content="{Binding CleanButtonText}"
+                            Command="{Binding CleanCommand}"
+                            VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <!-- The categories -->
+            <ItemsControl ItemsSource="{Binding Rows}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="vm:CleanupRow">
+                        <Border Classes="card" Margin="0,0,0,10">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                    <CheckBox Grid.Column="0"
+                                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                              VerticalAlignment="Top"
+                                              Margin="0,0,10,0" />
+
+                                    <StackPanel Grid.Column="1" Margin="0,0,14,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Title}" Classes="h2"
+                                                       VerticalAlignment="Center" />
+
+                                            <Border Classes="badge" Margin="9,0,0,0"
+                                                    Background="{DynamicResource Brush.AccentSoft}"
+                                                    IsVisible="{Binding !IsReview}">
+                                                <TextBlock Text="{Binding RiskText}"
+                                                           Foreground="{DynamicResource Brush.Accent}" />
+                                            </Border>
+
+                                            <Border Classes="badge" Margin="9,0,0,0"
+                                                    Background="{DynamicResource Brush.WarningSoft}"
+                                                    IsVisible="{Binding IsReview}">
+                                                <TextBlock Text="{Binding RiskText}"
+                                                           Foreground="{DynamicResource Brush.Warning}" />
+                                            </Border>
+                                        </StackPanel>
+
+                                        <TextBlock Text="{Binding Description}" Classes="caption wrap"
+                                                   Margin="0,5,0,0" />
+
+                                        <TextBlock Text="{Binding Note}" Classes="faint wrap" Margin="0,5,0,0"
+                                                   IsVisible="{Binding HasNote}" />
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Top" MinWidth="120">
+                                        <TextBlock Text="{Binding SizeText}" Classes="h2"
+                                                   HorizontalAlignment="Right" />
+                                        <TextBlock Text="{Binding CountText}" Classes="faint"
+                                                   HorizontalAlignment="Right" Margin="0,3,0,0" />
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Review items, ticked one at a time -->
+                                <StackPanel Margin="30,10,0,0" IsVisible="{Binding IsExpanded}">
+                                    <Border Classes="divider" />
+
+                                    <TextBlock Text="{s:Loc clean.pickItems}" Classes="faint wrap"
+                                               Margin="0,0,0,6" />
+
+                                    <ItemsControl ItemsSource="{Binding Items}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="vm:CleanupItemRow">
+                                                <Grid ColumnDefinitions="Auto,*,Auto,Auto" Margin="0,3">
+                                                    <CheckBox Grid.Column="0"
+                                                              IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                              Margin="0,0,8,0" />
+                                                    <TextBlock Grid.Column="1" Text="{Binding Name}"
+                                                               VerticalAlignment="Center"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               Margin="0,0,12,0" />
+                                                    <TextBlock Grid.Column="2" Text="{Binding AgeText}"
+                                                               Classes="faint" VerticalAlignment="Center"
+                                                               Margin="0,0,14,0" />
+                                                    <TextBlock Grid.Column="3" Text="{Binding SizeText}"
+                                                               Classes="mono" VerticalAlignment="Center"
+                                                               MinWidth="80" TextAlignment="Right" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock Text="{Binding Footnote}" Classes="faint wrap" Margin="4,0,4,0"
+                       IsVisible="{Binding HasScanned}" />
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

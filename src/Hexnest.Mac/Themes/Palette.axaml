@@ -1,0 +1,148 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        The Hexnest palette, both themes.
+
+        The Windows build keeps its two palettes in separate dictionaries and swaps
+        them at runtime. Avalonia has a better mechanism for exactly this - theme
+        dictionaries, chosen by the window's requested variant - so the Mac build uses
+        that instead. The practical difference is that "follow the system" costs
+        nothing here: macOS switching to dark at sunset re-resolves every DynamicResource
+        by itself, with no code involved.
+
+        Every key exists in both variants with the same name, so no control style ever
+        needs to know which theme is active. The colours are the same ones the Windows
+        build ships; this is one product in two windows, not two products.
+    -->
+    <ResourceDictionary.ThemeDictionaries>
+
+        <!-- ============================================================= DARK -->
+        <ResourceDictionary x:Key="Dark">
+
+            <!-- Surfaces, from furthest back to closest to the user -->
+            <Color x:Key="Color.Window">#0D1014</Color>
+            <Color x:Key="Color.Sidebar">#12161C</Color>
+            <Color x:Key="Color.Surface">#171C23</Color>
+            <Color x:Key="Color.SurfaceAlt">#1E242D</Color>
+            <Color x:Key="Color.SurfaceHover">#242C36</Color>
+            <Color x:Key="Color.Border">#2A323D</Color>
+            <Color x:Key="Color.BorderSubtle">#1F262F</Color>
+
+            <!-- Text -->
+            <Color x:Key="Color.Text">#E8EDF4</Color>
+            <Color x:Key="Color.TextMuted">#94A3B4</Color>
+            <Color x:Key="Color.TextFaint">#5E6B7A</Color>
+
+            <!-- Brand and semantics -->
+            <Color x:Key="Color.Accent">#35D8A4</Color>
+            <Color x:Key="Color.AccentHover">#4BE7B5</Color>
+            <Color x:Key="Color.AccentPressed">#22B98A</Color>
+            <Color x:Key="Color.AccentText">#06231A</Color>
+            <Color x:Key="Color.Info">#4C8DFF</Color>
+            <Color x:Key="Color.Success">#35D8A4</Color>
+            <Color x:Key="Color.Warning">#F5A623</Color>
+            <Color x:Key="Color.Danger">#FF5F6B</Color>
+
+            <SolidColorBrush x:Key="Brush.Window" Color="#0D1014" />
+            <SolidColorBrush x:Key="Brush.Sidebar" Color="#12161C" />
+            <SolidColorBrush x:Key="Brush.Surface" Color="#171C23" />
+            <SolidColorBrush x:Key="Brush.SurfaceAlt" Color="#1E242D" />
+            <SolidColorBrush x:Key="Brush.SurfaceHover" Color="#242C36" />
+            <SolidColorBrush x:Key="Brush.Border" Color="#2A323D" />
+            <SolidColorBrush x:Key="Brush.BorderSubtle" Color="#1F262F" />
+
+            <SolidColorBrush x:Key="Brush.Text" Color="#E8EDF4" />
+            <SolidColorBrush x:Key="Brush.TextMuted" Color="#94A3B4" />
+            <SolidColorBrush x:Key="Brush.TextFaint" Color="#5E6B7A" />
+
+            <SolidColorBrush x:Key="Brush.Accent" Color="#35D8A4" />
+            <SolidColorBrush x:Key="Brush.AccentHover" Color="#4BE7B5" />
+            <SolidColorBrush x:Key="Brush.AccentPressed" Color="#22B98A" />
+            <SolidColorBrush x:Key="Brush.AccentText" Color="#06231A" />
+            <SolidColorBrush x:Key="Brush.Info" Color="#4C8DFF" />
+            <SolidColorBrush x:Key="Brush.Success" Color="#35D8A4" />
+            <SolidColorBrush x:Key="Brush.Warning" Color="#F5A623" />
+            <SolidColorBrush x:Key="Brush.Danger" Color="#FF5F6B" />
+
+            <!-- Translucent tints used for badges and soft callouts -->
+            <SolidColorBrush x:Key="Brush.AccentSoft" Color="#2635D8A4" />
+            <SolidColorBrush x:Key="Brush.InfoSoft" Color="#264C8DFF" />
+            <SolidColorBrush x:Key="Brush.WarningSoft" Color="#26F5A623" />
+            <SolidColorBrush x:Key="Brush.DangerSoft" Color="#26FF5F6B" />
+            <SolidColorBrush x:Key="Brush.Overlay" Color="#B3000000" />
+
+            <!-- Sidebar gradient gives the shell a little depth without an image -->
+            <LinearGradientBrush x:Key="Brush.SidebarGradient" StartPoint="0%,0%" EndPoint="0%,100%">
+                <GradientStop Color="#141A21" Offset="0" />
+                <GradientStop Color="#10141A" Offset="1" />
+            </LinearGradientBrush>
+
+            <!-- The one row shading that has to differ per theme -->
+            <SolidColorBrush x:Key="Brush.RowAlt" Color="#141A21" />
+
+        </ResourceDictionary>
+
+        <!-- ============================================================ LIGHT -->
+        <ResourceDictionary x:Key="Light">
+
+            <Color x:Key="Color.Window">#F4F6F9</Color>
+            <Color x:Key="Color.Sidebar">#FFFFFF</Color>
+            <Color x:Key="Color.Surface">#FFFFFF</Color>
+            <Color x:Key="Color.SurfaceAlt">#F7F9FB</Color>
+            <Color x:Key="Color.SurfaceHover">#ECF0F5</Color>
+            <Color x:Key="Color.Border">#DDE3EA</Color>
+            <Color x:Key="Color.BorderSubtle">#E9EDF2</Color>
+
+            <Color x:Key="Color.Text">#12171E</Color>
+            <Color x:Key="Color.TextMuted">#5A6674</Color>
+            <Color x:Key="Color.TextFaint">#8B97A5</Color>
+
+            <Color x:Key="Color.Accent">#0F9D71</Color>
+            <Color x:Key="Color.AccentHover">#12B382</Color>
+            <Color x:Key="Color.AccentPressed">#0B7C59</Color>
+            <Color x:Key="Color.AccentText">#FFFFFF</Color>
+            <Color x:Key="Color.Info">#2563EB</Color>
+            <Color x:Key="Color.Success">#0F9D71</Color>
+            <Color x:Key="Color.Warning">#C97A05</Color>
+            <Color x:Key="Color.Danger">#D93544</Color>
+
+            <SolidColorBrush x:Key="Brush.Window" Color="#F4F6F9" />
+            <SolidColorBrush x:Key="Brush.Sidebar" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="Brush.Surface" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="Brush.SurfaceAlt" Color="#F7F9FB" />
+            <SolidColorBrush x:Key="Brush.SurfaceHover" Color="#ECF0F5" />
+            <SolidColorBrush x:Key="Brush.Border" Color="#DDE3EA" />
+            <SolidColorBrush x:Key="Brush.BorderSubtle" Color="#E9EDF2" />
+
+            <SolidColorBrush x:Key="Brush.Text" Color="#12171E" />
+            <SolidColorBrush x:Key="Brush.TextMuted" Color="#5A6674" />
+            <SolidColorBrush x:Key="Brush.TextFaint" Color="#8B97A5" />
+
+            <SolidColorBrush x:Key="Brush.Accent" Color="#0F9D71" />
+            <SolidColorBrush x:Key="Brush.AccentHover" Color="#12B382" />
+            <SolidColorBrush x:Key="Brush.AccentPressed" Color="#0B7C59" />
+            <SolidColorBrush x:Key="Brush.AccentText" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="Brush.Info" Color="#2563EB" />
+            <SolidColorBrush x:Key="Brush.Success" Color="#0F9D71" />
+            <SolidColorBrush x:Key="Brush.Warning" Color="#C97A05" />
+            <SolidColorBrush x:Key="Brush.Danger" Color="#D93544" />
+
+            <SolidColorBrush x:Key="Brush.AccentSoft" Color="#1A0F9D71" />
+            <SolidColorBrush x:Key="Brush.InfoSoft" Color="#1A2563EB" />
+            <SolidColorBrush x:Key="Brush.WarningSoft" Color="#1AC97A05" />
+            <SolidColorBrush x:Key="Brush.DangerSoft" Color="#1AD93544" />
+            <SolidColorBrush x:Key="Brush.Overlay" Color="#66000000" />
+
+            <LinearGradientBrush x:Key="Brush.SidebarGradient" StartPoint="0%,0%" EndPoint="0%,100%">
+                <GradientStop Color="#FFFFFF" Offset="0" />
+                <GradientStop Color="#F7F9FC" Offset="1" />
+            </LinearGradientBrush>
+
+            <SolidColorBrush x:Key="Brush.RowAlt" Color="#F7F9FB" />
+
+        </ResourceDictionary>
+
+    </ResourceDictionary.ThemeDictionaries>
+
+</ResourceDictionary>

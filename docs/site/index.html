@@ -4,30 +4,33 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>DrvNest — Free Windows Driver Updater, System Monitor and Clean-Up Tool</title>
-<meta name="description" content="DrvNest is a free, open-source Windows 10 and 11 driver updater with a built-in system and network monitor, a startup manager and a clean-up tool. It finds missing drivers, installs them after a format, restores drivers offline from USB, shows what every program costs in CPU, RAM and bandwidth, and measures what is taking up disk space.">
+<title>Hexnest — Free System Monitor, Cleaner and Driver Updater for Windows and macOS</title>
+<meta name="description" content="Hexnest is a free, open-source system utility for Windows 10, Windows 11 and macOS 12+: a live system monitor, a per-application network monitor, a start-up manager and a disk cleaner that measures rather than estimates — plus a full driver updater on Windows that installs missing drivers after a format and restores them offline from USB. No adware, no telemetry, no paid tier.">
 
-<link rel="canonical" href="https://ahmetcaglayan.github.io/DrvNest/">
-<link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/DrvNest/">
-<link rel="alternate" hreflang="tr" href="https://ahmetcaglayan.github.io/DrvNest/tr/">
-<link rel="alternate" hreflang="ru" href="https://ahmetcaglayan.github.io/DrvNest/ru/">
-<link rel="alternate" hreflang="zh" href="https://ahmetcaglayan.github.io/DrvNest/zh/">
-<link rel="alternate" hreflang="hi" href="https://ahmetcaglayan.github.io/DrvNest/hi/">
-<link rel="alternate" hreflang="x-default" href="https://ahmetcaglayan.github.io/DrvNest/">
+<link rel="canonical" href="https://ahmetcaglayan.github.io/Hexnest/">
+<link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/Hexnest/">
+<link rel="alternate" hreflang="tr" href="https://ahmetcaglayan.github.io/Hexnest/tr/">
+<link rel="alternate" hreflang="ru" href="https://ahmetcaglayan.github.io/Hexnest/ru/">
+<link rel="alternate" hreflang="zh" href="https://ahmetcaglayan.github.io/Hexnest/zh/">
+<link rel="alternate" hreflang="hi" href="https://ahmetcaglayan.github.io/Hexnest/hi/">
+<link rel="alternate" hreflang="x-default" href="https://ahmetcaglayan.github.io/Hexnest/">
 
 <meta name="author" content="Ahmet Çağlayan">
+<meta name="keywords" content="free driver updater, windows driver updater open source, install drivers after format, offline driver installer usb, driver backup restore, system monitor windows, mac system monitor, activity monitor alternative, task manager alternative, per application network usage, bandwidth monitor per program, startup manager, launchd login items, disk cleaner, free up disk space mac, clean xcode derived data, apple silicon system monitor, no adware, open source system utility">
+<meta name="applicable-device" content="pc">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="theme-color" content="#0D1014" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
 
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="DrvNest">
-<meta property="og:title" content="DrvNest — Free Windows Driver Updater, System and Network Monitor">
-<meta property="og:description" content="DrvNest is a free, open-source Windows 10 and 11 driver updater. It finds missing drivers, installs them after a format, and restores drivers offline from USB.">
-<meta property="og:url" content="https://ahmetcaglayan.github.io/DrvNest/">
-<meta property="og:image" content="https://ahmetcaglayan.github.io/DrvNest/og-image.png">
+<meta property="og:site_name" content="Hexnest">
+<meta property="og:title" content="Hexnest — Free System Monitor, Cleaner and Driver Updater for Windows and macOS">
+<meta property="og:description" content="Free and open source. A live system and network monitor, a start-up manager and a disk cleaner on both Windows and macOS — and a driver updater that rescues a freshly formatted PC with no internet.">
+<meta property="og:url" content="https://ahmetcaglayan.github.io/Hexnest/">
+<meta property="og:image" content="https://ahmetcaglayan.github.io/Hexnest/og-image.png">
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="640">
-<meta property="og:image:alt" content="The DrvNest logo and wordmark on a dark background, above the words free, open-source Windows driver updater.">
+<meta property="og:image:alt" content="The Hexnest logo and wordmark on a dark background, above the words free, open-source system utility for Windows and macOS.">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="tr_TR">
 <meta property="og:locale:alternate" content="ru_RU">
@@ -35,10 +38,10 @@
 <meta property="og:locale:alternate" content="hi_IN">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="DrvNest — Free Windows Driver Updater, System and Network Monitor">
-<meta name="twitter:description" content="Free, open-source Windows driver updater. Finds missing drivers, installs them after a format, and restores drivers offline from a USB stick.">
-<meta name="twitter:image" content="https://ahmetcaglayan.github.io/DrvNest/og-image.png">
-<meta name="twitter:image:alt" content="The DrvNest logo and wordmark on a dark background, above the words free, open-source Windows driver updater.">
+<meta name="twitter:title" content="Hexnest — Free System Monitor, Cleaner and Driver Updater for Windows and macOS">
+<meta name="twitter:description" content="Free, open-source system utility for Windows and macOS: system and network monitor, start-up manager, disk cleaner — and a driver updater on Windows.">
+<meta name="twitter:image" content="https://ahmetcaglayan.github.io/Hexnest/og-image.png">
+<meta name="twitter:image:alt" content="The Hexnest logo and wordmark on a dark background, above the words free, open-source system utility for Windows and macOS.">
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
@@ -47,25 +50,25 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "DrvNest",
-  "alternateName": "DrvNest Driver Updater",
-  "description": "DrvNest is a free and open-source Windows driver updater for Windows 10 and Windows 11. It scans every PnP device, reports which ones have no driver, installs missing and outdated drivers from the Windows Update catalog or from local INF folders, resumes its queue after the restarts a driver install needs, and backs drivers up so they can be restored offline from a USB stick after a format.",
+  "name": "Hexnest",
+  "alternateName": ["Hexnest for Windows", "Hexnest for Mac"],
+  "description": "Hexnest is a free and open-source system utility for Windows 10, Windows 11 and macOS 12 or newer. On both platforms it provides a live system monitor with per-core processor load and per-application resource usage, a network monitor with per-application traffic, a start-up manager and a disk cleaner that measures rather than estimates. On Windows it is also a full driver updater: it scans every PnP device, reports which ones have no driver, installs missing and outdated drivers from the Windows Update catalog or from local INF folders, resumes its queue after the restarts a driver install needs, and backs drivers up so they can be restored offline from a USB stick after a format.",
   "applicationCategory": "UtilitiesApplication",
-  "applicationSubCategory": "Driver updater",
-  "operatingSystem": "Windows 10, Windows 11",
+  "applicationSubCategory": "System monitor, disk cleaner and driver updater",
+  "operatingSystem": "Windows 10, Windows 11, macOS 12, macOS 13, macOS 14, macOS 15",
   "softwareVersion": "1.2.0",
-  "downloadUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest",
-  "installUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe",
-  "url": "https://ahmetcaglayan.github.io/DrvNest/",
-  "image": "https://ahmetcaglayan.github.io/DrvNest/og-image.png",
+  "downloadUrl": "https://github.com/ahmetcaglayan/Hexnest/releases/latest",
+  "installUrl": "https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest.exe",
+  "url": "https://ahmetcaglayan.github.io/Hexnest/",
+  "image": "https://ahmetcaglayan.github.io/Hexnest/og-image.png",
   "license": "https://opensource.org/licenses/MIT",
   "isAccessibleForFree": true,
   "inLanguage": ["en", "tr", "ru", "zh", "hi"],
-  "codeRepository": "https://github.com/ahmetcaglayan/DrvNest",
+  "codeRepository": "https://github.com/ahmetcaglayan/Hexnest",
   "programmingLanguage": "C#",
-  "softwareRequirements": "Windows 10 version 1607 (build 14393) or newer, 64-bit, administrator rights. No .NET runtime and no Visual C++ Redistributable required.",
-  "permissions": "Administrator rights are required to install drivers, export the driver store and create a system restore point.",
-  "releaseNotes": "https://github.com/ahmetcaglayan/DrvNest/blob/main/CHANGELOG.md",
+  "softwareRequirements": "Windows 10 version 1607 (build 14393) or newer, 64-bit, with administrator rights; or macOS 12 Monterey or newer on Apple silicon or Intel. No .NET runtime, no Visual C++ Redistributable and no Homebrew or Xcode required.",
+  "permissions": "On Windows, administrator rights are required to install drivers, export the driver store and create a system restore point. On macOS the application never runs as root and only ever changes files inside the user's own home folder.",
+  "releaseNotes": "https://github.com/ahmetcaglayan/Hexnest/blob/main/CHANGELOG.md",
   "featureList": [
     "Scans every PnP device with SetupAPI and CfgMgr32, without WMI",
     "Detects missing drivers from Configuration Manager problem codes",
@@ -86,12 +89,20 @@
     "Clean-up: temporary files, browser caches, shader caches, crash dumps, Windows Update cache and the Recycle Bin, all measured rather than estimated",
     "Old downloads and leftover application folders listed item by item and sent to the Recycle Bin",
     "Memory trim that states plainly what paging out a working set does and does not achieve",
-    "English, Turkish, Russian, Simplified Chinese and Hindi interface, dark and light theme"
+    "English, Turkish, Russian, Simplified Chinese and Hindi interface, dark and light theme",
+    "macOS build with the same monitors, start-up manager and cleaner, built on Avalonia",
+    "macOS start-up manager for launchd login agents, using launchctl overrides so nothing is deleted",
+    "macOS cleaner for application caches, developer caches, Xcode derived data, logs, the Trash, old downloads and iPhone backups",
+    "macOS per-application network usage from the same statistics Activity Monitor reads",
+    "Per-core processor load including the performance and efficiency clusters on Apple silicon"
   ],
   "screenshot": [
-    "https://ahmetcaglayan.github.io/DrvNest/screenshots/dashboard.png",
-    "https://ahmetcaglayan.github.io/DrvNest/screenshots/system.png",
-    "https://ahmetcaglayan.github.io/DrvNest/screenshots/network.png"
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/dashboard.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/system.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/network.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/mac-dashboard.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/mac-system.png",
+    "https://ahmetcaglayan.github.io/Hexnest/screenshots/mac-clean.png"
   ],
   "offers": {
     "@type": "Offer",
@@ -116,7 +127,7 @@
   },
   "softwareHelp": {
     "@type": "CreativeWork",
-    "url": "https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/USAGE.md"
+    "url": "https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/USAGE.md"
   }
 }
 </script>
@@ -126,14 +137,14 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "inLanguage": "en",
-  "url": "https://ahmetcaglayan.github.io/DrvNest/",
+  "url": "https://ahmetcaglayan.github.io/Hexnest/",
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Is DrvNest really free?",
+      "name": "Is Hexnest really free?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. DrvNest is released under the MIT licence and the full source code is on GitHub. There is no paid tier, no trial, no feature that unlocks after payment, no advertising and no bundled third-party software. The scan and the installs are the same product."
+        "text": "Yes. Hexnest is released under the MIT licence and the full source code is on GitHub. There is no paid tier, no trial, no feature that unlocks after payment, no advertising and no bundled third-party software. The scan and the installs are the same product."
       }
     },
     {
@@ -141,23 +152,23 @@
       "name": "Do I need to install .NET or the Visual C++ Redistributable?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. The entire .NET 8 runtime is inside DrvNest.exe as a self-contained single-file publish, and WPF carries its own private copies of vcruntime140_cor3.dll and msvcp140_cor3.dll. The only requirement is 64-bit Windows 10 version 1607 (build 14393) or newer. That is also why the executable is around 65 MB."
+        "text": "No. The entire .NET 8 runtime is inside Hexnest.exe as a self-contained single-file publish, and WPF carries its own private copies of vcruntime140_cor3.dll and msvcp140_cor3.dll. The only requirement is 64-bit Windows 10 version 1607 (build 14393) or newer. That is also why the executable is around 65 MB."
       }
     },
     {
       "@type": "Question",
-      "name": "Why does SmartScreen or my antivirus warn about DrvNest?",
+      "name": "Why does SmartScreen or my antivirus warn about Hexnest?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "DrvNest is not code-signed, because a code-signing certificate costs money. Windows SmartScreen and Smart App Control show a warning for any unsigned executable that has not built up reputation, and a single-file app that runs as administrator, installs drivers and registers a scheduled task looks like malware to a heuristic scanner. The honest mitigation is to verify the download: run Get-FileHash .\\DrvNest.exe -Algorithm SHA256 and compare the result with the DrvNest.exe line in the checksums.txt published with the release. A match means the file is byte-for-byte the published one. You can also build it yourself from source."
+        "text": "Hexnest is not code-signed, because a code-signing certificate costs money. Windows SmartScreen and Smart App Control show a warning for any unsigned executable that has not built up reputation, and a single-file app that runs as administrator, installs drivers and registers a scheduled task looks like malware to a heuristic scanner. The honest mitigation is to verify the download: run Get-FileHash .\\Hexnest.exe -Algorithm SHA256 and compare the result with the Hexnest.exe line in the checksums.txt published with the release. A match means the file is byte-for-byte the published one. You can also build it yourself from source."
       }
     },
     {
       "@type": "Question",
-      "name": "Can DrvNest install drivers after a format with no internet?",
+      "name": "Can Hexnest install drivers after a format with no internet?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, and that is what it was built for. Before the format, use Backup and Restore to export every third-party driver package, then copy that folder and DrvNest.exe onto the same USB stick. After the format, start DrvNest.exe --rescue: Windows Update is never contacted and only local sources are used. A folder named Drivers next to DrvNest.exe is registered automatically as a local driver repository. Any vendor driver folder you extracted yourself works too, because its INF files are matched recursively."
+        "text": "Yes, and that is what it was built for. Before the format, use Backup and Restore to export every third-party driver package, then copy that folder and Hexnest.exe onto the same USB stick. After the format, start Hexnest.exe --rescue: Windows Update is never contacted and only local sources are used. A folder named Drivers next to Hexnest.exe is registered automatically as a local driver repository. Any vendor driver folder you extracted yourself works too, because its INF files are matched recursively."
       }
     },
     {
@@ -165,31 +176,31 @@
       "name": "Can I roll back a driver that breaks something?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, in three ways. DrvNest exports the package it is about to replace and records the path in the history entry, so you can reinstall it with Restore from folder. It also creates a driver-type system restore point before the first install of a session, which you can use through the Windows System Restore wizard. And Windows' own Roll Back Driver button in Device Manager keeps working independently of DrvNest."
+        "text": "Yes, in three ways. Hexnest exports the package it is about to replace and records the path in the history entry, so you can reinstall it with Restore from folder. It also creates a driver-type system restore point before the first install of a session, which you can use through the Windows System Restore wizard. And Windows' own Roll Back Driver button in Device Manager keeps working independently of Hexnest."
       }
     },
     {
       "@type": "Question",
-      "name": "Does DrvNest really continue after a reboot?",
+      "name": "Does Hexnest really continue after a reboot?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. The queue is written atomically to session.json on every state change, and DrvNest registers a logon-triggered scheduled task called DrvNest\\ResumeSession, falling back to an HKLM RunOnce value when Task Scheduler is unavailable. At the next logon the task relaunches DrvNest with --resume and the remaining jobs continue. A session survives at most ten restarts, and the task and RunOnce value are removed when the queue finishes."
+        "text": "Yes. The queue is written atomically to session.json on every state change, and Hexnest registers a logon-triggered scheduled task called Hexnest\\ResumeSession, falling back to an HKLM RunOnce value when Task Scheduler is unavailable. At the next logon the task relaunches Hexnest with --resume and the remaining jobs continue. A session survives at most ten restarts, and the task and RunOnce value are removed when the queue finishes."
       }
     },
     {
       "@type": "Question",
-      "name": "Why does DrvNest need administrator rights?",
+      "name": "Why does Hexnest need administrator rights?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Installing a driver is a privileged operation. Adding packages to or exporting them from the driver store with pnputil, driving the Windows Update installer and creating a system restore point through srclient.dll all require an elevated token, and the resume task is registered under HKLM. DrvNest asks for elevation up front in its application manifest rather than failing with access denied in the middle of a queue."
+        "text": "Installing a driver is a privileged operation. Adding packages to or exporting them from the driver store with pnputil, driving the Windows Update installer and creating a system restore point through srclient.dll all require an elevated token, and the resume task is registered under HKLM. Hexnest asks for elevation up front in its application manifest rather than failing with access denied in the middle of a queue."
       }
     },
     {
       "@type": "Question",
-      "name": "Does DrvNest collect any data?",
+      "name": "Does Hexnest collect any data?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. There is no telemetry, no usage statistics and no device identifiers. Exactly two things ever leave the machine: Windows Update queries, which go straight to Microsoft through Windows' own Windows Update Agent and are skipped entirely in offline or rescue mode, and a single request to the GitHub Releases API when you press Check for updates. Everything else stays in %ProgramData%\\DrvNest on your own machine."
+        "text": "No. There is no telemetry, no usage statistics and no device identifiers. Exactly two things ever leave the machine: Windows Update queries, which go straight to Microsoft through Windows' own Windows Update Agent and are skipped entirely in offline or rescue mode, and a single request to the GitHub Releases API when you press Check for updates. Everything else stays in %ProgramData%\\Hexnest on your own machine."
       }
     }
   ]
@@ -202,9 +213,9 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="https://ahmetcaglayan.github.io/DrvNest/">
-      <img src="favicon.svg" width="30" height="30" alt="DrvNest logo: a hexagonal nest cell cradling a mint microchip">
-      <span>Drv<span class="mark-nest">Nest</span></span>
+    <a class="brand" href="https://ahmetcaglayan.github.io/Hexnest/">
+      <img src="favicon.svg" width="30" height="30" alt="Hexnest logo: a hexagonal nest cell cradling a mint microchip">
+      <span>Hex<span class="mark-nest">nest</span></span>
     </a>
     <nav class="site-nav" aria-label="Main">
       <ul>
@@ -214,7 +225,7 @@
         <li><a href="#post-format">After a format</a></li>
         <li><a href="#compare">How it compares</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="https://github.com/ahmetcaglayan/DrvNest">GitHub</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest">GitHub</a></li>
         <li><a href="#screenshots">Screenshots</a></li>
         <li>
       <details class="lang-menu">
@@ -237,35 +248,39 @@
 
   <section class="hero">
     <div class="wrap">
-      <img class="hero-mark" src="favicon.svg" width="84" height="84" alt="The DrvNest application icon: a mint hexagon holding a microchip">
-      <h1>The free Windows driver updater that also works after a format</h1>
+      <img class="hero-mark" src="favicon.svg" width="84" height="84" alt="The Hexnest application icon: a mint hexagon holding a microchip">
+      <h1>One window for what your computer is doing, on Windows and on a Mac</h1>
       <p class="lede">
-        <strong>DrvNest</strong> scans every device in your PC, tells you which ones have no driver,
-        and installs the missing and outdated ones from the Windows Update catalog or from a folder
-        on a USB stick. It downloads in parallel, keeps going after the restarts a driver install
-        needs, and can put your old drivers back with no internet connection at all. Since 1.1 it
-        also shows you, live, what the machine and every program on it are costing in processor
-        time, memory and bandwidth — and since 1.2, what starts with Windows and what is
-        taking up your disk.
+        <strong>Hexnest</strong> shows you live what the machine and every program on it are
+        costing in processor time, memory and bandwidth, what starts itself at login, and where
+        your disk space actually went — measured, never estimated. On Windows it is also a full
+        driver updater: it scans every device, installs the missing and outdated drivers from the
+        Windows Update catalog or from a folder on a USB stick, keeps going after the restarts a
+        driver install needs, and can put your old drivers back with no internet at all.
       </p>
       <p class="meta-line">
-        Windows 10 1607+ and Windows 11 · 64-bit (x64 and arm64 builds) · administrator rights required · MIT licensed
+        Windows 10 1607+ and Windows 11 · macOS 12 Monterey or newer · 64-bit, Apple silicon and Intel · MIT licensed
       </p>
 
       <div class="cta-row">
-        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe">
-          Download DrvNest.exe
+        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest.exe">
+          Download for Windows
         </a>
-        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/DrvNest">
+        <a class="btn btn-primary btn-mac" href="https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest-arm64.dmg">
+          Download for macOS
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/Hexnest">
           Source code on GitHub
         </a>
       </div>
       <p class="cta-note">
-        One file, roughly 65 MB. No installer, no .NET runtime to add, no Visual C++ Redistributable,
-        nothing bundled. <a href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">All releases, the arm64 build and checksums.txt →</a>
+        Windows: one file, roughly 65&nbsp;MB, no installer. macOS: a disk image for Apple silicon —
+        drag it into Applications. Neither needs a runtime installed first, and nothing is bundled.
+        <a href="https://github.com/ahmetcaglayan/Hexnest/releases/latest">Intel Mac, the Windows arm64 build and checksums.txt →</a>
       </p>
 
       <ul class="pill-row">
+        <li class="pill">Windows &amp; macOS</li>
         <li class="pill">No adware</li>
         <li class="pill">No paid tier</li>
         <li class="pill">No telemetry</li>
@@ -274,7 +289,6 @@
         <li class="pill">Startup manager</li>
         <li class="pill">Disk clean-up</li>
         <li class="pill">5 interface languages</li>
-        <li class="pill">Dark and light theme</li>
       </ul>
     </div>
   </section>
@@ -338,7 +352,7 @@
         <li>
           <h3>Automatic updates</h3>
           <p>
-            DrvNest now asks GitHub once a day whether a newer release exists and tells
+            Hexnest now asks GitHub once a day whether a newer release exists and tells
             you on the menu. Downloading and installing stays off by default, and even
             when you switch it on the verified file is only swapped in as the application
             closes — never in the middle of a driver queue.
@@ -349,7 +363,7 @@
           <p>
             English, Turkish, Russian, Simplified Chinese and Hindi, all built into the
             single executable and switchable without a restart. A JSON file dropped next
-            to <code>DrvNest.exe</code> still adds or corrects a translation with no
+            to <code>Hexnest.exe</code> still adds or corrects a translation with no
             rebuild.
           </p>
         </li>
@@ -363,10 +377,10 @@
       <p class="section-intro">
         Real screenshots from the shipping application, taken on a Windows 11 laptop.
         They are regenerated from the build itself with
-        <code>DrvNest.exe --capture</code>, so they cannot drift out of date.
+        <code>Hexnest.exe --capture</code>, so they cannot drift out of date.
       </p>
 
-    <div class="shots" role="region" aria-roledescription="carousel" aria-label="DrvNest screenshots">
+    <div class="shots" role="region" aria-roledescription="carousel" aria-label="Hexnest screenshots">
       <div class="shots-track" id="shotsTrack" tabindex="0">
         <figure class="shot" id="shot-0" role="group" aria-roledescription="slide" aria-label="1 / 12">
           <img src="screenshots/dashboard.png" width="1240" height="820" loading="eager" decoding="async" alt="Dashboard">
@@ -497,7 +511,7 @@
         reach the internet.
       </p>
       <p class="section-intro">
-        DrvNest breaks that loop from a single window: it enumerates the hardware, matches it against
+        Hexnest breaks that loop from a single window: it enumerates the hardware, matches it against
         drivers it can actually reach, and installs them. When there is no network at all, it installs
         from a folder you brought with you.
       </p>
@@ -507,7 +521,7 @@
 
   <section id="features">
     <div class="wrap">
-      <h2>What DrvNest does</h2>
+      <h2>What Hexnest does</h2>
       <p class="section-intro">
         Every one of these is in the shipping application — there is no roadmap section pretending to
         be a feature list.
@@ -538,7 +552,7 @@
         <li class="card">
           <h3>Installs from a USB stick, offline</h3>
           <p>
-            Parses the INF packages in any folder — a USB stick, a network share, a DrvNest backup or a
+            Parses the INF packages in any folder — a USB stick, a network share, a Hexnest backup or a
             vendor download you extracted — and matches them to your hardware ids.
           </p>
         </li>
@@ -554,7 +568,7 @@
           <h3>Survives the reboots</h3>
           <p>
             Queue state is written to <code>session.json</code> after every change and a logon-triggered
-            scheduled task brings DrvNest back with <code>--resume</code>, so a ten-driver queue that
+            scheduled task brings Hexnest back with <code>--resume</code>, so a ten-driver queue that
             needs three restarts finishes itself.
           </p>
         </li>
@@ -627,7 +641,7 @@
           <p>
             One request a day to the GitHub Releases API tells you when a new version exists.
             Automatic download and install is opt-in, verified against SHA-256, and only ever
-            applied as DrvNest closes.
+            applied as Hexnest closes.
           </p>
         </li>
         <li class="card">
@@ -636,7 +650,7 @@
             Every autostart entry from the registry <code>Run</code> keys and both Startup
             folders, with a switch each. Disabling writes the same
             <code>StartupApproved</code> value Task Manager writes, so nothing is deleted
-            and the two tools always agree — and uninstalling DrvNest never leaves the
+            and the two tools always agree — and uninstalling Hexnest never leaves the
             machine missing half its startup programs.
           </p>
         </li>
@@ -653,7 +667,7 @@
           <p>
             Old downloads and folders left behind by uninstalled software are listed one by
             one with a size and an age, ticked individually, and sent to the Recycle Bin —
-            never deleted outright, because that detection is a guess and DrvNest says so.
+            never deleted outright, because that detection is a guess and Hexnest says so.
           </p>
         </li>
         <li class="card">
@@ -672,7 +686,7 @@
     <div class="wrap">
       <h2>Installing drivers after a format, step by step</h2>
       <p class="section-intro">
-        This is the walkthrough DrvNest exists for. The five minutes you spend before the format are
+        This is the walkthrough Hexnest exists for. The five minutes you spend before the format are
         what make the machine usable immediately afterwards.
       </p>
 
@@ -697,7 +711,7 @@
     <line x1="672" y1="115" x2="698" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
     <g><rect x="706" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--border)" stroke-width="1.5"/><text x="726" y="86" font-size="13" font-weight="700" fill="var(--dim)">04</text><text x="750" y="86" font-size="16" font-weight="600" fill="var(--text)">Install</text><text x="726" y="118" font-size="14" fill="var(--muted)">One at a time —</text><text x="726" y="138" font-size="14" fill="var(--muted)">Windows insists</text></g>
     <line x1="904" y1="115" x2="930" y2="115" stroke="var(--dim)" stroke-width="1.6" marker-end="url(#arrow)"/>
-    <g><rect x="938" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/><text x="958" y="86" font-size="13" font-weight="700" fill="var(--accent)">05</text><text x="982" y="86" font-size="16" font-weight="600" fill="var(--text)">Restart</text><text x="958" y="118" font-size="14" fill="var(--muted)">Logon task brings</text><text x="958" y="138" font-size="14" fill="var(--muted)">DrvNest back</text></g>
+    <g><rect x="938" y="60" width="192" height="110" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/><text x="958" y="86" font-size="13" font-weight="700" fill="var(--accent)">05</text><text x="982" y="86" font-size="16" font-weight="600" fill="var(--text)">Restart</text><text x="958" y="118" font-size="14" fill="var(--muted)">Logon task brings</text><text x="958" y="138" font-size="14" fill="var(--muted)">Hexnest back</text></g>
 
     <!-- The queue resumes at the install step after the restart it asked for. -->
     <path d="M 1044 170 L 1044 216 L 812 216 L 812 174" fill="none" stroke="var(--dim)"
@@ -708,7 +722,7 @@
         <figcaption>
           The whole flow, and the part most tools skip: a ten-driver queue that needs three
           restarts finishes itself, because the queue is written to disk after every change
-          and a logon task brings DrvNest back with <code>--resume</code>.
+          and a logon task brings Hexnest back with <code>--resume</code>.
         </figcaption>
       </figure>
 
@@ -716,22 +730,22 @@
         <div class="step-block">
           <h3>Before the format — about five minutes</h3>
           <ol>
-            <li>Run DrvNest and open <strong>Backup &amp; Restore</strong>.</li>
+            <li>Run Hexnest and open <strong>Backup &amp; Restore</strong>.</li>
             <li>Click <strong>Create backup</strong>. Every third-party driver package on the system is exported.</li>
             <li>Tick <strong>Compress as ZIP</strong> if you want a single file.</li>
-            <li>Copy the resulting folder <strong>and DrvNest.exe</strong> onto the same USB stick.</li>
-            <li>Optional but useful: name the folder <code>Drivers</code> and keep it next to <code>DrvNest.exe</code>. DrvNest then registers it as a local driver repository automatically, with no configuration.</li>
+            <li>Copy the resulting folder <strong>and Hexnest.exe</strong> onto the same USB stick.</li>
+            <li>Optional but useful: name the folder <code>Drivers</code> and keep it next to <code>Hexnest.exe</code>. Hexnest then registers it as a local driver repository automatically, with no configuration.</li>
           </ol>
         </div>
 
         <div class="step-block">
           <h3>After the format</h3>
           <ol>
-            <li>Plug the stick in and run <code>DrvNest.exe --rescue</code>. Windows Update is never contacted; only local sources are used.</li>
+            <li>Plug the stick in and run <code>Hexnest.exe --rescue</code>. Windows Update is never contacted; only local sources are used.</li>
             <li>Go to <strong>Backup &amp; Restore → Restore</strong>, or <strong>Restore from folder</strong>, and pick your backup. Every package is added to the driver store and bound to its devices.</li>
             <li>Once the network adapter has a working driver, press <strong>Scan</strong>.</li>
             <li><strong>Dashboard → Post-format recovery</strong> queues everything still missing, from Windows Update this time.</li>
-            <li>Accept the restart when it is asked for. DrvNest comes back at logon and finishes the rest of the queue.</li>
+            <li>Accept the restart when it is asked for. Hexnest comes back at logon and finishes the rest of the queue.</li>
           </ol>
         </div>
       </div>
@@ -745,9 +759,9 @@
       </p>
 
       <h3 class="sub-heading">Command line</h3>
-      <pre><code>DrvNest.exe                 # normal launch
-DrvNest.exe --rescue        # offline rescue mode (same as --offline)
-DrvNest.exe --resume        # continue an interrupted queue straight away</code></pre>
+      <pre><code>Hexnest.exe                 # normal launch
+Hexnest.exe --rescue        # offline rescue mode (same as --offline)
+Hexnest.exe --resume        # continue an interrupted queue straight away</code></pre>
     </div>
   </section>
 
@@ -758,7 +772,7 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
       <p class="section-intro">
         The monitor pages are careful about something most tools quietly get wrong. What the
         whole machine transfers and what a single program transfers are measured in two
-        different ways, and they do not add up to exactly the same total — so DrvNest reports
+        different ways, and they do not add up to exactly the same total — so Hexnest reports
         them separately and says why.
       </p>
 
@@ -784,7 +798,7 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
     <text x="606" y="76" font-size="14" fill="var(--dim)">TCP connection statistics · TCP only</text>
 
     <g><text x="606" y="112" font-size="14" fill="var(--muted)">chrome</text><rect x="756" y="104" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="104" width="91" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="112" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
-    <g><text x="606" y="156" font-size="14" fill="var(--muted)">DrvNest</text><rect x="756" y="148" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="148" width="41" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="156" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
+    <g><text x="606" y="156" font-size="14" fill="var(--muted)">Hexnest</text><rect x="756" y="148" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="148" width="41" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="156" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
     <g><text x="606" y="200" font-size="14" fill="var(--muted)">svchost</text><rect x="756" y="192" width="148" height="9" rx="4.5" fill="var(--bg)"/><rect x="756" y="192" width="20" height="9" rx="4.5" fill="var(--accent)"/><text x="1084" y="200" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">TCP</text></g>
     <g><text x="606" y="244" font-size="14" fill="var(--muted)">UDP traffic</text><rect x="756" y="236" width="148" height="9" rx="4.5" fill="var(--bg)"/><text x="1084" y="244" font-size="13" text-anchor="end" fill="var(--dim)" font-family="var(--font-mono)">not attributable</text></g>
   </g>
@@ -802,7 +816,7 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
         API; what exists is the ACPI thermal zone the firmware declares for the operating
         system&#8217;s own fan control. Many desktops declare none at all. Real per-core and
         per-GPU readings come from a vendor chip over an SMBus and need a signed kernel
-        driver, which is why tools like HWiNFO install one. DrvNest will not install a kernel
+        driver, which is why tools like HWiNFO install one. Hexnest will not install a kernel
         driver to draw a number on a page, so when the machine has no sensor the card says so.
       </p>
     </div>
@@ -817,12 +831,12 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
         <p class="section-intro">
           <strong>Disabling a startup program should not delete it.</strong> Windows keeps
           the enabled flag in its own key, <code>StartupApproved</code>, and that is the
-          only thing DrvNest writes — the <code>Run</code> value or the Startup-folder
+          only thing Hexnest writes — the <code>Run</code> value or the Startup-folder
           shortcut is left exactly where it is. So switching an entry back on restores the
-          original command line byte for byte, Task Manager and DrvNest always agree with
-          each other, and deleting DrvNest later never leaves the machine missing half its
+          original command line byte for byte, Task Manager and Hexnest always agree with
+          each other, and deleting Hexnest later never leaves the machine missing half its
           startup programs. The easier implementation — delete the value, remember it in
-          DrvNest's own settings — quietly makes DrvNest load-bearing for somebody else's
+          Hexnest's own settings — quietly makes Hexnest load-bearing for somebody else's
           software.
         </p>
         <p class="section-intro">
@@ -844,7 +858,7 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
         to disk. Physical memory in use really does drop — and Windows reads those pages
         straight back the moment the programs are used again, so it makes nothing faster and
         briefly makes the trimmed programs slower. It is worth doing immediately before
-        something that needs a lot of memory at once, and not otherwise. DrvNest says that
+        something that needs a lot of memory at once, and not otherwise. Hexnest says that
         on the page, next to the button.
       </p>
     </div>
@@ -852,21 +866,21 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
 
   <section id="compare">
     <div class="wrap">
-      <h2>How DrvNest compares — and where it falls short</h2>
+      <h2>How Hexnest compares — and where it falls short</h2>
       <p class="section-intro">
         Driver updaters have a bad reputation, and it is mostly earned: a free scan that finds forty
         problems, a paywall in front of the fix, a resident service, and an installer that brings
-        friends. DrvNest is built the other way round. It is also worse than commercial tools in a few
+        friends. Hexnest is built the other way round. It is also worse than commercial tools in a few
         specific ways, and those are listed here rather than buried.
       </p>
 
       <div class="table-scroll">
         <table>
-          <caption class="sr-only">DrvNest compared with the common freeware driver updater pattern</caption>
+          <caption class="sr-only">Hexnest compared with the common freeware driver updater pattern</caption>
           <thead>
             <tr>
               <th scope="col">&nbsp;</th>
-              <th scope="col">DrvNest</th>
+              <th scope="col">Hexnest</th>
               <th scope="col">The common freeware pattern</th>
             </tr>
           </thead>
@@ -936,7 +950,7 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
       </div>
 
       <p class="callout warn">
-        <strong>The honest small print.</strong> DrvNest is <strong>not code-signed</strong>, so
+        <strong>The honest small print.</strong> Hexnest is <strong>not code-signed</strong>, so
         SmartScreen and Smart App Control will warn you on first run; the fix is to verify the
         published SHA-256 rather than to trust the file blindly. It needs administrator rights, it only
         runs on 64-bit Windows 10 1607 or newer, the executable is large because the whole .NET runtime
@@ -952,14 +966,14 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
       <h2>Frequently asked questions</h2>
       <p class="section-intro">
         The full list, including the technical questions, is in
-        <a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/FAQ.md">docs/FAQ.md</a>.
+        <a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/FAQ.md">docs/FAQ.md</a>.
       </p>
 
       <div class="faq">
         <article class="faq-item">
-          <h3>Is DrvNest really free?</h3>
+          <h3>Is Hexnest really free?</h3>
           <p>
-            Yes. DrvNest is released under the MIT licence and the full source code is on GitHub.
+            Yes. Hexnest is released under the MIT licence and the full source code is on GitHub.
             There is no paid tier, no trial, no feature that unlocks after payment, no advertising and
             no bundled third-party software. The scan and the installs are the same product.
           </p>
@@ -968,7 +982,7 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
         <article class="faq-item">
           <h3>Do I need to install .NET or the Visual C++ Redistributable?</h3>
           <p>
-            No. The entire .NET 8 runtime is inside <code>DrvNest.exe</code> as a self-contained
+            No. The entire .NET 8 runtime is inside <code>Hexnest.exe</code> as a self-contained
             single-file publish, and WPF carries its own private copies of
             <code>vcruntime140_cor3.dll</code> and <code>msvcp140_cor3.dll</code>. The only requirement
             is 64-bit Windows 10 version 1607 (build 14393) or newer. That is also why the executable is
@@ -977,33 +991,33 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
         </article>
 
         <article class="faq-item">
-          <h3>Why does SmartScreen or my antivirus warn about DrvNest?</h3>
+          <h3>Why does SmartScreen or my antivirus warn about Hexnest?</h3>
           <p>
-            DrvNest is <strong>not code-signed</strong>, because a code-signing certificate costs money.
+            Hexnest is <strong>not code-signed</strong>, because a code-signing certificate costs money.
             Windows SmartScreen and Smart App Control show a warning for any unsigned executable that
             has not built up reputation, and a single-file app that runs as administrator, installs
             drivers and registers a scheduled task looks like malware to a heuristic scanner.
           </p>
           <p>
             The honest mitigation is to verify the download. Run
-            <code>Get-FileHash .\DrvNest.exe -Algorithm SHA256</code> and compare the result with the
-            <code>DrvNest.exe</code> line in the <code>checksums.txt</code> published with the release.
+            <code>Get-FileHash .\Hexnest.exe -Algorithm SHA256</code> and compare the result with the
+            <code>Hexnest.exe</code> line in the <code>checksums.txt</code> published with the release.
             A match means the file is byte-for-byte the published one. You can also build it yourself
             from source.
           </p>
         </article>
 
         <article class="faq-item">
-          <h3>Can DrvNest install drivers after a format with no internet?</h3>
+          <h3>Can Hexnest install drivers after a format with no internet?</h3>
           <p>
             Yes, and that is what it was built for. Before the format, use <strong>Backup &amp;
             Restore</strong> to export every third-party driver package, then copy that folder and
-            <code>DrvNest.exe</code> onto the same USB stick. After the format, start
-            <code>DrvNest.exe --rescue</code>: Windows Update is never contacted and only local sources
+            <code>Hexnest.exe</code> onto the same USB stick. After the format, start
+            <code>Hexnest.exe --rescue</code>: Windows Update is never contacted and only local sources
             are used.
           </p>
           <p>
-            A folder named <code>Drivers</code> next to <code>DrvNest.exe</code> is registered
+            A folder named <code>Drivers</code> next to <code>Hexnest.exe</code> is registered
             automatically as a local driver repository. Any vendor driver folder you extracted yourself
             works too, because its INF files are matched recursively.
           </p>
@@ -1013,31 +1027,31 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
           <h3>Can I roll back a driver that breaks something?</h3>
           <p>Yes, in three ways.</p>
           <ol>
-            <li>DrvNest exports the package it is about to replace and records the path in the history entry, so you can reinstall it with <strong>Restore from folder</strong>.</li>
+            <li>Hexnest exports the package it is about to replace and records the path in the history entry, so you can reinstall it with <strong>Restore from folder</strong>.</li>
             <li>It creates a driver-type system restore point before the first install of a session, which you can use through the Windows System Restore wizard (<code>rstrui.exe</code>).</li>
-            <li>Windows' own <em>Roll Back Driver</em> button in Device Manager keeps working independently of DrvNest.</li>
+            <li>Windows' own <em>Roll Back Driver</em> button in Device Manager keeps working independently of Hexnest.</li>
           </ol>
         </article>
 
         <article class="faq-item">
-          <h3>Does DrvNest really continue after a reboot?</h3>
+          <h3>Does Hexnest really continue after a reboot?</h3>
           <p>
             Yes. The queue is written atomically to <code>session.json</code> on every state change, and
-            DrvNest registers a logon-triggered scheduled task called
-            <code>DrvNest\ResumeSession</code>, falling back to an HKLM <code>RunOnce</code> value when
-            Task Scheduler is unavailable. At the next logon the task relaunches DrvNest with
+            Hexnest registers a logon-triggered scheduled task called
+            <code>Hexnest\ResumeSession</code>, falling back to an HKLM <code>RunOnce</code> value when
+            Task Scheduler is unavailable. At the next logon the task relaunches Hexnest with
             <code>--resume</code> and the remaining jobs continue. A session survives at most ten
             restarts, and the task and <code>RunOnce</code> value are removed when the queue finishes.
           </p>
         </article>
 
         <article class="faq-item">
-          <h3>Why does DrvNest need administrator rights?</h3>
+          <h3>Why does Hexnest need administrator rights?</h3>
           <p>
             Installing a driver is a privileged operation. Adding packages to or exporting them from the
             driver store with <code>pnputil</code>, driving the Windows Update installer and creating a
             system restore point through <code>srclient.dll</code> all require an elevated token, and the
-            resume task is registered under HKLM. DrvNest asks for elevation up front in its application
+            resume task is registered under HKLM. Hexnest asks for elevation up front in its application
             manifest rather than failing with "access denied" in the middle of a queue.
           </p>
         </article>
@@ -1047,13 +1061,13 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
           <p>
             No. Windows keeps the enabled flag in a separate key —
             <code>...\CurrentVersion\Explorer\StartupApproved\Run</code> and its two
-            siblings — and that is the only thing DrvNest writes. The <code>Run</code>
+            siblings — and that is the only thing Hexnest writes. The <code>Run</code>
             value, or the shortcut in the Startup folder, stays exactly where it is, so
             switching the entry back on restores the original command line byte for byte.
           </p>
           <p>
-            It also means Task Manager and DrvNest agree with each other, and that deleting
-            DrvNest later never leaves the machine missing half its startup programs.
+            It also means Task Manager and Hexnest agree with each other, and that deleting
+            Hexnest later never leaves the machine missing half its startup programs.
           </p>
         </article>
 
@@ -1079,7 +1093,7 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
             not wasted memory; Windows was already keeping it available.
           </p>
           <p>
-            So it is not a performance feature and DrvNest does not present it as one. It is
+            So it is not a performance feature and Hexnest does not present it as one. It is
             useful immediately before starting something that needs a large allocation, or to
             see how much a leaking program is really holding. Every other tool with this
             button claims otherwise.
@@ -1094,7 +1108,7 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
             for its own fan control, and a great many desktop motherboards declare none.
             Per-core and GPU temperatures come from a vendor sensor chip over an SMBus, which
             needs a signed kernel driver — that is what HWiNFO and Open Hardware Monitor
-            install. DrvNest will not install a kernel driver to fill in a number, so it tells
+            install. Hexnest will not install a kernel driver to fill in a number, so it tells
             you the sensor is missing instead of guessing.
           </p>
         </article>
@@ -1108,17 +1122,17 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
             Windows&#8217; TCP connection statistics (ESTATS), which is the only per-process
             byte counter Windows offers without a kernel driver — and it covers TCP only.
             Video calls, most game traffic and DNS are therefore in the first number and not
-            in the second. DrvNest says so on the page rather than quietly under-reporting.
+            in the second. Hexnest says so on the page rather than quietly under-reporting.
           </p>
         </article>
 
         <article class="faq-item">
-          <h3>Does DrvNest update itself in the background?</h3>
+          <h3>Does Hexnest update itself in the background?</h3>
           <p>
             It checks, once a day, and tells you. It does not install anything unless you turn
             that on in <strong>Settings → Updates</strong>, and even then the download is
             verified against the release&#8217;s <code>checksums.txt</code> and only swapped in
-            as DrvNest closes — never while a driver queue is running. Both the check and the
+            as Hexnest closes — never while a driver queue is running. Both the check and the
             install are skipped entirely in offline and rescue mode. You can also turn the
             check off completely; the button on the About page keeps working.
           </p>
@@ -1128,14 +1142,14 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
           <h3>Is the monitor a background service?</h3>
           <p>
             No. Neither monitor samples anything until you open its page, and both stop the
-            moment you navigate away. DrvNest still installs no service, no driver and no
+            moment you navigate away. Hexnest still installs no service, no driver and no
             startup entry — the only thing it ever registers is the logon task that resumes an
             interrupted driver queue, and that removes itself when the queue finishes.
           </p>
         </article>
 
         <article class="faq-item">
-          <h3>Does DrvNest collect any data?</h3>
+          <h3>Does Hexnest collect any data?</h3>
           <p>
             No. There is no telemetry, no usage statistics and no device identifiers. Exactly two things
             ever leave the machine: Windows Update queries, which go straight to Microsoft through
@@ -1144,7 +1158,7 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
             and one a day from the automatic check if you leave it on. Neither sends anything
             about your machine; they are ordinary anonymous HTTPS GETs. The monitor pages send
             nothing anywhere: every number on them is read locally and never leaves the
-            computer. Everything else stays in <code>%ProgramData%\DrvNest</code> on your own
+            computer. Everything else stays in <code>%ProgramData%\Hexnest</code> on your own
             machine.
           </p>
         </article>
@@ -1154,17 +1168,17 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
 
   <section id="get-it">
     <div class="wrap">
-      <h2>Get DrvNest</h2>
+      <h2>Get Hexnest</h2>
       <p class="section-intro">
         Download the executable, put it wherever you like and double-click it. To remove it, delete the
-        file and optionally the <code>%ProgramData%\DrvNest</code> folder — nothing is left in the
+        file and optionally the <code>%ProgramData%\Hexnest</code> folder — nothing is left in the
         registry once a queue has finished.
       </p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe">
-          Download DrvNest.exe
+        <a class="btn btn-primary" href="https://github.com/ahmetcaglayan/Hexnest/releases/latest/download/Hexnest.exe">
+          Download Hexnest.exe
         </a>
-        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">
+        <a class="btn btn-secondary" href="https://github.com/ahmetcaglayan/Hexnest/releases/latest">
           All releases and checksums
         </a>
       </div>
@@ -1177,14 +1191,14 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
   <div class="wrap">
     <nav aria-label="Footer">
       <ul>
-        <li><a href="https://github.com/ahmetcaglayan/DrvNest">Repository</a></li>
-        <li><a href="https://github.com/ahmetcaglayan/DrvNest/releases/latest">Releases</a></li>
-        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/USAGE.md">Usage guide</a></li>
-        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/FAQ.md">FAQ</a></li>
-        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/BUILD.md">Building from source</a></li>
-        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/ARCHITECTURE.md">Architecture</a></li>
-        <li><a href="https://github.com/ahmetcaglayan/DrvNest/blob/main/SECURITY.md">Security policy</a></li>
-        <li><a href="https://github.com/ahmetcaglayan/DrvNest/issues">Report a bug</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest">Repository</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/releases/latest">Releases</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/USAGE.md">Usage guide</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/FAQ.md">FAQ</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/BUILD.md">Building from source</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/ARCHITECTURE.md">Architecture</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/blob/main/SECURITY.md">Security policy</a></li>
+        <li><a href="https://github.com/ahmetcaglayan/Hexnest/issues">Report a bug</a></li>
         <li><a href="tr/" hreflang="tr" lang="tr">Türkçe</a></li>
         <li><a href="ru/" hreflang="ru" lang="ru">Русский</a></li>
         <li><a href="zh/" hreflang="zh" lang="zh">简体中文</a></li>
@@ -1193,7 +1207,7 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
     </nav>
 
     <p>
-      DrvNest is free software by <a href="https://github.com/ahmetcaglayan">Ahmet Çağlayan</a>,
+      Hexnest is free software by <a href="https://github.com/ahmetcaglayan">Ahmet Çağlayan</a>,
       released under the MIT licence. Installing drivers carries inherent risk and the software comes
       with no warranty — keep the restore-point setting on and keep backups of anything you care about.
     </p>

@@ -1,11 +1,11 @@
 <#
 .SYNOPSIS
-    Publishes DrvNest as a self-contained, single-file executable.
+    Publishes Hexnest as a self-contained, single-file executable.
 
 .DESCRIPTION
     The local equivalent of what .github/workflows/release.yml does on CI, for one
     runtime at a time. The output file name matches what the in-app updater looks
-    for on GitHub Releases: DrvNest.exe for x64, DrvNest-arm64.exe for arm64.
+    for on GitHub Releases: Hexnest.exe for x64, Hexnest-arm64.exe for arm64.
 
 .PARAMETER Runtime
     win-x64 (default) or win-arm64.
@@ -54,10 +54,10 @@ Set-StrictMode -Version Latest
 # =============================================================================
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
-$project = Join-Path $repoRoot 'src\DrvNest.App\DrvNest.App.csproj'
+$project = Join-Path $repoRoot 'src\Hexnest.App\Hexnest.App.csproj'
 
 if (-not (Test-Path $project)) {
-    throw "Could not find $project. Run this script from inside the DrvNest repository."
+    throw "Could not find $project. Run this script from inside the Hexnest repository."
 }
 
 $outputDir = if ([System.IO.Path]::IsPathRooted($Output)) { $Output } else { Join-Path $repoRoot $Output }
@@ -66,7 +66,7 @@ $outputDir = if ([System.IO.Path]::IsPathRooted($Output)) { $Output } else { Joi
 # copied into $outputDir. Otherwise the two runtimes would overwrite each other.
 $stagingDir = Join-Path $repoRoot "publish\$Runtime"
 
-$targetName = if ($Runtime -eq 'win-arm64') { 'DrvNest-arm64.exe' } else { 'DrvNest.exe' }
+$targetName = if ($Runtime -eq 'win-arm64') { 'Hexnest-arm64.exe' } else { 'Hexnest.exe' }
 $targetPath = Join-Path $outputDir $targetName
 
 # =============================================================================
@@ -78,7 +78,7 @@ if (-not $dotnet) {
     throw @'
 dotnet was not found on PATH.
 
-DrvNest needs the .NET 8 SDK (or newer). Install it from:
+Hexnest needs the .NET 8 SDK (or newer). Install it from:
     https://dotnet.microsoft.com/download/dotnet/8.0
 and reopen your terminal so PATH picks it up.
 '@
@@ -102,7 +102,7 @@ Install the .NET 8 SDK from https://dotnet.microsoft.com/download/dotnet/8.0
 }
 
 if ($env:OS -ne 'Windows_NT') {
-    throw 'DrvNest can only be built on Windows: the app is WPF and DrvNest.Core calls SetupAPI, CfgMgr32 and the Windows Update Agent.'
+    throw 'Hexnest can only be built on Windows: the app is WPF and Hexnest.Core calls SetupAPI, CfgMgr32 and the Windows Update Agent.'
 }
 
 # =============================================================================
@@ -126,7 +126,7 @@ if (Test-Path $targetPath) { Remove-Item -Path $targetPath -Force }
 # =============================================================================
 
 Write-Host ''
-Write-Host "Publishing DrvNest  ($Runtime, $Configuration)" -ForegroundColor Cyan
+Write-Host "Publishing Hexnest  ($Runtime, $Configuration)" -ForegroundColor Cyan
 if ($Version) { Write-Host "Version             $Version" -ForegroundColor Cyan }
 Write-Host ''
 
@@ -154,9 +154,9 @@ if ($LASTEXITCODE -ne 0) {
 #  Collect
 # =============================================================================
 
-$published = Join-Path $stagingDir 'DrvNest.exe'
+$published = Join-Path $stagingDir 'Hexnest.exe'
 if (-not (Test-Path $published)) {
-    throw "Publish succeeded but $published does not exist. Check the AssemblyName in DrvNest.App.csproj."
+    throw "Publish succeeded but $published does not exist. Check the AssemblyName in Hexnest.App.csproj."
 }
 
 Copy-Item -Path $published -Destination $targetPath -Force

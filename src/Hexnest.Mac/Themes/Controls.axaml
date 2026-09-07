@@ -1,0 +1,335 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        The Hexnest control theme for macOS.
+
+        Same names, same shapes and the same palette keys as the WPF dictionary, so a
+        view ported between the two changes almost nothing but its namespace. What is
+        genuinely different is the mechanism: WPF styles are keyed and applied one at a
+        time, Avalonia styles are selector-based and cascade, and Avalonia has no
+        triggers - hover, pressed and checked are pseudo-classes instead.
+
+        Sizes are a point or two larger than the Windows build. macOS renders text with
+        a heavier stem and more line spacing, and the Windows metrics look cramped here.
+    -->
+
+    <Styles.Resources>
+        <x:Double x:Key="Corner.Card">10</x:Double>
+        <x:Double x:Key="Corner.Control">7</x:Double>
+        <x:Double x:Key="Corner.Pill">999</x:Double>
+
+        <CornerRadius x:Key="Radius.Card">10</CornerRadius>
+        <CornerRadius x:Key="Radius.Control">7</CornerRadius>
+        <CornerRadius x:Key="Radius.Pill">999</CornerRadius>
+
+        <!--
+            The UI font is the system one. Naming a specific family would be the wrong
+            call on a platform where the system face changes with the OS version and is
+            what every other window is using.
+        -->
+        <FontFamily x:Key="Font.Ui">$Default</FontFamily>
+        <FontFamily x:Key="Font.Mono">SF Mono, Menlo, Monaco, Courier New, monospace</FontFamily>
+    </Styles.Resources>
+
+    <!-- ============================================================ TYPOGRAPHY -->
+
+    <Style Selector="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="TextWrapping" Value="NoWrap" />
+    </Style>
+
+    <Style Selector="TextBlock.h1">
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text}" />
+    </Style>
+
+    <Style Selector="TextBlock.h2">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text}" />
+    </Style>
+
+    <Style Selector="TextBlock.body">
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <Style Selector="TextBlock.muted">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.TextMuted}" />
+    </Style>
+
+    <Style Selector="TextBlock.caption">
+        <Setter Property="FontSize" Value="11.5" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.TextMuted}" />
+    </Style>
+
+    <Style Selector="TextBlock.faint">
+        <Setter Property="FontSize" Value="11.5" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.TextFaint}" />
+    </Style>
+
+    <Style Selector="TextBlock.mono">
+        <Setter Property="FontFamily" Value="{StaticResource Font.Mono}" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <!--
+        The big number on a metric tile. Tabular figures matter here more than anywhere
+        else in the application: without them a value flickering between 9% and 11%
+        makes the whole tile jump sideways once a second.
+    -->
+    <Style Selector="TextBlock.metric">
+        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontFeatures" Value="tnum=1" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text}" />
+    </Style>
+
+    <Style Selector="TextBlock.wrap">
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <!-- ================================================================ CARDS -->
+
+    <Style Selector="Border.card">
+        <Setter Property="Background" Value="{DynamicResource Brush.Surface}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.BorderSubtle}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Card}" />
+        <Setter Property="Padding" Value="18" />
+    </Style>
+
+    <Style Selector="Border.card-flat">
+        <Setter Property="Background" Value="{DynamicResource Brush.SurfaceAlt}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.BorderSubtle}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Control}" />
+        <Setter Property="Padding" Value="14" />
+    </Style>
+
+    <Style Selector="Border.divider">
+        <Setter Property="Background" Value="{DynamicResource Brush.BorderSubtle}" />
+        <Setter Property="Height" Value="1" />
+        <Setter Property="Margin" Value="0,10" />
+    </Style>
+
+    <Style Selector="Border.badge">
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Pill}" />
+        <Setter Property="Padding" Value="7,1" />
+        <Setter Property="MinWidth" Value="20" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Border.badge > TextBlock">
+        <Setter Property="FontSize" Value="10.5" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <!-- ============================================================== BUTTONS -->
+
+    <Style Selector="Button">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="15,8" />
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Control}" />
+        <Setter Property="Background" Value="{DynamicResource Brush.SurfaceAlt}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
+
+    <Style Selector="Button:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Brush.SurfaceHover}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}" />
+    </Style>
+
+    <Style Selector="Button:disabled">
+        <Setter Property="Opacity" Value="0.45" />
+        <Setter Property="Cursor" Value="Arrow" />
+    </Style>
+
+    <Style Selector="Button.primary">
+        <Setter Property="Background" Value="{DynamicResource Brush.Accent}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.AccentText}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style Selector="Button.primary:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Brush.AccentHover}" />
+    </Style>
+
+    <Style Selector="Button.primary:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Brush.AccentPressed}" />
+    </Style>
+
+    <Style Selector="Button.danger">
+        <Setter Property="Background" Value="{DynamicResource Brush.Danger}" />
+        <Setter Property="Foreground" Value="#FFFFFF" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style Selector="Button.ghost">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}" />
+    </Style>
+
+    <Style Selector="Button.link">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Accent}" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style Selector="Button.link:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style Selector="Button.link:pointerover">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.AccentHover}" />
+    </Style>
+
+    <!-- ================================================================= NAV -->
+
+    <!--
+        One sidebar entry. A RadioButton rather than a Button so that exactly one is
+        ever selected, which is the behaviour, not the appearance.
+    -->
+    <Style Selector="RadioButton.nav">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Margin" Value="10,1" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border x:Name="Shell"
+                        Background="Transparent"
+                        CornerRadius="{StaticResource Radius.Control}"
+                        Padding="11,8">
+                    <ContentPresenter Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      VerticalAlignment="Center" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="RadioButton.nav:pointerover /template/ Border#Shell">
+        <Setter Property="Background" Value="{DynamicResource Brush.SurfaceHover}" />
+    </Style>
+
+    <Style Selector="RadioButton.nav:checked /template/ Border#Shell">
+        <Setter Property="Background" Value="{DynamicResource Brush.AccentSoft}" />
+    </Style>
+
+    <Style Selector="RadioButton.nav TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.TextMuted}" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <Style Selector="RadioButton.nav:checked TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Accent}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <!-- The icon follows the label, so selection is one visual state, not two. -->
+    <Style Selector="RadioButton.nav Path">
+        <Setter Property="Stroke" Value="{DynamicResource Brush.TextMuted}" />
+    </Style>
+
+    <Style Selector="RadioButton.nav:checked Path">
+        <Setter Property="Stroke" Value="{DynamicResource Brush.Accent}" />
+    </Style>
+
+    <!-- ============================================================== INPUTS -->
+
+    <Style Selector="TextBox">
+        <Setter Property="Background" Value="{DynamicResource Brush.SurfaceAlt}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Control}" />
+        <Setter Property="Padding" Value="10,7" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="CaretBrush" Value="{DynamicResource Brush.Accent}" />
+    </Style>
+
+    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}" />
+    </Style>
+
+    <Style Selector="CheckBox">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
+
+    <Style Selector="ComboBox">
+        <Setter Property="Background" Value="{DynamicResource Brush.SurfaceAlt}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Text}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}" />
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Control}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="10,6" />
+        <Setter Property="Cursor" Value="Hand" />
+    </Style>
+
+    <Style Selector="ToggleSwitch">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="OnContent" Value="" />
+        <Setter Property="OffContent" Value="" />
+    </Style>
+
+    <!-- ============================================================ PROGRESS -->
+
+    <Style Selector="ProgressBar">
+        <Setter Property="Background" Value="{DynamicResource Brush.SurfaceHover}" />
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Accent}" />
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Pill}" />
+        <Setter Property="MinHeight" Value="5" />
+        <Setter Property="Height" Value="5" />
+    </Style>
+
+    <Style Selector="ProgressBar.thick">
+        <Setter Property="MinHeight" Value="9" />
+        <Setter Property="Height" Value="9" />
+    </Style>
+
+    <!-- ============================================================== LISTS -->
+
+    <Style Selector="Border.row">
+        <Setter Property="Padding" Value="14,10" />
+        <Setter Property="CornerRadius" Value="{StaticResource Radius.Control}" />
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+    <Style Selector="Border.row-alt">
+        <Setter Property="Background" Value="{DynamicResource Brush.RowAlt}" />
+    </Style>
+
+    <Style Selector="ScrollViewer">
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+    </Style>
+
+    <!--
+        A page's outer spacing.
+        
+        Applied as a margin on the content rather than as padding on the viewport: a
+        ScrollViewer's padding is part of the viewport, not of the scrollable extent,
+        so the bottom of it is not reachable by scrolling and the last row of a long
+        page ends up hidden behind the status bar.
+    -->
+    <Style Selector="ScrollViewer.page > :is(Control)">
+        <Setter Property="Margin" Value="24,20,24,28" />
+    </Style>
+
+</Styles>

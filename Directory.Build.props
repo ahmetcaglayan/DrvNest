@@ -1,7 +1,7 @@
 <Project>
 
   <!--
-    Shared build settings for every DrvNest project.
+    Shared build settings for every Hexnest project.
 
     The version here is the single source of truth. CI overrides it with
     -p:Version=<tag> so a GitHub release tag and the version reported inside the
@@ -13,10 +13,10 @@
   -->
   <PropertyGroup>
     <Version>1.2.0</Version>
-    <Product>DrvNest</Product>
-    <Company>DrvNest</Company>
-    <Authors>DrvNest contributors</Authors>
-    <Copyright>Copyright (c) $([System.DateTime]::Now.Year) DrvNest contributors</Copyright>
+    <Product>Hexnest</Product>
+    <Company>Hexnest</Company>
+    <Authors>Hexnest contributors</Authors>
+    <Copyright>Copyright (c) $([System.DateTime]::Now.Year) Hexnest contributors</Copyright>
     <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 

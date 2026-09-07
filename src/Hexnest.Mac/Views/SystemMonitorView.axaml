@@ -1,0 +1,290 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Hexnest.Mac.ViewModels"
+             xmlns:c="clr-namespace:Hexnest.Mac.Controls"
+             xmlns:s="clr-namespace:Hexnest.Mac.Services"
+             x:Class="Hexnest.Mac.Views.SystemMonitorView"
+             x:DataType="vm:SystemMonitorViewModel">
+
+    <ScrollViewer Classes="page">
+        <StackPanel Spacing="14">
+
+            <!-- ================================================== HEADER -->
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{Binding Title}" Classes="h1" />
+                    <TextBlock Text="{Binding Subtitle}" Classes="caption wrap" Margin="0,3,0,0" />
+                </StackPanel>
+
+                <Button Grid.Column="1"
+                        Classes="ghost"
+                        Content="{Binding PauseLabel}"
+                        Command="{Binding PauseCommand}"
+                        VerticalAlignment="Top" />
+            </Grid>
+
+            <!-- ============================================== TOP METRICS -->
+            <Grid ColumnDefinitions="*,14,*">
+
+                <!-- Processor -->
+                <Border Grid.Column="0" Classes="card">
+                    <StackPanel>
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Path Grid.Column="0"
+                                  Data="{StaticResource Icon.Cpu}"
+                                  Stroke="{DynamicResource Brush.Accent}"
+                                  StrokeThickness="1.6"
+                                  StrokeJoin="Round"
+                                  Width="15" Height="15"
+                                  Stretch="Uniform"
+                                  VerticalAlignment="Center" />
+                            <TextBlock Grid.Column="1"
+                                       Text="{s:Loc mon.cpu}"
+                                       Classes="caption"
+                                       Margin="8,0,0,0"
+                                       VerticalAlignment="Center" />
+                        </Grid>
+
+                        <TextBlock Text="{Binding CpuText}"
+                                   Classes="metric"
+                                   Foreground="{Binding CpuPercent, Converter={StaticResource LoadBrush}}"
+                                   Margin="0,8,0,0" />
+
+                        <TextBlock Text="{Binding CpuDetail}"
+                                   Classes="caption wrap"
+                                   Margin="0,2,0,0" />
+
+                        <c:Sparkline Values="{Binding CpuHistory}"
+                                     Stroke="{DynamicResource Brush.Accent}"
+                                     Height="46"
+                                     Margin="0,12,0,0" />
+
+                        <!-- Per-core strip. Absent on the first sample, which has no baseline. -->
+                        <StackPanel Margin="0,12,0,0" IsVisible="{Binding HasCoreLoads}">
+                            <TextBlock Text="{s:Loc mon.perCore}" Classes="faint" />
+                            <c:CoreStrip Values="{Binding CoreLoads}"
+                                         Fill="{DynamicResource Brush.Accent}"
+                                         Track="{DynamicResource Brush.SurfaceHover}"
+                                         Height="30"
+                                         Margin="0,6,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Memory -->
+                <Border Grid.Column="2" Classes="card">
+                    <StackPanel>
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Path Grid.Column="0"
+                                  Data="{StaticResource Icon.Memory}"
+                                  Stroke="{DynamicResource Brush.Info}"
+                                  StrokeThickness="1.6"
+                                  StrokeJoin="Round"
+                                  Width="15" Height="15"
+                                  Stretch="Uniform"
+                                  VerticalAlignment="Center" />
+                            <TextBlock Grid.Column="1"
+                                       Text="{s:Loc mon.memory}"
+                                       Classes="caption"
+                                       Margin="8,0,0,0"
+                                       VerticalAlignment="Center" />
+                        </Grid>
+
+                        <TextBlock Text="{Binding MemoryText}"
+                                   Classes="metric"
+                                   Foreground="{Binding MemoryPercent, Converter={StaticResource LoadBrush}}"
+                                   Margin="0,8,0,0" />
+
+                        <TextBlock Text="{Binding MemoryDetail}"
+                                   Classes="caption wrap"
+                                   Margin="0,2,0,0" />
+
+                        <c:Sparkline Values="{Binding MemoryHistory}"
+                                     Stroke="{DynamicResource Brush.Info}"
+                                     Height="46"
+                                     Margin="0,12,0,0" />
+
+                        <Grid ColumnDefinitions="*,*" Margin="0,12,0,0">
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{s:Loc mon.cached}" Classes="faint" />
+                                <TextBlock Text="{Binding CachedText}" Classes="mono" Margin="0,2,0,0" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="{s:Loc mac.swap}" Classes="faint" />
+                                <TextBlock Text="{Binding SwapText}" Classes="mono" Margin="0,2,0,0" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- ============================================= SMALL TILES -->
+            <Grid ColumnDefinitions="*,12,*,12,*,12,*">
+
+                <Border Grid.Column="0" Classes="card-flat">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.processes}" Classes="faint" />
+                        <TextBlock Text="{Binding ProcessCountText}" Classes="h2" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Classes="card-flat">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.threads}" Classes="faint" />
+                        <TextBlock Text="{Binding ThreadCountText}" Classes="h2" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="4" Classes="card-flat">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mac.uptime}" Classes="faint" />
+                        <TextBlock Text="{Binding UptimeText}" Classes="h2" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <!-- The battery tile is simply absent on a desktop Mac. -->
+                <Border Grid.Column="6" Classes="card-flat" IsVisible="{Binding HasBattery}">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.battery}" Classes="faint" />
+                        <TextBlock Text="{Binding BatteryText}"
+                                   Classes="body"
+                                   Margin="0,6,0,0"
+                                   TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- ================================================= STORAGE -->
+            <Border Classes="card">
+                <StackPanel>
+                    <TextBlock Text="{s:Loc mon.storage}" Classes="h2" />
+
+                    <ItemsControl ItemsSource="{Binding Disks}" Margin="0,10,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="vm:DiskRow">
+                                <Grid ColumnDefinitions="*,Auto" Margin="0,7">
+                                    <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                                        <Grid ColumnDefinitions="Auto,*">
+                                            <Path Grid.Column="0"
+                                                  Data="{StaticResource Icon.Disk}"
+                                                  Stroke="{DynamicResource Brush.TextMuted}"
+                                                  StrokeThickness="1.3"
+                                                  StrokeJoin="Round"
+                                                  Width="13" Height="13"
+                                                  Stretch="Uniform"
+                                                  VerticalAlignment="Center" />
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding Name}"
+                                                       Margin="7,0,0,0"
+                                                       VerticalAlignment="Center" />
+                                        </Grid>
+
+                                        <ProgressBar Value="{Binding UsedPercent}"
+                                                     Maximum="100"
+                                                     Classes="thick"
+                                                     Foreground="{Binding UsedPercent, Converter={StaticResource LoadBrush}}"
+                                                     Margin="0,7,0,0" />
+
+                                        <TextBlock Text="{Binding Detail}" Classes="faint" Margin="0,5,0,0" />
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" MinWidth="150">
+                                        <TextBlock Text="{Binding SizeText}"
+                                                   Classes="mono"
+                                                   HorizontalAlignment="Right" />
+                                        <TextBlock Text="{Binding FreeText}"
+                                                   Classes="faint"
+                                                   HorizontalAlignment="Right"
+                                                   Margin="0,3,0,0" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- ================================================ PROCESSES -->
+            <Border Classes="card">
+                <StackPanel>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="{s:Loc mon.byApp}" Classes="h2" />
+                            <TextBlock Text="{Binding ProcessCaption}" Classes="faint" Margin="0,3,0,0" />
+                        </StackPanel>
+
+                        <Button Grid.Column="1"
+                                Classes="ghost"
+                                Content="{Binding ShowAllLabel}"
+                                Command="{Binding ToggleShowAllCommand}"
+                                VerticalAlignment="Top" />
+                    </Grid>
+
+                    <!-- Column headings -->
+                    <Grid ColumnDefinitions="*,90,110,70" Margin="14,14,14,0">
+                        <TextBlock Grid.Column="0" Text="{s:Loc mon.process}" Classes="faint" />
+                        <TextBlock Grid.Column="1" Text="{s:Loc mon.cpu}" Classes="faint" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Column="2" Text="{s:Loc mon.workingSet}" Classes="faint" HorizontalAlignment="Right" />
+                        <TextBlock Grid.Column="3" Text="{s:Loc mon.threads}" Classes="faint" HorizontalAlignment="Right" />
+                    </Grid>
+
+                    <Border Classes="divider" Margin="14,6,14,0" />
+
+                    <ItemsControl ItemsSource="{Binding Processes}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="vm:ProcessRow">
+                                <Border Classes="row">
+                                    <Grid ColumnDefinitions="*,90,110,70">
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,12,0">
+                                            <TextBlock Text="{Binding Name}"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       VerticalAlignment="Center" />
+
+                                            <Border Classes="badge"
+                                                    Background="{DynamicResource Brush.AccentSoft}"
+                                                    Margin="8,0,0,0"
+                                                    IsVisible="{Binding IsSelf}">
+                                                <TextBlock Text="Hexnest"
+                                                           Foreground="{DynamicResource Brush.Accent}" />
+                                            </Border>
+
+                                            <Border Classes="badge"
+                                                    Background="{DynamicResource Brush.WarningSoft}"
+                                                    Margin="8,0,0,0"
+                                                    IsVisible="{Binding IsRestricted}">
+                                                <TextBlock Text="{s:Loc mac.restricted}"
+                                                           Foreground="{DynamicResource Brush.Warning}" />
+                                            </Border>
+                                        </StackPanel>
+
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding CpuText}"
+                                                   Classes="mono"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center" />
+
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding MemoryText}"
+                                                   Classes="mono"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center" />
+
+                                        <TextBlock Grid.Column="3"
+                                                   Text="{Binding ThreadText}"
+                                                   Classes="mono"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Text="{Binding Footnote}" Classes="faint wrap" Margin="4,0,4,0" />
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

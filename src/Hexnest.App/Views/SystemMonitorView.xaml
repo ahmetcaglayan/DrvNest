@@ -1,0 +1,623 @@
+<UserControl x:Class="Hexnest.App.Views.SystemMonitorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="clr-namespace:Hexnest.App.Controls"
+             xmlns:s="clr-namespace:Hexnest.App.Services"
+             xmlns:vm="clr-namespace:Hexnest.App.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:SystemMonitorViewModel}"
+             d:DesignWidth="960">
+
+    <UserControl.Resources>
+
+        <!-- One headline number with its own rolling chart behind it. -->
+        <Style x:Key="LiveCard" TargetType="Border" BasedOn="{StaticResource Card}">
+            <Setter Property="Padding" Value="16,14,16,0" />
+        </Style>
+
+        <Style x:Key="ColumnHeader" TargetType="TextBlock" BasedOn="{StaticResource Text.Caption}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+
+        <Style x:Key="Cell" TargetType="TextBlock" BasedOn="{StaticResource Text.Body}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+
+        <!--
+            TextAlignment rather than HorizontalAlignment: a right-aligned TextBlock sizes
+            itself to its content and so is never given the column width to trim against,
+            which lets a long value draw over its left-hand neighbour. Stretching it and
+            aligning the text inside keeps every value inside its own column.
+        -->
+        <Style x:Key="Cell.Number" TargetType="TextBlock" BasedOn="{StaticResource Text.Mono}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+
+        <!-- The sort buttons read as a set of tabs rather than as four separate buttons. -->
+        <Style x:Key="SortTab" TargetType="RadioButton">
+            <Setter Property="GroupName" Value="ProcessSort" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.TextMuted}" />
+            <Setter Property="FontFamily" Value="{StaticResource Font.Ui}" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="Chrome"
+                                Background="Transparent"
+                                CornerRadius="{StaticResource Corner.Pill}"
+                                Padding="12,5">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Chrome" Property="Background"
+                                        Value="{DynamicResource Brush.SurfaceHover}" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Chrome" Property="Background"
+                                        Value="{DynamicResource Brush.AccentSoft}" />
+                                <Setter Property="Foreground" Value="{DynamicResource Brush.Accent}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="22,10,22,22">
+        <StackPanel>
+
+            <!-- ============================================ HEADER -->
+            <Grid Margin="0,10,0,18">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{s:Loc mon.title}" Style="{StaticResource Text.H1}" />
+                    <TextBlock Text="{s:Loc mon.subtitle}" Style="{StaticResource Text.Muted}" Margin="0,4,0,0" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding UptimeDisplay}"
+                               Style="{StaticResource Text.Caption}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,14,0" />
+
+                    <Button Style="{StaticResource Btn.Secondary}"
+                            Padding="13,7"
+                            Content="{Binding PauseLabel}"
+                            Command="{Binding PauseCommand}" />
+
+                    <Button Style="{StaticResource Btn.Ghost}"
+                            Padding="12,7"
+                            Margin="8,0,0,0"
+                            Content="{s:Loc mon.taskManager}"
+                            ToolTip="{s:Loc mon.taskManagerHint}"
+                            Command="{Binding OpenTaskManagerCommand}" />
+                </StackPanel>
+            </Grid>
+
+            <!-- ============================================ LIVE CARDS -->
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="14" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="14" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="14" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Processor -->
+                <Border Grid.Column="0" Style="{StaticResource LiveCard}">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.cpu}" Style="{StaticResource Text.Muted}" />
+                        <TextBlock Text="{Binding CpuDisplay}"
+                                   Style="{StaticResource Text.Metric}"
+                                   Foreground="{DynamicResource Brush.Accent}" />
+                        <TextBlock Text="{Binding CpuDetail}"
+                                   Style="{StaticResource Text.Caption}"
+                                   TextTrimming="CharacterEllipsis"
+                                   Margin="0,0,0,6" />
+                        <c:Sparkline Height="46"
+                                     Maximum="100"
+                                     Value="{Binding CpuPercent, Mode=OneWay}"
+                                     Stroke="{DynamicResource Brush.Accent}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Memory -->
+                <Border Grid.Column="2" Style="{StaticResource LiveCard}">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.memory}" Style="{StaticResource Text.Muted}" />
+                        <TextBlock Text="{Binding MemoryDisplay}"
+                                   Style="{StaticResource Text.Metric}"
+                                   Foreground="{DynamicResource Brush.Info}" />
+                        <TextBlock Text="{Binding MemoryUsedDisplay}"
+                                   Style="{StaticResource Text.Caption}"
+                                   TextTrimming="CharacterEllipsis"
+                                   Margin="0,0,0,6" />
+                        <c:Sparkline Height="46"
+                                     Maximum="100"
+                                     Value="{Binding MemoryPercent, Mode=OneWay}"
+                                     Stroke="{DynamicResource Brush.Info}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Temperature. Shows the reason when the machine has no sensor. -->
+                <Border Grid.Column="4" Style="{StaticResource LiveCard}">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.temperature}" Style="{StaticResource Text.Muted}" />
+
+                        <StackPanel Visibility="{Binding HasTemperature,
+                                                Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="{Binding TemperatureDisplay}"
+                                       Style="{StaticResource Text.Metric}"
+                                       Foreground="{DynamicResource Brush.Warning}" />
+                            <TextBlock Text="{s:Loc mon.hottestSensor}"
+                                       Style="{StaticResource Text.Caption}"
+                                       Margin="0,0,0,6" />
+                            <c:Sparkline Height="46"
+                                         Maximum="100"
+                                         Value="{Binding HottestCelsius, Mode=OneWay}"
+                                         Stroke="{DynamicResource Brush.Warning}" />
+                        </StackPanel>
+
+                        <StackPanel Margin="0,6,0,16"
+                                    Visibility="{Binding HasTemperature,
+                                                Converter={StaticResource BoolToVisibility},
+                                                ConverterParameter=invert}">
+                            <TextBlock Text="—"
+                                       Style="{StaticResource Text.Metric}"
+                                       Foreground="{DynamicResource Brush.TextFaint}" />
+                            <TextBlock Text="{Binding TemperatureNotice}"
+                                       Style="{StaticResource Text.Caption}"
+                                       TextWrapping="Wrap" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Disk activity -->
+                <Border Grid.Column="6" Style="{StaticResource LiveCard}">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.diskActivity}" Style="{StaticResource Text.Muted}" />
+                        <TextBlock Text="{Binding DiskActivityDisplay}"
+                                   Style="{StaticResource Text.Metric}"
+                                   FontSize="24"
+                                   Foreground="{DynamicResource Brush.Success}" />
+                        <TextBlock Text="{s:Loc mon.readWrite}"
+                                   Style="{StaticResource Text.Caption}"
+                                   Margin="0,0,0,6" />
+                        <c:Sparkline Height="46"
+                                     Maximum="0"
+                                     Value="{Binding DiskBytesPerSecond, Mode=OneWay}"
+                                     Stroke="{DynamicResource Brush.Success}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- ============================================ CORES + MEMORY DETAIL -->
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="14" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Per logical processor -->
+                <Border Grid.Column="0" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.perCore}" Style="{StaticResource Text.H2}" />
+                        <TextBlock Text="{Binding CpuName}"
+                                   Style="{StaticResource Text.Caption}"
+                                   TextTrimming="CharacterEllipsis"
+                                   Margin="0,2,0,14" />
+
+                        <!--
+                            One bar per logical processor. A wrap panel rather than a grid
+                            because the core count is 4 on a laptop and 128 on a server,
+                            and the strip has to look deliberate at both.
+                        -->
+                        <ItemsControl ItemsSource="{Binding Cores}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="34" Height="72"
+                                            Margin="0,0,6,6"
+                                            CornerRadius="6"
+                                            Background="{DynamicResource Brush.SurfaceAlt}"
+                                            ToolTip="{Binding Display}">
+                                        <Grid VerticalAlignment="Bottom">
+                                            <Rectangle Height="{Binding Percent,
+                                                              Converter={StaticResource Scale},
+                                                              ConverterParameter=0.72}"
+                                                       VerticalAlignment="Bottom"
+                                                       RadiusX="6" RadiusY="6"
+                                                       Fill="{DynamicResource Brush.Accent}" />
+
+                                            <!--
+                                                Top, not bottom: the bar grows upwards
+                                                from the floor, and a label sitting on
+                                                it becomes unreadable the moment the
+                                                core gets busy.
+                                            -->
+                                            <TextBlock Text="{Binding Label}"
+                                                       Style="{StaticResource Text.Caption}"
+                                                       FontSize="10"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Top"
+                                                       Margin="0,4,0,0" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Border Style="{StaticResource Divider}" Margin="0,6,0,10" />
+
+                        <UniformGrid Columns="3">
+                            <StackPanel>
+                                <TextBlock Text="{s:Loc mon.processes}" Style="{StaticResource Text.Caption}" />
+                                <TextBlock Text="{Binding ProcessCountDisplay}" Style="{StaticResource Text.Body}" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="{s:Loc mon.threads}" Style="{StaticResource Text.Caption}" />
+                                <TextBlock Text="{Binding ThreadCountDisplay}" Style="{StaticResource Text.Body}" />
+                            </StackPanel>
+                            <StackPanel>
+                                <TextBlock Text="{s:Loc mon.handles}" Style="{StaticResource Text.Caption}" />
+                                <TextBlock Text="{Binding HandleCountDisplay}" Style="{StaticResource Text.Body}" />
+                            </StackPanel>
+                        </UniformGrid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Memory breakdown -->
+                <Border Grid.Column="2" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.memoryDetail}" Style="{StaticResource Text.H2}" Margin="0,0,0,14" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{s:Loc mon.inUse}"
+                                       Style="{StaticResource Text.Caption}" Margin="0,0,18,8" />
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding MemoryUsedDisplay}"
+                                       Style="{StaticResource Text.Body}" HorizontalAlignment="Right" Margin="0,0,0,8" />
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="{s:Loc mon.available}"
+                                       Style="{StaticResource Text.Caption}" Margin="0,0,18,8" />
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding MemoryAvailableDisplay}"
+                                       Style="{StaticResource Text.Body}" HorizontalAlignment="Right" Margin="0,0,0,8" />
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{s:Loc mon.cached}"
+                                       Style="{StaticResource Text.Caption}" Margin="0,0,18,8" />
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding MemoryCachedDisplay}"
+                                       Style="{StaticResource Text.Body}" HorizontalAlignment="Right" Margin="0,0,0,8" />
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="{s:Loc mon.committed}"
+                                       Style="{StaticResource Text.Caption}" Margin="0,0,18,0" />
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding CommitDisplay}"
+                                       Style="{StaticResource Text.Body}" HorizontalAlignment="Right" />
+                        </Grid>
+
+                        <ProgressBar Height="8"
+                                     Margin="0,16,0,0"
+                                     Minimum="0" Maximum="100"
+                                     Style="{StaticResource Progress.Thick}"
+                                     Value="{Binding MemoryPercent, Mode=OneWay}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- ============================================ TEMPERATURE DETAIL -->
+            <Border Style="{StaticResource Card}"
+                    Margin="0,0,0,16"
+                    Visibility="{Binding HasTemperature, Converter={StaticResource BoolToVisibility}}">
+                <StackPanel>
+                    <TextBlock Text="{s:Loc mon.sensors}" Style="{StaticResource Text.H2}" Margin="0,0,0,12" />
+
+                    <ItemsControl ItemsSource="{Binding Temperatures}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="140" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}"
+                                               Style="{StaticResource Cell}"
+                                               ToolTip="{Binding Source}" />
+
+                                    <ProgressBar Grid.Column="1"
+                                                 Height="8"
+                                                 Margin="0,0,14,0"
+                                                 VerticalAlignment="Center"
+                                                 Minimum="0" Maximum="100"
+                                                 Style="{StaticResource Progress.Thick}"
+                                                 Foreground="{Binding Band, Converter={StaticResource ThermalBandToBrush}}"
+                                                 Value="{Binding BarPercent, Mode=OneWay}" />
+
+                                    <TextBlock Grid.Column="2" Text="{Binding Display}"
+                                               Style="{StaticResource Cell.Number}"
+                                               MinWidth="70"
+                                               Foreground="{Binding Band, Converter={StaticResource ThermalBandToBrush}}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- ============================================ DISKS + BATTERY -->
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="14" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.storage}" Style="{StaticResource Text.H2}" Margin="0,0,0,12" />
+
+                        <ItemsControl ItemsSource="{Binding Disks}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,0,0,14">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Title}"
+                                                   Style="{StaticResource Cell}" FontWeight="SemiBold" />
+
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ThroughputDisplay}"
+                                                   Style="{StaticResource Text.Caption}"
+                                                   VerticalAlignment="Center" />
+
+                                        <ProgressBar Grid.Row="1" Grid.ColumnSpan="2"
+                                                     Height="8"
+                                                     Margin="0,7,0,5"
+                                                     Minimum="0" Maximum="100"
+                                                     Style="{StaticResource Progress.Thick}"
+                                                     Value="{Binding UsedPercent, Mode=OneWay}" />
+
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding CapacityDisplay}"
+                                                   Style="{StaticResource Text.Caption}" />
+
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding FreeDisplay}"
+                                                   Style="{StaticResource Text.Caption}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- Only rendered on a machine that actually has a battery. -->
+                <Border Grid.Column="2"
+                        Style="{StaticResource Card}"
+                        MinWidth="220"
+                        Visibility="{Binding HasBattery, Converter={StaticResource BoolToVisibility}}">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.battery}" Style="{StaticResource Text.H2}" Margin="0,0,0,12" />
+
+                        <TextBlock Text="{Binding BatteryDisplay}"
+                                   Style="{StaticResource Text.Metric}"
+                                   Foreground="{DynamicResource Brush.Success}" />
+
+                        <TextBlock Text="{Binding BatteryStateDisplay}"
+                                   Style="{StaticResource Text.Caption}"
+                                   TextWrapping="Wrap"
+                                   Margin="0,2,0,10" />
+
+                        <ProgressBar Height="8"
+                                     Minimum="0" Maximum="100"
+                                     Style="{StaticResource Progress.Thick}"
+                                     Value="{Binding BatteryPercent, Mode=OneWay}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- ============================================ PROCESS TABLE -->
+            <Grid Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel x:Name="CaptureAnchor" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{s:Loc mon.byApp}" Style="{StaticResource Text.H2}" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding RowCountDisplay}"
+                               Style="{StaticResource Text.Caption}"
+                               VerticalAlignment="Center"
+                               Margin="12,3,0,0" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <RadioButton Style="{StaticResource SortTab}"
+                                 Content="{s:Loc mon.cpu}"
+                                 IsChecked="{Binding IsSortCpu, Mode=OneWay}"
+                                 Command="{Binding SortCommand}" CommandParameter="Cpu" />
+
+                    <RadioButton Style="{StaticResource SortTab}"
+                                 Content="{s:Loc mon.memory}"
+                                 IsChecked="{Binding IsSortMemory, Mode=OneWay}"
+                                 Command="{Binding SortCommand}" CommandParameter="Memory" />
+
+                    <RadioButton Style="{StaticResource SortTab}"
+                                 Content="{s:Loc mon.disk}"
+                                 IsChecked="{Binding IsSortDisk, Mode=OneWay}"
+                                 Command="{Binding SortCommand}" CommandParameter="Disk" />
+
+                    <RadioButton Style="{StaticResource SortTab}"
+                                 Content="{s:Loc common.device}"
+                                 IsChecked="{Binding IsSortName, Mode=OneWay}"
+                                 Command="{Binding SortCommand}" CommandParameter="Name" />
+
+                    <TextBox Style="{StaticResource Input.TextBox}"
+                             Width="180"
+                             Margin="10,0,0,0"
+                             Tag="{s:Loc common.search}"
+                             Text="{Binding Search, UpdateSourceTrigger=PropertyChanged, Delay=200}" />
+
+                    <Button Style="{StaticResource Btn.Ghost}"
+                            Padding="12,7"
+                            Margin="8,0,0,0"
+                            Content="{Binding ShowAllLabel}"
+                            Command="{Binding ShowAllCommand}" />
+                </StackPanel>
+            </Grid>
+
+            <Border Style="{StaticResource Card}" Padding="0">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <StackPanel MinWidth="700">
+
+                        <!-- Header row -->
+                        <Grid Margin="16,12,16,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" MinWidth="180" />
+                                <ColumnDefinition Width="66" />
+                                <ColumnDefinition Width="108" />
+                                <ColumnDefinition Width="104" />
+                                <ColumnDefinition Width="104" />
+                                <ColumnDefinition Width="104" />
+                                <ColumnDefinition Width="62" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="{s:Loc mon.process}" Style="{StaticResource ColumnHeader}" />
+                            <TextBlock Grid.Column="1" Text="PID" Style="{StaticResource ColumnHeader}"
+                                       TextAlignment="Right" />
+                            <TextBlock Grid.Column="2" Text="{s:Loc mon.cpu}" Style="{StaticResource ColumnHeader}"
+                                       TextAlignment="Right" />
+                            <TextBlock Grid.Column="3" Text="{s:Loc mon.workingSet}" Style="{StaticResource ColumnHeader}"
+                                       TextAlignment="Right" />
+                            <TextBlock Grid.Column="4" Text="{s:Loc mon.private}" Style="{StaticResource ColumnHeader}"
+                                       TextAlignment="Right" />
+                            <TextBlock Grid.Column="5" Text="{s:Loc mon.disk}" Style="{StaticResource ColumnHeader}"
+                                       TextAlignment="Right" />
+                            <TextBlock Grid.Column="6" Text="{s:Loc mon.threads}" Style="{StaticResource ColumnHeader}"
+                                       TextAlignment="Right" />
+                        </Grid>
+
+                        <Border Style="{StaticResource Divider}" Margin="16,0" />
+
+                        <ItemsControl ItemsSource="{Binding Processes}"
+                                      VirtualizingPanel.IsVirtualizing="True"
+                                      VirtualizingPanel.VirtualizationMode="Recycling">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="16,7" ToolTip="{Binding Tooltip}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" MinWidth="180" />
+                                            <ColumnDefinition Width="66" />
+                                            <ColumnDefinition Width="108" />
+                                            <ColumnDefinition Width="104" />
+                                            <ColumnDefinition Width="104" />
+                                            <ColumnDefinition Width="104" />
+                                            <ColumnDefinition Width="62" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" Style="{StaticResource Cell}" />
+
+                                            <Border Style="{StaticResource Badge}"
+                                                    Margin="8,0,0,0"
+                                                    Background="{DynamicResource Brush.AccentSoft}"
+                                                    Visibility="{Binding IsSelf,
+                                                                Converter={StaticResource BoolToVisibility}}">
+                                                <TextBlock Text="Hexnest"
+                                                           Style="{StaticResource Badge.Text}"
+                                                           Foreground="{DynamicResource Brush.Accent}" />
+                                            </Border>
+                                        </StackPanel>
+
+                                        <TextBlock Grid.Column="1" Text="{Binding ProcessId}"
+                                                   Style="{StaticResource Cell.Number}"
+                                                   Foreground="{DynamicResource Brush.TextFaint}" />
+
+                                        <!-- A short bar behind the number makes the table scannable. -->
+                                        <Grid Grid.Column="2" Margin="0,0,10,0">
+                                            <Rectangle Width="{Binding CpuPercent,
+                                                              Converter={StaticResource Scale},
+                                                              ConverterParameter=0.55}"
+                                                       Height="16"
+                                                       RadiusX="3" RadiusY="3"
+                                                       HorizontalAlignment="Left"
+                                                       Fill="{DynamicResource Brush.AccentSoft}" />
+
+                                            <TextBlock Text="{Binding CpuDisplay}"
+                                                       Style="{StaticResource Cell.Number}" />
+                                        </Grid>
+
+                                        <TextBlock Grid.Column="3" Text="{Binding MemoryDisplay}"
+                                                   Style="{StaticResource Cell.Number}" Margin="0,0,10,0" />
+
+                                        <TextBlock Grid.Column="4" Text="{Binding PrivateDisplay}"
+                                                   Style="{StaticResource Cell.Number}" Margin="0,0,10,0"
+                                                   Foreground="{DynamicResource Brush.TextMuted}" />
+
+                                        <TextBlock Grid.Column="5" Text="{Binding DiskDisplay}"
+                                                   Style="{StaticResource Cell.Number}" Margin="0,0,10,0"
+                                                   Foreground="{DynamicResource Brush.TextMuted}" />
+
+                                        <TextBlock Grid.Column="6" Text="{Binding ThreadCount}"
+                                                   Style="{StaticResource Cell.Number}"
+                                                   Foreground="{DynamicResource Brush.TextFaint}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Border Height="8" Background="Transparent" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <TextBlock Text="{s:Loc mon.footnote}"
+                       Style="{StaticResource Text.Caption}"
+                       TextWrapping="Wrap"
+                       Margin="2,12,0,0" />
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,15 +1,15 @@
 <#
 .SYNOPSIS
-    Builds a complete DrvNest release locally: both architectures, the optional
+    Builds a complete Hexnest release locally: both architectures, the optional
     installer, and checksums.txt.
 
 .DESCRIPTION
     Produces exactly the asset set the in-app updater expects to find on a GitHub
-    release (see src/DrvNest.Core/AppInfo.cs):
+    release (see src/Hexnest.Core/AppInfo.cs):
 
-        dist\DrvNest.exe          self-contained single file, win-x64
-        dist\DrvNest-arm64.exe    self-contained single file, win-arm64
-        dist\DrvNest-Setup.exe    optional, only when Inno Setup is installed
+        dist\Hexnest.exe          self-contained single file, win-x64
+        dist\Hexnest-arm64.exe    self-contained single file, win-arm64
+        dist\Hexnest-Setup.exe    optional, only when Inno Setup is installed
         dist\checksums.txt        sha256sum format, "<hash>  <filename>"
 
     Use this to check a release before tagging, or to hand someone a build without
@@ -46,7 +46,7 @@ Set-StrictMode -Version Latest
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $publishScript = Join-Path $PSScriptRoot 'publish.ps1'
-$issScript = Join-Path $PSScriptRoot 'installer\DrvNest.iss'
+$issScript = Join-Path $PSScriptRoot 'installer\Hexnest.iss'
 
 $outputDir = if ([System.IO.Path]::IsPathRooted($Output)) { $Output } else { Join-Path $repoRoot $Output }
 
@@ -61,7 +61,7 @@ function Write-Step {
 }
 
 Write-Host ''
-Write-Host "DrvNest release $Version" -ForegroundColor Green
+Write-Host "Hexnest release $Version" -ForegroundColor Green
 Write-Host "Output: $outputDir"
 
 # =============================================================================
@@ -74,7 +74,7 @@ Write-Step 'Publishing win-x64'
 Write-Step 'Publishing win-arm64'
 & $publishScript -Runtime win-arm64 -Configuration Release -Version $Version -Output $outputDir
 
-foreach ($required in @('DrvNest.exe', 'DrvNest-arm64.exe')) {
+foreach ($required in @('Hexnest.exe', 'Hexnest-arm64.exe')) {
     $path = Join-Path $outputDir $required
     if (-not (Test-Path $path)) {
         throw "Expected $path after publishing, but it is missing."
@@ -113,7 +113,7 @@ else {
 Inno Setup was not found, so no installer will be built.
 
 Install it with `choco install innosetup -y` or from https://jrsoftware.org/isdl.php
-if you want DrvNest-Setup.exe in this release.
+if you want Hexnest-Setup.exe in this release.
 '@
     }
     elseif (-not (Test-Path $issScript)) {
@@ -126,11 +126,11 @@ if you want DrvNest-Setup.exe in this release.
         if ($LASTEXITCODE -ne 0) {
             Write-Warning "ISCC exited with $LASTEXITCODE; continuing without an installer."
         }
-        elseif (Test-Path (Join-Path $outputDir 'DrvNest-Setup.exe')) {
+        elseif (Test-Path (Join-Path $outputDir 'Hexnest-Setup.exe')) {
             Write-Host 'Installer built.' -ForegroundColor Green
         }
         else {
-            Write-Warning 'ISCC reported success but DrvNest-Setup.exe is not in the output folder.'
+            Write-Warning 'ISCC reported success but Hexnest-Setup.exe is not in the output folder.'
         }
     }
 }
@@ -179,7 +179,7 @@ Get-Content $checksumPath | ForEach-Object { Write-Host "  $_" }
 Write-Host ''
 Write-Host 'Nothing has been pushed. To publish this version, run:' -ForegroundColor Yellow
 Write-Host ''
-Write-Host "    git tag -a v$Version -m ""DrvNest v$Version"""
+Write-Host "    git tag -a v$Version -m ""Hexnest v$Version"""
 Write-Host "    git push origin v$Version"
 Write-Host ''
 Write-Host 'Pushing the tag triggers .github/workflows/release.yml, which rebuilds'

@@ -1,6 +1,6 @@
 # Kullanım Rehberi
 
-DrvNest'in dokuz menüsü, her butonun ne yaptığı ve tipik akışlar.
+Hexnest'in dokuz menüsü, her butonun ne yaptığı ve tipik akışlar.
 
 ---
 
@@ -29,7 +29,7 @@ DrvNest'in dokuz menüsü, her butonun ne yaptığı ve tipik akışlar.
 
 ## 1. İlk çalıştırma
 
-`DrvNest.exe`'yi çift tıklayın. Windows bir **yönetici onayı (UAC)** penceresi gösterir;
+`Hexnest.exe`'yi çift tıklayın. Windows bir **yönetici onayı (UAC)** penceresi gösterir;
 onaylamanız gerekir. Sürücü kurmak ayrıcalıklı bir işlemdir ve uygulama bunu baştan ister —
 kuyruğun ortasında yetki hatası almaktansa dürüst olmayı tercih eder.
 
@@ -43,8 +43,8 @@ Açılışta:
 - Önceki bir oturum yarıda kalmışsa doğrudan **İşlemler** ekranına gidilir ve
   bir **Devam Et** butonu gösterilir.
 
-> Aynı anda yalnızca **tek bir DrvNest** çalışabilir. İkinci bir kopya açmaya çalışırsanız
-> "DrvNest zaten çalışıyor" uyarısı alırsınız. Bu bilinçli: iki kopyanın aynı anda sürücü
+> Aynı anda yalnızca **tek bir Hexnest** çalışabilir. İkinci bir kopya açmaya çalışırsanız
+> "Hexnest zaten çalışıyor" uyarısı alırsınız. Bu bilinçli: iki kopyanın aynı anda sürücü
 > kurması gerçekten zarar verici bir senaryodur.
 
 ---
@@ -136,7 +136,7 @@ Her ikisi de ayarlara kaydedilir. Fikrinizi değiştirirseniz **Ayarlar → Vars
 listeleri temizler.
 
 > **Neden bazı aygıtlar listede yok?** Windows Update kurulu olandan **daha eski** bir sürüm
-> önerdiğinde o aday otomatik olarak elenir; DrvNest bilerek sürüm düşürmez.
+> önerdiğinde o aday otomatik olarak elenir; Hexnest bilerek sürüm düşürmez.
 
 ---
 
@@ -165,7 +165,7 @@ Bu bir eksiklik değil:
   zaten sıraya sokar. Aynı anda kurmaya çalışmak hiçbir şeyi hızlandırmaz; sadece
   sahte hata mesajları üretir.
 
-Kurulum sırasında Windows'un kendisi başka bir güncelleme kuruyorsa DrvNest
+Kurulum sırasında Windows'un kendisi başka bir güncelleme kuruyorsa Hexnest
 *"Windows Update'in boşalması bekleniyor"* diyerek 10 saniye aralıklarla 6 kez tekrar dener.
 
 ### Butonlar
@@ -187,14 +187,14 @@ Başarısız bir iş zaten otomatik olarak tekrar denenmiştir (varsayılan 2 ke
 Bazı sürücüler etkinleşmek için yeniden başlatma ister. Akış şöyledir:
 
 1. Kuyruk biter veya bir iş "önce yeniden başlatma gerekiyor" der.
-2. DrvNest tüm kuyruk durumunu `session.json`'a yazar ve
+2. Hexnest tüm kuyruk durumunu `session.json`'a yazar ve
    oturum açılışına bağlı bir **zamanlanmış görev** kaydeder
-   (`DrvNest\ResumeSession`, en yüksek yetkiyle, `DrvNest.exe --resume` komutuyla).
+   (`Hexnest\ResumeSession`, en yüksek yetkiyle, `Hexnest.exe --resume` komutuyla).
    Görev oluşturulamazsa `RunOnce` kayıt defteri anahtarı yedek olarak kullanılır.
 3. **Şimdi Yeniden Başlat**'a basarsanız Windows'un standart geri sayımlı yeniden başlatma
    uyarısı çıkar (varsayılan 60 saniye). Fikrinizi değiştirirseniz **Daha Sonra** ile
    iptal edebilirsiniz.
-4. Makine açıldığında DrvNest kendiliğinden gelir ve kuyruğun kalanını tamamlar.
+4. Makine açıldığında Hexnest kendiliğinden gelir ve kuyruğun kalanını tamamlar.
 
 Notlar:
 
@@ -205,7 +205,7 @@ Notlar:
   savunulabilir bir varsayılan değildir.
 - Bir oturum en fazla **10 yeniden başlatma** taşır. Bu sınırı aşarsa oturum bırakılır;
   sonsuz döngüye karşı bir emniyet valfidir.
-- Kuyrukta iş kalmadığında zamanlanmış görev ve `RunOnce` kaydı **silinir**. DrvNest
+- Kuyrukta iş kalmadığında zamanlanmış görev ve `RunOnce` kaydı **silinir**. Hexnest
   makinede kalıcı bir iz bırakmaz.
 
 ---
@@ -219,9 +219,9 @@ Sistemdeki **tüm üçüncü parti sürücü paketlerini** dışa aktarır
 dışarıda bırakılır — Windows onları zaten kendisi kurar.
 
 - **ZIP olarak sıkıştır** kutusunu işaretlerseniz sonuç tek bir `.zip` dosyası olur.
-- Yedeğin içine `drvnest-backup.json` adında bir künye yazılır: makine adı, üretici/model,
+- Yedeğin içine `hexnest-backup.json` adında bir künye yazılır: makine adı, üretici/model,
   Windows sürümü, mimari, paket sayısı, toplam boyut ve paketlerin listesi.
-- Varsayılan konum: `%ProgramData%\DrvNest\backups\`. Ayarlar'dan değiştirilebilir.
+- Varsayılan konum: `%ProgramData%\Hexnest\backups\`. Ayarlar'dan değiştirilebilir.
 
 ### Mevcut Yedekler
 
@@ -236,7 +236,7 @@ Her satırda ad, paket sayısı, boyut ve tarih görünür.
 | **Sil** | Yedeği kalıcı olarak siler |
 | **Yenile** | Listeyi yeniden okur |
 
-> **Klasörden Geri Yükle** yalnızca DrvNest yedekleri için değildir. Üreticinin sitesinden
+> **Klasörden Geri Yükle** yalnızca Hexnest yedekleri için değildir. Üreticinin sitesinden
 > indirip açtığınız herhangi bir sürücü klasörünü de kurabilirsiniz; alt klasörler dahil
 > tüm `.inf` dosyaları taranır.
 
@@ -267,17 +267,17 @@ Ağ kartının sürücüsü yoksa internet de yoktur. Kurtarma modu tam bu durum
 
 ```
 USB:\
-├── DrvNest.exe
+├── Hexnest.exe
 └── Drivers\          ← yedek klasörünün içeriği
 ```
 
-`DrvNest.exe` ile aynı dizindeki **`Drivers`** klasörü, uygulama tarafından
+`Hexnest.exe` ile aynı dizindeki **`Drivers`** klasörü, uygulama tarafından
 **otomatik olarak** yerel sürücü havuzu olarak kaydedilir. Hiçbir ayar yapmanız gerekmez.
 
 ### Kullanım (format sonrası)
 
 ```powershell
-DrvNest.exe --rescue
+Hexnest.exe --rescue
 ```
 
 `--rescue` (eş anlamlısı `--offline`) modunda Windows Update **hiç aranmaz**. Tarama
@@ -310,7 +310,7 @@ kaynak, sonuç, süre ve varsa hata mesajı.
 | --- | --- |
 | **Tümü / Başarılı / Başarısız** | Sonuca göre filtre |
 | **Arama** | Aygıt adı, başlık, üretici, sınıf ve hedef sürümde arar |
-| **CSV Olarak Dışa Aktar** | `%ProgramData%\DrvNest\reports\` altına CSV yazar ve dosyayı Gezgin'de gösterir |
+| **CSV Olarak Dışa Aktar** | `%ProgramData%\Hexnest\reports\` altına CSV yazar ve dosyayı Gezgin'de gösterir |
 | **Geçmişi Temizle** | Tüm kayıtları siler |
 | **Yenile** | Listeyi yeniden okur |
 
@@ -329,7 +329,7 @@ bir çökme en fazla son kaydı etkiler.
 ## 9b. Sistem İzleme
 
 Bu sayfa açık olmadığı sürece hiçbir şey örneklenmez; sayfadan ayrıldığınız anda örnekleme
-durur. DrvNest'in arka plan servisi yoktur ve bu sayfa da bir tane oluşturmaz.
+durur. Hexnest'in arka plan servisi yoktur ve bu sayfa da bir tane oluşturmaz.
 
 ### Üstteki dört kart
 
@@ -371,7 +371,7 @@ parçacığı sayısı.
 > gerekir.
 
 Bir işlemi sonlandırmak gerekiyorsa sağ üstteki **Görev Yöneticisi** düğmesi Windows'un
-kendi aracını açar. DrvNest işlem sonlandırmaz — bir sürücü aracının yapması gereken iş
+kendi aracını açar. Hexnest işlem sonlandırmaz — bir sürücü aracının yapması gereken iş
 değildir.
 
 ---
@@ -412,7 +412,7 @@ Windows açılırken çalışan her kaydı listeler ve her biri için bir anahta
 ### Kapatmak ne yapar, ne yapmaz
 
 Bir kaydı kapatmak **hiçbir şeyi silmez.** Windows açık/kapalı bilgisini ayrı bir anahtarda
-(`StartupApproved`) tutar ve DrvNest yalnızca oraya yazar. `Run` değeri veya Başlangıç
+(`StartupApproved`) tutar ve Hexnest yalnızca oraya yazar. `Run` değeri veya Başlangıç
 klasöründeki kısayol olduğu yerde kalır; tekrar açtığınızda özgün komut satırı aynen geri
 gelir. Görev Yöneticisi de aynı ayarı okur, bu yüzden ikisi her zaman aynı şeyi gösterir.
 
@@ -436,7 +436,7 @@ gelir. Görev Yöneticisi de aynı ayarı okur, bu yüzden ikisi her zaman aynı
   kapatılabilir; bazen bir fonksiyon tuşunu çalıştıran şey odur.
 - **TEK SEFERLİK** — `RunOnce`. Bir kez çalışır ve kendini siler.
 
-Tüm kullanıcılar için olan kayıtları değiştirmek yönetici yetkisi ister; DrvNest zaten
+Tüm kullanıcılar için olan kayıtları değiştirmek yönetici yetkisi ister; Hexnest zaten
 yönetici olarak çalışır.
 
 ---
@@ -469,7 +469,7 @@ hiç dokunmaz.
 tek tek listelenir — boyutu ve kaç günlük olduğuyla birlikte — ve her biri ayrı ayrı
 işaretlenir. Sildiğinizde kalıcı olarak silinmezler, **Geri Dönüşüm Kutusu'na** giderler.
 
-Artık klasör tespiti bir tahmindir. DrvNest klasör adını kurulu her programla, çalışan her
+Artık klasör tespiti bir tahmindir. Hexnest klasör adını kurulu her programla, çalışan her
 programla ve Program Files içindekilerle karşılaştırır, altı aydır hiçbir dosyasının
 yazılmamış olmasını şart koşar — ve yine de satırda bunun bir tahmin olduğunu yazar.
 
@@ -499,7 +499,7 @@ olarak gelir; bu ekran onu anlamlı kılan bağlamı tutar.
 | --- | --- |
 | **Kopyala** | Günlüğü panoya alır |
 | **Temizle** | Ekrandaki ve bellekteki kayıtları siler |
-| **Dosyayı Aç** | `drvnest.log` dosyasını açar |
+| **Dosyayı Aç** | `hexnest.log` dosyasını açar |
 | **Klasörü Aç** | Günlük klasörünü açar |
 | **Otomatik kaydır** | Yeni satır geldikçe aşağı kayar |
 
@@ -507,13 +507,13 @@ olarak gelir; bu ekran onu anlamlı kılan bağlamı tutar.
 
 1. Sorunu tekrar edin.
 2. **Günlük → Kopyala**.
-3. [GitHub Issues](https://github.com/ahmetcaglayan/DrvNest/issues) üzerinde yeni bir kayıt
+3. [GitHub Issues](https://github.com/ahmetcaglayan/Hexnest/issues) üzerinde yeni bir kayıt
    açın ve panoyu yapıştırın.
 
-*Kopyala* butonu günlüğün başına DrvNest sürümünü, işletim sistemi sürümünü, mimariyi ve
+*Kopyala* butonu günlüğün başına Hexnest sürümünü, işletim sistemi sürümünü, mimariyi ve
 makine bilgisini otomatik ekler — ayrıca yazmanıza gerek yoktur.
 
-Günlük dosyası `%ProgramData%\DrvNest\logs\drvnest.log` adresindedir ve 8 MB'a ulaşınca
+Günlük dosyası `%ProgramData%\Hexnest\logs\hexnest.log` adresindedir ve 8 MB'a ulaşınca
 kendini devirir.
 
 ---
@@ -533,7 +533,7 @@ Değişiklikler **Kaydet**'e basınca uygulanır. (Tema ve dil istisnadır: anı
 
 > **Kurulumlar neden sıralı?** Bu ayarlanabilir bir şey değil, Windows'un davranışı.
 > Windows Update aynı anda ikinci bir kuruluma `WU_E_OPERATIONINPROGRESS` döner ve PnP alt
-> sistemi `pnputil` çağrılarını zaten kuyruklar. DrvNest bunu tek bir global kilitle
+> sistemi `pnputil` çağrılarını zaten kuyruklar. Hexnest bunu tek bir global kilitle
 > dürüstçe modeller: aynı anda en fazla bir kurulum çalışır. "Aynı anda indirme sayısı"
 > ayarını yükseltmek indirmeleri hızlandırır, kurulumu değil.
 
@@ -553,14 +553,14 @@ Değişiklikler **Kaydet**'e basınca uygulanır. (Tema ve dil istisnadır: anı
 | --- | --- | --- |
 | **Çevrimdışı mod** | Kapalı | Windows Update'e hiç bağlanılmaz; yalnızca yerel klasörler kullanılır. `--rescue` ile açmakla aynı etki. |
 | **İsteğe bağlı sürücü güncellemelerini de göster** | Açık | Kapalıyken yalnızca Microsoft'un önerdiği (gizli olmayan, otomatik seçilen) paketler listelenir |
-| **Yerel sürücü klasörleri** | — | `.inf` paketlerinin aranacağı klasörler. **Klasör Ekle** ile ekleyin. `DrvNest.exe` yanındaki `Drivers` klasörü zaten otomatik eklenir. |
+| **Yerel sürücü klasörleri** | — | `.inf` paketlerinin aranacağı klasörler. **Klasör Ekle** ile ekleyin. `Hexnest.exe` yanındaki `Drivers` klasörü zaten otomatik eklenir. |
 
 ### Güncellemeler
 
 | Ayar | Anlamı |
 | --- | --- |
 | **Güncellemeleri otomatik denetle** | Günde bir kez GitHub'a yeni sürüm olup olmadığını sorar ve *Hakkında* menüsünde bir sayı gösterir. Hiçbir şey indirmez. Varsayılan: açık. |
-| **Güncellemeleri otomatik indir ve kur** | Doğrulanmış dosyayı indirir ve DrvNest kapanırken değiştirir. Varsayılan: kapalı. |
+| **Güncellemeleri otomatik indir ve kur** | Doğrulanmış dosyayı indirir ve Hexnest kapanırken değiştirir. Varsayılan: kapalı. |
 | **Ön sürümleri de dahil et** | Kararlı sürümlerin yanı sıra beta yapıları da önerir. Varsayılan: kapalı. |
 
 Çevrimdışı ve kurtarma modunda her ikisi de tamamen atlanır.
@@ -575,7 +575,7 @@ Değişiklikler **Kaydet**'e basınca uygulanır. (Tema ve dil istisnadır: anı
 **Varsayılanlara Dön** tüm ayarları sıfırlar; gizlenen güncellemeler ve yoksayılan aygıtlar
 listesi de temizlenir.
 
-**Veri klasörünü aç** butonu `%ProgramData%\DrvNest` klasörünü Gezgin'de açar.
+**Veri klasörünü aç** butonu `%ProgramData%\Hexnest` klasörünü Gezgin'de açar.
 
 ---
 
@@ -591,7 +591,7 @@ bağlantıları burada.
 2. Yeni sürüm varsa numarası ve sürüm notları gösterilir.
 3. **İndir ve Kur**:
    - Makinenizin mimarisine uygun dosya indirilir
-     (`DrvNest.exe` veya ARM64'te `DrvNest-arm64.exe`).
+     (`Hexnest.exe` veya ARM64'te `Hexnest-arm64.exe`).
    - Dosyanın **SHA-256** özeti, sürümle birlikte yayımlanan `checksums.txt` içindeki
      değerle karşılaştırılır.
    - **Sağlama toplamı yoksa ya da tutmuyorsa indirilen dosya silinir ve kurulum
@@ -608,15 +608,15 @@ Notlar:
 - Güncelleme **hiçbir zaman kendiliğinden uygulanmaz** — her zaman sizin tıklamanız gerekir.
 - Bir şey ters giderse orijinal exe geri konur; asla exe'siz kalmazsınız.
 - İsterseniz güncellemeyi elle de indirebilirsiniz:
-  [Releases sayfası](https://github.com/ahmetcaglayan/DrvNest/releases).
+  [Releases sayfası](https://github.com/ahmetcaglayan/Hexnest/releases).
 
 ---
 
 ## 13. Komut satırı bayrakları
 
 ```powershell
-DrvNest.exe [--resume | --rescue | --offline | --updated]
-DrvNest.exe --capture <klasör> [--lang <kod>]
+Hexnest.exe [--resume | --rescue | --offline | --updated]
+Hexnest.exe --capture <klasör> [--lang <kod>]
 ```
 
 | Bayrak | Ne yapar |
@@ -635,7 +635,7 @@ Tanınmayan bir bayrak yok sayılır ve uygulama normal modda açılır.
 
 ## 14. Dosyalar nerede?
 
-Her şey `%ProgramData%\DrvNest` altındadır (genellikle `C:\ProgramData\DrvNest`).
+Her şey `%ProgramData%\Hexnest` altındadır (genellikle `C:\ProgramData\Hexnest`).
 `%AppData%` yerine burası seçilmiştir: yeniden başlatma sonrası devam görevi başka bir
 yönetici hesabı veya SYSTEM olarak çalışabilir ve aynı oturum dosyasını bulabilmelidir.
 
@@ -644,15 +644,15 @@ yönetici hesabı veya SYSTEM olarak çalışabilir ve aynı oturum dosyasını 
 | `settings.json` | Ayarlarınız |
 | `session.json` | Yarıda kalan kuyruk (kuyruk bitince silinir) |
 | `history.jsonl` | Güncelleme geçmişi, satır başına bir kayıt |
-| `logs\drvnest.log` | Günlük dosyası (8 MB'da devrilir) |
+| `logs\hexnest.log` | Günlük dosyası (8 MB'da devrilir) |
 | `backups\` | Sürücü yedekleri; `backups\rollback\` güncelleme öncesi yedekler |
 | `cache\` | Geçici: hazırlanan paketler, indirilen sürümler, açılan ZIP'ler |
 | `reports\` | Donanım raporları ve CSV dışa aktarımları |
 | `<exe klasörü>\Drivers` | Taşınabilir sürücü havuzu (varsa otomatik kaydedilir) |
 
-`%ProgramData%` yazılabilir değilse uygulama `%LocalAppData%\DrvNest` klasörüne geçer.
+`%ProgramData%` yazılabilir değilse uygulama `%LocalAppData%\Hexnest` klasörüne geçer.
 
 Ayarlar dosyasını elle silmek uygulamayı varsayılanlara döndürür. Kalıcı olarak kaldırmak
-isterseniz: `DrvNest.exe`'yi silin ve `%ProgramData%\DrvNest` klasörünü kaldırın —
+isterseniz: `Hexnest.exe`'yi silin ve `%ProgramData%\Hexnest` klasörünü kaldırın —
 kayıt defterinde iz kalmaz, çünkü zamanlanmış görev ve `RunOnce` kaydı kuyruk bittiğinde
 zaten silinir.

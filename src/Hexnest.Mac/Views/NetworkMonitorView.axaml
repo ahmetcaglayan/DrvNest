@@ -1,0 +1,194 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Hexnest.Mac.ViewModels"
+             xmlns:c="clr-namespace:Hexnest.Mac.Controls"
+             xmlns:s="clr-namespace:Hexnest.Mac.Services"
+             x:Class="Hexnest.Mac.Views.NetworkMonitorView"
+             x:DataType="vm:NetworkMonitorViewModel">
+
+    <ScrollViewer Classes="page">
+        <StackPanel Spacing="14">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{Binding Title}" Classes="h1" />
+                    <TextBlock Text="{Binding Subtitle}" Classes="caption wrap" Margin="0,3,0,0" />
+                </StackPanel>
+
+                <Button Grid.Column="1" Classes="ghost"
+                        Content="{s:Loc net.resetCounters}"
+                        Command="{Binding ResetCommand}"
+                        VerticalAlignment="Top" />
+            </Grid>
+
+            <!-- ================================================ THROUGHPUT -->
+            <Grid ColumnDefinitions="*,14,*">
+
+                <Border Grid.Column="0" Classes="card">
+                    <StackPanel>
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Path Grid.Column="0" Data="{StaticResource Icon.Down}"
+                                  Stroke="{DynamicResource Brush.Accent}" StrokeThickness="1.6"
+                                  StrokeJoin="Round" Width="14" Height="14" Stretch="Uniform"
+                                  VerticalAlignment="Center" />
+                            <TextBlock Grid.Column="1" Text="{s:Loc net.download}" Classes="caption"
+                                       Margin="8,0,0,0" VerticalAlignment="Center" />
+                        </Grid>
+
+                        <TextBlock Text="{Binding DownText}" Classes="metric" Margin="0,8,0,0"
+                                   Foreground="{DynamicResource Brush.Accent}" />
+
+                        <c:Sparkline Values="{Binding DownHistory}"
+                                     Maximum="{Binding ChartMaximum}"
+                                     Stroke="{DynamicResource Brush.Accent}"
+                                     Height="52" Margin="0,12,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Classes="card">
+                    <StackPanel>
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Path Grid.Column="0" Data="{StaticResource Icon.Up}"
+                                  Stroke="{DynamicResource Brush.Info}" StrokeThickness="1.6"
+                                  StrokeJoin="Round" Width="14" Height="14" Stretch="Uniform"
+                                  VerticalAlignment="Center" />
+                            <TextBlock Grid.Column="1" Text="{s:Loc net.upload}" Classes="caption"
+                                       Margin="8,0,0,0" VerticalAlignment="Center" />
+                        </Grid>
+
+                        <TextBlock Text="{Binding UpText}" Classes="metric" Margin="0,8,0,0"
+                                   Foreground="{DynamicResource Brush.Info}" />
+
+                        <c:Sparkline Values="{Binding UpHistory}"
+                                     Maximum="{Binding ChartMaximum}"
+                                     Stroke="{DynamicResource Brush.Info}"
+                                     Height="52" Margin="0,12,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- ===================================================== TOTALS -->
+            <Grid ColumnDefinitions="*,12,*,12,*">
+                <Border Grid.Column="0" Classes="card-flat">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc net.thisSession}" Classes="faint" />
+                        <TextBlock Text="{Binding SessionDownText}" Classes="mono" Margin="0,5,0,0" />
+                        <TextBlock Text="{Binding SessionUpText}" Classes="mono" Margin="0,2,0,0" />
+                        <TextBlock Text="{Binding SessionDurationText}" Classes="faint" Margin="0,5,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Classes="card-flat">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc net.sinceBootDown}" Classes="faint" />
+                        <TextBlock Text="{Binding TotalDownText}" Classes="mono" Margin="0,5,0,0" />
+                        <TextBlock Text="{s:Loc net.sinceBootUp}" Classes="faint" Margin="0,5,0,0" />
+                        <TextBlock Text="{Binding TotalUpText}" Classes="mono" Margin="0,2,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="4" Classes="card-flat">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc net.connections}" Classes="faint" />
+                        <TextBlock Text="{Binding ConnectionText}" Classes="h2" Margin="0,5,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- =================================================== ADAPTERS -->
+            <Border Classes="card">
+                <StackPanel>
+                    <TextBlock Text="{s:Loc net.adapters}" Classes="h2" />
+
+                    <ItemsControl ItemsSource="{Binding Adapters}" Margin="0,8,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="vm:AdapterRow">
+                                <Border Classes="row">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <StackPanel Grid.Column="0" Margin="0,0,14,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Ellipse Width="7" Height="7" VerticalAlignment="Center"
+                                                         Fill="{DynamicResource Brush.Success}"
+                                                         IsVisible="{Binding IsUp}" />
+                                                <Ellipse Width="7" Height="7" VerticalAlignment="Center"
+                                                         Fill="{DynamicResource Brush.TextFaint}"
+                                                         IsVisible="{Binding !IsUp}" />
+                                                <TextBlock Text="{Binding Name}" Margin="8,0,0,0"
+                                                           VerticalAlignment="Center" />
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding Detail}" Classes="faint" Margin="15,3,0,0" />
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding RateText}" Classes="mono"
+                                                       HorizontalAlignment="Right" />
+                                            <TextBlock Text="{Binding TotalText}" Classes="faint"
+                                                       HorizontalAlignment="Right" Margin="0,3,0,0" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- ============================================= PER APPLICATION -->
+            <Border Classes="card">
+                <StackPanel>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0" Text="{s:Loc net.byApp}" Classes="h2"
+                                   VerticalAlignment="Center" />
+                        <Button Grid.Column="1" Classes="ghost"
+                                Content="{Binding ShowIdleLabel}"
+                                Command="{Binding ToggleIdleCommand}" />
+                    </Grid>
+
+                    <TextBlock Text="{s:Loc mac.netStarting}" Classes="faint" Margin="0,12,0,0"
+                               IsVisible="{Binding PerProcessWaiting}" />
+
+                    <StackPanel IsVisible="{Binding PerProcessReady}">
+                        <Grid ColumnDefinitions="*,110,110,190" Margin="14,14,14,0">
+                            <TextBlock Grid.Column="0" Text="{s:Loc mon.process}" Classes="faint" />
+                            <TextBlock Grid.Column="1" Text="{s:Loc net.down}" Classes="faint" HorizontalAlignment="Right" />
+                            <TextBlock Grid.Column="2" Text="{s:Loc net.up}" Classes="faint" HorizontalAlignment="Right" />
+                            <TextBlock Grid.Column="3" Text="{s:Loc net.sessionTotal}" Classes="faint" HorizontalAlignment="Right" />
+                        </Grid>
+
+                        <Border Classes="divider" Margin="14,6,14,0" />
+
+                        <ItemsControl ItemsSource="{Binding Applications}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="vm:AppNetworkRow">
+                                    <Border Classes="row">
+                                        <Grid ColumnDefinitions="*,110,110,190">
+                                            <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="0,0,12,0">
+                                                <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"
+                                                           VerticalAlignment="Center" />
+                                                <Border Classes="badge" Background="{DynamicResource Brush.AccentSoft}"
+                                                        Margin="8,0,0,0" IsVisible="{Binding IsSelf}">
+                                                    <TextBlock Text="Hexnest" Foreground="{DynamicResource Brush.Accent}" />
+                                                </Border>
+                                            </StackPanel>
+
+                                            <TextBlock Grid.Column="1" Text="{Binding DownText}" Classes="mono"
+                                                       HorizontalAlignment="Right" VerticalAlignment="Center" />
+                                            <TextBlock Grid.Column="2" Text="{Binding UpText}" Classes="mono"
+                                                       HorizontalAlignment="Right" VerticalAlignment="Center" />
+                                            <TextBlock Grid.Column="3" Text="{Binding SessionText}" Classes="faint"
+                                                       HorizontalAlignment="Right" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Text="{Binding Note}" Classes="faint wrap" Margin="4,0,4,0" />
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

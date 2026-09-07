@@ -1,0 +1,169 @@
+<UserControl x:Class="Hexnest.App.Views.LogsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="clr-namespace:Hexnest.App.Services"
+             xmlns:vm="clr-namespace:Hexnest.App.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:LogsViewModel}"
+             d:DesignWidth="900">
+
+    <Grid Margin="22,10,22,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- ============================================ HEADER -->
+        <Grid Grid.Row="0" Margin="0,10,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="{s:Loc log.title}" Style="{StaticResource Text.H1}" />
+                <TextBlock Text="{s:Loc log.subtitle}" Style="{StaticResource Text.Muted}" Margin="0,4,0,0" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Style="{StaticResource Btn.Primary}"
+                        Padding="13,7"
+                        Command="{Binding CopyCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{StaticResource Icon.Copy}"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="12"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Text="{s:Loc log.copy}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+
+                <!--
+                    Print Screen does nothing over an elevated window (UIPI), so Hexnest
+                    offers its own capture. It is here because a screenshot is part of
+                    the same job as the log: filing a usable bug report.
+                -->
+                <Button Style="{StaticResource Btn.Secondary}"
+                        Padding="13,7"
+                        Margin="8,0,0,0"
+                        ToolTip="{s:Loc log.screenshotHint}"
+                        Command="{Binding ScreenshotCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{StaticResource Icon.Monitor}"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="12"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Text="{s:Loc log.screenshot}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource Btn.Secondary}"
+                        Padding="12,7"
+                        Margin="8,0,0,0"
+                        Content="{s:Loc log.openFile}"
+                        Command="{Binding OpenFileCommand}" />
+
+                <Button Style="{StaticResource Btn.Ghost}"
+                        Padding="12,7"
+                        Margin="8,0,0,0"
+                        Content="{s:Loc log.clear}"
+                        Command="{Binding ClearCommand}" />
+            </StackPanel>
+        </Grid>
+
+        <!-- ============================================ TOOLBAR -->
+        <Grid Grid.Row="1" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Grid.Column="0"
+                      Style="{StaticResource Input.CheckBox}"
+                      Content="{s:Loc log.autoScroll}"
+                      IsChecked="{Binding AutoScroll}" />
+
+            <TextBlock Grid.Column="1"
+                       Text="{Binding LogFilePath}"
+                       Style="{StaticResource Text.Mono}"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       TextTrimming="CharacterEllipsis"
+                       MaxWidth="460"
+                       ToolTip="{Binding LogFilePath}" />
+        </Grid>
+
+        <!-- ============================================ LOG -->
+        <Border Grid.Row="2"
+                Background="{DynamicResource Brush.Surface}"
+                BorderBrush="{DynamicResource Brush.Border}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource Corner.Card}"
+                Margin="0,0,0,16"
+                Padding="4">
+
+            <ListBox x:Name="LogList"
+                     ItemsSource="{Binding Entries}"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     VirtualizingPanel.IsVirtualizing="True"
+                     VirtualizingPanel.VirtualizationMode="Recycling"
+                     VirtualizingPanel.ScrollUnit="Pixel">
+
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border Background="Transparent" Padding="10,2">
+                                        <ContentPresenter />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                       Text="{Binding TimeDisplay}"
+                                       Style="{StaticResource Text.Mono}"
+                                       Foreground="{DynamicResource Brush.TextFaint}" />
+
+                            <!-- Level drives the colour, so warnings and errors stand out. -->
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding Level}"
+                                       Style="{StaticResource Text.Mono}"
+                                       Width="52"
+                                       Margin="12,0,0,0"
+                                       FontWeight="Bold"
+                                       Foreground="{Binding Level, Converter={StaticResource LogLevelToBrush}}" />
+
+                            <TextBlock Grid.Column="2"
+                                       Text="{Binding Message}"
+                                       Style="{StaticResource Text.Mono}"
+                                       Foreground="{Binding Level, Converter={StaticResource LogLevelToBrush}}"
+                                       Margin="8,0,0,0"
+                                       TextWrapping="Wrap" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,185 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Hexnest.Mac.ViewModels"
+             xmlns:s="clr-namespace:Hexnest.Mac.Services"
+             x:Class="Hexnest.Mac.Views.DashboardView"
+             x:DataType="vm:DashboardViewModel">
+
+    <ScrollViewer Classes="page">
+        <StackPanel Spacing="14">
+
+            <StackPanel>
+                <TextBlock Text="{Binding Title}" Classes="h1" />
+                <TextBlock Text="{Binding Subtitle}" Classes="caption wrap" Margin="0,3,0,0" />
+            </StackPanel>
+
+            <!-- ================================================ THIS MAC -->
+            <Border Classes="card">
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" Spacing="3">
+                        <TextBlock Text="{Binding MachineName}" Classes="h2" />
+                        <TextBlock Text="{Binding OsText}" Classes="caption" />
+                        <TextBlock Text="{Binding ProcessorText}" Classes="caption" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding UptimeText}" Classes="h2" HorizontalAlignment="Right" />
+                        <TextBlock Text="{s:Loc mac.uptime}" Classes="faint" HorizontalAlignment="Right" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ============================================== LIVE TILES -->
+            <Grid ColumnDefinitions="*,12,*,12,*">
+
+                <Border Grid.Column="0" Classes="card">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.cpu}" Classes="caption" />
+                        <TextBlock Text="{Binding CpuText}"
+                                   Classes="metric"
+                                   Foreground="{Binding CpuPercent, Converter={StaticResource LoadBrush}}"
+                                   Margin="0,6,0,0" />
+                        <ProgressBar Value="{Binding CpuPercent}" Maximum="100"
+                                     Foreground="{Binding CpuPercent, Converter={StaticResource LoadBrush}}"
+                                     Margin="0,10,0,0" />
+                        <TextBlock Text="{Binding ProcessCountText}" Classes="faint" Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Classes="card">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.memory}" Classes="caption" />
+                        <TextBlock Text="{Binding MemoryText}"
+                                   Classes="metric"
+                                   Foreground="{Binding MemoryPercent, Converter={StaticResource LoadBrush}}"
+                                   Margin="0,6,0,0" />
+                        <ProgressBar Value="{Binding MemoryPercent}" Maximum="100"
+                                     Foreground="{Binding MemoryPercent, Converter={StaticResource LoadBrush}}"
+                                     Margin="0,10,0,0" />
+                        <TextBlock Text="{Binding MemoryDetail}" Classes="faint" Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="4" Classes="card">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc mon.storage}" Classes="caption" />
+                        <TextBlock Text="{Binding DiskText}"
+                                   Classes="metric"
+                                   Foreground="{Binding DiskPercent, Converter={StaticResource LoadBrush}}"
+                                   Margin="0,6,0,0" />
+                        <ProgressBar Value="{Binding DiskPercent}" Maximum="100"
+                                     Foreground="{Binding DiskPercent, Converter={StaticResource LoadBrush}}"
+                                     Margin="0,10,0,0" />
+                        <TextBlock Text="{Binding DiskDetail}" Classes="faint" Margin="0,8,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- =========================================== QUICK ACTIONS -->
+            <Border Classes="card">
+                <StackPanel>
+                    <TextBlock Text="{Binding QuickActions}" Classes="h2" />
+
+                    <Grid ColumnDefinitions="*,10,*,10,*,10,*" Margin="0,12,0,0">
+
+                        <Button Grid.Column="0" Classes="ghost" Command="{Binding OpenSystemCommand}"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="14,12">
+                            <StackPanel>
+                                <Path Data="{StaticResource Icon.System}"
+                                      Stroke="{DynamicResource Brush.Accent}" StrokeThickness="1.5"
+                                      StrokeJoin="Round" Width="17" Height="17" Stretch="Uniform"
+                                      HorizontalAlignment="Left" />
+                                <TextBlock Text="{s:Loc nav.system}" Margin="0,9,0,0" />
+                                <TextBlock Text="{s:Loc mon.subtitle}" Classes="faint wrap" Margin="0,3,0,0" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button Grid.Column="2" Classes="ghost" Command="{Binding OpenNetworkCommand}"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="14,12">
+                            <StackPanel>
+                                <Path Data="{StaticResource Icon.Network}"
+                                      Stroke="{DynamicResource Brush.Info}" StrokeThickness="1.5"
+                                      StrokeJoin="Round" Width="17" Height="17" Stretch="Uniform"
+                                      HorizontalAlignment="Left" />
+                                <TextBlock Text="{s:Loc nav.network}" Margin="0,9,0,0" />
+                                <TextBlock Text="{s:Loc net.subtitle}" Classes="faint wrap" Margin="0,3,0,0" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button Grid.Column="4" Classes="ghost" Command="{Binding OpenStartupCommand}"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="14,12">
+                            <StackPanel>
+                                <Path Data="{StaticResource Icon.Startup}"
+                                      Stroke="{DynamicResource Brush.Warning}" StrokeThickness="1.5"
+                                      StrokeJoin="Round" Width="17" Height="17" Stretch="Uniform"
+                                      HorizontalAlignment="Left" />
+                                <TextBlock Text="{s:Loc nav.startup}" Margin="0,9,0,0" />
+                                <TextBlock Text="{s:Loc mac.startupSubtitle}" Classes="faint wrap" Margin="0,3,0,0" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button Grid.Column="6" Classes="ghost" Command="{Binding OpenCleanCommand}"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="14,12">
+                            <StackPanel>
+                                <Path Data="{StaticResource Icon.Clean}"
+                                      Stroke="{DynamicResource Brush.Success}" StrokeThickness="1.5"
+                                      StrokeJoin="Round" Width="17" Height="17" Stretch="Uniform"
+                                      HorizontalAlignment="Left" />
+                                <TextBlock Text="{s:Loc nav.clean}" Margin="0,9,0,0" />
+                                <TextBlock Text="{s:Loc clean.subtitle}" Classes="faint wrap" Margin="0,3,0,0" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!--
+                What this machine is.
+
+                Every value here is fixed for the life of the session, so it is read
+                once rather than bound to the sampler. On a Mac these five facts are
+                otherwise spread across System Settings, About This Mac and Disk
+                Utility.
+            -->
+            <Border Classes="card">
+                <StackPanel>
+                    <TextBlock Text="{Binding SpecsTitle}" Classes="h2" />
+
+                    <Grid ColumnDefinitions="*,20,*" RowDefinitions="Auto,Auto,Auto" Margin="0,12,0,0">
+                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,12">
+                            <TextBlock Text="{s:Loc spec.model}" Classes="faint" />
+                            <TextBlock Text="{Binding SpecModel}" Classes="wrap" Margin="0,3,0,0" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,12">
+                            <TextBlock Text="{s:Loc spec.system}" Classes="faint" />
+                            <TextBlock Text="{Binding SpecSystem}" Classes="wrap" Margin="0,3,0,0" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,0,12">
+                            <TextBlock Text="{s:Loc spec.chip}" Classes="faint" />
+                            <TextBlock Text="{Binding SpecChip}" Classes="wrap" Margin="0,3,0,0" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Grid.Column="2" Margin="0,0,0,12">
+                            <TextBlock Text="{s:Loc spec.graphics}" Classes="faint" />
+                            <TextBlock Text="{Binding SpecGraphics}" Classes="wrap" Margin="0,3,0,0" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="0">
+                            <TextBlock Text="{s:Loc spec.memory}" Classes="faint" />
+                            <TextBlock Text="{Binding SpecMemory}" Classes="wrap" Margin="0,3,0,0" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="2">
+                            <TextBlock Text="{s:Loc spec.storage}" Classes="faint" />
+                            <TextBlock Text="{Binding SpecStorage}" Classes="wrap" Margin="0,3,0,0" />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

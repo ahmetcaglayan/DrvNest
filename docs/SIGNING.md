@@ -2,7 +2,7 @@
 
 ## The problem
 
-`DrvNest.exe` is not signed, so Windows shows **"Unknown publisher"** on the UAC prompt and
+`Hexnest.exe` is not signed, so Windows shows **"Unknown publisher"** on the UAC prompt and
 SmartScreen shows *"Windows protected your PC"* on first run. On a clean Windows 11 install,
 Smart App Control may block it outright.
 
@@ -13,7 +13,7 @@ issued to a verified identity.
 Until then, users can verify a download is exactly what was published:
 
 ```powershell
-Get-FileHash .\DrvNest.exe -Algorithm SHA256
+Get-FileHash .\Hexnest.exe -Algorithm SHA256
 ```
 
 and compare it against `checksums.txt` in the same release.
@@ -24,7 +24,7 @@ and compare it against `checksums.txt` in the same release.
 
 | Route | Cost | Removes "Unknown publisher" | Instant SmartScreen trust | Notes |
 |---|---|---|---|---|
-| **[SignPath Foundation](https://signpath.io/open-source)** | Free | Yes | No, builds over time | For OSS projects. Requires an application and a review; the project must be public, have a clear licence and a reproducible CI build. DrvNest meets all three. |
+| **[SignPath Foundation](https://signpath.io/open-source)** | Free | Yes | No, builds over time | For OSS projects. Requires an application and a review; the project must be public, have a clear licence and a reproducible CI build. Hexnest meets all three. |
 | **[Azure Trusted Signing](https://learn.microsoft.com/azure/trusted-signing/)** | ~$10 / month | Yes | Yes | Microsoft's own service, by far the cheapest paid route. Needs a verified identity: an organisation, or an individual with three years of verifiable history. |
 | **OV certificate** (Sectigo, DigiCert…) | ~$200–400 / year | Yes | No, builds over time | The traditional route. A file-based `.pfx` you hold yourself. |
 | **EV certificate** | ~$400–700 / year | Yes | Yes | Requires a hardware token, which makes CI signing awkward. Rarely worth it over Azure Trusted Signing now. |

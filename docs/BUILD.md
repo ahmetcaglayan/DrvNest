@@ -1,4 +1,4 @@
-# Building DrvNest
+# Building Hexnest
 
 > **Türkçe özet**
 >
@@ -6,10 +6,10 @@
 > Tek satırlık yol:
 >
 > ```powershell
-> dotnet publish src/DrvNest.App/DrvNest.App.csproj -c Release -r win-x64 -o publish
+> dotnet publish src/Hexnest.App/Hexnest.App.csproj -c Release -r win-x64 -o publish
 > ```
 >
-> Sonuç `publish\DrvNest.exe` — kendi kendine yeten (self-contained), tek dosya, yaklaşık
+> Sonuç `publish\Hexnest.exe` — kendi kendine yeten (self-contained), tek dosya, yaklaşık
 > 65 MB. Ayarlar zaten `.csproj` içinde tanımlı, komuta ek bayrak vermeniz gerekmez.
 > **Derleme yalnızca Windows'ta yapılabilir**, çünkü Windows Update COM referansı
 > işletim sistemindeki tür kitaplığından üretilir.
@@ -20,19 +20,25 @@
 
 | Requirement | Notes |
 | --- | --- |
-| **.NET 8 SDK** | Windows build of the SDK. `dotnet --version` should report 8.0.x or newer. |
-| **Windows 10 1607 (build 14393) or newer** | Also the minimum the published app supports (`SupportedOSPlatformVersion`). |
-| Nothing else | No NuGet packages are restored beyond the SDK's own, and there are no submodules. |
+| **.NET 8 SDK** | `dotnet --version` should report 8.0.x or newer. |
+| **Windows 10 1607 (build 14393) or newer** — for the Windows application | Also the minimum the published app supports (`SupportedOSPlatformVersion`). |
+| **macOS 12 Monterey or newer** — for the Mac application | Apple silicon or Intel. Only the command line tools that ship with macOS are used. |
+| Nothing else | The Windows side restores no NuGet packages at all; the Mac side restores Avalonia and nothing more. There are no submodules. |
 
 Visual Studio is not required. Visual Studio 2022 (17.8+) with the *.NET desktop
-development* workload works if you prefer an IDE.
+development* workload works if you prefer an IDE; on a Mac, Rider or VS Code with the
+C# extension both work.
 
-> **The build must run on Windows.** The projects target `net8.0-windows`, use WPF, and
-> call SetupAPI, CfgMgr32 and the Windows Update Agent. There is no cross-platform
-> substitute, so CI uses a `windows-latest` runner.
+> **Each application has to be built on its own platform, and CI has one job for each.**
 >
-> The build needs **nothing but the .NET 8 SDK** — no Visual Studio, no Build Tools, no
-> NuGet packages at all.
+> `Hexnest.App` is WPF and `Hexnest.Core`'s `net8.0-windows` target calls SetupAPI,
+> CfgMgr32 and the Windows Update Agent, so it needs Windows. `Hexnest.Mac` is Avalonia
+> over `Hexnest.Core`'s portable `net8.0` target, and turning it into a `.app` needs
+> macOS: `iconutil` builds the icon and `codesign` signs the bundle.
+>
+> The one thing that *does* cross over is compiling: `EnableWindowsTargeting` means
+> `dotnet build src/Hexnest.sln` succeeds on a Mac too, which is a cheap way to catch a
+> Windows-side compile error without a Windows machine. It produces nothing runnable.
 
 ---
 
@@ -40,32 +46,68 @@ development* workload works if you prefer an IDE.
 
 ```powershell
 # Restore
-dotnet restore src/DrvNest.sln
+dotnet restore src/Hexnest.sln
 
 # Compile everything
-dotnet build src/DrvNest.sln -c Release
+dotnet build src/Hexnest.sln -c Release
 
 # Produce the shippable single file (x64)
-dotnet publish src/DrvNest.App/DrvNest.App.csproj -c Release -r win-x64 -o publish
+dotnet publish src/Hexnest.App/Hexnest.App.csproj -c Release -r win-x64 -o publish
 ```
 
-The publish output is `publish\DrvNest.exe`. Copy it anywhere; it needs no companion files.
+The publish output is `publish\Hexnest.exe`. Copy it anywhere; it needs no companion files.
+
+### macOS
+
+```bash
+# Everything, both architectures, plus the disk images the release publishes
+./build/make-mac-app.sh --dmg
+
+# Just Apple silicon, no disk image - what you want while developing
+./build/make-mac-app.sh --arch arm64
+```
+
+The output is `artifacts/mac/<arch>/Hexnest.app`, and `artifacts/mac/Hexnest-<arch>.dmg`
+with `--dmg`. The script does four things `dotnet publish` will not:
+
+1. Lays the publish output out as a bundle — `Contents/MacOS`, `Contents/Resources`.
+2. Writes `Info.plist`, including the bundle identifier and the minimum system version.
+3. Builds `Contents/Resources/Hexnest.icns` from `assets/icon-mac-1024.png` with
+   `iconutil`. That master PNG is drawn by `build/make-mac-icon.py`, which uses only the
+   Python standard library — see the comment at the top of that file for why the icon is
+   rasterised by hand rather than converted from the SVG.
+4. Signs the bundle ad-hoc. Not notarisation, and it does not remove Gatekeeper's
+   first-run prompt, but without *any* signature an Apple silicon Mac refuses to launch
+   the binary at all rather than asking.
+
+A universal binary is deliberately not produced. Each build carries its own copy of the
+.NET runtime, so `lipo`-ing them together would double every user's download to save one
+decision on the download page.
+
+To run it straight from the build tree while developing:
+
+```bash
+dotnet run --project src/Hexnest.Mac/Hexnest.Mac.csproj
+```
+
+That skips the bundle, so the menu bar says "Hexnest" only once you have built the
+`.app` — the name comes from `Info.plist`.
 
 If you prefer to work project by project (or the solution file is not present in your
 checkout), the same commands work against the project files directly:
 
 ```powershell
-dotnet restore src/DrvNest.App/DrvNest.App.csproj
-dotnet build   src/DrvNest.App/DrvNest.App.csproj -c Release
+dotnet restore src/Hexnest.App/Hexnest.App.csproj
+dotnet build   src/Hexnest.App/Hexnest.App.csproj -c Release
 ```
 
 ### ARM64
 
 ```powershell
-dotnet publish src/DrvNest.App/DrvNest.App.csproj -c Release -r win-arm64 -o publish-arm64
+dotnet publish src/Hexnest.App/Hexnest.App.csproj -c Release -r win-arm64 -o publish-arm64
 ```
 
-The release workflow publishes this as `DrvNest-arm64.exe`; `AppInfo.ReleaseAssetArm64`
+The release workflow publishes this as `Hexnest-arm64.exe`; `AppInfo.ReleaseAssetArm64`
 is the name the built-in updater looks for when it runs on an ARM64 machine.
 
 ### Setting the version
@@ -75,7 +117,7 @@ CI overrides it from the release tag so the tag and the version shown inside the
 never drift apart:
 
 ```powershell
-dotnet publish src/DrvNest.App/DrvNest.App.csproj -c Release -r win-x64 -o publish -p:Version=1.2.3
+dotnet publish src/Hexnest.App/Hexnest.App.csproj -c Release -r win-x64 -o publish -p:Version=1.2.3
 ```
 
 `AppInfo.Version` reads `AssemblyInformationalVersionAttribute` at runtime and strips the
@@ -88,7 +130,7 @@ produced by the application itself rather than taken by hand:
 
 ```powershell
 # from an elevated prompt, against a build
-.\DrvNest.exe --capture .\assets\screenshots --lang en
+.\Hexnest.exe --capture .\assets\screenshots --lang en
 ```
 
 It walks every menu entry, waits for the live pages to fill their charts, writes one PNG
@@ -96,9 +138,9 @@ per page (plus a second, scrolled shot of the pages whose table falls below the 
 exits. `--lang` pins the interface language, so the published images do not depend on the
 display language of whoever regenerated them.
 
-Two things make this worth having rather than a manual chore. DrvNest runs elevated, and
+Two things make this worth having rather than a manual chore. Hexnest runs elevated, and
 User Interface Privilege Isolation stops the unelevated Snipping Tool from seeing input
-aimed at a higher-integrity window — Print Screen over DrvNest does nothing, the same way
+aimed at a higher-integrity window — Print Screen over Hexnest does nothing, the same way
 it does nothing over Task Manager. And documentation screenshots rot: regenerating them is
 one command, so a UI change and its pictures stay in step.
 
@@ -141,7 +183,7 @@ one runtime at a time.
 ## What the project file already sets
 
 You do **not** need to pass `--self-contained`, `-p:PublishSingleFile=true` or similar on
-the command line. `DrvNest.App.csproj` sets all of it:
+the command line. `Hexnest.App.csproj` sets all of it:
 
 ```xml
 <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-x64</RuntimeIdentifier>
@@ -190,7 +232,7 @@ following:
 
 ## Windows Update Agent interop
 
-DrvNest talks to the Windows Update Agent, which is a COM API. There are two ways to do
+Hexnest talks to the Windows Update Agent, which is a COM API. There are two ways to do
 that from .NET, and the choice here is deliberate.
 
 ### What this project does not do
@@ -205,13 +247,13 @@ of MSBuild. Please use the .NET Framework version of MSBuild.
 ```
 
 `ResolveComReference` only exists in the .NET Framework build of MSBuild, so a
-`COMReference` would mean nobody could compile DrvNest — or run CI — without a full
+`COMReference` would mean nobody could compile Hexnest — or run CI — without a full
 Visual Studio installation. For a project whose whole premise is "one file, no
 prerequisites", that was the wrong trade.
 
 ### What this project does instead
 
-Two layers, in `src/DrvNest.Core/Providers/`:
+Two layers, in `src/Hexnest.Core/Providers/`:
 
 - **`WuaInterop.cs`** declares the five COM interfaces WUA *calls back into*
   (`ISearchCompletedCallback`, `IDownloadProgressChangedCallback`,
@@ -248,8 +290,8 @@ The result: `dotnet build` alone compiles the project, on any Windows machine wi
 CI lives in `.github/workflows/` and must run on `windows-latest` for the reason above. A
 release build does, in order:
 
-1. `dotnet publish … -r win-x64 -p:Version=<tag>` → `DrvNest.exe`
-2. `dotnet publish … -r win-arm64 -p:Version=<tag>` → `DrvNest-arm64.exe`
+1. `dotnet publish … -r win-x64 -p:Version=<tag>` → `Hexnest.exe`
+2. `dotnet publish … -r win-arm64 -p:Version=<tag>` → `Hexnest-arm64.exe`
 3. Compute SHA-256 for both and write `checksums.txt` in `sha256sum` format
    (`<hash>  <filename>`, two spaces).
 4. Attach all three files to the GitHub release.
@@ -270,7 +312,7 @@ updater silently.
 
 ```csharp
 public const string RepositoryOwner = "ahmetcaglayan";
-public const string RepositoryName  = "DrvNest";
+public const string RepositoryName  = "Hexnest";
 ```
 
 Change them to your own repository in a fork, or your builds will offer your users updates
@@ -282,9 +324,9 @@ from someone else's project.
 
 | Symptom | Cause and fix |
 | --- | --- |
-| `MSB4803: ResolveComReference is not supported` | A `COMReference` was added to a project. DrvNest deliberately avoids these - see *Windows Update Agent interop* above. |
+| `MSB4803: ResolveComReference is not supported` | A `COMReference` was added to a project. Hexnest deliberately avoids these - see *Windows Update Agent interop* above. |
 | `NETSDK1100` / "Windows is required to build" | Building on Linux or macOS. Both projects set `EnableWindowsTargeting`, but the COM reference still needs real Windows. |
 | Published exe is ~150 MB | `EnableCompressionInSingleFile` was overridden. Do not pass `-p:EnableCompressionInSingleFile=false`. |
 | Published output is a folder of DLLs | `-r <rid>` was omitted, so the conditional `RuntimeIdentifier` never triggered single-file publish. Always pass an explicit `-r`. |
-| App starts without a UAC prompt and installs fail | `app.manifest` was not applied. Check `ApplicationManifest` in `DrvNest.App.csproj`. |
-| Missing `Assets\drvnest.ico` warning | Harmless. The `ApplicationIcon` property is wrapped in an `Exists(...)` condition precisely so a clean clone still builds. |
+| App starts without a UAC prompt and installs fail | `app.manifest` was not applied. Check `ApplicationManifest` in `Hexnest.App.csproj`. |
+| Missing `Assets\hexnest.ico` warning | Harmless. The `ApplicationIcon` property is wrapped in an `Exists(...)` condition precisely so a clean clone still builds. |

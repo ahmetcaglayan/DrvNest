@@ -1,0 +1,128 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--
+      Two target frameworks, one code base.
+
+        net8.0-windows   the real Hexnest: SetupAPI, CfgMgr32, srclient, the registry
+                         and the Windows Update Agent. This is unchanged and is what
+                         Hexnest.exe and hexnest.exe are still built from. The Windows
+                         TFM is also what provides Microsoft.Win32.Registry without a
+                         NuGet package.
+
+        net8.0           the portable build behind Hexnest for Mac. It contains only
+                         the parts of Hexnest that mean anything on a machine with no
+                         PnP driver store: the monitors, the cleaner, the startup
+                         manager, the settings and the logs. Every Windows-only file
+                         is removed from it below rather than being #if'd out, so the
+                         portable build cannot accidentally take a dependency on
+                         something that does not exist there.
+
+      Nothing in the net8.0-windows compilation changed when the second target was
+      added: the same files, in the same order, with the same references.
+    -->
+    <TargetFrameworks>net8.0-windows;net8.0</TargetFrameworks>
+    <RootNamespace>Hexnest.Core</RootNamespace>
+    <AssemblyName>Hexnest.Core</AssemblyName>
+    <IsPublishable>false</IsPublishable>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+
+    <!--
+      The Windows Update Agent is reached through IDispatch with `dynamic`, and the
+      five callback interfaces it calls back into are declared by hand in
+      Providers/WuaInterop.cs.
+
+      There is deliberately no <COMReference> to WUApiLib here. tlbimp only runs under
+      the .NET Framework build of MSBuild, so a COMReference makes `dotnet build` fail
+      with MSB4803 - which would mean nobody could compile this project, or run CI,
+      without a full Visual Studio install. Five hand written interface declarations,
+      with GUIDs read straight out of wuapi.dll, are the cheaper half of that trade.
+    -->
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+  </PropertyGroup>
+
+  <!--
+    No PackageReference on purpose. Every dependency avoided is weight removed from
+    the single file executable someone downloads onto a machine that was formatted
+    five minutes ago, and one less thing that can fail to restore offline.
+  -->
+
+  <!--
+    ================================================================================
+    Windows-only sources.
+
+    Removed from the portable target. Everything listed here talks to an API that
+    exists on Windows and nowhere else: driver packages, the PnP device tree, system
+    restore, the registry, WMI, the Windows Update Agent, NT performance counters and
+    the shell's Recycle Bin.
+    ================================================================================
+  -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <!-- Driver work: there is no PnP driver store to scan, install into or back up. -->
+    <Compile Remove="Abstractions\**" />
+    <Compile Remove="Backup\**" />
+    <Compile Remove="Jobs\**" />
+    <Compile Remove="Providers\**" />
+    <Compile Remove="Resume\**" />
+    <Compile Remove="Safety\**" />
+    <Compile Remove="Scanning\**" />
+
+    <!-- Driver-shaped models that only the removed code above ever constructs. -->
+    <Compile Remove="Models\DeviceItem.cs" />
+    <Compile Remove="Models\DriverComparison.cs" />
+    <Compile Remove="Models\DriverJob.cs" />
+    <Compile Remove="Models\ScanProgress.cs" />
+    <Compile Remove="Models\ScanResult.cs" />
+    <Compile Remove="Models\SessionState.cs" />
+    <Compile Remove="Models\UpdateCandidate.cs" />
+    <Compile Remove="Persistence\SessionStore.cs" />
+
+    <!-- Win32 / NT / WMI implementations, each replaced by a Mac\ file beside it. -->
+    <Compile Remove="Cleanup\CleanupInterop.cs" />
+    <Compile Remove="Cleanup\CleanupScanner.cs" />
+    <Compile Remove="Cleanup\CleanupService.cs" />
+    <Compile Remove="Cleanup\MemoryTrimmer.cs" />
+    <Compile Remove="Monitoring\MonitorInterop.cs" />
+    <Compile Remove="Monitoring\NetworkMonitor.cs" />
+    <Compile Remove="Monitoring\ProcessMonitor.cs" />
+    <Compile Remove="Monitoring\SystemMonitor.cs" />
+    <Compile Remove="Monitoring\TcpEstats.cs" />
+    <Compile Remove="Monitoring\ThermalReader.cs" />
+    <Compile Remove="Monitoring\WmiLite.cs" />
+    <Compile Remove="Platform\Elevation.cs" />
+    <Compile Remove="Platform\NativeMethods.cs" />
+    <Compile Remove="Platform\SystemInfo.cs" />
+    <Compile Remove="Startup\StartupService.cs" />
+  </ItemGroup>
+
+  <!--
+    ================================================================================
+    Unix sources.
+
+    The mirror image: these files carry the same type names as the Windows files
+    above and are compiled only into the portable target, so Hexnest.Core exposes
+    one API surface and the application never asks which platform it is on.
+    ================================================================================
+  -->
+  <ItemGroup Condition="'$(TargetFramework)' != 'net8.0'">
+    <Compile Remove="Cleanup\Mac\**" />
+    <Compile Remove="Monitoring\Mac\**" />
+    <Compile Remove="Platform\Mac\**" />
+    <Compile Remove="Startup\Mac\**" />
+  </ItemGroup>
+
+  <!--
+    Language packs are compiled into the library rather than copied beside the
+    executable. A single-file publish is the whole point of the Windows build, and a
+    Languages folder that has to travel with the exe on a USB stick would not survive
+    first contact with a user; the Mac build gets the same benefit inside its bundle.
+
+    Localization/Loc.cs reads them back out of this assembly's manifest at startup, and
+    a loose Languages/<code>.json next to the application still wins, so a translation
+    can be corrected without a rebuild.
+  -->
+  <ItemGroup>
+    <EmbeddedResource Include="Languages\*.json" LogicalName="Hexnest.Languages.%(Filename).json" />
+  </ItemGroup>
+
+</Project>

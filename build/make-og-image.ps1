@@ -3,7 +3,7 @@
     Generates docs/site/og-image.png -- the 1280x640 social preview card.
 
 .DESCRIPTION
-    Draws the DrvNest social card programmatically with System.Drawing (GDI+):
+    Draws the Hexnest social card programmatically with System.Drawing (GDI+):
     the dark brand background, the honeycomb motif, the app mark reproduced from
     the same 256x256 design grid as assets/logo.svg, the wordmark, the tagline and
     a short feature line.
@@ -319,7 +319,7 @@ $left = [single]100
 $dot = [string][char]0x00B7
 
 # repository line
-Draw-Text 'github.com/ahmetcaglayan/DrvNest' $fontSmall $DimColor $left 94
+Draw-Text 'github.com/ahmetcaglayan/Hexnest' $fontSmall $DimColor $left 94
 
 # app mark
 Draw-Mark $g $left 224 208

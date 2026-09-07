@@ -1,13 +1,72 @@
 # Changelog
 
-All notable changes to DrvNest are documented in this file.
+All notable changes to Hexnest are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-Nothing yet.
+### Added
+
+**Hexnest for Mac**
+
+- A macOS application, built on Avalonia over the same `Hexnest.Core`. The system
+  monitor, the network monitor, the start-up manager, the cleaner, the logs, the
+  settings, all five interface languages and both themes are the same product, not a
+  reimplementation: `Hexnest.Core` now multi-targets `net8.0-windows` for the driver
+  half and a portable `net8.0` for everything else, and the Windows compilation is
+  byte-for-byte what it was.
+- **System monitor.** Total and per-logical-core processor load from the mach tick
+  counters, including the performance and efficiency clusters on Apple silicon; memory
+  using Activity Monitor's own definition, so the two agree; swap; storage; battery;
+  uptime from `kern.boottime` rather than a monotonic clock, so a laptop's answer is
+  not days out. The process table comes from libproc: processes owned by another user
+  are listed and marked, never silently dropped.
+- **Network monitor.** Live throughput and per-application traffic from `nettop`, the
+  same statistics Activity Monitor's Network tab reads, started with the page and
+  stopped with it. Per-adapter counters come from `NET_RT_IFLIST2` alongside.
+- **Start-up manager.** Every launchd job from `~/Library/LaunchAgents`,
+  `/Library/LaunchAgents` and `/Library/LaunchDaemons`. Toggling writes a `launchctl`
+  override, which is the same mechanism macOS itself uses - the property list is never
+  moved or edited, so re-enabling restores the job exactly as its author configured it.
+  System-wide jobs are shown and marked read-only.
+- **Clean-up.** Application caches, developer caches (Xcode derived data, simulator
+  caches, Homebrew, npm, pip, Yarn, Gradle, Go, Cargo), logs, saved window state and the
+  Trash; plus old downloads, iPhone and iPad backups and leftover Application Support
+  folders reviewed item by item. Measured rather than estimated, nothing ticked by
+  default, and your own files go to the Trash rather than being erased.
+- **A hardware summary on the dashboard**, on both platforms: model, system, processor,
+  graphics, memory and storage. On Windows the graphics adapter comes from
+  `Win32_VideoController` and the memory from `GlobalMemoryStatusEx`, both read once at
+  startup.
+- `build/make-mac-app.sh` builds `Hexnest.app` and the disk images, writes the
+  `Info.plist`, assembles the `.icns` and signs the bundle ad-hoc. `--capture`
+  regenerates the macOS screenshots the same way the Windows build already does.
+
+### Changed
+
+- **The project is now called Hexnest.** It began as a Windows driver updater called
+  DrvNest, and the name had become a description of a quarter of what it does. The
+  hexagonal nest cell in the logo is unchanged; only the "Drv" has gone.
+- The Mac build **never runs as root**, by design. Everything it does lives inside the
+  account that launched it: the monitors read public statistics, the cleaner works in
+  the user's home folder, and the start-up manager changes that user's own login agents.
+  A GUI running as root can delete anything on the machine by accident, and nothing on
+  these pages is worth that.
+- The string table moved from `Hexnest.App` into `Hexnest.Core`, so both applications
+  display the same text in the same five languages from one file rather than two copies
+  that would have drifted apart within a release.
+
+### Notes
+
+- macOS has no third-party driver store, so the Mac build has no *Devices*, *Updates*,
+  *Activity*, *Backup* or *History* page. Apple ships device support inside the operating
+  system; there is nothing there for a tool like this to scan, download or back up, and
+  five permanently empty pages would have been worse than five absent ones.
+- Processor temperature, per-volume disk throughput and working-set trimming are not
+  available to an unprivileged process on macOS. Hexnest shows nothing for them rather
+  than an invented number, and says why where each would have appeared.
 
 ## [1.2.0] - 2026-09-07
 
@@ -17,15 +76,15 @@ Two maintenance pages, both of which only ever act when you press something.
 
 **Startup Programs**
 
-- Every autostart entry DrvNest can safely toggle: the `Run` and `RunOnce` keys under
+- Every autostart entry Hexnest can safely toggle: the `Run` and `RunOnce` keys under
   HKCU and HKLM, the 32-bit `Wow6432Node` view, and both Startup folders. Each row
   carries the program name from the executable's version resource, its publisher, the
   command line, the size and where it starts from.
 - A switch per entry. Turning one off writes the same `StartupApproved` value Task
   Manager writes, so the two always agree and **nothing is ever deleted** - the command
   line stays exactly where it is and switching back on restores it unchanged. The
-  alternative, deleting the value and remembering it in DrvNest's own settings, is easier
-  to write and quietly makes DrvNest load-bearing for someone else's software.
+  alternative, deleting the value and remembering it in Hexnest's own settings, is easier
+  to write and quietly makes Hexnest load-bearing for someone else's software.
 - Entries pointing at a file that no longer exists are flagged: Windows tries to run them
   at every logon and fails silently.
 - Security software is marked, and turning one off asks first.
@@ -36,7 +95,7 @@ Two maintenance pages, both of which only ever act when you press something.
 - Measures, rather than estimates, what each category holds: temporary files, the
   thumbnail and icon cache, browser caches for seven browsers, the Windows Update
   download cache, Delivery Optimization, crash dumps, error reports, DirectX/NVIDIA/AMD/
-  Intel shader caches, Windows servicing logs, DrvNest's own driver cache and the
+  Intel shader caches, Windows servicing logs, Hexnest's own driver cache and the
   Recycle Bin. The number next to a box is the space that will actually come back.
 - **Nothing is ticked by default.** The page opens with a total of zero.
 - Two categories hold the user's own files and are never bulk-selected: old downloads,
@@ -114,7 +173,7 @@ Two new pages and an updater that no longer waits to be asked.
   never competes with the opening scan, showing a count on the *About* menu entry
   when a newer release exists.
 - Optional automatic download and install, off by default. The download is verified
-  against the release's `checksums.txt` and the swap only happens as DrvNest closes,
+  against the release's `checksums.txt` and the swap only happens as Hexnest closes,
   so an update can never land in the middle of a driver queue.
 - Both are skipped entirely in offline and rescue mode.
 - New settings: automatic check, automatic install, include pre-releases.
@@ -128,7 +187,7 @@ Two new pages and an updater that no longer waits to be asked.
 
 **Documentation**
 
-- `DrvNest.exe --capture <folder> [--lang <code>]` walks the whole menu and writes
+- `Hexnest.exe --capture <folder> [--lang <code>]` walks the whole menu and writes
   one PNG per page, so the screenshots in the README and on the website are
   regenerated from the build rather than taken by hand.
 - The website gained a screenshot carousel, two diagrams, and Russian, Chinese and
@@ -152,7 +211,7 @@ Two new pages and an updater that no longer waits to be asked.
 
 ## [1.0.0] - 2026-08-27
 
-First release. DrvNest is a Windows driver scanner, installer and updater built
+First release. Hexnest is a Windows driver scanner, installer and updater built
 for the first boot after a format, when nothing is installed and the network
 adapter may not have a driver either.
 
@@ -163,7 +222,7 @@ adapter may not have a driver either.
 - Ships as a single self-contained executable with the .NET 8 runtime inside it.
   No .NET install, no Visual C++ redistributable, no internet connection needed to
   start it. Windows 10 1607 or newer.
-- Builds for x64 (`DrvNest.exe`) and ARM64 (`DrvNest-arm64.exe`).
+- Builds for x64 (`Hexnest.exe`) and ARM64 (`Hexnest-arm64.exe`).
 - Optional Inno Setup installer for people who would rather have a Start menu
   entry than a file on the desktop.
 
@@ -182,7 +241,7 @@ adapter may not have a driver either.
 - **Windows Update** through the Windows Update Agent COM API, registered against
   Microsoft Update so driver offers actually appear. Optional driver offers can be
   included or left out.
-- **Local repository**: folders, ZIP archives, network shares, DrvNest backups, or
+- **Local repository**: folders, ZIP archives, network shares, Hexnest backups, or
   a `Drivers` folder dropped next to the executable on a USB stick. This is what
   makes the post-format case work at all - no network driver means no Windows
   Update.
@@ -236,11 +295,11 @@ adapter may not have a driver either.
 **State**
 
 - Settings, session, history, logs, backups, cache and reports live under
-  `%ProgramData%\DrvNest`, so the resume task finds the same files even when it
+  `%ProgramData%\Hexnest`, so the resume task finds the same files even when it
   runs as SYSTEM or as a different administrator account. Falls back to the user
   profile when ProgramData is not writable.
 
-[Unreleased]: https://github.com/ahmetcaglayan/DrvNest/compare/v1.2.0...HEAD
-[1.2.0]: https://github.com/ahmetcaglayan/DrvNest/releases/tag/v1.2.0
-[1.1.0]: https://github.com/ahmetcaglayan/DrvNest/releases/tag/v1.1.0
-[1.0.0]: https://github.com/ahmetcaglayan/DrvNest/releases/tag/v1.0.0
+[Unreleased]: https://github.com/ahmetcaglayan/Hexnest/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/ahmetcaglayan/Hexnest/releases/tag/v1.2.0
+[1.1.0]: https://github.com/ahmetcaglayan/Hexnest/releases/tag/v1.1.0
+[1.0.0]: https://github.com/ahmetcaglayan/Hexnest/releases/tag/v1.0.0

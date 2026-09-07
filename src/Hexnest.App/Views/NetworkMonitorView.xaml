@@ -1,0 +1,436 @@
+<UserControl x:Class="Hexnest.App.Views.NetworkMonitorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="clr-namespace:Hexnest.App.Controls"
+             xmlns:s="clr-namespace:Hexnest.App.Services"
+             xmlns:vm="clr-namespace:Hexnest.App.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:NetworkMonitorViewModel}"
+             d:DesignWidth="960">
+
+    <UserControl.Resources>
+
+        <Style x:Key="LiveCard" TargetType="Border" BasedOn="{StaticResource Card}">
+            <Setter Property="Padding" Value="18,16,18,0" />
+        </Style>
+
+        <Style x:Key="ColumnHeader" TargetType="TextBlock" BasedOn="{StaticResource Text.Caption}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+
+        <Style x:Key="Cell" TargetType="TextBlock" BasedOn="{StaticResource Text.Body}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+
+        <!--
+            TextAlignment rather than HorizontalAlignment: a right-aligned TextBlock sizes
+            itself to its content and so is never given the column width to trim against,
+            which lets a long value draw over its left-hand neighbour. Stretching it and
+            aligning the text inside keeps every value inside its own column.
+        -->
+        <Style x:Key="Cell.Number" TargetType="TextBlock" BasedOn="{StaticResource Text.Mono}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextAlignment" Value="Right" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="22,10,22,22">
+        <StackPanel>
+
+            <!-- ============================================ HEADER -->
+            <Grid Margin="0,10,0,18">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{s:Loc net.title}" Style="{StaticResource Text.H1}" />
+                    <TextBlock Text="{s:Loc net.subtitle}" Style="{StaticResource Text.Muted}" Margin="0,4,0,0" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Style="{StaticResource Btn.Secondary}"
+                            Padding="13,7"
+                            Content="{Binding PauseLabel}"
+                            Command="{Binding PauseCommand}" />
+
+                    <Button Style="{StaticResource Btn.Ghost}"
+                            Padding="12,7"
+                            Margin="8,0,0,0"
+                            Content="{s:Loc net.resetCounters}"
+                            ToolTip="{s:Loc net.resetHint}"
+                            Command="{Binding ResetCommand}" />
+                </StackPanel>
+            </Grid>
+
+            <!-- ============================================ LIVE CARDS -->
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="14" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource LiveCard}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE74B;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="13"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Brush.Accent}" />
+                            <TextBlock Text="{s:Loc net.download}"
+                                       Style="{StaticResource Text.Muted}"
+                                       Margin="8,0,0,0" />
+                        </StackPanel>
+
+                        <TextBlock Text="{Binding DownloadDisplay}"
+                                   Style="{StaticResource Text.Metric}"
+                                   FontSize="30"
+                                   Foreground="{DynamicResource Brush.Accent}" />
+
+                        <TextBlock Style="{StaticResource Text.Caption}" Margin="0,0,0,8">
+                            <Run Text="{s:Loc net.sessionTotal}" />
+                            <Run Text="{Binding SessionDownloadDisplay, Mode=OneWay}" FontWeight="SemiBold" />
+                        </TextBlock>
+
+                        <c:Sparkline Height="64"
+                                     Maximum="{Binding ChartMaximum, Mode=OneWay}"
+                                     Value="{Binding DownloadRate, Mode=OneWay}"
+                                     Stroke="{DynamicResource Brush.Accent}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource LiveCard}">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE74A;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="13"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Brush.Info}" />
+                            <TextBlock Text="{s:Loc net.upload}"
+                                       Style="{StaticResource Text.Muted}"
+                                       Margin="8,0,0,0" />
+                        </StackPanel>
+
+                        <TextBlock Text="{Binding UploadDisplay}"
+                                   Style="{StaticResource Text.Metric}"
+                                   FontSize="30"
+                                   Foreground="{DynamicResource Brush.Info}" />
+
+                        <TextBlock Style="{StaticResource Text.Caption}" Margin="0,0,0,8">
+                            <Run Text="{s:Loc net.sessionTotal}" />
+                            <Run Text="{Binding SessionUploadDisplay, Mode=OneWay}" FontWeight="SemiBold" />
+                        </TextBlock>
+
+                        <c:Sparkline Height="64"
+                                     Maximum="{Binding ChartMaximum, Mode=OneWay}"
+                                     Value="{Binding UploadRate, Mode=OneWay}"
+                                     Stroke="{DynamicResource Brush.Info}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- ============================================ TOTALS -->
+            <Border Style="{StaticResource Card}" Margin="0,0,0,16">
+                <UniformGrid Columns="4">
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc net.thisSession}" Style="{StaticResource Text.Caption}" />
+                        <TextBlock Text="{Binding SessionTotalDisplay}" Style="{StaticResource Text.Body}"
+                                   FontWeight="SemiBold" Margin="0,2,0,0" />
+                        <TextBlock Text="{Binding SessionDurationDisplay}" Style="{StaticResource Text.Caption}" />
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc net.sinceBootDown}" Style="{StaticResource Text.Caption}" />
+                        <TextBlock Text="{Binding BootDownloadDisplay}" Style="{StaticResource Text.Body}"
+                                   FontWeight="SemiBold" Margin="0,2,0,0" />
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc net.sinceBootUp}" Style="{StaticResource Text.Caption}" />
+                        <TextBlock Text="{Binding BootUploadDisplay}" Style="{StaticResource Text.Body}"
+                                   FontWeight="SemiBold" Margin="0,2,0,0" />
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Text="{s:Loc net.connections}" Style="{StaticResource Text.Caption}" />
+                        <TextBlock Text="{Binding ConnectionCountDisplay}" Style="{StaticResource Text.Body}"
+                                   FontWeight="SemiBold" Margin="0,2,0,0" />
+                    </StackPanel>
+                </UniformGrid>
+            </Border>
+
+            <!-- ============================================ PER APPLICATION -->
+            <Grid Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel x:Name="CaptureAnchor" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{s:Loc net.byApp}" Style="{StaticResource Text.H2}" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding RowCountDisplay}"
+                               Style="{StaticResource Text.Caption}"
+                               VerticalAlignment="Center"
+                               Margin="12,3,0,0" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBox Style="{StaticResource Input.TextBox}"
+                             Width="180"
+                             Tag="{s:Loc common.search}"
+                             Text="{Binding Search, UpdateSourceTrigger=PropertyChanged, Delay=200}" />
+
+                    <Button Style="{StaticResource Btn.Ghost}"
+                            Padding="12,7"
+                            Margin="8,0,0,0"
+                            Content="{Binding ActiveOnlyLabel}"
+                            Command="{Binding ActiveOnlyCommand}" />
+
+                    <Button Style="{StaticResource Btn.Ghost}"
+                            Padding="12,7"
+                            Margin="8,0,0,0"
+                            Content="{Binding ShowAllLabel}"
+                            Command="{Binding ShowAllCommand}" />
+                </StackPanel>
+            </Grid>
+
+            <!--
+                A column of dashes is not self-explanatory. When the byte counters could
+                not be enabled, say so here rather than only in the footnote at the bottom
+                of the page.
+            -->
+            <Border Style="{StaticResource Card}"
+                    Background="{DynamicResource Brush.WarningSoft}"
+                    BorderBrush="{DynamicResource Brush.Warning}"
+                    Padding="16,13"
+                    Margin="0,0,0,12"
+                    Visibility="{Binding HasPerProcessBytes,
+                                Converter={StaticResource BoolToVisibility},
+                                ConverterParameter=invert}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="{StaticResource Icon.Warning}"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="15"
+                               VerticalAlignment="Top"
+                               Margin="0,1,0,0"
+                               Foreground="{DynamicResource Brush.Warning}" />
+
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding UnavailableNotice}"
+                               Style="{StaticResource Text.Body}"
+                               Margin="11,0,0,0"
+                               TextWrapping="Wrap" />
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Padding="0">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <StackPanel MinWidth="770">
+
+                        <Grid Margin="16,12,16,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" MinWidth="140" />
+                                <ColumnDefinition Width="62" />
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="124" />
+                                <ColumnDefinition Width="124" />
+                                <ColumnDefinition Width="58" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="{s:Loc mon.process}" Style="{StaticResource ColumnHeader}" />
+                            <TextBlock Grid.Column="1" Text="PID" Style="{StaticResource ColumnHeader}"
+                                       TextAlignment="Right" />
+                            <TextBlock Grid.Column="2" Text="{s:Loc net.down}" Style="{StaticResource ColumnHeader}"
+                                       TextAlignment="Right" />
+                            <TextBlock Grid.Column="3" Text="{s:Loc net.up}" Style="{StaticResource ColumnHeader}"
+                                       TextAlignment="Right" />
+                            <TextBlock Grid.Column="4" Text="{s:Loc net.totalDown}" Style="{StaticResource ColumnHeader}"
+                                       TextAlignment="Right" />
+                            <TextBlock Grid.Column="5" Text="{s:Loc net.totalUp}" Style="{StaticResource ColumnHeader}"
+                                       TextAlignment="Right" />
+                            <TextBlock Grid.Column="6" Text="{s:Loc net.conns}" Style="{StaticResource ColumnHeader}"
+                                       TextAlignment="Right" />
+                        </Grid>
+
+                        <Border Style="{StaticResource Divider}" Margin="16,0" />
+
+                        <ItemsControl ItemsSource="{Binding Processes}"
+                                      VirtualizingPanel.IsVirtualizing="True"
+                                      VirtualizingPanel.VirtualizationMode="Recycling">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="16,7" ToolTip="{Binding Endpoint}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" MinWidth="140" />
+                                            <ColumnDefinition Width="62" />
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="124" />
+                                            <ColumnDefinition Width="124" />
+                                            <ColumnDefinition Width="58" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" Style="{StaticResource Cell}" />
+
+                                            <Border Style="{StaticResource Badge}"
+                                                    Margin="8,0,0,0"
+                                                    Background="{DynamicResource Brush.AccentSoft}"
+                                                    Visibility="{Binding IsSelf,
+                                                                Converter={StaticResource BoolToVisibility}}">
+                                                <TextBlock Text="Hexnest"
+                                                           Style="{StaticResource Badge.Text}"
+                                                           Foreground="{DynamicResource Brush.Accent}" />
+                                            </Border>
+                                        </StackPanel>
+
+                                        <TextBlock Grid.Column="1" Text="{Binding ProcessId}"
+                                                   Style="{StaticResource Cell.Number}"
+                                                   Foreground="{DynamicResource Brush.TextFaint}" />
+
+                                        <TextBlock Grid.Column="2" Text="{Binding DownloadDisplay}"
+                                                   Style="{StaticResource Cell.Number}" Margin="0,0,10,0"
+                                                   Foreground="{DynamicResource Brush.Accent}" />
+
+                                        <TextBlock Grid.Column="3" Text="{Binding UploadDisplay}"
+                                                   Style="{StaticResource Cell.Number}" Margin="0,0,10,0"
+                                                   Foreground="{DynamicResource Brush.Info}" />
+
+                                        <TextBlock Grid.Column="4" Text="{Binding SessionDownloadDisplay}"
+                                                   Style="{StaticResource Cell.Number}" Margin="0,0,10,0"
+                                                   Foreground="{DynamicResource Brush.TextMuted}" />
+
+                                        <TextBlock Grid.Column="5" Text="{Binding SessionUploadDisplay}"
+                                                   Style="{StaticResource Cell.Number}" Margin="0,0,10,0"
+                                                   Foreground="{DynamicResource Brush.TextMuted}" />
+
+                                        <TextBlock Grid.Column="6" Text="{Binding ConnectionCount}"
+                                                   Style="{StaticResource Cell.Number}"
+                                                   Foreground="{DynamicResource Brush.TextFaint}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Border Height="8" Background="Transparent" />
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- ============================================ ADAPTERS -->
+            <Grid Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{s:Loc net.adapters}"
+                           Style="{StaticResource Text.H2}" VerticalAlignment="Center" />
+
+                <Button Grid.Column="1"
+                        Style="{StaticResource Btn.Ghost}"
+                        Padding="12,6"
+                        Content="{Binding AdapterToggleLabel}"
+                        Command="{Binding ToggleAdaptersCommand}" />
+            </Grid>
+
+            <Border Style="{StaticResource Card}" Margin="0,0,0,20">
+                <ItemsControl ItemsSource="{Binding Adapters}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0"
+                                        Width="8" Height="8"
+                                        CornerRadius="4"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,12,0"
+                                        Background="{Binding IsUp, Converter={StaticResource UpToBrush}}" />
+
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource Cell}"
+                                               FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding Subtitle}" Style="{StaticResource Text.Caption}"
+                                               TextTrimming="CharacterEllipsis"
+                                               ToolTip="{Binding Description}" />
+                                </StackPanel>
+
+                                <TextBlock Grid.Column="2" Text="{Binding RateDisplay}"
+                                           Style="{StaticResource Text.Mono}"
+                                           VerticalAlignment="Center"
+                                           Margin="14,0,0,0" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+
+            <!--
+                The per-application table measures TCP, the machine total measures every
+                protocol. Saying so is the difference between a number the user can trust
+                and one they will eventually catch being wrong.
+            -->
+            <Border Style="{StaticResource Card}"
+                    Background="{DynamicResource Brush.InfoSoft}"
+                    BorderBrush="{DynamicResource Brush.Info}"
+                    Padding="16,13"
+                    Margin="0,14,0,0"
+                    Visibility="{Binding HasPerProcessBytes,
+                                Converter={StaticResource BoolToVisibility}}">
+<!--
+                    A Grid, not a horizontal StackPanel: a StackPanel measures its
+                    children with infinite width, so TextWrapping never takes effect
+                    and a long notice is silently clipped at the edge of the card.
+                -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="{StaticResource Icon.Info}"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="15"
+                               VerticalAlignment="Top"
+                               Margin="0,1,0,0"
+                               Foreground="{DynamicResource Brush.Info}" />
+
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding PerProcessNotice}"
+                               Style="{StaticResource Text.Body}"
+                               Margin="11,0,0,0"
+                               TextWrapping="Wrap" />
+                </Grid>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

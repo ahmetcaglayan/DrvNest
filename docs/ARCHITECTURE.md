@@ -1,6 +1,6 @@
 # Architecture
 
-How DrvNest is put together, and why it is put together that way.
+How Hexnest is put together, and why it is put together that way.
 
 Everything below describes code that exists in this repository. Where a design decision
 looks unusual, the reason is given rather than assumed.
@@ -11,35 +11,50 @@ looks unusual, the reason is given rather than assumed.
 
 ```
 src/
-├── DrvNest.Core/     UI-free domain logic          (net8.0-windows, class library)
-├── DrvNest.App/      WPF desktop application       (net8.0-windows, WinExe, DrvNest.exe)
-└── DrvNest.Cli/      reserved for a headless front end (placeholder, no code yet)
+├── Hexnest.Core/     UI-free domain logic     (net8.0-windows + net8.0, class library)
+├── Hexnest.App/      WPF application          (net8.0-windows, WinExe, Hexnest.exe)
+├── Hexnest.Mac/      Avalonia application     (net8.0, Hexnest.app)
+└── Hexnest.Cli/      reserved for a headless front end (placeholder, no code yet)
 ```
 
-**`DrvNest.Core`** contains everything that is not a window: device scanning, the driver
+**`Hexnest.Core`** contains everything that is not a window: device scanning, the driver
 providers, the job engine, persistence, backup/restore, reboot resume, the restore point
-service, the self-updater, the system and network monitors, the startup manager and the
-clean-up scanner. It references no WPF type and no NuGet package. Anything in
-here can be driven from a console host, a service or a test harness.
+service, the self-updater, the system and network monitors, the startup manager, the
+clean-up scanner and the string table. It references no WPF type and no NuGet package.
+Anything in here can be driven from a console host, a service or a test harness.
 
-**`DrvNest.App`** is the WPF shell. It owns the composition root, the view models, the
+It multi-targets. `net8.0-windows` is the whole library as it always was. `net8.0` is the
+portable subset behind the Mac build: the csproj removes every Windows-only file from that
+compilation by name and compiles a `Mac/` sibling in its place — `Platform/Mac/`,
+`Monitoring/Mac/`, `Cleanup/Mac/`, `Startup/Mac/`. Both compilations expose the same type
+names (`SystemInfo`, `SystemMonitor`, `CleanupScanner`, `StartupService`, …), so no caller
+ever asks which platform it is on. The driver half — providers, scanning, the job engine,
+backup, resume, restore points — has no macOS counterpart and is simply absent there.
+
+**`Hexnest.App`** is the WPF shell. It owns the composition root, the view models, the
 localisation table, the theme manager and the dispatcher marshalling. It is the only
 project that knows a UI thread exists.
 
-**`DrvNest.Cli`** is currently an empty directory kept as the place a headless front end
+**`Hexnest.Mac`** is the Avalonia shell. WPF has no macOS implementation and never will,
+so the views are a port rather than a share: the view models, the palette and the visual
+language carry over, the XAML does not. It owns its own composition root, its own
+`ViewModelBase` (Avalonia has no `CommandManager.RequerySuggested`, so commands are
+requeried through an explicit signal) and its own dialogs.
+
+**`Hexnest.Cli`** is currently an empty directory kept as the place a headless front end
 would go. The `Core` API surface is already shaped for it — nothing in `Core` calls back
 into the UI, it only raises events.
 
-Both executable-facing projects target `net8.0-windows`. `Core` targets the Windows TFM
-too, deliberately: it talks to SetupAPI, CfgMgr32, the registry and the Windows Update
-Agent, and the Windows TFM provides `Microsoft.Win32.Registry` without a package
+`Hexnest.App` targets `net8.0-windows` and `Hexnest.Mac` targets `net8.0`. `Core` carries
+both. The Windows TFM is not incidental: it talks to SetupAPI, CfgMgr32, the registry and
+the Windows Update Agent, and it provides `Microsoft.Win32.Registry` without a package
 reference.
 
 ### Component diagram
 
 ```mermaid
 flowchart TD
-    subgraph App["DrvNest.App - WPF"]
+    subgraph App["Hexnest.App - WPF"]
         MW["MainViewModel<br/>navigation + scan"]
         VMS["Page view models<br/>Dashboard, Devices, Updates,<br/>Queue, Backup, History,<br/>Logs, Settings, About"]
         QS["QueueService<br/>dispatcher marshalling"]
@@ -47,7 +62,7 @@ flowchart TD
         LOC["Loc + ThemeManager"]
     end
 
-    subgraph Core["DrvNest.Core - no UI"]
+    subgraph Core["Hexnest.Core - no UI"]
         SS["ScanService"]
         DS["DeviceScanner<br/>SetupAPI / CfgMgr32"]
         JE["JobEngine"]
@@ -84,7 +99,7 @@ flowchart TD
 
 ## 2. Composition root
 
-`DrvNest.App/Services/AppHost.cs` is a hand-written static container: nine singletons,
+`Hexnest.App/Services/AppHost.cs` is a hand-written static container: nine singletons,
 created once in a fixed order in `Initialize(LaunchMode)`.
 
 There is no `Microsoft.Extensions.DependencyInjection`. The reason is size and
@@ -106,7 +121,7 @@ Construction order matters in two places:
 
 ## 3. The `IDriverProvider` abstraction
 
-`DrvNest.Core/Abstractions/IDriverProvider.cs`:
+`Hexnest.Core/Abstractions/IDriverProvider.cs`:
 
 ```csharp
 public interface IDriverProvider
@@ -132,7 +147,7 @@ Two implementations ship today:
 | Implementation | Source | Download step | Install step |
 | --- | --- | --- | --- |
 | `WindowsUpdateProvider` | Microsoft Update via the Windows Update Agent COM API | `IUpdateDownloader` | `IUpdateInstaller` |
-| `LocalRepositoryProvider` | Folders of `.inf` packages | Stages the package folder into `%ProgramData%\DrvNest\cache\staged\<jobId>` | `pnputil /add-driver <inf> /install`, then `pnputil /scan-devices` |
+| `LocalRepositoryProvider` | Folders of `.inf` packages | Stages the package folder into `%ProgramData%\Hexnest\cache\staged\<jobId>` | `pnputil /add-driver <inf> /install`, then `pnputil /scan-devices` |
 
 Both the scan pipeline and the job engine only ever see the interface, which is what makes
 a third source (a vendor catalog, a WSUS server, a network share with its own index) an
@@ -298,7 +313,7 @@ has a restart pending and creates the restore point.
 
 On completion (`FinishAsync`): if anything needs a restart or is parked, the session is
 marked rebooting and flushed, and the resume hook is re-armed. If nothing is left, the
-session file is deleted and the resume hook is removed — DrvNest leaves nothing behind on
+session file is deleted and the resume hook is removed — Hexnest leaves nothing behind on
 the machine.
 
 ---
@@ -309,7 +324,7 @@ Three pieces have to line up for "continue after restart" to work in practice.
 
 ### 1. State that survives a power cut
 
-`SessionState` is persisted to `%ProgramData%\DrvNest\session.json` by `SessionStore`.
+`SessionState` is persisted to `%ProgramData%\Hexnest\session.json` by `SessionStore`.
 Writes are debounced on a 1-second timer (`Touch()` marks dirty, the timer flushes) and
 forced synchronously (`Flush()`) before a restart is scheduled.
 
@@ -330,7 +345,7 @@ at most the last record, and `ReadLines` skips a truncated final line.
 `ResumeManager.EnableAsync()` tries two mechanisms, in order:
 
 ```
-schtasks /Create /TN "DrvNest\ResumeSession" /TR "\"<exe>\" --resume"
+schtasks /Create /TN "Hexnest\ResumeSession" /TR "\"<exe>\" --resume"
          /SC ONLOGON /RL HIGHEST /F
 ```
 
@@ -339,7 +354,7 @@ batch of drivers routinely needs more than one. `/RL HIGHEST` is required — th
 process installs drivers.
 
 If Task Scheduler is unavailable, it falls back to
-`HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce`, value `DrvNestResume`. RunOnce
+`HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce`, value `HexnestResume`. RunOnce
 fires exactly once and deletes itself, which is why it is the fallback and not the primary.
 
 `DisableAsync()` removes both, and is called whenever a queue finishes with nothing pending.
@@ -369,17 +384,20 @@ resumed jobs share one search) to repopulate it.
 
 ## 7. Persistence layout
 
-Everything lives under `%ProgramData%\DrvNest` — not `%AppData%` — because the resume task
+On Windows everything lives under `%ProgramData%\Hexnest`; on macOS the same files live
+under `~/Library/Application Support/Hexnest`, with the logs in `~/Library/Logs/Hexnest`
+where Console.app looks for them. `AppPaths` is the only place that knows the difference.
+Below is the Windows layout — not `%AppData%` — because the resume task
 may run as a different administrator account or as SYSTEM after a restart and must still
 find the same session file. `AppPaths.EnsureCreated()` falls back to
-`%LocalAppData%\DrvNest` if ProgramData is not writable.
+`%LocalAppData%\Hexnest` if ProgramData is not writable.
 
 | Path | Contents |
 | --- | --- |
 | `settings.json` | `AppSettings`, normalised and range-clamped on load |
 | `session.json` | The resumable queue |
 | `history.jsonl` | Append-only history, one JSON object per line |
-| `logs/drvnest.log` | Rolling text log (8 MB cap) |
+| `logs/hexnest.log` | Rolling text log (8 MB cap) |
 | `backups/` | Exported driver packages; `backups/rollback/` holds pre-update exports |
 | `cache/` | `staged/<jobId>` for local packages, `self-update/` for downloaded releases, `restore/` for extracted ZIPs |
 | `reports/` | Hardware reports and history CSV exports |
@@ -389,7 +407,7 @@ find the same session file. `AppPaths.EnsureCreated()` falls back to
 
 ## 8. Deployment: self-contained, single file
 
-From `DrvNest.App.csproj`:
+From `Hexnest.App.csproj`:
 
 | Property | Value | Why |
 | --- | --- | --- |
@@ -438,7 +456,7 @@ answer.
 **No performance counters.** Every reading comes from a direct system call —
 `GetSystemTimes`, `NtQuerySystemInformation`, `GlobalMemoryStatusEx`, `GetPerformanceInfo`,
 `CallNtPowerInformation`, `IOCTL_DISK_PERFORMANCE`. PDH would produce the same numbers
-while adding its own measurable cost to DrvNest's own row in its own process table, which
+while adding its own measurable cost to Hexnest's own row in its own process table, which
 would be a slightly absurd thing for a monitor to do.
 
 **No `System.Management`.** Thermal zones are the one reading that genuinely needs WMI, and
@@ -449,7 +467,7 @@ dependency is weight removed from the single file someone downloads onto a machi
 formatted five minutes ago.
 
 **No kernel driver, and the UI says so.** Real per-core and per-GPU temperatures come from
-a vendor sensor chip over an SMBus and need a signed kernel driver. DrvNest will not
+a vendor sensor chip over an SMBus and need a signed kernel driver. Hexnest will not
 install one, so a machine with no ACPI thermal zone gets an explanation rather than a
 plausible number. The same honesty governs per-process network traffic: TCP ESTATS is the
 only per-process byte counter Windows offers without a driver, it covers TCP and not UDP,
@@ -493,11 +511,11 @@ writes only that value; the `Run` entry and the Startup-folder shortcut are neve
 Three things follow, and all three are why it is done this way rather than the easier way:
 
 * Re-enabling is exact, because the command line never went anywhere.
-* Task Manager and DrvNest agree with each other, in both directions.
-* Uninstalling DrvNest does not leave the machine missing half its startup programs.
+* Task Manager and Hexnest agree with each other, in both directions.
+* Uninstalling Hexnest does not leave the machine missing half its startup programs.
 
-The easier implementation — delete the value, remember it in DrvNest's own settings — takes
-less code and quietly makes DrvNest load-bearing for somebody else's software.
+The easier implementation — delete the value, remember it in Hexnest's own settings — takes
+less code and quietly makes Hexnest load-bearing for somebody else's software.
 
 Command lines in `Run` are not well formed. Some are quoted, some are not, and plenty point
 at a path containing a space without quoting it. `ExtractExecutable` resolves the unquoted
@@ -545,11 +563,11 @@ this button claims.
 
 ## 9. Localisation
 
-`DrvNest.App/Services/Loc.cs` is a static string table: two `Dictionary<string, string>`
+`Hexnest.App/Services/Loc.cs` is a static string table: two `Dictionary<string, string>`
 instances (`Turkish`, `English`) and a `T(key)` lookup that falls back to English and then
 to the key itself.
 
-Russian, Simplified Chinese and Hindi live in `DrvNest.App/Languages/*.json` and are
+Russian, Simplified Chinese and Hindi live in `Hexnest.App/Languages/*.json` and are
 compiled into the assembly as embedded resources, which `LoadEmbeddedPacks` reads back out
 of the manifest at startup. They are not more C# dictionaries because three more of those
 would have made `Loc.cs` four thousand lines long, and JSON is what a translator can
@@ -571,7 +589,7 @@ Cheap, and it removes a whole class of stale-text bugs.
 ### Adding a language
 
 Nothing in the shell needs to change. Write
-`src/DrvNest.App/Languages/<code>.json` as a flat object of the same keys as the English
+`src/Hexnest.App/Languages/<code>.json` as a flat object of the same keys as the English
 table, plus `_name` (the language's own name, for the picker) and `_englishName`:
 
 ```json
@@ -587,7 +605,7 @@ and it appears in the settings picker. Keys missing from a pack fall back to Eng
 automatically, so a partial translation is usable from the first commit.
 
 The same file dropped into `Languages\<code>.json` **next to the executable**, or into
-`%ProgramData%\DrvNest\Languages`, is merged over the built-in one — which means a user
+`%ProgramData%\Hexnest\Languages`, is merged over the built-in one — which means a user
 can correct a translation, or add a language entirely, without a rebuild.
 
 To extract the current English table as a starting point:

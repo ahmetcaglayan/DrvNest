@@ -1,27 +1,38 @@
 cff-version: 1.2.0
-message: "If you use or reference DrvNest, please cite it using the metadata below."
+message: "If you use or reference Hexnest, please cite it using the metadata below."
 type: software
-title: "DrvNest"
+title: "Hexnest"
 abstract: >-
-  DrvNest is a free and open-source Windows driver scanner, installer and updater
-  for Windows 10 and Windows 11. It enumerates every present PnP device through
-  SetupAPI and CfgMgr32, reports which devices have no driver, installs missing and
-  outdated drivers from the Windows Update catalog or from local INF folders,
-  resumes its install queue after the restarts a driver install requires, and backs
-  drivers up so they can be restored offline from a USB stick after a format. It
-  ships as a single self-contained executable that needs neither the .NET runtime
-  nor the Visual C++ Redistributable.
+  Hexnest is a free and open-source system utility for Windows 10, Windows 11 and
+  macOS 12 or newer. On both platforms it provides a live system monitor with
+  per-core processor load and per-application resource usage, a network monitor with
+  per-application traffic, a start-up manager and a disk cleaner that measures rather
+  than estimates. On Windows it is additionally a driver scanner, installer and
+  updater: it enumerates every present PnP device through SetupAPI and CfgMgr32,
+  reports which devices have no driver, installs missing and outdated drivers from
+  the Windows Update catalog or from local INF folders, resumes its install queue
+  after the restarts a driver install requires, and backs drivers up so they can be
+  restored offline from a USB stick after a format. The Windows build ships as a
+  single self-contained executable and the macOS build as an application bundle;
+  neither needs a runtime installed first.
 authors:
   - family-names: "Çağlayan"
     given-names: "Ahmet"
     alias: "ahmetcaglayan"
-repository-code: "https://github.com/ahmetcaglayan/DrvNest"
-url: "https://ahmetcaglayan.github.io/DrvNest/"
+repository-code: "https://github.com/ahmetcaglayan/Hexnest"
+url: "https://ahmetcaglayan.github.io/Hexnest/"
 license: MIT
 version: "1.2.0"
 date-released: "2026-09-07"
 keywords:
   - windows
+  - macos
+  - cross-platform
+  - system-monitor
+  - network-monitor
+  - startup-manager
+  - disk-cleaner
+  - avalonia
   - drivers
   - device-drivers
   - driver-updater
@@ -33,3 +44,4 @@ keywords:
   - dotnet
   - csharp
   - wpf
+  - apple-silicon

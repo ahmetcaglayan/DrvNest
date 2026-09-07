@@ -20,14 +20,15 @@ home page.
 Paste exactly:
 
 ```text
-DrvNest is a free, open-source Windows 10/11 driver updater: it scans every device, finds missing and outdated drivers, installs them from Windows Update or a local INF folder, resumes after reboots, and restores drivers offline from a USB stick after a format. One self-contained .exe, no .NET or Visual C++ Redistributable required.
+Hexnest is a free, open-source system utility for Windows and macOS: a live system monitor, a per-app network monitor, a start-up manager and a disk cleaner that measures rather than estimates - plus a driver updater on Windows that installs missing drivers after a format and restores them offline from USB. No adware, no telemetry.
 ```
 
-(334 characters, under GitHub's 350-character limit.)
+(333 characters, under GitHub's 350-character limit.)
 
 This string is what Google shows under the repository result and what most AI assistants quote when
-asked "what is DrvNest", so it is deliberately self-contained: product, platform, what it does, and
-the two differentiators.
+asked "what is Hexnest", so it is deliberately self-contained: product, platforms, what it does, and
+the differentiators. It leads with the cross-platform half on purpose - "driver updater" describes a
+quarter of the application and is the half that cannot exist on a Mac.
 
 ---
 
@@ -36,7 +37,7 @@ the two differentiators.
 Same **About** dialog, the *Website* box:
 
 ```text
-https://ahmetcaglayan.github.io/DrvNest/
+https://ahmetcaglayan.github.io/Hexnest/
 ```
 
 Leave **"Use your GitHub Pages website"** unticked and paste the URL explicitly — it renders the same
@@ -51,29 +52,36 @@ hyphenated, which is the only format it accepts.
 
 ```text
 windows
-windows-10
-windows-11
+macos
+cross-platform
+system-monitor
+network-monitor
+system-utility
+startup-manager
+disk-cleaner
+task-manager-alternative
+driver-updater
 drivers
 device-drivers
-driver-updater
-driver-manager
 driver-backup
-driver-installer
 offline-installer
-pnputil
 windows-update
-setupapi
+avalonia
 wpf
 dotnet
 csharp
 desktop-app
-system-utility
-hardware
-turkish
 ```
 
 Topics are a real ranking signal inside GitHub search and on the topic landing pages, and they are
 one of the few structured signals that GitHub exposes to external crawlers.
+
+Twenty is the hard limit, so the list above is a set of trades. `macos`, `cross-platform`,
+`system-monitor`, `network-monitor`, `startup-manager` and `disk-cleaner` earn their places because
+they are the half of the product that most searches will not otherwise find. `windows-10`,
+`windows-11`, `driver-manager`, `driver-installer`, `pnputil`, `setupapi`, `hardware` and `turkish`
+came off: the first two are covered by `windows`, the next four are implementation detail that
+almost nobody searches by, and the last one describes the author rather than the software.
 
 ---
 
@@ -85,9 +93,9 @@ one of the few structured signals that GitHub exposes to external crawlers.
 Without this, [`.github/workflows/pages.yml`](../.github/workflows/pages.yml) fails at the
 `actions/configure-pages` step with "Get Pages site failed".
 
-After the first successful run the site is live at `https://ahmetcaglayan.github.io/DrvNest/` and the
-Turkish page at `https://ahmetcaglayan.github.io/DrvNest/tr/`. Confirm that
-`https://ahmetcaglayan.github.io/DrvNest/og-image.png`,
+After the first successful run the site is live at `https://ahmetcaglayan.github.io/Hexnest/` and the
+Turkish page at `https://ahmetcaglayan.github.io/Hexnest/tr/`. Confirm that
+`https://ahmetcaglayan.github.io/Hexnest/og-image.png`,
 `.../robots.txt` and `.../sitemap.xml` all return 200 before moving on.
 
 ---
@@ -130,15 +138,15 @@ GitHub renders a generic avatar-and-title card that nobody clicks.
 
 1. **Add property → URL prefix**, not Domain. `github.io` is on the Public Suffix List, so the
    Domain option cannot be verified for a project page.
-2. Enter `https://ahmetcaglayan.github.io/DrvNest/`.
+2. Enter `https://ahmetcaglayan.github.io/Hexnest/`.
 3. Choose the **HTML file** verification method. Google gives you a file named something like
    `google1234567890abcdef.html`.
 4. Commit that file to **`docs/site/`** (so it deploys to the site root) and push. Wait for the Pages
    workflow to finish, then press *Verify*.
 5. **Sitemaps → Add a new sitemap →** enter `sitemap.xml`.
 6. Use **URL Inspection → Request indexing** once for each page:
-   - `https://ahmetcaglayan.github.io/DrvNest/`
-   - `https://ahmetcaglayan.github.io/DrvNest/tr/`
+   - `https://ahmetcaglayan.github.io/Hexnest/`
+   - `https://ahmetcaglayan.github.io/Hexnest/tr/`
 
 The `hreflang` pair between the two pages is already in the HTML and in the sitemap, so Google will
 serve the Turkish page to Turkish searchers by itself once both are indexed.
@@ -150,8 +158,8 @@ serve the Turkish page to Turkish searchers by itself once both are indexed.
 <https://www.bing.com/webmasters>
 
 The fastest route is **Import from Google Search Console**, which carries over the verified property
-and the sitemap in one click. Otherwise add `https://ahmetcaglayan.github.io/DrvNest/` manually with
-the same HTML-file method and submit `https://ahmetcaglayan.github.io/DrvNest/sitemap.xml`.
+and the sitemap in one click. Otherwise add `https://ahmetcaglayan.github.io/Hexnest/` manually with
+the same HTML-file method and submit `https://ahmetcaglayan.github.io/Hexnest/sitemap.xml`.
 
 Worth doing rather than skipping: Bing's index is what ChatGPT search and Copilot read from, so this
 is the single highest-leverage step for being *citable by an AI assistant* rather than merely
@@ -184,30 +192,45 @@ Requires `gh auth login` with `repo` scope. **Review before running — these co
 you.**
 
 ```bash
-gh repo edit ahmetcaglayan/DrvNest \
-  --description "DrvNest is a free, open-source Windows 10/11 driver updater: it scans every device, finds missing and outdated drivers, installs them from Windows Update or a local INF folder, resumes after reboots, and restores drivers offline from a USB stick after a format. One self-contained .exe, no .NET or Visual C++ Redistributable required." \
-  --homepage "https://ahmetcaglayan.github.io/DrvNest/" \
+gh repo edit ahmetcaglayan/Hexnest \
+  --description "Hexnest is a free, open-source system utility for Windows and macOS: a live system monitor, a per-app network monitor, a start-up manager and a disk cleaner that measures rather than estimates - plus a driver updater on Windows that installs missing drivers after a format and restores them offline from USB. No adware, no telemetry." \
+  --homepage "https://ahmetcaglayan.github.io/Hexnest/" \
   --enable-discussions \
   --add-topic windows \
-  --add-topic windows-10 \
-  --add-topic windows-11 \
+  --add-topic macos \
+  --add-topic cross-platform \
+  --add-topic system-monitor \
+  --add-topic network-monitor \
+  --add-topic system-utility \
+  --add-topic startup-manager \
+  --add-topic disk-cleaner \
+  --add-topic task-manager-alternative \
+  --add-topic driver-updater \
   --add-topic drivers \
   --add-topic device-drivers \
-  --add-topic driver-updater \
-  --add-topic driver-manager \
   --add-topic driver-backup \
-  --add-topic driver-installer \
   --add-topic offline-installer \
-  --add-topic pnputil \
   --add-topic windows-update \
-  --add-topic setupapi \
+  --add-topic avalonia \
   --add-topic wpf \
   --add-topic dotnet \
   --add-topic csharp \
-  --add-topic desktop-app \
-  --add-topic system-utility \
-  --add-topic hardware \
-  --add-topic turkish
+  --add-topic desktop-app
+```
+
+`--add-topic` only ever adds. The topics dropped in the rework are still on the repository
+until they are removed explicitly:
+
+```bash
+gh repo edit ahmetcaglayan/Hexnest \
+  --remove-topic windows-10 \
+  --remove-topic windows-11 \
+  --remove-topic driver-manager \
+  --remove-topic driver-installer \
+  --remove-topic pnputil \
+  --remove-topic setupapi \
+  --remove-topic hardware \
+  --remove-topic turkish
 ```
 
 Step 4 (Pages source = GitHub Actions) has an API equivalent. Use `POST` the first time Pages is
@@ -215,10 +238,10 @@ enabled for the repository, `PUT` if it is already enabled and you are switching
 
 ```bash
 # first time
-gh api -X POST repos/ahmetcaglayan/DrvNest/pages -f build_type=workflow
+gh api -X POST repos/ahmetcaglayan/Hexnest/pages -f build_type=workflow
 
 # already enabled, switching from branch deploys
-gh api -X PUT repos/ahmetcaglayan/DrvNest/pages -f build_type=workflow
+gh api -X PUT repos/ahmetcaglayan/Hexnest/pages -f build_type=workflow
 ```
 
 Then kick off the first deployment without waiting for a push to `docs/site/`:
@@ -231,10 +254,10 @@ gh run watch
 And verify the result:
 
 ```bash
-curl -sI https://ahmetcaglayan.github.io/DrvNest/            | head -1
-curl -sI https://ahmetcaglayan.github.io/DrvNest/tr/         | head -1
-curl -sI https://ahmetcaglayan.github.io/DrvNest/og-image.png | head -1
-curl -s  https://ahmetcaglayan.github.io/DrvNest/robots.txt
+curl -sI https://ahmetcaglayan.github.io/Hexnest/            | head -1
+curl -sI https://ahmetcaglayan.github.io/Hexnest/tr/         | head -1
+curl -sI https://ahmetcaglayan.github.io/Hexnest/og-image.png | head -1
+curl -s  https://ahmetcaglayan.github.io/Hexnest/robots.txt
 ```
 
 ---

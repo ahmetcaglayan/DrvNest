@@ -1,26 +1,26 @@
 blank_issues_enabled: false
 contact_links:
   - name: Soru sor / Ask a question
-    url: https://github.com/ahmetcaglayan/DrvNest/discussions
+    url: https://github.com/ahmetcaglayan/Hexnest/discussions
     about: >-
       Kullanım sorularını, fikirleri ve "bende şöyle oldu" hikâyelerini Discussions'a yazın.
       Use Discussions for usage questions, ideas and general feedback.
 
   - name: Proje sayfası / Project site
-    url: https://ahmetcaglayan.github.io/DrvNest/
+    url: https://ahmetcaglayan.github.io/Hexnest/
     about: >-
       Özellikler, format sonrası kurtarma rehberi ve sık sorulan sorular.
       Features, the post-format recovery walkthrough and the FAQ.
 
   - name: Sık sorulan sorular / FAQ
-    url: https://github.com/ahmetcaglayan/DrvNest/blob/main/docs/FAQ.md
+    url: https://github.com/ahmetcaglayan/Hexnest/blob/main/docs/FAQ.md
     about: >-
       Hata bildirmeden önce buraya bakın: SmartScreen uyarısı, .NET gereksinimi,
       exe boyutu ve sürücü geri alma soruları burada cevaplanıyor.
       Check here first - SmartScreen warnings, .NET requirements, file size and driver rollback.
 
   - name: Güvenlik açığı bildirimi / Report a vulnerability
-    url: https://github.com/ahmetcaglayan/DrvNest/blob/main/SECURITY.md
+    url: https://github.com/ahmetcaglayan/Hexnest/blob/main/SECURITY.md
     about: >-
       Güvenlik sorunlarını herkese açık issue olarak açmayın; güvenlik politikasını izleyin.
       Do not open a public issue for security problems - follow the security policy.

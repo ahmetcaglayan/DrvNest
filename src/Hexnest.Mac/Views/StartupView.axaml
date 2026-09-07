@@ -1,0 +1,122 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Hexnest.Mac.ViewModels"
+             xmlns:s="clr-namespace:Hexnest.Mac.Services"
+             x:Class="Hexnest.Mac.Views.StartupView"
+             x:DataType="vm:StartupViewModel">
+
+    <ScrollViewer Classes="page">
+        <StackPanel Spacing="14">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{Binding Title}" Classes="h1" />
+                    <TextBlock Text="{Binding Subtitle}" Classes="caption wrap" Margin="0,3,0,0" />
+                </StackPanel>
+
+                <Button Grid.Column="1" Classes="ghost"
+                        Content="{s:Loc common.refresh}"
+                        Command="{Binding RefreshCommand}"
+                        VerticalAlignment="Top" />
+            </Grid>
+
+            <Border Classes="card-flat">
+                <StackPanel>
+                    <TextBlock Text="{Binding Explain}" Classes="caption wrap" />
+                    <TextBlock Text="{Binding Note}" Classes="faint wrap" Margin="0,7,0,0" />
+                </StackPanel>
+            </Border>
+
+            <!-- Filters -->
+            <StackPanel Spacing="8">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Classes="ghost" Content="{s:Loc common.all}"
+                            Command="{Binding FilterCommand}" CommandParameter="all" />
+                    <Button Classes="ghost" Content="{s:Loc startup.filterEnabled}"
+                            Command="{Binding FilterCommand}" CommandParameter="enabled" />
+                    <Button Classes="ghost" Content="{s:Loc startup.filterDisabled}"
+                            Command="{Binding FilterCommand}" CommandParameter="disabled" />
+                    <Button Classes="ghost" Content="{s:Loc startup.filterBroken}"
+                            Command="{Binding FilterCommand}" CommandParameter="broken" />
+
+                    <TextBlock Text="{Binding Summary}" Classes="faint"
+                               VerticalAlignment="Center" Margin="10,0,0,0" />
+                </StackPanel>
+
+                <!-- Its own wrapping line: this sentence is far too long for the row above. -->
+                <StackPanel Orientation="Horizontal" IsVisible="{Binding HasBrokenWarning}">
+                    <Path Data="{StaticResource Icon.Warning}"
+                          Stroke="{DynamicResource Brush.Warning}" StrokeThickness="1.4"
+                          StrokeJoin="Round" Width="13" Height="13" Stretch="Uniform"
+                          VerticalAlignment="Top" Margin="0,2,0,0" />
+                    <TextBlock Text="{Binding BrokenWarning}" Classes="faint wrap"
+                               Margin="8,0,0,0" />
+                </StackPanel>
+            </StackPanel>
+
+            <Border Classes="card">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Entries}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="vm:StartupRow">
+                                <Border Classes="row">
+                                    <Grid ColumnDefinitions="Auto,*,Auto">
+
+                                        <!-- The switch, or nothing at all for a system job -->
+                                        <ToggleSwitch Grid.Column="0"
+                                                      IsChecked="{Binding IsEnabled, Mode=TwoWay}"
+                                                      IsVisible="{Binding CanToggle}"
+                                                      VerticalAlignment="Center"
+                                                      Margin="0,0,10,0" />
+
+                                        <Border Grid.Column="0" Classes="badge"
+                                                Background="{DynamicResource Brush.WarningSoft}"
+                                                IsVisible="{Binding IsSystem}"
+                                                Margin="0,0,10,0"
+                                                ToolTip.Tip="{s:Loc mac.needsAdmin}">
+                                            <TextBlock Text="{Binding SystemText}"
+                                                       Foreground="{DynamicResource Brush.Warning}" />
+                                        </Border>
+
+                                        <StackPanel Grid.Column="1" Margin="0,0,14,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center"
+                                                           TextTrimming="CharacterEllipsis" />
+
+                                                <Border Classes="badge" Background="{DynamicResource Brush.DangerSoft}"
+                                                        Margin="8,0,0,0" IsVisible="{Binding IsSecurity}">
+                                                    <TextBlock Text="{s:Loc startup.cautionSecurity}"
+                                                               Foreground="{DynamicResource Brush.Danger}" />
+                                                </Border>
+
+                                                <Border Classes="badge" Background="{DynamicResource Brush.WarningSoft}"
+                                                        Margin="8,0,0,0" IsVisible="{Binding IsBroken}">
+                                                    <TextBlock Text="{Binding BrokenText}"
+                                                               Foreground="{DynamicResource Brush.Warning}" />
+                                                </Border>
+                                            </StackPanel>
+
+                                            <TextBlock Text="{Binding Label}" Classes="faint mono" Margin="0,3,0,0"
+                                                       TextTrimming="CharacterEllipsis" />
+                                            <TextBlock Text="{Binding Command}" Classes="faint" Margin="0,2,0,0"
+                                                       TextTrimming="CharacterEllipsis" />
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2" VerticalAlignment="Center" MinWidth="180">
+                                            <TextBlock Text="{Binding LocationText}" Classes="caption"
+                                                       HorizontalAlignment="Right" />
+                                            <TextBlock Text="{Binding Publisher}" Classes="faint"
+                                                       HorizontalAlignment="Right" Margin="0,3,0,0" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

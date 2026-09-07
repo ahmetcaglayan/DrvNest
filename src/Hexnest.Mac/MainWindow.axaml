@@ -1,0 +1,162 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Hexnest.Mac.ViewModels"
+        x:Class="Hexnest.Mac.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="Hexnest"
+        Width="1180" Height="800"
+        MinWidth="940" MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource Brush.Window}"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="PreferSystemChrome"
+        ExtendClientAreaTitleBarHeightHint="-1">
+
+    <!--
+        The title bar is macOS's own.
+
+        The Windows build draws its own caption buttons because it wants a dark title
+        bar that Windows will not give it. Doing the same here would be a mistake: the
+        traffic lights are muscle memory, their position is a system setting, and full
+        screen, tabbing and window snapping all hang off the real title bar. Extending
+        the client area under it gives the dark shell without taking any of that away -
+        the sidebar simply starts far enough down to leave the lights room.
+    -->
+
+    <Grid ColumnDefinitions="238,*">
+
+        <!-- ==================================================== SIDEBAR -->
+        <Border Grid.Column="0"
+                Background="{DynamicResource Brush.SidebarGradient}"
+                BorderBrush="{DynamicResource Brush.BorderSubtle}"
+                BorderThickness="0,0,1,0">
+
+            <Grid RowDefinitions="Auto,*,Auto">
+
+                <!-- Brand. The top margin is what keeps the traffic lights clear. -->
+                <StackPanel Grid.Row="0" Margin="20,42,20,16" Orientation="Horizontal">
+                    <Border Width="32" Height="32"
+                            CornerRadius="9"
+                            Background="{DynamicResource Brush.Accent}"
+                            VerticalAlignment="Center">
+                        <Path Data="{StaticResource Icon.Brand}"
+                              Stroke="{DynamicResource Brush.AccentText}"
+                              StrokeThickness="1.8"
+                              StrokeJoin="Round"
+                              Width="16" Height="16"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+                    </Border>
+
+                    <StackPanel Margin="11,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="Hexnest" Classes="h2" />
+                        <TextBlock Text="{Binding VersionDisplay}" Classes="caption" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Menu. Adding an entry to MainViewModel.BuildNavigation is enough. -->
+                <ScrollViewer Grid.Row="1" Padding="0,0,0,10">
+                    <ItemsControl ItemsSource="{Binding NavItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="vm:NavItem">
+                                <RadioButton Classes="nav"
+                                             GroupName="HexnestNavigation"
+                                             IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                             Command="{Binding $parent[Window].((vm:MainViewModel)DataContext).NavigateCommand}"
+                                             CommandParameter="{Binding}">
+                                    <Grid ColumnDefinitions="18,*,Auto">
+                                        <Path Grid.Column="0"
+                                              Data="{Binding Icon, Converter={StaticResource IconLookup}}"
+                                              StrokeThickness="1.5"
+                                              StrokeJoin="Round"
+                                              StrokeLineCap="Round"
+                                              Width="16" Height="16"
+                                              Stretch="Uniform"
+                                              VerticalAlignment="Center" />
+
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding Label}"
+                                                   Margin="11,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis" />
+
+                                        <Border Grid.Column="2"
+                                                Classes="badge"
+                                                Background="{DynamicResource Brush.AccentSoft}"
+                                                IsVisible="{Binding HasBadge}">
+                                            <TextBlock Text="{Binding BadgeCount}"
+                                                       Foreground="{DynamicResource Brush.Accent}" />
+                                        </Border>
+                                    </Grid>
+                                </RadioButton>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <!-- Footer: account and machine identity -->
+                <StackPanel Grid.Row="2" Margin="20,0,20,18">
+                    <Border Classes="divider" />
+
+                <!--
+                    A Grid, not a horizontal StackPanel: a StackPanel measures its
+                    children with unbounded width, so TextTrimming never triggers and a
+                    long account name runs straight out of the sidebar and over the page.
+                -->
+                <Grid ColumnDefinitions="Auto,*">
+                    <Path Grid.Column="0"
+                          Data="{StaticResource Icon.Shield}"
+                          Stroke="{DynamicResource Brush.Success}"
+                          StrokeThickness="1.4"
+                          StrokeJoin="Round"
+                          Width="13" Height="13"
+                          Stretch="Uniform"
+                          VerticalAlignment="Center" />
+
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding AccountText}"
+                               Classes="caption"
+                               Margin="8,0,0,0"
+                               VerticalAlignment="Center"
+                               TextTrimming="CharacterEllipsis"
+                               ToolTip.Tip="{Binding AccountText}" />
+                </Grid>
+
+                    <TextBlock Text="{Binding MachineSummary}"
+                               Classes="caption wrap"
+                               Margin="0,7,0,0"
+                               MaxHeight="46" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ==================================================== CONTENT -->
+        <Grid Grid.Column="1" RowDefinitions="38,*,Auto">
+
+            <!-- Title strip. Draggable, because it sits under the real title bar. -->
+            <Border Grid.Row="0" Background="Transparent">
+                <TextBlock Text="{Binding PageTitle}"
+                           Classes="body muted"
+                           Margin="24,0,0,0"
+                           VerticalAlignment="Center" />
+            </Border>
+
+            <!-- Page host -->
+            <ContentControl Grid.Row="1" Content="{Binding CurrentView}" />
+
+            <!-- Status bar -->
+            <Border Grid.Row="2"
+                    Background="{DynamicResource Brush.Sidebar}"
+                    BorderBrush="{DynamicResource Brush.BorderSubtle}"
+                    BorderThickness="0,1,0,0"
+                    Padding="24,9">
+                <TextBlock Text="{Binding StatusText}"
+                           Classes="caption"
+                           VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis" />
+            </Border>
+        </Grid>
+    </Grid>
+
+</Window>

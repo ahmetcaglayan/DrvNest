@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>Hexnest.Cli</RootNamespace>
+    <AssemblyName>hexnest</AssemblyName>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+
+    <AssemblyTitle>Hexnest CLI</AssemblyTitle>
+    <Description>Headless driver scan, install, backup and restore for scripts and rescue media.</Description>
+  </PropertyGroup>
+
+  <!--
+    Same zero-prerequisite shape as the GUI: this is the build that goes onto a
+    WinPE stick or into a deployment script, where nothing can be assumed to be
+    installed.
+  -->
+  <PropertyGroup>
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == ''">win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <DebugType>embedded</DebugType>
+    <!-- Minimum supported OS is Windows 10 1607; it is documented rather than declared,
+         because raising TargetPlatformVersion would pull in the WinRT projections for
+         no benefit to a pure Win32 + WPF application. -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hexnest.Core\Hexnest.Core.csproj" />
+  </ItemGroup>
+
+</Project>

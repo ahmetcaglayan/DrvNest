@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
-   DrvNest landing page — shared stylesheet
+   Hexnest landing page — shared stylesheet
    Dark by default (the app's palette), light variant via prefers-color-scheme.
    No web fonts, no external requests: everything here works offline.
    --------------------------------------------------------------------------- */
@@ -326,6 +326,24 @@ hr {
 .btn-primary:hover,
 .btn-primary:focus-visible {
   background: var(--accent-deep);
+}
+
+/*
+  The macOS download button.
+
+  Deliberately not the mint accent: two identical primary buttons side by side make the
+  visitor read both to find out which is which. Graphite reads as "the other platform"
+  at a glance while staying a primary action, and it is the colour Apple's own hardware
+  pages use for exactly this.
+*/
+.btn-mac {
+  background: #1D1D1F;
+  color: #FFFFFF;
+}
+
+.btn-mac:hover,
+.btn-mac:focus-visible {
+  background: #333336;
 }
 
 .btn-secondary {

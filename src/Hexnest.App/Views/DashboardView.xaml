@@ -1,0 +1,346 @@
+<UserControl x:Class="Hexnest.App.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="clr-namespace:Hexnest.App.Services"
+             xmlns:vm="clr-namespace:Hexnest.App.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:DashboardViewModel}"
+             d:DesignWidth="900">
+
+    <UserControl.Resources>
+
+        <!-- One headline number plus its label. -->
+        <Style x:Key="MetricCard" TargetType="Border" BasedOn="{StaticResource Card}">
+            <Setter Property="Padding" Value="18,16" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+
+        <!-- A quick action tile: icon, title, one line of explanation. -->
+        <Style x:Key="ActionTile" TargetType="Button" BasedOn="{StaticResource Btn.Base}">
+            <Setter Property="Background" Value="{DynamicResource Brush.Surface}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="16,14" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Text}" />
+        </Style>
+
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="22,10,22,22">
+        <StackPanel>
+
+            <!-- ============================================ HEADER -->
+            <Grid Margin="0,10,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{s:Loc dash.title}" Style="{StaticResource Text.H1}" />
+                    <TextBlock Text="{s:Loc dash.subtitle}" Style="{StaticResource Text.Muted}" Margin="0,4,0,0" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding LastScanText}"
+                               Style="{StaticResource Text.Caption}"
+                               VerticalAlignment="Center"
+                               Margin="0,0,14,0" />
+
+                    <Button Style="{StaticResource Btn.Primary}"
+                            Command="{Binding ScanCommand}"
+                            MinWidth="132">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{StaticResource Icon.Search}"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="13"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Text="{s:Loc dash.scanNow}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <!-- ============================================ WARNING BANNER -->
+            <Border Style="{StaticResource Card}"
+                    Background="{DynamicResource Brush.WarningSoft}"
+                    BorderBrush="{DynamicResource Brush.Warning}"
+                    Padding="16,13"
+                    Margin="0,0,0,16"
+                    Visibility="{Binding HasNotice, Converter={StaticResource BoolToVisibility}}">
+<!--
+                    A Grid rather than a horizontal StackPanel: a StackPanel gives its
+                    children infinite width when measuring, so TextWrapping does nothing
+                    and a long warning is clipped instead of wrapped.
+                -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="{StaticResource Icon.Warning}"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="15"
+                               VerticalAlignment="Top"
+                               Margin="0,1,0,0"
+                               Foreground="{DynamicResource Brush.Warning}" />
+
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding Notice}"
+                               Style="{StaticResource Text.Body}"
+                               Margin="11,0,0,0"
+                               TextWrapping="Wrap" />
+                </Grid>
+            </Border>
+
+            <!-- ============================================ METRICS -->
+            <Grid Margin="0,0,0,22">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="14" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="14" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="14" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource MetricCard}">
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding OpenDevicesCommand}" />
+                    </Border.InputBindings>
+                    <StackPanel>
+                        <TextBlock Text="{Binding DeviceCount}" Style="{StaticResource Text.Metric}" />
+                        <TextBlock Text="{s:Loc dash.devices}" Style="{StaticResource Text.Muted}" Margin="0,2,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource MetricCard}">
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding OpenDevicesCommand}" />
+                    </Border.InputBindings>
+                    <StackPanel>
+                        <TextBlock Text="{Binding MissingCount}"
+                                   Style="{StaticResource Text.Metric}"
+                                   Foreground="{DynamicResource Brush.Danger}" />
+                        <TextBlock Text="{s:Loc dash.missing}" Style="{StaticResource Text.Muted}" Margin="0,2,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="4" Style="{StaticResource MetricCard}">
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding OpenUpdatesCommand}" />
+                    </Border.InputBindings>
+                    <StackPanel>
+                        <TextBlock Text="{Binding UpdateCount}"
+                                   Style="{StaticResource Text.Metric}"
+                                   Foreground="{DynamicResource Brush.Accent}" />
+                        <TextBlock Text="{s:Loc dash.updates}" Style="{StaticResource Text.Muted}" Margin="0,2,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="6" Style="{StaticResource MetricCard}">
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding OpenDevicesCommand}" />
+                    </Border.InputBindings>
+                    <StackPanel>
+                        <TextBlock Text="{Binding ProblemCount}"
+                                   Style="{StaticResource Text.Metric}"
+                                   Foreground="{DynamicResource Brush.Warning}" />
+                        <TextBlock Text="{s:Loc dash.problems}" Style="{StaticResource Text.Muted}" Margin="0,2,0,0" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- ============================================ ALL CLEAR -->
+            <Border Style="{StaticResource Card}"
+                    Background="{DynamicResource Brush.AccentSoft}"
+                    BorderBrush="{DynamicResource Brush.Accent}"
+                    Margin="0,0,0,22"
+                    Visibility="{Binding IsHealthy, Converter={StaticResource BoolToVisibility}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{StaticResource Icon.CheckCircle}"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="22"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource Brush.Accent}" />
+                    <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{s:Loc dash.healthy}" Style="{StaticResource Text.H2}" />
+                        <TextBlock Text="{s:Loc dash.healthyDesc}"
+                                   Style="{StaticResource Text.Muted}"
+                                   Margin="0,3,0,0" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- ============================================ QUICK ACTIONS -->
+            <TextBlock Text="{s:Loc dash.quickActions}" Style="{StaticResource Text.H2}" Margin="0,0,0,12" />
+
+            <Grid Margin="0,0,0,22">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="14" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="14" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Button Grid.Row="0" Grid.Column="0"
+                        Style="{StaticResource ActionTile}"
+                        Command="{Binding FullRecoveryCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="38" Height="38" CornerRadius="10"
+                                Background="{DynamicResource Brush.DangerSoft}">
+                            <TextBlock Text="{StaticResource Icon.Bolt}"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="17"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Brush.Danger}" />
+                        </Border>
+                        <StackPanel Margin="13,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{s:Loc dash.fullRecovery}" FontWeight="SemiBold" />
+                            <TextBlock Text="{s:Loc dash.fullRecoveryDesc}"
+                                       Style="{StaticResource Text.Caption}"
+                                       Margin="0,3,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </Button>
+
+                <Button Grid.Row="0" Grid.Column="2"
+                        Style="{StaticResource ActionTile}"
+                        Command="{Binding UpdateAllCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="38" Height="38" CornerRadius="10"
+                                Background="{DynamicResource Brush.AccentSoft}">
+                            <TextBlock Text="{StaticResource Icon.Update}"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="17"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Brush.Accent}" />
+                        </Border>
+                        <StackPanel Margin="13,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{s:Loc dash.updateAll}" FontWeight="SemiBold" />
+                            <TextBlock Text="{s:Loc dash.updateAllDesc}"
+                                       Style="{StaticResource Text.Caption}"
+                                       Margin="0,3,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </Button>
+
+                <Button Grid.Row="2" Grid.Column="0"
+                        Style="{StaticResource ActionTile}"
+                        Command="{Binding BackupCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="38" Height="38" CornerRadius="10"
+                                Background="{DynamicResource Brush.InfoSoft}">
+                            <TextBlock Text="{StaticResource Icon.Save}"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="17"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Brush.Info}" />
+                        </Border>
+                        <StackPanel Margin="13,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{s:Loc dash.backupNow}" FontWeight="SemiBold" />
+                            <TextBlock Text="{s:Loc dash.backupNowDesc}"
+                                       Style="{StaticResource Text.Caption}"
+                                       Margin="0,3,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </Button>
+
+                <Button Grid.Row="2" Grid.Column="2"
+                        Style="{StaticResource ActionTile}"
+                        Command="{Binding ExportReportCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="38" Height="38" CornerRadius="10"
+                                Background="{DynamicResource Brush.SurfaceHover}">
+                            <TextBlock Text="{StaticResource Icon.Document}"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="17"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Brush.TextMuted}" />
+                        </Border>
+                        <StackPanel Margin="13,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{s:Loc dash.exportReport}" FontWeight="SemiBold" />
+                            <TextBlock Text="{s:Loc dash.exportReportDesc}"
+                                       Style="{StaticResource Text.Caption}"
+                                       Margin="0,3,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <!-- ============================================ SYSTEM -->
+            <TextBlock Text="{s:Loc spec.title}" Style="{StaticResource Text.H2}" Margin="0,0,0,12" />
+
+            <Border Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{s:Loc spec.system}"
+                               Style="{StaticResource Text.Caption}" Margin="0,0,22,7" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding OsText}"
+                               Style="{StaticResource Text.Body}" Margin="0,0,0,7" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{s:Loc spec.model}"
+                               Style="{StaticResource Text.Caption}" Margin="0,0,22,7" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding MachineText}"
+                               Style="{StaticResource Text.Body}" Margin="0,0,0,7" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{s:Loc spec.chip}"
+                               Style="{StaticResource Text.Caption}" Margin="0,0,22,7" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding CpuText}"
+                               Style="{StaticResource Text.Body}" Margin="0,0,0,7"
+                               TextTrimming="CharacterEllipsis" />
+
+                    <!--
+                        Graphics and memory: the two things somebody checking what a
+                        machine is always wants, and the two the dashboard used to make
+                        them go to System Information for.
+                    -->
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="{s:Loc spec.graphics}"
+                               Style="{StaticResource Text.Caption}" Margin="0,0,22,7" />
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding GraphicsText}"
+                               Style="{StaticResource Text.Body}" Margin="0,0,0,7"
+                               TextTrimming="CharacterEllipsis" />
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="{s:Loc spec.memory}"
+                               Style="{StaticResource Text.Caption}" Margin="0,0,22,7" />
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding MemoryText}"
+                               Style="{StaticResource Text.Body}" Margin="0,0,0,7" />
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="{s:Loc spec.bios}"
+                               Style="{StaticResource Text.Caption}" Margin="0,0,22,0" />
+                    <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding BiosText}"
+                               Style="{StaticResource Text.Body}"
+                               TextTrimming="CharacterEllipsis" />
+
+                </Grid>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

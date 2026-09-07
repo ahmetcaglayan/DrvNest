@@ -1,12 +1,12 @@
 name: Feature request
-description: Suggest an idea for DrvNest
+description: Suggest an idea for Hexnest
 title: "[Feature]: "
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        DrvNest is built around one moment: the first boot after a format, on a
+        Hexnest is built around one moment: the first boot after a format, on a
         machine with no runtime installed and possibly no network. Ideas that make
         that moment go better have an easy time here.
 
@@ -24,16 +24,16 @@ body:
       label: What problem would this solve?
       description: >
         Describe the situation you are in, not the solution. What are you trying to
-        do, and where does DrvNest get in the way today?
+        do, and where does Hexnest get in the way today?
       placeholder: |
-        After a format I have to ... because DrvNest cannot ...
+        After a format I have to ... because Hexnest cannot ...
     validations:
       required: true
 
   - type: textarea
     id: proposal
     attributes:
-      label: What would you like DrvNest to do?
+      label: What would you like Hexnest to do?
       description: Now the solution. Be concrete about how it should behave.
     validations:
       required: true
@@ -41,7 +41,7 @@ body:
   - type: dropdown
     id: area
     attributes:
-      label: Which part of DrvNest?
+      label: Which part of Hexnest?
       options:
         - Scanning and device detection
         - Windows Update driver source
@@ -53,7 +53,7 @@ body:
         - Settings
         - User interface and themes
         - Translation / a new language
-        - Command line (DrvNest.Cli)
+        - Command line (Hexnest.Cli)
         - Something else
     validations:
       required: true
@@ -71,10 +71,10 @@ body:
     attributes:
       label: Constraints this has to live with
       description: >
-        DrvNest ships as one self-contained file that must run on a machine with
+        Hexnest ships as one self-contained file that must run on a machine with
         nothing installed on it. Please confirm you have thought about these.
       options:
-        - label: This does not require a new NuGet dependency in DrvNest.Core.
+        - label: This does not require a new NuGet dependency in Hexnest.Core.
           required: false
         - label: This still works offline, or degrades gracefully without a network.
           required: false
