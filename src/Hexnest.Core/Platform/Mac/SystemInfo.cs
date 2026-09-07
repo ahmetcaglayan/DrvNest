@@ -248,6 +248,25 @@ public sealed class SystemSnapshot
         }
     }
 
+    /// <summary>
+    /// True when an Intel build is running on Apple silicon through Rosetta.
+    ///
+    /// It matters because <see cref="Architecture"/> reports the machine, not the
+    /// process, and says "Arm64" either way - so an About page that showed only that
+    /// would tell somebody running the wrong download that they were running the right
+    /// one. macOS warns about this once, at launch, and then never again.
+    /// </summary>
+    public bool IsTranslated =>
+        Architecture.Equals("Arm64", StringComparison.OrdinalIgnoreCase) &&
+        ProcessArchitecture.Equals("X64", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// What to show for architecture: the process, and whether it is being translated.
+    /// </summary>
+    public string ArchitectureDisplay => IsTranslated
+        ? $"{ProcessArchitecture} (Rosetta)"
+        : ProcessArchitecture;
+
     /// <summary>e.g. "10 cores (8P + 2E)", or "10 cores" on a chip with one cluster.</summary>
     public string CoreDisplay
     {

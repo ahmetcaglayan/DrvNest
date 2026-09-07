@@ -37,6 +37,31 @@
                         </StackPanel>
                     </StackPanel>
 
+                    <!--
+                        Only ever visible to somebody running the Intel disk image on
+                        an Apple silicon Mac. macOS tells them once at launch; this is
+                        the only other place they could find out.
+                    -->
+                    <Border Classes="card-flat"
+                            Background="{DynamicResource Brush.WarningSoft}"
+                            BorderBrush="{DynamicResource Brush.Warning}"
+                            Margin="0,16,0,0"
+                            IsVisible="{Binding IsTranslated}">
+                        <Grid ColumnDefinitions="Auto,*">
+                            <Path Grid.Column="0"
+                                  Data="{StaticResource Icon.Warning}"
+                                  Stroke="{DynamicResource Brush.Warning}"
+                                  StrokeThickness="1.5" StrokeJoin="Round"
+                                  Width="16" Height="16" Stretch="Uniform"
+                                  VerticalAlignment="Top" Margin="0,2,0,0" />
+
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding TranslatedNotice}"
+                                       Classes="caption wrap"
+                                       Margin="10,0,0,0" />
+                        </Grid>
+                    </Border>
+
                     <Border Classes="divider" Margin="0,16" />
 
                     <Grid ColumnDefinitions="Auto,*,2*">

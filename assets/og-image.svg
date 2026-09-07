@@ -3,26 +3,32 @@
   <title>Hexnest</title>
 
   <!--
-    The social preview card, 1280x640, as og:image and twitter:image.
+    The 1280x640 card, used two ways: as og:image and twitter:image for the website,
+    and as the repository's social preview on GitHub. One asset, so the two can never
+    disagree with each other.
 
-    Authored as SVG and rasterised into docs/site/og-image.png. build/make-og-image.ps1
-    draws the same card with GDI+ for anyone regenerating it on Windows; the two are
-    kept in step by hand, and this file is the reference for what the card says.
+    It is drawn into the middle of a 1280x1280 canvas because of two qlmanage quirks
+    that build/make-og-image.sh works around: qlmanage scales a non-square SVG to fit
+    a square thumbnail and clips the overflow, and sips crops from the centre.
+    Rendering a square and taking the middle 1280x640 back out sidesteps both.
 
-    Unlike assets/icon-mac.svg this one is fully opaque edge to edge, which is why it
-    can be rasterised with qlmanage: the white page it composites onto is completely
-    covered, so none of it survives.
+    qlmanage also composites onto an opaque white page, which is harmless here because
+    the card covers every pixel - that is why the transparent application icon needs
+    build/make-mac-icon.py instead.
+
+    build/make-og-image.ps1 draws the same card with GDI+ for anyone regenerating it
+    on Windows. The two are kept in step by hand; this file is the reference.
   -->
 
   <defs>
     <linearGradient id="ogBack" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#161C24"/>
-      <stop offset="0.55" stop-color="#10151B"/>
-      <stop offset="1" stop-color="#0B0E12"/>
+      <stop offset="0" stop-color="#141A22"/>
+      <stop offset="0.5" stop-color="#0F141A"/>
+      <stop offset="1" stop-color="#090C10"/>
     </linearGradient>
 
-    <radialGradient id="ogGlow" cx="0.18" cy="0.42" r="0.55">
-      <stop offset="0" stop-color="#35D8A4" stop-opacity="0.20"/>
+    <radialGradient id="ogGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#35D8A4" stop-opacity="0.16"/>
       <stop offset="0.55" stop-color="#35D8A4" stop-opacity="0.05"/>
       <stop offset="1" stop-color="#35D8A4" stop-opacity="0"/>
     </radialGradient>
@@ -37,73 +43,113 @@
       <stop offset="0" stop-color="#6BF3CA"/>
       <stop offset="1" stop-color="#2AC694"/>
     </linearGradient>
+
+    <linearGradient id="ogPlate" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1C232D"/>
+      <stop offset="0.55" stop-color="#12171E"/>
+      <stop offset="1" stop-color="#0B0E12"/>
+    </linearGradient>
+
+    <!-- One flat-top hexagon on its own origin, reused by the lattice below. -->
+    <path id="ogHex" d="M62,0 L31,53.7 L-31,53.7 L-62,0 L-31,-53.7 L31,-53.7 Z"/>
+
+    <clipPath id="ogCard">
+      <rect x="0" y="0" width="1280" height="640"/>
+    </clipPath>
   </defs>
 
-  <rect width="1280" height="1280" fill="#0B0E12"/>
+  <rect width="1280" height="1280" fill="#090C10"/>
 
-  <!--
-    The card itself is designed on a 1280x640 grid and drawn into the middle of the
-    square canvas, because sips crops from the centre. build/make-og-image.sh renders
-    this square and takes the middle 1280x640 back out.
-  -->
   <g transform="translate(0,320)">
-  <rect width="1280" height="640" fill="url(#ogBack)"/>
-  <circle cx="230" cy="270" r="520" fill="url(#ogGlow)"/>
+    <g clip-path="url(#ogCard)">
+      <rect width="1280" height="640" fill="url(#ogBack)"/>
 
-  <!-- A mint hairline along the top edge, so the card reads as ours in a feed. -->
-  <rect x="0" y="0" width="1280" height="5" fill="url(#ogMint)"/>
+      <circle cx="250" cy="320" r="420" fill="url(#ogGlow)"/>
 
-  <!-- The mark, from the 256pt logo grid: translate(92,168) then scale 216/256. -->
-  <g transform="translate(92,168) scale(0.84375)">
-    <g fill="url(#ogMint)">
-      <rect x="105" y="46" width="14" height="20" rx="5"/>
-      <rect x="137" y="46" width="14" height="20" rx="5"/>
-      <rect x="105" y="190" width="14" height="20" rx="5"/>
-      <rect x="137" y="190" width="14" height="20" rx="5"/>
+      <!--
+        Concentric rings centred on the icon: depth on the left half without an image,
+        faded out before they reach the wordmark.
+      -->
+      <g fill="none" stroke="#35D8A4">
+        <circle cx="250" cy="320" r="150" stroke-opacity="0.10"/>
+        <circle cx="250" cy="320" r="210" stroke-opacity="0.075"/>
+        <circle cx="250" cy="320" r="272" stroke-opacity="0.055"/>
+        <circle cx="250" cy="320" r="336" stroke-opacity="0.038"/>
+        <circle cx="250" cy="320" r="402" stroke-opacity="0.025"/>
+        <circle cx="250" cy="320" r="470" stroke-opacity="0.015"/>
+      </g>
+
+      <!--
+        A honeycomb bleeding off the top-right corner: the nest, diagonally opposite
+        the mark that is one cell of it.
+      -->
+      <g fill="none" stroke="#35D8A4" stroke-opacity="0.16" stroke-width="2">
+        <use href="#ogHex" x="1082" y="-14"/>
+        <use href="#ogHex" x="1082" y="93"/>
+        <use href="#ogHex" x="1082" y="200"/>
+        <use href="#ogHex" x="1175" y="-68"/>
+        <use href="#ogHex" x="1175" y="39"/>
+        <use href="#ogHex" x="1175" y="146"/>
+        <use href="#ogHex" x="1175" y="253"/>
+        <use href="#ogHex" x="1268" y="-14"/>
+        <use href="#ogHex" x="1268" y="93"/>
+        <use href="#ogHex" x="1268" y="200"/>
+      </g>
+
+      <!-- One cell lit, so the lattice reads as deliberate rather than as texture. -->
+      <use href="#ogHex" x="1175" y="146" fill="#35D8A4" fill-opacity="0.07"
+           stroke="#35D8A4" stroke-opacity="0.34" stroke-width="2"/>
     </g>
-    <path d="M196 128 L162 186.89 L94 186.89 L60 128 L94 69.11 L162 69.11 Z"
-          fill="none" stroke="url(#ogMint)" stroke-width="15" stroke-linejoin="round"/>
-    <rect x="99" y="99" width="58" height="58" rx="14" ry="14" fill="url(#ogChip)"/>
-    <rect x="116" y="116" width="24" height="24" rx="6" ry="6" fill="#0B1F19"/>
-  </g>
 
-  <!-- wordmark -->
-  <text x="356" y="262" font-family="Helvetica Neue, Helvetica, Inter, Arial, sans-serif"
-        font-size="104" font-weight="700" letter-spacing="-2.5"
-        fill="#E8EDF4">Hex<tspan fill="#35D8A4">nest</tspan></text>
+    <!-- ============================================================ THE ICON -->
+    <!-- The rounded plate the macOS application icon uses, at 208 pt. -->
+    <rect x="146" y="216" width="208" height="208" rx="47" ry="47" fill="url(#ogPlate)"/>
+    <rect x="147" y="217" width="206" height="206" rx="46" ry="46"
+          fill="none" stroke="#2A323D" stroke-width="2"/>
 
-  <text x="360" y="322" font-family="Helvetica Neue, Helvetica, Inter, Arial, sans-serif"
-        font-size="31" font-weight="400" fill="#B6C2D0">Free, open-source system utility</text>
+    <!-- The mark, from the 256pt logo grid: translate(178,248) then scale 144/256. -->
+    <g transform="translate(178,248) scale(0.5625)">
+      <g fill="url(#ogMint)">
+        <rect x="105" y="46" width="14" height="20" rx="5"/>
+        <rect x="137" y="46" width="14" height="20" rx="5"/>
+        <rect x="105" y="190" width="14" height="20" rx="5"/>
+        <rect x="137" y="190" width="14" height="20" rx="5"/>
+      </g>
+      <path d="M196 128 L162 186.89 L94 186.89 L60 128 L94 69.11 L162 69.11 Z"
+            fill="none" stroke="url(#ogMint)" stroke-width="15" stroke-linejoin="round"/>
+      <rect x="99" y="99" width="58" height="58" rx="14" ry="14" fill="url(#ogChip)"/>
+      <rect x="116" y="116" width="24" height="24" rx="6" ry="6" fill="#0B1F19"/>
+    </g>
 
-  <text x="360" y="368" font-family="Helvetica Neue, Helvetica, Inter, Arial, sans-serif"
-        font-size="31" font-weight="400" fill="#B6C2D0">for Windows and macOS</text>
+    <!-- ============================================================== COPY -->
+    <text x="146" y="118" font-family="Helvetica Neue, Helvetica, Inter, Arial, sans-serif"
+          font-size="25" font-weight="400" letter-spacing="0.2"
+          fill="#7C8B9B">github.com/ahmetcaglayan/Hexnest</text>
 
-  <!-- What it actually does, in the order the sidebar shows it. -->
-  <g font-family="Helvetica Neue, Helvetica, Inter, Arial, sans-serif" font-size="21"
-     font-weight="500" fill="#9FB0C0">
-    <rect x="360" y="416" width="212" height="46" rx="23" fill="#1A222C" stroke="#2A323D"/>
-    <text x="466" y="446" text-anchor="middle">System monitor</text>
+    <text x="410" y="290" font-family="Helvetica Neue, Helvetica, Inter, Arial, sans-serif"
+          font-size="104" font-weight="700" letter-spacing="-2.5"
+          fill="#E8EDF4">Hex<tspan fill="#35D8A4">nest</tspan></text>
 
-    <rect x="586" y="416" width="216" height="46" rx="23" fill="#1A222C" stroke="#2A323D"/>
-    <text x="694" y="446" text-anchor="middle">Network monitor</text>
+    <text x="414" y="344" font-family="Helvetica Neue, Helvetica, Inter, Arial, sans-serif"
+          font-size="31" font-weight="400"
+          fill="#C2CEDA">Free, open-source system utility</text>
 
-    <rect x="816" y="416" width="176" height="46" rx="23" fill="#1A222C" stroke="#2A323D"/>
-    <text x="904" y="446" text-anchor="middle">Clean-up</text>
+    <text x="414" y="390" font-family="Helvetica Neue, Helvetica, Inter, Arial, sans-serif"
+          font-size="25" font-weight="400"
+          fill="#8B99A8">System &amp; network monitor · Start-up manager · Clean-up · Drivers</text>
 
-    <rect x="360" y="476" width="216" height="46" rx="23" fill="#1A222C" stroke="#2A323D"/>
-    <text x="468" y="506" text-anchor="middle">Start-up manager</text>
+    <!-- ============================================================= PILLS -->
+    <g font-family="Helvetica Neue, Helvetica, Inter, Arial, sans-serif" font-size="21"
+       font-weight="400" fill="#9FB0C0">
+      <!-- Widths are sized to the text at 21px; the first one is the longest. -->
+      <rect x="146" y="500" width="344" height="52" rx="26" fill="#151C25" stroke="#28313C"/>
+      <text x="318" y="533" text-anchor="middle">Windows 10 / 11 · macOS 12+</text>
 
-    <rect x="590" y="476" width="248" height="46" rx="23" fill="#132A22" stroke="#22B98A"/>
-    <text x="714" y="506" text-anchor="middle" fill="#5BF0BF">Driver updater · Windows</text>
-  </g>
+      <rect x="506" y="500" width="272" height="52" rx="26" fill="#151C25" stroke="#28313C"/>
+      <text x="642" y="533" text-anchor="middle">No runtime to install</text>
 
-  <text x="92" y="586" font-family="Helvetica Neue, Helvetica, Inter, Arial, sans-serif"
-        font-size="23" font-weight="400" letter-spacing="0.3"
-        fill="#6E7C8C">github.com/ahmetcaglayan/Hexnest</text>
-
-  <text x="1188" y="586" text-anchor="end"
-        font-family="Helvetica Neue, Helvetica, Inter, Arial, sans-serif"
-        font-size="23" font-weight="400" letter-spacing="0.3"
-        fill="#6E7C8C">MIT licensed · No adware · No telemetry</text>
+      <rect x="794" y="500" width="290" height="52" rx="26" fill="#151C25" stroke="#28313C"/>
+      <text x="939" y="533" text-anchor="middle">MIT licensed, no adware</text>
+    </g>
   </g>
 </svg>

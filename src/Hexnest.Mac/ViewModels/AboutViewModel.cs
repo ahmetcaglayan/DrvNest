@@ -48,7 +48,16 @@ public sealed class AboutViewModel : ViewModelBase
 
     public string MachineText =>
         $"{SystemInfo.Current.MachineDisplay}  ·  {SystemInfo.Current.OsDisplay}  ·  " +
-        $"{SystemInfo.Current.Architecture}";
+        $"{SystemInfo.Current.ArchitectureDisplay}";
+
+    /// <summary>
+    /// True when this is the Intel build running on an Apple silicon Mac. The user
+    /// downloaded the wrong disk image, and nothing else in the application would
+    /// tell them: macOS says so once at launch and then stays quiet.
+    /// </summary>
+    public bool IsTranslated => SystemInfo.Current.IsTranslated;
+
+    public string TranslatedNotice => Loc.T("mac.rosetta");
 
     public string ProcessorText =>
         $"{SystemInfo.Current.ProcessorName}  ·  {SystemInfo.Current.CoreDisplay}";
