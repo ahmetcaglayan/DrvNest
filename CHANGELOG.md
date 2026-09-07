@@ -23,10 +23,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   dialog into one line is not something a reviewer can catch in a language they do
   not read.
 - **The artifact hand-off is exercised on every push.** A new `artifacts` job
-  downloads what the Windows and macOS jobs uploaded and checks both binaries
-  arrived intact. Previously `upload-artifact`/`download-artifact` were only paired
-  in `release.yml`, which runs on a tag - so a break would have surfaced during a
-  release, after both builds had already succeeded.
+  downloads what the Windows and macOS jobs uploaded and checks both builds arrived
+  intact. Previously `upload-artifact`/`download-artifact` were only paired in
+  `release.yml`, which runs on a tag - so a break would have surfaced during a
+  release, after both builds had already succeeded. The two platforms are checked
+  differently: `Hexnest.exe` is a single-file publish, so its own size is the
+  measure, while the Mac launcher is a ~120 kB apphost whose application lives in
+  the assemblies beside it, so the whole bundle is measured instead.
 
 ### Fixed
 

@@ -220,30 +220,46 @@ jobs:
 
       - name: Verify what arrived
         run: |
-          echo "Downloaded tree:"
-          find staging -maxdepth 3 | head -20
+          echo 'What came back:'
+          find staging -maxdepth 3 -printf '  %y %10s  %p\n' | sort -k3
 
           # merge-multiple flattens both artifacts into one directory: the Windows
           # upload contributes Hexnest.exe, the macOS one the .app's own Contents.
           exe="staging/Hexnest.exe"
-          mac="staging/Contents/MacOS/Hexnest"
+          launcher="staging/Contents/MacOS/Hexnest"
+          plist="staging/Contents/Info.plist"
 
-          for required in "$exe" "$mac"; do
+          for required in "$exe" "$launcher" "$plist"; do
             if [ ! -f "$required" ]; then
               echo "The artifact hand-off is broken: $required did not arrive." >&2
               exit 1
             fi
           done
 
-          # A zero-length or truncated file would mean the round trip corrupted it,
-          # which is the failure mode a mere existence check would sail past.
-          for required in "$exe" "$mac"; do
-            size=$(stat -c%s "$required")
-            echo "$(basename "$required"): $((size / 1048576)) MB"
-            if [ "$size" -lt 1048576 ]; then
-              echo "$required came back as only $size bytes." >&2
-              exit 1
-            fi
-          done
+          # The two platforms fail differently, so they are checked differently.
+          #
+          # Hexnest.exe is a self-contained single-file publish with the whole .NET
+          # runtime inside it, so anything under a megabyte means a truncated file.
+          #
+          # The Mac launcher is the opposite: it is the .NET apphost, around 120 kB,
+          # and every megabyte of the application sits in the DLLs beside it. Sizing
+          # the launcher would therefore prove almost nothing - an upload that lost
+          # every managed assembly and kept the stub would sail straight through it.
+          # The bundle as a whole is what has to arrive, so that is what is measured.
+          exe_size=$(stat -c%s "$exe")
+          bundle_size=$(du -sb staging/Contents | cut -f1)
+
+          echo "Hexnest.exe:       $((exe_size / 1048576)) MB"
+          echo "Hexnest.app:       $((bundle_size / 1048576)) MB"
+
+          if [ "$exe_size" -lt 1048576 ]; then
+            echo "$exe came back as only $exe_size bytes." >&2
+            exit 1
+          fi
+
+          if [ "$bundle_size" -lt 20971520 ]; then
+            echo "The .app came back as only $bundle_size bytes, so files were lost." >&2
+            exit 1
+          fi
 
           echo 'Upload and download agree; release.yml can hand artifacts between jobs.'
