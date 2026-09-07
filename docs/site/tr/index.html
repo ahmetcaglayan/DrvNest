@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>DrvNest — Ücretsiz Açık Kaynak Windows Sürücü Güncelleme Programı, Sistem ve Ağ İzleyici</title>
-<meta name="description" content="DrvNest, Windows 10 ve 11 için ücretsiz ve açık kaynak bir sürücü güncelleme programı; içinde sistem ve ağ izleyicisi de var. Eksik sürücüleri bulur, format sonrasında kurar, USB bellekten çevrimdışı geri yükler ve her programın işlemciden, bellekten ve bant genişliğinden ne götürdüğünü gösterir.">
+<title>DrvNest — Ücretsiz Windows Sürücü Güncelleme Programı, Sistem İzleyici ve Temizlik Aracı</title>
+<meta name="description" content="DrvNest, Windows 10 ve 11 için ücretsiz ve açık kaynak bir sürücü güncelleme programı; içinde sistem ve ağ izleyicisi, başlangıç programları yöneticisi ve temizlik aracı da var. Eksik sürücüleri bulur, format sonrasında kurar, USB bellekten çevrimdışı geri yükler, her programın işlemciden, bellekten ve bant genişliğinden ne götürdüğünü gösterir ve diskte yeri neyin kapladığını ölçer.">
 
 <link rel="canonical" href="https://ahmetcaglayan.github.io/DrvNest/tr/">
 <link rel="alternate" hreflang="en" href="../">
@@ -53,7 +53,7 @@
   "applicationCategory": "UtilitiesApplication",
   "applicationSubCategory": "Sürücü güncelleyici",
   "operatingSystem": "Windows 10, Windows 11",
-  "softwareVersion": "1.1.0",
+  "softwareVersion": "1.2.0",
   "downloadUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest",
   "installUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe",
   "url": "https://ahmetcaglayan.github.io/DrvNest/",
@@ -77,11 +77,15 @@
     "pnputil ile tüm üçüncü parti sürücüleri yedekler ve geri yükler",
     "İnterneti olmayan, yeni formatlanmış makineler için çevrimdışı kurtarma modu",
     "Tüm aygıtları ve donanım kimliklerini listeleyen donanım raporu",
-    "Canlı sistem izleyici: mantıksal çekirdek başına işlemci yükü, bellek dökümü, sıcaklık sensörleri, depolama ve pil",
+    "Canlı sistem izleyici: mantıksal çekirdek başına işlemci yükü, bellek dağılımı, sıcaklık sensörleri, depolama ve pil",
     "Uygulama başına kaynak kullanımı: her süreç için işlemci payı, çalışma kümesi, özel bayt ve disk aktarım hızı",
     "Canlı ağ izleyici: makine geneli indirme ve yükleme, oturum ve açılıştan beri toplamları, tüm ağ bağdaştırıcıları",
     "TCP bağlantı istatistiklerinden uygulama başına ağ kullanımı, açık bağlantı sayıları ve uzak uç noktalarla birlikte",
     "Günlük otomatik güncelleme denetimi, isteğe bağlı otomatik indirme ve SHA-256 ile doğrulanan kurulum",
+    "Başlangıç programları yöneticisi: her otomatik başlatma kaydı için bir anahtar; Görev Yöneticisi neyi nasıl yazıyorsa öyle yazılır, hiçbir şey silinmez",
+    "Temizlik: geçici dosyalar, tarayıcı önbellekleri, shader önbellekleri, çökme dökümleri, Windows Update önbelleği ve Geri Dönüşüm Kutusu; hepsi tahmin edilerek değil ölçülerek",
+    "Eski indirmeler ve geride kalan uygulama klasörleri tek tek listelenir ve Geri Dönüşüm Kutusu'na gönderilir",
+    "Çalışma kümesini disk belleğine almanın neyi sağlayıp neyi sağlamadığını açıkça söyleyen bellek boşaltma",
     "İngilizce, Türkçe, Rusça, Basitleştirilmiş Çince ve Hintçe arayüz, koyu ve açık tema"
   ],
   "screenshot": [
@@ -206,6 +210,7 @@
       <ul>
         <li><a href="#features">Özellikler</a></li>
         <li><a href="#monitor">İzleyici</a></li>
+        <li><a href="#maintenance">Bakım</a></li>
         <li><a href="#post-format">Format sonrası</a></li>
         <li><a href="#compare">Karşılaştırma</a></li>
         <li><a href="#faq">SSS</a></li>
@@ -240,7 +245,9 @@
         klasörden kurar. İndirmeleri paralel yapar, sürücü kurulumunun gerektirdiği yeniden
         başlatmalardan sonra kaldığı yerden devam eder ve eski sürücülerinizi hiç internet olmadan
         geri yükleyebilir. 1.1 sürümünden beri makinenin ve üzerindeki her programın işlemci
-        zamanından, bellekten ve bant genişliğinden ne götürdüğünü de canlı olarak gösteriyor.
+        zamanından, bellekten ve bant genişliğinden ne götürdüğünü de canlı olarak gösteriyor —
+        1.2'den beri de Windows ile birlikte neyin başladığını ve diskinizde yeri neyin
+        kapladığını.
       </p>
       <p class="meta-line">
         Windows 10 1607+ ve Windows 11 · 64-bit (x64 ve arm64 yapıları) · yönetici yetkisi gerekir · MIT lisanslı
@@ -265,6 +272,8 @@
         <li class="pill">Telemetri yok</li>
         <li class="pill">Arka planda servis yok</li>
         <li class="pill">Sistem ve ağ izleyici</li>
+        <li class="pill">Başlangıç yöneticisi</li>
+        <li class="pill">Disk temizliği</li>
         <li class="pill">5 arayüz dili</li>
         <li class="pill">Koyu ve açık tema</li>
       </ul>
@@ -274,18 +283,49 @@
 
   <section id="whats-new">
     <div class="wrap">
-      <h2>1.1 ile gelenler <span class="badge-new">1.1.0</span></h2>
+      <h2>Son eklenenler <span class="badge-new">1.2.0</span></h2>
       <p class="section-intro">
-        Üç ekleme; hepsi uygulamanın ileride yapacağına söz verdiği şeyler değil, şu anda
-        gerçekten yapabildiği şeyler.
+        Aşağıdakilerin hepsi yayımlanan uygulamanın içinde. Burada özellik listesi diye
+        sunulan bir yol haritası yok.
       </p>
 
       <ul class="whatsnew">
         <li>
+          <h3>Başlangıç Programları</h3>
+          <p>
+            Windows'un oturum açılışında çalıştıracağı her otomatik başlatma kaydı — kayıt
+            defterindeki <code>Run</code> anahtarları ve iki Başlangıç klasörü — her biri
+            için bir anahtarla. Bir kaydı kapatmak, Görev Yöneticisi'nin yazdığı ayarın
+            aynısını yazar; bu yüzden ikisi her zaman aynı şeyi gösterir ve özgün komut
+            satırı hiçbir zaman silinmez. Artık var olmayan bir dosyayı gösteren kayıtlar
+            işaretlenir; Windows onları her oturum açılışında yeniden dener ve sessizce
+            başarısız olur.
+          </p>
+        </li>
+        <li>
+          <h3>Temizlik</h3>
+          <p>
+            Geçici dosyalar, küçük resim ve simge önbellekleri, yedi tarayıcı, Windows
+            Update indirme önbelleği, çökme dökümleri, shader önbellekleri, bakım günlükleri
+            ve Geri Dönüşüm Kutusu. Her boyut tahmin edilerek değil ölçülerek bulunur;
+            kutunun yanındaki sayı gerçekten geri kazanılacak yerdir — ve sizin yerinize
+            hiçbir şey işaretlenmez.
+          </p>
+        </li>
+        <li>
+          <h3>Kendi dosyalarınız sizin kalır</h3>
+          <p>
+            Eski indirmeler ve kaldırılan yazılımların geride bıraktığı klasörler hiçbir
+            zaman toplu seçilmez. Boyutu ve yaşıyla birlikte tek tek listelenir, tek tek
+            işaretlenir ve silinmek yerine Geri Dönüşüm Kutusu'na gönderilir — çünkü geride
+            kalan klasörlerin tespiti bir tahmindir ve sayfa bunu söyler.
+          </p>
+        </li>
+        <li>
           <h3>Sistem İzleyici</h3>
           <p>
             Her mantıksal çekirdek için ayrı bir çubukla işlemci yükü, önbelleğe alınmış ve
-            ayrılmış baytlara kadar inen bellek dökümü, ürün yazılımının açtığı her sıcaklık
+            adanmış baytlara kadar inen bellek dağılımı, ürün yazılımının açtığı her sıcaklık
             sensörü, canlı okuma ve yazma hızıyla depolama kapasitesi ve pil durumu — üstüne
             çalışan her programı ve neye mal olduğunu gösteren bir tablo.
           </p>
@@ -332,74 +372,96 @@
 
     <div class="shots" role="region" aria-roledescription="carousel" aria-label="DrvNest ekran görüntüleri">
       <div class="shots-track" id="shotsTrack" tabindex="0">
-        <figure class="shot" id="shot-0" role="group" aria-roledescription="slide" aria-label="1 / 10">
+        <figure class="shot" id="shot-0" role="group" aria-roledescription="slide" aria-label="1 / 12">
           <img src="../screenshots/dashboard.png" width="1240" height="820" loading="eager" decoding="async" alt="Genel Bakış">
           <figcaption class="shot-caption">
             <h3>Genel Bakış</h3>
             <p>Önemli olan her sayı tek ekranda: bulunan aygıtlar, eksik sürücüler, mevcut güncellemeler ve sorunlu aygıtlar; altında da makinenin kendi işletim sistemi, donanım, işlemci ve BIOS özeti.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-1" role="group" aria-roledescription="slide" aria-label="2 / 10">
+        <figure class="shot" id="shot-1" role="group" aria-roledescription="slide" aria-label="2 / 12">
           <img src="../screenshots/system.png" width="1240" height="820" loading="lazy" decoding="async" alt="Sistem İzleyici">
           <figcaption class="shot-caption">
             <h3>Sistem İzleyici</h3>
             <p>İşlemci, bellek, sıcaklık ve disk hareketi canlı grafikler halinde; her mantıksal çekirdek için bir çubuk. Makinede Windows'un okuyabileceği bir sensör yoksa sıcaklık kartı bir sayı uydurmak yerine bunu açıkça söyler.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-2" role="group" aria-roledescription="slide" aria-label="3 / 10">
+        <figure class="shot" id="shot-2" role="group" aria-roledescription="slide" aria-label="3 / 12">
           <img src="../screenshots/system-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="Program başına kullanım">
           <figcaption class="shot-caption">
             <h3>Program başına kullanım</h3>
             <p>Çalışan her süreç; işlemci payı, çalışma kümesi, özel bayt, disk aktarım hızı ve iş parçacığı sayısıyla birlikte. İşlemciye, belleğe ya da diske göre sıralayın, ada veya PID'ye göre arayın, bir satırı okumak için tabloyu duraklatın.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-3" role="group" aria-roledescription="slide" aria-label="4 / 10">
+        <figure class="shot" id="shot-3" role="group" aria-roledescription="slide" aria-label="4 / 12">
           <img src="../screenshots/network.png" width="1240" height="820" loading="lazy" decoding="async" alt="Ağ İzleyici">
           <figcaption class="shot-caption">
             <h3>Ağ İzleyici</h3>
             <p>Makine genelinde indirme ve yükleme canlı grafikler halinde, bu oturumun ve Windows açıldığından beri biriken toplam, açık bağlantı sayısı ve adresiyle, anlaşılan bağlantı hızıyla birlikte her ağ bağdaştırıcısı.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-4" role="group" aria-roledescription="slide" aria-label="5 / 10">
+        <figure class="shot" id="shot-4" role="group" aria-roledescription="slide" aria-label="5 / 12">
           <img src="../screenshots/network-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="Program başına trafik">
           <figcaption class="shot-caption">
             <h3>Program başına trafik</h3>
             <p>Bağlantıyı şu anda hangi uygulamanın kullandığı, her iki yönde ne hızda kullandığı, bu oturumda ne kadar veri taşıdığı ve kaç bağlantıyı açık tuttuğu — uzak uç nokta da ipucu balonunda.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-5" role="group" aria-roledescription="slide" aria-label="6 / 10">
+        <figure class="shot" id="shot-5" role="group" aria-roledescription="slide" aria-label="6 / 12">
           <img src="../screenshots/devices.png" width="1240" height="820" loading="lazy" decoding="async" alt="Aygıtlar">
           <figcaption class="shot-caption">
             <h3>Aygıtlar</h3>
             <p>Sınıfına göre gruplanmış her PnP aygıtı; canlı Configuration Manager sorun kodları düz cümlelere çevrilmiş halde. Soruna, eksik sürücüye ya da jenerik sürücüye göre filtreleyin, istediğiniz donanım kimliğini kopyalayın.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-6" role="group" aria-roledescription="slide" aria-label="7 / 10">
+        <figure class="shot" id="shot-6" role="group" aria-roledescription="slide" aria-label="7 / 12">
           <img src="../screenshots/updates.png" width="1240" height="820" loading="lazy" decoding="async" alt="Güncellemeler">
           <figcaption class="shot-caption">
             <h3>Güncellemeler</h3>
             <p>Windows Update sürücü kataloğundan ve yerel INF klasörlerinden kurulabilir paketler yan yana. Satır satır seçim, toplam indirme boyutu ve bir güncellemeyi gizleme ya da bir aygıtı tümüyle yok sayma seçeneği.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-7" role="group" aria-roledescription="slide" aria-label="8 / 10">
+        <figure class="shot" id="shot-7" role="group" aria-roledescription="slide" aria-label="8 / 12">
           <img src="../screenshots/queue.png" width="1240" height="820" loading="lazy" decoding="async" alt="Etkinlik">
           <figcaption class="shot-caption">
             <h3>Etkinlik</h3>
             <p>Çalışan kuyruk: indirme yüzdesi, hız, aktarılan bayt ve kurulum aşaması; sürücü başına bir satır. Kesintiye uğrayan bir oturum, yeniden başlatmadan sonra burada bir Devam düğmesi gösterir.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-8" role="group" aria-roledescription="slide" aria-label="9 / 10">
+        <figure class="shot" id="shot-8" role="group" aria-roledescription="slide" aria-label="9 / 12">
           <img src="../screenshots/backup.png" width="1240" height="820" loading="lazy" decoding="async" alt="Yedekle &amp; Geri Yükle">
           <figcaption class="shot-caption">
             <h3>Yedekle &amp; Geri Yükle</h3>
             <p>Format öncesinde tüm üçüncü parti sürücü paketlerini, isterseniz tek bir ZIP olarak dışa aktarın; sonrasında setin tamamını hiç internet bağlantısı olmadan geri yükleyin.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-9" role="group" aria-roledescription="slide" aria-label="10 / 10">
+        <figure class="shot" id="shot-9" role="group" aria-roledescription="slide" aria-label="10 / 12">
           <img src="../screenshots/settings.png" width="1240" height="820" loading="lazy" decoding="async" alt="Ayarlar">
           <figcaption class="shot-caption">
             <h3>Ayarlar</h3>
             <p>Paralel indirmeler, yeniden denemeler, geri yükleme noktaları, güncelleme öncesi yedekler, yeniden başlatmadan sonra devam, otomatik güncelleme, çevrimdışı mod, yerel sürücü klasörleri, geçmişin saklanma süresi, tema ve dil.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-10" role="group" aria-roledescription="slide" aria-label="11 / 12">
+          <img src="../screenshots/startup.png" width="1240" height="820" loading="lazy" decoding="async" alt="Başlangıç Programları">
+          <figcaption class="shot-caption">
+            <h3>Başlangıç Programları</h3>
+            <p>
+              Windows açılırken çalışan her şey; her biri için bir anahtar, doğrudan
+              dosyanın kendisinden okunan yayımcı ve altında komut satırı. Birini kapatmak,
+              Görev Yöneticisi'nin yazdığı ayarın aynısını yazar ve hiçbir şeyi silmez.
+            </p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-11" role="group" aria-roledescription="slide" aria-label="12 / 12">
+          <img src="../screenshots/clean.png" width="1240" height="820" loading="lazy" decoding="async" alt="Temizlik">
+          <figcaption class="shot-caption">
+            <h3>Temizlik</h3>
+            <p>
+              Makinedeki her önbellek için ölçülmüş boyutlar ve o anki seçimin ne kadar yer
+              açacağını gösteren anlık bir toplam. Sayfa hiçbir şey işaretli değilken, sıfır
+              toplamla açılır.
+            </p>
           </figcaption>
         </figure>
       </div>
@@ -417,6 +479,8 @@
       <li><button type="button" data-slide="7">Etkinlik</button></li>
       <li><button type="button" data-slide="8">Yedekle &amp; Geri Yükle</button></li>
       <li><button type="button" data-slide="9">Ayarlar</button></li>
+      <li><button type="button" data-slide="10">Başlangıç Programları</button></li>
+      <li><button type="button" data-slide="11">Temizlik</button></li>
       </ul>
       <div class="shots-arrows">
         <button type="button" id="shotsPrev" aria-label="Önceki ekran görüntüsü">&#8592;</button>
@@ -541,7 +605,7 @@
         <li class="card">
           <h3>Makinenin ne yaptığını gösterir</h3>
           <p>
-            Mantıksal çekirdek başına işlemci yükü, önbelleğe alınmış ve ayrılmış baytlara kadar
+            Mantıksal çekirdek başına işlemci yükü, önbelleğe alınmış ve adanmış baytlara kadar
             inen bellek, ürün yazılımının gerçekten açtığı her sıcaklık sensörü, gerçek okuma ve
             yazma hızıyla depolama kapasitesi ve pil durumu için canlı bir panel. Siz sayfayı
             açana kadar hiçbir şey ölçülmez, sayfadan çıktığınız anda da ölçüm durur.
@@ -569,6 +633,34 @@
             GitHub Releases API'sine günde bir istek, yeni bir sürüm çıktığında size haber verir.
             Otomatik indirme ve kurulum yalnızca siz açarsanız çalışır, SHA-256 ile doğrulanır ve
             ancak DrvNest kapanırken uygulanır.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Windows ile birlikte neyin başladığını yönetir</h3>
+          <p>
+            Kayıt defterindeki <code>Run</code> anahtarlarından ve iki Başlangıç
+            klasöründen gelen her otomatik başlatma kaydı, her biri için bir anahtarla.
+            Kapatmak, Görev Yöneticisi'nin yazdığı <code>StartupApproved</code> değerinin
+            aynısını yazar; yani hiçbir şey silinmez, iki araç her zaman aynı şeyi gösterir
+            ve DrvNest'i kaldırmak makineyi başlangıç programlarının yarısından etmez.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Yeri neyin kapladığını ölçer</h3>
+          <p>
+            Önbellekler, geçici dosyalar, çökme dökümleri, shader önbellekleri ve Geri
+            Dönüşüm Kutusu; her biri tahmin edilerek değil ölçülerek. Varsayılan olarak
+            hiçbir şey işaretli değildir, açık olan dosyalar zorlanmadan atlanır ve yeniden
+            ayrıştırma noktalarının içine hiç girilmez.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Kendi dosyalarınızı ayrı tutar</h3>
+          <p>
+            Eski indirmeler ve kaldırılan yazılımların geride bıraktığı klasörler, boyutu ve
+            yaşıyla birlikte tek tek listelenir, tek tek işaretlenir ve Geri Dönüşüm
+            Kutusu'na gönderilir — doğrudan silinmez, çünkü bu tespit bir tahmindir ve
+            DrvNest bunu söyler.
           </p>
         </li>
         <li class="card">
@@ -724,6 +816,48 @@ DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür</
     </div>
   </section>
 
+  <section id="maintenance">
+    <div class="wrap">
+      <h2>Temizlik programlarının çoğunlukla yanlış yaptığı iki şey</h2>
+
+      <div class="prose-2col">
+        <p class="section-intro">
+          <strong>Bir başlangıç programını kapatmak onu silmemeli.</strong> Windows
+          açık/kapalı bilgisini kendi anahtarında, <code>StartupApproved</code> altında
+          tutar; DrvNest'in yazdığı tek şey de budur — <code>Run</code> değeri ya da
+          Başlangıç klasöründeki kısayol tam olarak olduğu yerde bırakılır. Bu yüzden bir
+          kaydı tekrar açtığınızda özgün komut satırı harfi harfine geri gelir, Görev
+          Yöneticisi ile DrvNest her zaman birbiriyle aynı şeyi söyler ve DrvNest'i
+          sonradan silmek makineyi başlangıç programlarının yarısından etmez. Kolay olan
+          yol — değeri silip DrvNest'in kendi ayarlarında saklamak — başkasının
+          yazılımını sessizce DrvNest'e bağımlı hale getirir.
+        </p>
+        <p class="section-intro">
+          <strong>Bir temizlik programı sizin dosyalarınız üzerinde tahmin
+          yürütmemeli.</strong> Önbellekler ya hep ya hiçtir, çünkü bir önbellek kendini
+          yeniden oluşturur. Sizin dosyalarınız öyle değil: eski indirmeler ve kaldırılan
+          yazılımların geride bıraktığı klasörler boyutu ve yaşıyla birlikte tek tek
+          listelenir, tek tek işaretlenir ve silinmek yerine Geri Dönüşüm Kutusu'na
+          gönderilir. Geride kalan klasörlerin tespiti gerçekten bir tahmin, kesin bilgi değil —
+          klasörü kurulu her programla, çalışan her programla ve Program Files içindeki her şeyle
+          karşılaştırır ve altı aydır yazılmamış olmasını arar — ve satırın kendisi bunun bir
+          tahmin olduğunu söyler. Sayfadaki her boyut tahmin edilerek değil ölçülerek bulunur;
+          yani toplam, gerçekten geri kazanılacak yerdir ve sayfa açıldığında hiçbir şey
+          işaretli değildir.
+        </p>
+      </div>
+
+      <p class="callout">
+        <strong>Bir de şu bellek düğmesi.</strong> "Belleği boşalt" işlemi, işlemlerin
+        çalışma kümelerini disk belleğine alır. Kullanımdaki fiziksel bellek gerçekten
+        düşer — ve programlar tekrar kullanıldığı anda Windows o sayfaları hemen geri okur;
+        yani hiçbir şeyi hızlandırmaz, çalışma kümesi boşaltılan programları kısa süreliğine
+        yavaşlatır. Bir defada çok bellek isteyen bir işe başlamadan hemen önce yapmaya değer,
+        başka zaman değil. DrvNest bunu sayfada, düğmenin yanında yazar.
+      </p>
+    </div>
+  </section>
+
   <section id="compare">
     <div class="wrap">
       <h2>Diğer sürücü güncelleyicilerle farkı — ve eksikleri</h2>
@@ -785,6 +919,16 @@ DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür</
               <td>Kaynak ve ağ izleyici</td>
               <td><span class="yes">Program başına, uygulamanın içinde</span></td>
               <td>Genellikle yok ya da ayrı, ücretli bir ürün</td>
+            </tr>
+            <tr>
+              <td>Başlangıç yöneticisi</td>
+              <td><span class="yes">Var, hiçbir şey de silmez</span></td>
+              <td>Çoğu zaman kaydı siler ve kendi içinde saklar</td>
+            </tr>
+            <tr>
+              <td>Disk temizliği</td>
+              <td><span class="yes">Ölçer, hiçbir şeyi önceden işaretlemez</span></td>
+              <td>Tahmin eder ve genellikle önceden işaretler</td>
             </tr>
             <tr>
               <td>Kod imzalama</td>
@@ -911,6 +1055,51 @@ DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür</
         </article>
 
         <article class="faq-item">
+          <h3>Bir başlangıç programını kapatmak bir şeyi siler mi?</h3>
+          <p>
+            Hayır. Windows açık/kapalı bilgisini ayrı bir anahtarda tutar —
+            <code>...\CurrentVersion\Explorer\StartupApproved\Run</code> ve onun iki
+            kardeşi — DrvNest'in yazdığı tek şey de budur. <code>Run</code> değeri ya da
+            Başlangıç klasöründeki kısayol tam olarak olduğu yerde kalır; bu yüzden kaydı
+            tekrar açtığınızda özgün komut satırı harfi harfine geri gelir.
+          </p>
+          <p>
+            Bu aynı zamanda Görev Yöneticisi ile DrvNest'in birbiriyle aynı şeyi söylemesi
+            ve DrvNest'i sonradan silmenin makineyi başlangıç programlarının yarısından
+            etmemesi demektir.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Temizlik güvenli mi?</h3>
+          <p>Öyle olacak şekilde tasarlandı ve tasarım, sizden ona güvenmenizi istemek yerine nasıl olduğunu anlatıyor:</p>
+          <ul>
+            <li><strong>Varsayılan olarak hiçbir şey işaretli değildir.</strong> Sayfa sıfır toplamla açılır.</li>
+            <li>Her yol bir metin dizesinden değil, bilinen klasör API'sinden gelir; ayrıca her silme işlemi gerçekleşmeden hemen önce kendi kategorisinin kök klasörleri içinde kalıp kalmadığı yönünden yeniden denetlenir.</li>
+            <li>Yeniden ayrıştırma noktalarının içine hiç girilmez — <code>%LOCALAPPDATA%</code> junction'larla doludur ve bir junction'ın içine girmek, "önbelleği temizle" diye bir özelliğin sonunda kullanıcının belgelerini silmesine yol açar.</li>
+            <li>Açık olan dosyalar zorlanmaz, atlanır ve kaç tanesinin atlandığı bildirilir.</li>
+            <li>Kendi dosyalarınız hiçbir zaman toplu seçilmez ve Geri Dönüşüm Kutusu'na gider.</li>
+          </ul>
+        </article>
+
+        <article class="faq-item">
+          <h3>"Belleği boşalt" gerçekten bir işe yarıyor mu?</h3>
+          <p>
+            O an için fiziksel belleği boşaltır; yaptığı tek şey bu. Windows'tan her işlemin
+            çalışma kümesini disk belleğine almasını ister, dolayısıyla kullanımdaki bellek
+            gerçekten düşer — ama o sayfalar yok olmaz, diskte durur ve program o belleğe
+            tekrar dokunduğu anda Windows onları hemen geri okur. Kullanılmayan bellek boşa
+            giden bellek değildir; Windows onu zaten hazırda tutuyordu.
+          </p>
+          <p>
+            Yani bu bir performans özelliği değil ve DrvNest onu öyle sunmuyor. Bir defada
+            büyük bir bellek isteyen bir işe başlamadan hemen önce ya da bellek sızdıran bir
+            programın gerçekte ne kadarını tuttuğunu görmek için işe yarar. Bu düğmeyi
+            koyan diğer bütün programlar aksini iddia eder.
+          </p>
+        </article>
+
+        <article class="faq-item">
           <h3>Sıcaklık kartı neden sensör yok diyor?</h3>
           <p>
             Çünkü o makinede Windows'un okuyabileceği bir sensör yok. Windows'un sürücü olmadan
@@ -1030,7 +1219,7 @@ DrvNest.exe --resume        # kesintiye uğramış kuyruğu doğrudan sürdür</
       yedekleme ve geri yükleme, eksik sürücü bulma programı, windows 11 sürücü tarama, pnputil ile
       sürücü dışa aktarma, windows update sürücü kataloğu aracı, ücretsiz sistem izleme programı,
       açık kaynak cpu ram sıcaklık izleyici, program başına ağ kullanımı, program başına bant
-      genişliği izleme, hangi program internetimi kullanıyor, görev yöneticisi alternatifi.
+      genişliği izleme, hangi program internetimi kullanıyor, görev yöneticisi alternatifi, windows başlangıç programları yöneticisi, başlangıç programlarını kapatma, reklamsız ücretsiz pc temizleme programı, windows geçici dosyaları silme, tarayıcı önbelleği temizleme, kaldırılan programlardan kalan dosyaları bulma.
     </p>
   </div>
 </footer>

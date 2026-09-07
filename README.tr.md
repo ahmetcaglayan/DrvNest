@@ -4,11 +4,12 @@
 
 # DrvNest
 
-**DrvNest, Windows 10 ve 11 için ücretsiz ve açık kaynak bir sürücü güncelleme, sistem izleme ve ağ izleme programıdır.**
+**DrvNest, Windows 10 ve 11 için ücretsiz ve açık kaynak bir sürücü güncelleme, sistem izleme, ağ izleme ve temizlik programıdır.**
 Sistemdeki tüm aygıtları tarar, eksik ve eski sürücüleri bulup kurar, gereken yeniden
 başlatmalardan sonra kaldığı yerden devam eder, format öncesinde sürücülerinizi yedekler ve
 format sonrasında hiç internet olmadan geri yükler — ayrıca bu bilgisayarın ve üzerindeki her
-programın işlemci, bellek ve bant genişliği kullanımını canlı olarak gösterir. Tek dosya,
+programın işlemci, bellek ve bant genişliği kullanımını, Windows ile hangi programların
+başladığını ve diskte yeri neyin kapladığını canlı olarak gösterir. Tek dosya,
 kurulum yok, reklam yok.
 
 <br>
@@ -72,6 +73,15 @@ DrvNest bu tabloyu tek bir pencereden çözer:
   Windows açıldığından beri olan toplamlar, tüm ağ bağdaştırıcıları — ve hangi programın şu
   anda ne aktardığını gösteren, uygulama bazında bir tablo.
 
+1.2 sürümünden beri iki soruyu daha yanıtlıyor:
+
+- **Windows ile birlikte neler başlıyor, bunları istiyor muyum?** Her başlangıç kaydı için
+  bir anahtar; kapatmak Görev Yöneticisi'nin yazdığı ayarın aynısını yazar, hiçbir şey
+  silinmez.
+- **Disk alanımı ne yiyor?** Tahmin edilerek değil ölçülerek bulunan her önbellek; sizin
+  yerinize hiçbir şey işaretlenmez, kendi dosyalarınız ayrı tutulur ve Geri Dönüşüm
+  Kutusu'na gider.
+
 Tek dosya, kurulum yok, arka planda çalışan servis yok, telemetri yok.
 
 ---
@@ -97,6 +107,10 @@ Tek dosya, kurulum yok, arka planda çalışan servis yok, telemetri yok.
 | 🌐 **Ağ izleme** | Bağdaştırıcıların kendi sayaçlarından tüm bilgisayarın indirme ve yüklemesi, oturum ve açılıştan beri toplamları, açık bağlantı sayısı ve adresiyle, anlaşılan bağlantı hızıyla birlikte tüm bağdaştırıcılar. |
 | 🔎 **Uygulama bazında ağ kullanımı** | Hangi programın ne aktardığı; `GetExtendedTcpTable` ve TCP ESTATS (`GetPerTcpConnectionEStats`) üzerinden. Yalnızca TCP — Windows, çekirdek sürücüsü olmadan işlem başına UDP sayacı sunmaz ve sayfa bunu sessizce eksik göstermek yerine açıkça yazar. |
 | 🔁 **Otomatik güncelleme denetimi** | Günde bir kez GitHub Releases API'sine tek bir istek; yeni sürüm varsa *Hakkında* girdisinde bir sayı belirir. Otomatik indirme ve kurulum isteğe bağlıdır, SHA-256 ile doğrulanır ve yalnızca DrvNest kapanırken uygulanır — asla kuyruğun ortasında değil. |
+| 🚀 **Başlangıç yöneticisi** | `Run` / `RunOnce` anahtarlarındaki (HKCU, HKLM ve 32-bit görünüm) ve iki Başlangıç klasöründeki tüm otomatik başlangıç kayıtları, her biri için bir anahtarla. Kapatmak, Görev Yöneticisi'nin yazdığı `StartupApproved` değerinin aynısını yazar; bu yüzden ikisi her zaman aynı şeyi gösterir ve özgün komut satırı hiç silinmez. Artık var olmayan bir dosyayı gösteren kayıtlar işaretlenir. |
+| 🧹 **Temizlik** | Geçici dosyalar, küçük resim ve simge önbelleği, yedi tarayıcının önbellekleri, Windows Update indirme önbelleği, Teslim İyileştirme, çökme dökümleri, hata raporları, shader önbellekleri, bakım günlükleri ve Geri Dönüşüm Kutusu — hepsinin boyutu **tahmin edilmez, ölçülür** ve **sizin yerinize hiçbiri işaretlenmez**. |
+| 🗂️ **Artık klasörler ve eski indirmeler** | AppData altında; kurulu hiçbir programa, çalışan hiçbir programa ve Program Files içindeki hiçbir şeye uymayan, altı aydır dokunulmamış klasörler; ayrıca İndirilenler klasöründe bir aydan eski arşivler ve kurulum dosyaları. Tek tek listelenir ve doğrudan silinmez, **Geri Dönüşüm Kutusu**'na gönderilir. |
+| 🧠 **Bellek boşaltma** | İşlemlerin çalışma kümelerini disk belleğine alır. Sayfa açıkça yazar: bu işlem fiziksel belleği *şu anda* boşaltır ve hiçbir şeyi hızlandırmaz — bu düğmeye sahip diğer her programın iddia ettiğinin tam tersi. |
 | 🌍 **Beş arayüz dili** | İngilizce, Türkçe, Rusça, Basitleştirilmiş Çince ve Hintçe; hepsi tek exe'nin içinde. Uygulama açıkken anında değişir. |
 | 🎨 **Koyu / açık tema** | Palet sözlüğü değiştirilir, pencere yeniden açılmadan uygulanır. |
 
@@ -179,6 +193,10 @@ bu yüzden zamanla gerçeklikten kopamazlar.
 <td width="50%"><img src="assets/screenshots/backup.png" alt="Yedekle ve Geri Yükle: yedek oluşturma, mevcut yedeklerin listesi, klasörden geri yükleme"><br><sub><b>Yedekle &amp; Geri Yükle</b> — tüm üçüncü parti sürücüleri dışa aktar, çevrimdışı geri yükle.</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/startup.png" alt="Başlangıç Programları: her otomatik başlangıç kaydı bir anahtarla; yayımcısı, komut satırı ve nereden başladığı"><br><sub><b>Başlangıç Programları</b> — kayıt başına bir anahtar; Görev Yöneticisi'nin yazdığı gibi yazılır.</sub></td>
+<td width="50%"><img src="assets/screenshots/clean.png" alt="Temizlik: kategori başına ölçülmüş boyutlar, hiçbiri seçili değil, ve bellek boşaltma paneli"><br><sub><b>Temizlik</b> — tahmin edilerek değil ölçülerek; sizin yerinize hiçbir şey işaretlenmez.</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/settings.png" alt="Ayarlar: paralel indirme, güvenlik seçenekleri, otomatik güncelleme, kaynaklar, tema ve dil"><br><sub><b>Ayarlar</b> — paralel indirme, güvenlik, otomatik güncelleme, tema ve dil.</sub></td>
 <td width="50%"><img src="assets/screenshots/about.png" alt="Hakkında: sürüm bilgisi, kendi kendini güncelleme ve proje bağlantıları"><br><sub><b>Hakkında</b> — sürüm bilgisi ve kendi kendini güncelleme.</sub></td>
 </tr>
@@ -218,6 +236,8 @@ kişinin görüntü diline bağlı kalmaz.
 | **Geçmiş** | Yapılan tüm sürücü işlemlerinin kalıcı kaydı. Sonuca göre filtre, arama, *CSV Olarak Dışa Aktar*, *Geçmişi Temizle*. Bir kaydın güncelleme öncesi yedeği duruyorsa klasörü açabilirsiniz. |
 | **Sistem İzleme** | Genel ve mantıksal çekirdek başına işlemci yükü; kullanımda / kullanılabilir / önbellek / ayrılmış olarak ayrıştırılmış bellek; makine yayınlıyorsa sıcaklık sensörleri; canlı okuma ve yazma hızıyla depolama kapasitesi; pil. Altında çalışan her işlem, işlemci payı, bellek kullanımı, özel baytları, disk hızı ve iş parçacığı sayısıyla — işlemciye, belleğe, diske veya ada göre sıralanabilir, aranabilir ve bir satır gerçekten okunabilsin diye duraklatılabilir. |
 | **Ağ İzleme** | Tüm bilgisayarın canlı indirme ve yüklemesi grafik olarak, bu oturumun ve Windows açıldığından beri olan toplamı, açık bağlantı sayısı ve türü, adresi ve bağlantı hızıyla birlikte tüm bağdaştırıcılar. Altında uygulama bazında bir tablo: indirme ve yükleme hızı, oturum toplamları, açık bağlantılar ve karşı uç adresi. |
+| **Başlangıç Programları** | DrvNest'in güvenle açıp kapatabildiği tüm otomatik başlangıç kayıtları; program adı exe'nin sürüm kaynağından, yayımcısı, komut satırı, boyutu ve nereden başladığı ile birlikte. Her satırda bir anahtar; kapatmak Görev Yöneticisi'nin yazdığı ayarın aynısını yazar ve hiçbir şey silmez. Artık var olmayan bir dosyayı gösteren kayıtlar işaretlenir, güvenlik yazılımları ayrıca belirtilir ve kapatılmadan önce sorulur; açık, kapalı ve bozuk için filtreler ile bir arama vardır. |
+| **Temizlik** | Geçici dosyalar, küçük resim ve simge önbellekleri, yedi tarayıcı, Windows Update indirme önbelleği, Teslim İyileştirme, çökme dökümleri, hata raporları, shader önbellekleri, Windows günlükleri, DrvNest'in kendi önbelleği ve Geri Dönüşüm Kutusu için ölçülmüş boyutlar. Sizin yerinize hiçbir şey işaretlenmez. Eski indirmeler ve artık AppData klasörleri tek tek listelenir ve Geri Dönüşüm Kutusu'na gider. Bir de ne yaptığı konusunda dürüst olan bir bellek boşaltma. |
 | **Günlük** | Canlı tanılama akışı. *Kopyala* butonu sürüm, işletim sistemi ve makine başlığıyla birlikte günlüğü panoya alır — hata bildirirken tam olarak bu gerekir. Günlük dosyasını / klasörünü açma ve temizleme. |
 | **Ayarlar** | Aynı anda indirme sayısı, tekrar deneme sayısı, açılışta tarama, geri yükleme noktası, güncelleme öncesi yedek, yeniden başlatma sonrası devam, otomatik yeniden başlatma ve gecikmesi, çevrimdışı mod, isteğe bağlı sürücüler, yerel sürücü klasörleri, geçmiş saklama süresi, **otomatik güncelleme denetimi, otomatik kurulum ve ön sürümler**, tema, dil. |
 | **Hakkında** | Sürüm bilgisi, *Güncellemeleri Kontrol Et*, *İndir ve Kur*, sürüm notları, proje sayfası ve hata bildirme bağlantıları. |
@@ -364,6 +384,53 @@ kapatmayın.
 Evet. Kuyruk durumu her değişiklikte `session.json`'a atomik olarak yazılır ve oturum açılışına
 bağlı `DrvNest\ResumeSession` zamanlanmış görevi (yedeği HKLM `RunOnce`) DrvNest'i `--resume` ile
 geri getirir. Bir oturum en fazla 10 yeniden başlatma taşır; kuyruk bitince görev ve kayıt silinir.
+
+### Bir başlangıç programını kapatmak bir şey siliyor mu?
+
+Hayır. Windows açık/kapalı bilgisini ayrı bir anahtarda tutar —
+`...\CurrentVersion\Explorer\StartupApproved\Run` ve onunla aynı düzeydeki iki anahtar —
+DrvNest'in yazdığı tek şey de budur. `Run` değeri ya da Başlangıç klasöründeki kısayol tam
+olarak olduğu yerde kalır; bu yüzden kaydı tekrar açtığınızda özgün komut satırı bayt bayt
+aynı şekilde çalışır.
+
+Bu aynı zamanda Görev Yöneticisi ile DrvNest'in birbiriyle aynı şeyi göstermesi demektir:
+birinde kapattığınızı diğeri de kapalı gösterir. Ayrıca DrvNest'i ileride silerseniz
+bilgisayarda başlangıç programlarının yarısı eksik kalmaz, çünkü hiçbiri zaten bir yere
+gitmemiştir.
+
+### Temizlik güvenli mi?
+
+Öyle olacak şekilde tasarlandı ve tasarım, güvenmenizi istemek yerine bunu nasıl yaptığını
+anlatıyor:
+
+- **Sizin yerinize hiçbir şey işaretlenmez.** Sayfa, toplamı sıfır olarak açılır.
+- Her yol, elle yazılmış bir yol metninden değil, Windows'un bilinen klasör API'sinden
+  gelir. Bir kategorinin kendi köklerinin dışına asla dokunulmaz ve her silme işlemi
+  gerçekleşmeden hemen önce o köklerin içinde kalıp kalmadığı yeniden denetlenir.
+- Yeniden ayrıştırma noktaları asla izlenmez. `%LOCALAPPDATA%` junction'larla doludur ve
+  birinin içine dalmak, "önbelleği temizle" diyen bir özelliğin sonunda birinin belgelerini
+  silmesine giden yoldur.
+- Açık olan dosyalar zorlanmaz, atlanır. Atlanan dosya sayısı bildirilir.
+- Kendi dosyalarınız — eski indirmeler, artık klasörler — asla toplu olarak seçilmez.
+  Boyutu ve yaşıyla tek tek listelenir ve **Geri Dönüşüm Kutusu**'na gider.
+
+Artık klasör tespiti, DrvNest'in tahmin yürüttüğü tek yerdir; bu bir tahmin, kesin bilgi
+değil — ve satırın kendisi bunu yazar.
+
+### "Bellek boşalt" gerçekten bir işe yarıyor mu?
+
+Fiziksel belleği o an için boşaltır ve yaptığı tek şey budur.
+
+Her işlem için `EmptyWorkingSet` çağırır; bu, Windows'tan o işlemin çalışma kümesini disk
+belleğine almasını ister. Kullanımdaki bellek gerçekten düşer. Ama o sayfalar yok olmaz —
+diskteler ve program o belleğe bir daha dokunduğu anda Windows onları geri okur, ki bu
+onları oldukları yerde bırakmaktan daha yavaştır. Kullanılmayan bellek boşa giden bellek
+değildir; Windows onu zaten kullanılabilir tutuyordu.
+
+Yani bu bir performans özelliği değil ve DrvNest onu öyle sunmuyor. Büyük bir bellek
+ayırması gerektiren bir işe başlamadan hemen önce ya da bellek sızdıran bir programın
+gerçekte ne kadar tuttuğunu görmek için gerçekten işe yarar. Bu düğmeye sahip diğer her
+program aksini iddia eder.
 
 ### Sıcaklık kartı neden sensör olmadığını yazıyor?
 

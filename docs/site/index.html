@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>DrvNest — Free Open-Source Windows Driver Updater, System and Network Monitor</title>
-<meta name="description" content="DrvNest is a free, open-source Windows 10 and 11 driver updater with a built-in system and network monitor. It finds missing drivers, installs them after a format, restores drivers offline from USB, and shows what every program is costing in CPU, RAM and bandwidth.">
+<title>DrvNest — Free Windows Driver Updater, System Monitor and Clean-Up Tool</title>
+<meta name="description" content="DrvNest is a free, open-source Windows 10 and 11 driver updater with a built-in system and network monitor, a startup manager and a clean-up tool. It finds missing drivers, installs them after a format, restores drivers offline from USB, shows what every program costs in CPU, RAM and bandwidth, and measures what is taking up disk space.">
 
 <link rel="canonical" href="https://ahmetcaglayan.github.io/DrvNest/">
 <link rel="alternate" hreflang="en" href="https://ahmetcaglayan.github.io/DrvNest/">
@@ -53,7 +53,7 @@
   "applicationCategory": "UtilitiesApplication",
   "applicationSubCategory": "Driver updater",
   "operatingSystem": "Windows 10, Windows 11",
-  "softwareVersion": "1.1.0",
+  "softwareVersion": "1.2.0",
   "downloadUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest",
   "installUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe",
   "url": "https://ahmetcaglayan.github.io/DrvNest/",
@@ -82,6 +82,10 @@
     "Live network monitor: download and upload for the whole machine, session and since-boot totals, every adapter",
     "Per-application network usage from TCP connection statistics, with open connection counts and remote endpoints",
     "Automatic daily update check, with optional automatic download and install verified against SHA-256",
+    "Startup manager: every autostart entry with a switch, written the way Task Manager writes it so nothing is deleted",
+    "Clean-up: temporary files, browser caches, shader caches, crash dumps, Windows Update cache and the Recycle Bin, all measured rather than estimated",
+    "Old downloads and leftover application folders listed item by item and sent to the Recycle Bin",
+    "Memory trim that states plainly what paging out a working set does and does not achieve",
     "English, Turkish, Russian, Simplified Chinese and Hindi interface, dark and light theme"
   ],
   "screenshot": [
@@ -206,6 +210,7 @@
       <ul>
         <li><a href="#features">Features</a></li>
         <li><a href="#monitor">Monitor</a></li>
+        <li><a href="#maintenance">Maintenance</a></li>
         <li><a href="#post-format">After a format</a></li>
         <li><a href="#compare">How it compares</a></li>
         <li><a href="#faq">FAQ</a></li>
@@ -240,7 +245,8 @@
         on a USB stick. It downloads in parallel, keeps going after the restarts a driver install
         needs, and can put your old drivers back with no internet connection at all. Since 1.1 it
         also shows you, live, what the machine and every program on it are costing in processor
-        time, memory and bandwidth.
+        time, memory and bandwidth — and since 1.2, what starts with Windows and what is
+        taking up your disk.
       </p>
       <p class="meta-line">
         Windows 10 1607+ and Windows 11 · 64-bit (x64 and arm64 builds) · administrator rights required · MIT licensed
@@ -265,6 +271,8 @@
         <li class="pill">No telemetry</li>
         <li class="pill">No background service</li>
         <li class="pill">System &amp; network monitor</li>
+        <li class="pill">Startup manager</li>
+        <li class="pill">Disk clean-up</li>
         <li class="pill">5 interface languages</li>
         <li class="pill">Dark and light theme</li>
       </ul>
@@ -274,13 +282,41 @@
 
   <section id="whats-new">
     <div class="wrap">
-      <h2>New in 1.1 <span class="badge-new">1.1.0</span></h2>
+      <h2>Recently added <span class="badge-new">1.2.0</span></h2>
       <p class="section-intro">
-        Three additions, all of them things the application can genuinely do rather than
-        things it promises to do later.
+        Everything below is in the shipping application. There is no roadmap section here
+        pretending to be a feature list.
       </p>
 
       <ul class="whatsnew">
+        <li>
+          <h3>Startup Programs</h3>
+          <p>
+            Every autostart entry Windows will run at logon — the registry <code>Run</code>
+            keys and both Startup folders — with a switch each. Disabling writes the same
+            setting Task Manager writes, so the two always agree and the original command
+            line is never deleted. Entries pointing at a file that no longer exists are
+            flagged; Windows retries those at every logon and fails silently.
+          </p>
+        </li>
+        <li>
+          <h3>Clean Up</h3>
+          <p>
+            Temporary files, thumbnail and icon caches, seven browsers, the Windows Update
+            download cache, crash dumps, shader caches, servicing logs and the Recycle Bin.
+            Every size is measured rather than estimated, so the number next to a box is
+            the space that will actually come back — and nothing is ticked for you.
+          </p>
+        </li>
+        <li>
+          <h3>Your files stay yours</h3>
+          <p>
+            Old downloads and folders left behind by uninstalled software are never
+            bulk-selected. They are listed one by one with a size and an age, ticked
+            individually, and sent to the Recycle Bin rather than deleted — because the
+            leftover detection is a guess, and the page says so.
+          </p>
+        </li>
         <li>
           <h3>System Monitor</h3>
           <p>
@@ -332,74 +368,96 @@
 
     <div class="shots" role="region" aria-roledescription="carousel" aria-label="DrvNest screenshots">
       <div class="shots-track" id="shotsTrack" tabindex="0">
-        <figure class="shot" id="shot-0" role="group" aria-roledescription="slide" aria-label="1 / 10">
+        <figure class="shot" id="shot-0" role="group" aria-roledescription="slide" aria-label="1 / 12">
           <img src="screenshots/dashboard.png" width="1240" height="820" loading="eager" decoding="async" alt="Dashboard">
           <figcaption class="shot-caption">
             <h3>Dashboard</h3>
             <p>Every number that matters on one screen: devices found, drivers missing, updates available and problem devices, with the machine&#8217;s own operating system, hardware, processor and BIOS summary underneath.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-1" role="group" aria-roledescription="slide" aria-label="2 / 10">
+        <figure class="shot" id="shot-1" role="group" aria-roledescription="slide" aria-label="2 / 12">
           <img src="screenshots/system.png" width="1240" height="820" loading="lazy" decoding="async" alt="System Monitor">
           <figcaption class="shot-caption">
             <h3>System Monitor</h3>
             <p>Processor, memory, temperature and disk activity as live charts, with one bar per logical core. The temperature card says plainly when the machine has no sensor Windows can read, rather than inventing a number.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-2" role="group" aria-roledescription="slide" aria-label="3 / 10">
+        <figure class="shot" id="shot-2" role="group" aria-roledescription="slide" aria-label="3 / 12">
           <img src="screenshots/system-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="Usage per program">
           <figcaption class="shot-caption">
             <h3>Usage per program</h3>
             <p>Every running process with its processor share, working set, private bytes, disk throughput and thread count. Sort by processor, memory or disk, search by name or PID, and pause the table to read a row.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-3" role="group" aria-roledescription="slide" aria-label="4 / 10">
+        <figure class="shot" id="shot-3" role="group" aria-roledescription="slide" aria-label="4 / 12">
           <img src="screenshots/network.png" width="1240" height="820" loading="lazy" decoding="async" alt="Network Monitor">
           <figcaption class="shot-caption">
             <h3>Network Monitor</h3>
             <p>Download and upload for the whole machine as live charts, the total for this session and since Windows started, the number of open connections, and every adapter with its address and negotiated link speed.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-4" role="group" aria-roledescription="slide" aria-label="5 / 10">
+        <figure class="shot" id="shot-4" role="group" aria-roledescription="slide" aria-label="5 / 12">
           <img src="screenshots/network-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="Traffic per program">
           <figcaption class="shot-caption">
             <h3>Traffic per program</h3>
             <p>Which application is using the connection right now, how fast in each direction, how much it has moved this session and how many connections it holds open — with the remote endpoint on the tooltip.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-5" role="group" aria-roledescription="slide" aria-label="6 / 10">
+        <figure class="shot" id="shot-5" role="group" aria-roledescription="slide" aria-label="6 / 12">
           <img src="screenshots/devices.png" width="1240" height="820" loading="lazy" decoding="async" alt="Devices">
           <figcaption class="shot-caption">
             <h3>Devices</h3>
             <p>Every PnP device grouped by class, with live Configuration Manager problem codes translated into plain sentences. Filter by problem, missing driver or generic driver, and copy any hardware id.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-6" role="group" aria-roledescription="slide" aria-label="7 / 10">
+        <figure class="shot" id="shot-6" role="group" aria-roledescription="slide" aria-label="7 / 12">
           <img src="screenshots/updates.png" width="1240" height="820" loading="lazy" decoding="async" alt="Updates">
           <figcaption class="shot-caption">
             <h3>Updates</h3>
             <p>Installable packages from the Windows Update driver catalog and from local INF folders, side by side. Per-row selection, the total download size, and the option to hide one update or ignore a device entirely.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-7" role="group" aria-roledescription="slide" aria-label="8 / 10">
+        <figure class="shot" id="shot-7" role="group" aria-roledescription="slide" aria-label="8 / 12">
           <img src="screenshots/queue.png" width="1240" height="820" loading="lazy" decoding="async" alt="Activity">
           <figcaption class="shot-caption">
             <h3>Activity</h3>
             <p>The running queue: download percentage, speed, bytes transferred and the install phase, one line per driver. An interrupted session shows a Continue button here after the restart.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-8" role="group" aria-roledescription="slide" aria-label="9 / 10">
+        <figure class="shot" id="shot-8" role="group" aria-roledescription="slide" aria-label="9 / 12">
           <img src="screenshots/backup.png" width="1240" height="820" loading="lazy" decoding="async" alt="Backup &amp; Restore">
           <figcaption class="shot-caption">
             <h3>Backup &amp; Restore</h3>
             <p>Export every third-party driver package before you format, optionally as a single ZIP, then put the whole set back afterwards with no internet connection at all.</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-9" role="group" aria-roledescription="slide" aria-label="10 / 10">
+        <figure class="shot" id="shot-9" role="group" aria-roledescription="slide" aria-label="10 / 12">
           <img src="screenshots/settings.png" width="1240" height="820" loading="lazy" decoding="async" alt="Settings">
           <figcaption class="shot-caption">
             <h3>Settings</h3>
             <p>Parallel downloads, retries, restore points, pre-update backups, resume after restart, automatic updates, offline mode, local driver folders, history retention, theme and language.</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-10" role="group" aria-roledescription="slide" aria-label="11 / 12">
+          <img src="screenshots/startup.png" width="1240" height="820" loading="lazy" decoding="async" alt="Startup Programs">
+          <figcaption class="shot-caption">
+            <h3>Startup Programs</h3>
+            <p>
+              Everything that runs when Windows starts, with a switch each, the publisher
+              read from the executable itself and the command line underneath. Turning one
+              off writes the same setting Task Manager writes and deletes nothing.
+            </p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-11" role="group" aria-roledescription="slide" aria-label="12 / 12">
+          <img src="screenshots/clean.png" width="1240" height="820" loading="lazy" decoding="async" alt="Clean Up">
+          <figcaption class="shot-caption">
+            <h3>Clean Up</h3>
+            <p>
+              Measured sizes for every cache on the machine, with a running total of what
+              the current selection would free. The page opens with nothing ticked and a
+              total of zero.
+            </p>
           </figcaption>
         </figure>
       </div>
@@ -417,6 +475,8 @@
       <li><button type="button" data-slide="7">Activity</button></li>
       <li><button type="button" data-slide="8">Backup &amp; Restore</button></li>
       <li><button type="button" data-slide="9">Settings</button></li>
+      <li><button type="button" data-slide="10">Startup Programs</button></li>
+      <li><button type="button" data-slide="11">Clean Up</button></li>
       </ul>
       <div class="shots-arrows">
         <button type="button" id="shotsPrev" aria-label="Previous screenshot">&#8592;</button>
@@ -571,6 +631,32 @@
           </p>
         </li>
         <li class="card">
+          <h3>Manages what starts with Windows</h3>
+          <p>
+            Every autostart entry from the registry <code>Run</code> keys and both Startup
+            folders, with a switch each. Disabling writes the same
+            <code>StartupApproved</code> value Task Manager writes, so nothing is deleted
+            and the two tools always agree — and uninstalling DrvNest never leaves the
+            machine missing half its startup programs.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Measures what is taking up space</h3>
+          <p>
+            Caches, temporary files, crash dumps, shader caches and the Recycle Bin, each
+            one measured rather than estimated. Nothing is ticked by default, files that
+            are open are skipped rather than forced, and reparse points are never followed.
+          </p>
+        </li>
+        <li class="card">
+          <h3>Keeps your own files separate</h3>
+          <p>
+            Old downloads and folders left behind by uninstalled software are listed one by
+            one with a size and an age, ticked individually, and sent to the Recycle Bin —
+            never deleted outright, because that detection is a guess and DrvNest says so.
+          </p>
+        </li>
+        <li class="card">
           <h3>Speaks five languages</h3>
           <p>
             English, Turkish, Russian, Simplified Chinese and Hindi, all inside the one
@@ -722,6 +808,48 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
     </div>
   </section>
 
+
+  <section id="maintenance">
+    <div class="wrap">
+      <h2>The two things a clean-up tool usually gets wrong</h2>
+
+      <div class="prose-2col">
+        <p class="section-intro">
+          <strong>Disabling a startup program should not delete it.</strong> Windows keeps
+          the enabled flag in its own key, <code>StartupApproved</code>, and that is the
+          only thing DrvNest writes — the <code>Run</code> value or the Startup-folder
+          shortcut is left exactly where it is. So switching an entry back on restores the
+          original command line byte for byte, Task Manager and DrvNest always agree with
+          each other, and deleting DrvNest later never leaves the machine missing half its
+          startup programs. The easier implementation — delete the value, remember it in
+          DrvNest's own settings — quietly makes DrvNest load-bearing for somebody else's
+          software.
+        </p>
+        <p class="section-intro">
+          <strong>A cleaner should not guess with your files.</strong> Caches are
+          all-or-nothing, because a cache rebuilds itself. Your own files are not: old
+          downloads and folders left behind by uninstalled software are listed one at a
+          time with their size and age, ticked one at a time, and sent to the Recycle Bin
+          rather than deleted. The leftover detection is genuinely a guess — it checks the
+          folder against every installed program, every running program and everything in
+          Program Files, and requires six months of no writes — and the row says it is a
+          guess. Every size on the page is measured rather than estimated, so the total is
+          the space that will actually come back, and nothing at all is ticked when the
+          page opens.
+        </p>
+      </div>
+
+      <p class="callout">
+        <strong>And the memory button.</strong> "Free up RAM" pages process working sets out
+        to disk. Physical memory in use really does drop — and Windows reads those pages
+        straight back the moment the programs are used again, so it makes nothing faster and
+        briefly makes the trimmed programs slower. It is worth doing immediately before
+        something that needs a lot of memory at once, and not otherwise. DrvNest says that
+        on the page, next to the button.
+      </p>
+    </div>
+  </section>
+
   <section id="compare">
     <div class="wrap">
       <h2>How DrvNest compares — and where it falls short</h2>
@@ -782,6 +910,16 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
               <td>Resource and network monitor</td>
               <td><span class="yes">Built in, per program</span></td>
               <td>Usually absent, or a separate paid product</td>
+            </tr>
+            <tr>
+              <td>Startup manager</td>
+              <td><span class="yes">Yes, and it deletes nothing</span></td>
+              <td>Often deletes the entry and remembers it itself</td>
+            </tr>
+            <tr>
+              <td>Disk clean-up</td>
+              <td><span class="yes">Measured, nothing pre-ticked</span></td>
+              <td>Estimated, and usually pre-ticked</td>
             </tr>
             <tr>
               <td>Code signing</td>
@@ -905,6 +1043,50 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
         </article>
 
         <article class="faq-item">
+          <h3>Does disabling a startup program delete anything?</h3>
+          <p>
+            No. Windows keeps the enabled flag in a separate key —
+            <code>...\CurrentVersion\Explorer\StartupApproved\Run</code> and its two
+            siblings — and that is the only thing DrvNest writes. The <code>Run</code>
+            value, or the shortcut in the Startup folder, stays exactly where it is, so
+            switching the entry back on restores the original command line byte for byte.
+          </p>
+          <p>
+            It also means Task Manager and DrvNest agree with each other, and that deleting
+            DrvNest later never leaves the machine missing half its startup programs.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Is the clean-up safe?</h3>
+          <p>It is built to be, and the design says how rather than asking you to trust it:</p>
+          <ul>
+            <li><strong>Nothing is ticked by default.</strong> The page opens with a total of zero.</li>
+            <li>Every path comes from a well-known folder API, not from a string, and each individual deletion is re-checked against its own category's roots immediately before it happens.</li>
+            <li>Reparse points are never followed — <code>%LOCALAPPDATA%</code> is full of junctions, and walking into one is how a "clear the cache" feature ends up deleting somebody's documents.</li>
+            <li>Files that are open are skipped rather than forced, and the number skipped is reported.</li>
+            <li>Your own files are never bulk-selected, and they go to the Recycle Bin.</li>
+          </ul>
+        </article>
+
+        <article class="faq-item">
+          <h3>Does "free up memory" actually do anything?</h3>
+          <p>
+            It frees physical memory right now, and that is all it does. It asks Windows to
+            page each process' working set out to the page file, so memory in use genuinely
+            drops — and those pages are not gone, they are on disk, and Windows reads them
+            straight back the moment the program touches that memory again. Unused memory is
+            not wasted memory; Windows was already keeping it available.
+          </p>
+          <p>
+            So it is not a performance feature and DrvNest does not present it as one. It is
+            useful immediately before starting something that needs a large allocation, or to
+            see how much a leaking program is really holding. Every other tool with this
+            button claims otherwise.
+          </p>
+        </article>
+
+        <article class="faq-item">
           <h3>Why does the temperature card say there is no sensor?</h3>
           <p>
             Because on that machine there is not one Windows can read. The only temperature
@@ -1022,7 +1204,7 @@ DrvNest.exe --resume        # continue an interrupted queue straight away</code>
       after format, offline driver installer usb, driver backup restore windows, missing driver finder,
       windows 11 driver scanner, pnputil driver export, windows update driver catalog tool, free system
       monitor windows, cpu ram temperature monitor open source, per application network usage windows,
-      bandwidth monitor per program, which program is using my internet, task manager alternative.
+      bandwidth monitor per program, which program is using my internet, task manager alternative, startup manager windows, disable startup programs, free pc cleaner no adware, delete temporary files windows, browser cache cleaner, find leftover files uninstalled programs.
     </p>
   </div>
 </footer>

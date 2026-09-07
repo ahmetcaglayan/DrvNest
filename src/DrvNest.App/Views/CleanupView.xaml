@@ -1,0 +1,314 @@
+<UserControl x:Class="DrvNest.App.Views.CleanupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:s="clr-namespace:DrvNest.App.Services"
+             xmlns:vm="clr-namespace:DrvNest.App.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:CleanupViewModel}"
+             d:DesignWidth="960">
+
+    <UserControl.Resources>
+
+        <Style x:Key="Cell" TargetType="TextBlock" BasedOn="{StaticResource Text.Body}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+
+        <!--
+            The delete button is the primary action, but only once something is ticked.
+            With an empty selection a full-strength accent button reads as clickable and
+            does nothing when clicked, so it drops back to a neutral one until there is
+            actually something to delete.
+        -->
+        <Style x:Key="CleanButton" TargetType="Button" BasedOn="{StaticResource Btn.Primary}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding HasSelection}" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource Brush.SurfaceHover}" />
+                    <Setter Property="Foreground" Value="{DynamicResource Brush.TextFaint}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid Margin="22,10,22,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- ============================================ HEADER -->
+        <Grid Grid.Row="0" Margin="0,10,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="{s:Loc clean.title}" Style="{StaticResource Text.H1}" />
+                <TextBlock Text="{s:Loc clean.subtitle}" Style="{StaticResource Text.Muted}" Margin="0,4,0,0" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Style="{StaticResource Btn.Secondary}"
+                        Padding="13,7"
+                        Command="{Binding ScanCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{StaticResource Icon.Refresh}"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="12"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Text="{s:Loc common.rescan}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource Btn.Ghost}"
+                        Padding="12,7"
+                        Margin="8,0,0,0"
+                        Content="{s:Loc common.cancel}"
+                        Command="{Binding CancelCommand}"
+                        Visibility="{Binding IsScanning, Converter={StaticResource BoolToVisibility}}" />
+            </StackPanel>
+        </Grid>
+
+        <!-- ============================================ TOTALS -->
+        <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{s:Loc clean.found}" Style="{StaticResource Text.Muted}" />
+                    <TextBlock Text="{Binding TotalDisplay}"
+                               Style="{StaticResource Text.Metric}"
+                               Foreground="{DynamicResource Brush.TextMuted}" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="{s:Loc clean.selected}" Style="{StaticResource Text.Muted}" />
+                    <TextBlock Text="{Binding SelectedDisplay}"
+                               Style="{StaticResource Text.Metric}"
+                               Foreground="{DynamicResource Brush.Accent}" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource CleanButton}"
+                            Padding="18,10"
+                            MinWidth="200"
+                            Content="{Binding CleanButtonLabel}"
+                            Command="{Binding CleanCommand}" />
+
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0" HorizontalAlignment="Right">
+                        <Button Style="{StaticResource Btn.Ghost}"
+                                Padding="11,5"
+                                Content="{s:Loc clean.selectSafe}"
+                                ToolTip="{s:Loc clean.selectSafeHint}"
+                                Command="{Binding SelectSafeCommand}" />
+
+                        <Button Style="{StaticResource Btn.Ghost}"
+                                Padding="11,5"
+                                Margin="6,0,0,0"
+                                Content="{s:Loc common.selectNone}"
+                                Command="{Binding ClearSelectionCommand}" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ============================================ STATUS -->
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    Margin="2,0,0,12"
+                    Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}">
+            <ProgressBar Width="180" Height="5"
+                         IsIndeterminate="True"
+                         Style="{StaticResource Progress.Bar}"
+                         VerticalAlignment="Center" />
+
+            <TextBlock Text="{Binding ScanStatus}"
+                       Style="{StaticResource Text.Muted}"
+                       Margin="12,0,0,0"
+                       VerticalAlignment="Center" />
+        </StackPanel>
+
+        <!-- ============================================ MEMORY -->
+        <Border Grid.Row="3" Style="{StaticResource Card}" Margin="0,0,0,14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Margin="0,0,18,0">
+                    <TextBlock Text="{s:Loc clean.memory}" Style="{StaticResource Text.H2}" />
+
+                    <!--
+                        The honest version of what every "RAM cleaner" claims. Saying this
+                        plainly costs a feature its marketing and keeps the application
+                        trustworthy, which is the trade this project makes everywhere else
+                        too.
+                    -->
+                    <TextBlock Text="{s:Loc clean.memoryDesc}"
+                               Style="{StaticResource Text.Muted}"
+                               TextWrapping="Wrap"
+                               Margin="0,4,0,0" />
+                </StackPanel>
+
+                <Button Grid.Column="1"
+                        Style="{StaticResource Btn.Secondary}"
+                        Padding="14,8"
+                        VerticalAlignment="Center"
+                        MinWidth="150"
+                        Content="{s:Loc clean.trimMemory}"
+                        Command="{Binding TrimMemoryCommand}" />
+            </Grid>
+        </Border>
+
+        <!-- ============================================ TARGETS -->
+        <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Targets}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource Card}" Margin="0,0,0,10">
+                            <StackPanel>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0"
+                                              Style="{StaticResource Input.CheckBox}"
+                                              VerticalAlignment="Top"
+                                              Margin="0,2,12,0"
+                                              IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+
+                                    <StackPanel Grid.Column="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Title}"
+                                                       Style="{StaticResource Cell}"
+                                                       FontWeight="SemiBold" />
+
+                                            <Border Style="{StaticResource Badge}"
+                                                    Margin="8,0,0,0"
+                                                    Background="{DynamicResource Brush.WarningSoft}"
+                                                    Visibility="{Binding IsReview,
+                                                                Converter={StaticResource BoolToVisibility}}">
+                                                <TextBlock Text="{Binding RiskLabel}"
+                                                           Style="{StaticResource Badge.Text}"
+                                                           Foreground="{DynamicResource Brush.Warning}" />
+                                            </Border>
+
+                                            <Border Style="{StaticResource Badge}"
+                                                    Margin="8,0,0,0"
+                                                    Background="{DynamicResource Brush.InfoSoft}"
+                                                    Visibility="{Binding IsModerate,
+                                                                Converter={StaticResource BoolToVisibility}}">
+                                                <TextBlock Text="{Binding RiskLabel}"
+                                                           Style="{StaticResource Badge.Text}"
+                                                           Foreground="{DynamicResource Brush.Info}" />
+                                            </Border>
+                                        </StackPanel>
+
+                                        <TextBlock Text="{Binding Description}"
+                                                   Style="{StaticResource Text.Muted}"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,3,0,0" />
+
+                                        <TextBlock Text="{Binding Note}"
+                                                   Style="{StaticResource Text.Caption}"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,4,0,0"
+                                                   Visibility="{Binding HasNote,
+                                                               Converter={StaticResource BoolToVisibility}}" />
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2" HorizontalAlignment="Right" Margin="14,0,0,0">
+                                        <TextBlock Text="{Binding SizeDisplay}"
+                                                   Style="{StaticResource Text.Body}"
+                                                   FontWeight="SemiBold"
+                                                   TextAlignment="Right" />
+
+                                        <TextBlock Text="{Binding CountDisplay}"
+                                                   Style="{StaticResource Text.Caption}"
+                                                   TextAlignment="Right" />
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Per-item list, for the categories that hold the user's own files -->
+                                <StackPanel Margin="30,12,0,0"
+                                            Visibility="{Binding IsReview,
+                                                        Converter={StaticResource BoolToVisibility}}">
+                                    <Border Style="{StaticResource Divider}" Margin="0,0,0,8" />
+
+                                    <ItemsControl ItemsSource="{Binding Items}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,0,0,6" ToolTip="{Binding Tooltip}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="100" />
+                                                        <ColumnDefinition Width="110" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <CheckBox Grid.Column="0"
+                                                              Style="{StaticResource Input.CheckBox}"
+                                                              VerticalAlignment="Center"
+                                                              Margin="0,0,10,0"
+                                                              IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+
+                                                    <TextBlock Grid.Column="1"
+                                                               Text="{Binding Name}"
+                                                               Style="{StaticResource Cell}"
+                                                               Margin="0,0,12,0" />
+
+                                                    <TextBlock Grid.Column="2"
+                                                               Text="{Binding SizeDisplay}"
+                                                               Style="{StaticResource Text.Mono}"
+                                                               VerticalAlignment="Center"
+                                                               TextAlignment="Right"
+                                                               Margin="0,0,12,0" />
+
+                                                    <TextBlock Grid.Column="3"
+                                                               Text="{Binding AgeDisplay}"
+                                                               Style="{StaticResource Text.Caption}"
+                                                               VerticalAlignment="Center"
+                                                               TextAlignment="Right" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- ============================================ FOOTER -->
+        <StackPanel Grid.Row="5" Margin="2,10,0,14">
+            <TextBlock Text="{Binding Notice}"
+                       Style="{StaticResource Text.Body}"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,6"
+                       Visibility="{Binding HasNotice, Converter={StaticResource BoolToVisibility}}" />
+
+            <TextBlock Text="{s:Loc clean.footnote}"
+                       Style="{StaticResource Text.Caption}"
+                       TextWrapping="Wrap" />
+        </StackPanel>
+    </Grid>
+</UserControl>

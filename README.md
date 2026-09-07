@@ -4,11 +4,12 @@
 
 # DrvNest
 
-**DrvNest is a free, open-source driver updater, system monitor and network monitor for Windows 10 and 11.**
+**DrvNest is a free, open-source driver updater, system monitor, network monitor and clean-up tool for Windows 10 and 11.**
 It scans every device in the machine, finds and installs the missing and outdated drivers, resumes
 after the restarts they need, backs your drivers up before a format and restores them afterwards
 with no internet at all — and shows you live what the machine and every program on it are costing
-in processor time, memory and bandwidth. One file, no installer, no adware.
+in processor time, memory and bandwidth, which programs start with Windows, and what is
+taking up disk space. One file, no installer, no adware.
 
 <br>
 
@@ -72,6 +73,13 @@ Since 1.1 it also answers the two questions people open Task Manager for:
   for this session and since Windows started, every adapter — and a per-application table
   showing which program is transferring what, right now.
 
+Since 1.2 it also answers two more:
+
+- **What starts with Windows, and do I want it to?** Every autostart entry with a switch,
+  written the same way Task Manager writes it, so nothing is ever deleted.
+- **What is eating my disk?** Every cache measured rather than estimated, with nothing
+  ticked for you, and your own files kept separate and sent to the Recycle Bin.
+
 One file, no installer, no background service, no telemetry.
 
 ---
@@ -97,6 +105,10 @@ One file, no installer, no background service, no telemetry.
 | 🌐 **Network monitor** | Machine-wide download and upload from the adapters' own counters, session and since-boot totals, open connection count, and every adapter with its address and negotiated link speed. |
 | 🔎 **Per-application network usage** | Which program is transferring what, from `GetExtendedTcpTable` plus TCP ESTATS (`GetPerTcpConnectionEStats`). TCP only — Windows has no per-process UDP counter without a kernel driver, and the page says so instead of under-reporting quietly. |
 | 🔁 **Automatic update check** | One request a day to the GitHub Releases API, and a count on the *About* entry when a new version exists. Automatic download and install is opt-in, SHA-256 verified, and only ever applied as DrvNest closes — never mid-queue. |
+| 🚀 **Startup manager** | Every autostart entry from the `Run` / `RunOnce` keys (HKCU, HKLM and the 32-bit view) and both Startup folders, with a switch each. Disabling writes the same `StartupApproved` value Task Manager writes, so the two always agree and the original command line is never deleted. Entries pointing at a missing file are flagged. |
+| 🧹 **Clean-up** | Temporary files, thumbnail and icon cache, seven browsers' caches, the Windows Update download cache, Delivery Optimization, crash dumps, error reports, shader caches, servicing logs and the Recycle Bin — every one **measured, not estimated**, and **nothing ticked by default**. |
+| 🗂️ **Leftovers and old downloads** | Folders under AppData matching no installed program, no running program and nothing in Program Files, untouched for six months; plus archives and installers in Downloads older than a month. Listed item by item and sent to the **Recycle Bin**, never deleted outright. |
+| 🧠 **Memory trim** | Pages out process working sets. The page says plainly that this frees physical memory *now* and does not make anything faster — which is the opposite of what every other tool with this button claims. |
 | 🌍 **Five interface languages** | English, Turkish, Russian, Simplified Chinese and Hindi, all inside the single executable. Switches instantly while the app is open. |
 | 🎨 **Dark / light theme** | Swaps the palette dictionary; applied without reopening the window. |
 
@@ -179,6 +191,10 @@ they cannot drift out of date.
 <td width="50%"><img src="assets/screenshots/backup.png" alt="Backup and Restore: create a backup, list existing backups, restore from a folder"><br><sub><b>Backup &amp; Restore</b> — export every third-party driver, restore it offline.</sub></td>
 </tr>
 <tr>
+<td width="50%"><img src="assets/screenshots/startup.png" alt="Startup Programs: every autostart entry with a switch, its publisher, command line and where it starts from"><br><sub><b>Startup Programs</b> — a switch per entry, written the way Task Manager writes it.</sub></td>
+<td width="50%"><img src="assets/screenshots/clean.png" alt="Clean Up: measured sizes per category with nothing selected, and the memory trim panel"><br><sub><b>Clean Up</b> — measured, not estimated, and nothing ticked for you.</sub></td>
+</tr>
+<tr>
 <td width="50%"><img src="assets/screenshots/settings.png" alt="Settings: parallel downloads, safety options, automatic updates, sources, theme and language"><br><sub><b>Settings</b> — parallel downloads, safety, automatic updates, theme and language.</sub></td>
 <td width="50%"><img src="assets/screenshots/about.png" alt="About: version information, the built-in updater and the project links"><br><sub><b>About</b> — version information and the built-in updater.</sub></td>
 </tr>
@@ -217,6 +233,8 @@ on the display language of whoever regenerated them.
 | **History** | A permanent record of every driver operation. Filter by outcome, search, *Export as CSV*, *Clear history*. If a record's pre-update backup still exists you can open its folder. |
 | **System Monitor** | Processor load overall and per logical core, memory broken down into in-use / available / cached / committed, temperature sensors when the machine exposes any, storage capacity with live read and write throughput, and battery. Below that, every running process with its processor share, working set, private bytes, disk throughput and thread count — sortable by processor, memory, disk or name, searchable, and pausable so a row can actually be read. |
 | **Network Monitor** | Live download and upload for the whole machine as charts, the total for this session and since Windows started, the number of open connections, and every adapter with its type, address and link speed. Below that, a per-application table: download and upload rate, session totals, open connections and the remote endpoint. |
+| **Startup Programs** | Every autostart entry DrvNest can safely toggle, with the program name from the executable's version resource, its publisher, the command line, the size and where it starts from. A switch per row; disabling writes the same setting Task Manager writes and deletes nothing. Entries pointing at a file that no longer exists are flagged, security software is marked and asks before being switched off, and there are filters for on, off and broken plus a search. |
+| **Clean Up** | Measured sizes for temporary files, thumbnail and icon caches, seven browsers, the Windows Update download cache, Delivery Optimization, crash dumps, error reports, shader caches, Windows logs, DrvNest's own cache and the Recycle Bin. Nothing is ticked by default. Old downloads and leftover AppData folders are listed item by item and go to the Recycle Bin. Plus a memory trim that is honest about what it does. |
 | **Logs** | Live diagnostics. *Copy* puts the log on the clipboard with a version / OS / machine header — exactly what an issue report needs. Open the log file or folder, or clear it. |
 | **Settings** | Parallel download count, retry count, scan on startup, restore point, pre-update backup, resume after restart, automatic restart and its delay, offline mode, optional drivers, local driver folders, history retention, **automatic update check, automatic install and pre-releases**, theme, language. |
 | **About** | Version information, *Check for updates*, *Download and install*, release notes, project page and issue links. |
@@ -361,6 +379,49 @@ Yes. Queue state is written atomically to `session.json` on every change, and a 
 `DrvNest\ResumeSession` scheduled task (with an HKLM `RunOnce` fallback) brings DrvNest back with
 `--resume`. A session survives at most 10 restarts; the task and the registry value are removed once
 the queue finishes.
+
+### Does disabling a startup program delete anything?
+
+No. Windows keeps the enabled flag in a separate key —
+`...\CurrentVersion\Explorer\StartupApproved\Run` and its two siblings — and that is the
+only thing DrvNest writes. The `Run` value, or the shortcut in the Startup folder, is left
+exactly where it is, so switching the entry back on restores the original command line
+byte for byte.
+
+That also means Task Manager and DrvNest agree with each other: disable something in one
+and the other shows it as disabled. And if you later delete DrvNest, the machine is not
+left missing half its startup programs, because none of them ever went anywhere.
+
+### Is the clean-up safe?
+
+It is built to be, and the design says how rather than asking you to trust it:
+
+- **Nothing is ticked by default.** The page opens with a total of zero.
+- Every path comes from a well-known folder API, not from a string. Nothing outside a
+  category's own roots is ever touched, and each individual deletion is re-checked against
+  those roots immediately before it happens.
+- Reparse points are never followed. `%LOCALAPPDATA%` is full of junctions, and walking
+  into one is how a "clear the cache" feature ends up deleting somebody's documents.
+- Files that are open are skipped, not forced. The count of skipped files is reported.
+- Your own files — old downloads, leftover folders — are never bulk-selected. They are
+  listed one by one with a size and an age, and they go to the **Recycle Bin**.
+
+The leftover detection is the one place DrvNest is guessing, and it says so on the row.
+
+### Does "free up memory" actually do anything?
+
+It frees physical memory right now, and that is all it does.
+
+It calls `EmptyWorkingSet` on each process, which asks Windows to page that process' working
+set out to the page file. Memory in use genuinely drops. But those pages are not gone — they
+are on disk, and the moment the program touches that memory again Windows reads them back,
+which is slower than leaving them alone. Unused memory is not wasted memory; Windows was
+already keeping it available.
+
+So it is not a performance feature and DrvNest does not present it as one. It is genuinely
+useful immediately before starting something that needs a large allocation, or to see how
+much a leaking program is really holding. Every other tool with this button claims
+otherwise.
 
 ### Why does the temperature card say there is no sensor?
 

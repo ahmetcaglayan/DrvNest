@@ -248,6 +248,54 @@ Kopyalama başarısız olursa orijinal exe geri konur.
 ### İzleme sayfaları
 
 <details>
+<summary><b>Bir başlangıç programını kapatmak bir şey siler mi?</b></summary>
+
+Hayır. Windows, bir başlangıç kaydının açık/kapalı bilgisini ayrı bir anahtarda tutar —
+`...\CurrentVersion\Explorer\StartupApproved\Run` ve iki kardeşi — ve DrvNest'in yazdığı
+tek şey budur. `Run` değeri veya Başlangıç klasöründeki kısayol olduğu yerde kalır; bu
+yüzden kaydı tekrar açtığınızda özgün komut satırı bit bit geri gelir.
+
+Bu aynı zamanda Görev Yöneticisi ile DrvNest'in her zaman aynı şeyi göstermesi demektir.
+Ve DrvNest'i sonradan silseniz bile bilgisayar başlangıç programlarının yarısından olmaz,
+çünkü hiçbiri hiçbir yere gitmedi.
+</details>
+
+<details>
+<summary><b>Temizlik güvenli mi?</b></summary>
+
+Güvenli olacak şekilde tasarlandı ve tasarım bunu size güvenmenizi isteyerek değil,
+söyleyerek yapıyor:
+
+- **Varsayılan olarak hiçbir şey işaretli değildir.** Sayfa sıfır toplamla açılır.
+- Her yol bir dizeden değil, bilinen klasör API'sinden gelir. Bir kategorinin kendi
+  köklerinin dışındaki hiçbir şeye dokunulmaz ve her tek silme işlemi, tam öncesinde
+  yeniden o köklere karşı denetlenir.
+- Yeniden ayrıştırma noktaları asla izlenmez. `%LOCALAPPDATA%` bağlantı noktalarıyla
+  doludur; birinin içine girmek, "önbelleği temizle" özelliğinin birinin belgelerini
+  silmesinin tam olarak yoludur.
+- Açık olan dosyalar zorlanmaz, atlanır ve atlanan sayısı raporlanır.
+- Kendi dosyalarınız asla toplu seçilmez ve Geri Dönüşüm Kutusu'na gider.
+
+Artık klasör tespiti DrvNest'in tahmin yürüttüğü tek yerdir ve satırda bunu yazar.
+</details>
+
+<details>
+<summary><b>"Bellek boşalt" gerçekten bir işe yarıyor mu?</b></summary>
+
+Şu anki fiziksel belleği boşaltır; yaptığı tek şey budur.
+
+Her işlem için `EmptyWorkingSet` çağırır; bu, Windows'tan o işlemin çalışma kümesini disk
+belleğine almasını ister. Kullanımdaki bellek gerçekten düşer. Ama o sayfalar yok olmadı —
+diskteler ve program o belleğe tekrar dokunduğu anda Windows onları geri okur; bu, olduğu
+yerde bırakmaktan yavaştır. Kullanılmayan bellek boşa giden bellek değildir; Windows onu
+zaten kullanılabilir tutuyordu.
+
+Yani bu bir performans özelliği değildir ve DrvNest onu öyle sunmaz. Çok bellek isteyen bir
+işe başlamadan hemen önce ya da sızıntı yapan bir programın gerçekte ne kadar tuttuğunu
+görmek için işe yarar. Bu düğmeye sahip diğer bütün araçlar aksini iddia eder.
+</details>
+
+<details>
 <summary><b>Sıcaklık kartı neden "sensör yok" diyor?</b></summary>
 
 Çünkü o makinede Windows'un okuyabileceği bir sensör gerçekten yok.
@@ -605,6 +653,53 @@ the copy fails, the original executable is put back.
 </details>
 
 ### Monitoring
+
+<details>
+<summary><b>Does disabling a startup program delete anything?</b></summary>
+
+No. Windows keeps the enabled flag in a separate key —
+`...\CurrentVersion\Explorer\StartupApproved\Run` and its two siblings — and that is the
+only thing DrvNest writes. The `Run` value, or the shortcut in the Startup folder, stays
+exactly where it is, so switching the entry back on restores the original command line byte
+for byte.
+
+It also means Task Manager and DrvNest agree with each other in both directions, and that
+deleting DrvNest later never leaves the machine missing half its startup programs, because
+none of those entries ever went anywhere.
+</details>
+
+<details>
+<summary><b>Is the clean-up safe?</b></summary>
+
+It is built to be, and the design says how rather than asking you to trust it:
+
+- **Nothing is ticked by default.** The page opens with a total of zero.
+- Every path comes from a well-known folder API, not from a string. Nothing outside a
+  category's own roots is ever touched, and each individual deletion is re-checked against
+  those roots immediately before it happens.
+- Reparse points are never followed. `%LOCALAPPDATA%` is full of junctions, and walking
+  into one is exactly how a "clear the cache" feature ends up deleting somebody's documents.
+- Files that are open are skipped rather than forced, and the number skipped is reported.
+- Your own files are never bulk-selected, and they go to the Recycle Bin.
+
+The leftover detection is the one place DrvNest is guessing, and the row says so.
+</details>
+
+<details>
+<summary><b>Does "free up memory" actually do anything?</b></summary>
+
+It frees physical memory right now, and that is all it does.
+
+It calls `EmptyWorkingSet` on each process, which asks Windows to page that process' working
+set out to the page file. Memory in use genuinely drops. But those pages are not gone — they
+are on disk, and the moment the program touches that memory again Windows reads them back,
+which is slower than leaving them alone. Unused memory is not wasted memory; Windows was
+already keeping it available.
+
+So it is not a performance feature and DrvNest does not present it as one. It is useful
+immediately before starting something that needs a large allocation, or to see how much a
+leaking program is really holding. Every other tool with this button claims otherwise.
+</details>
 
 <details>
 <summary><b>Why does the temperature card say there is no sensor?</b></summary>

@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>DrvNest — 免费开源的 Windows 驱动程序更新工具、系统与网络监视器</title>
-<meta name="description" content="DrvNest 是一款免费开源的 Windows 10 和 11 驱动程序更新工具，内置系统与网络监视器。它能找出缺失的驱动程序，在重装系统后把它们装上，从 USB 闪存盘离线还原驱动程序，并显示每个程序占用了多少处理器、内存和带宽。">
+<title>DrvNest — 免费的 Windows 驱动程序更新工具、系统监视器与清理工具</title>
+<meta name="description" content="DrvNest 是一款免费开源的 Windows 10 和 11 驱动程序更新工具，内置系统与网络监视器、启动项管理和清理工具。它能找出缺失的驱动程序，在重装系统后把它们装上，从 USB 闪存盘离线还原驱动程序，显示每个程序占用了多少处理器、内存和带宽，并测量磁盘空间被什么占用了。">
 
 <link rel="canonical" href="https://ahmetcaglayan.github.io/DrvNest/zh/">
 <link rel="alternate" hreflang="en" href="../">
@@ -53,7 +53,7 @@
   "applicationCategory": "UtilitiesApplication",
   "applicationSubCategory": "驱动程序更新工具",
   "operatingSystem": "Windows 10, Windows 11",
-  "softwareVersion": "1.1.0",
+  "softwareVersion": "1.2.0",
   "downloadUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest",
   "installUrl": "https://github.com/ahmetcaglayan/DrvNest/releases/latest/download/DrvNest.exe",
   "url": "https://ahmetcaglayan.github.io/DrvNest/",
@@ -82,6 +82,10 @@
     "实时网络监视器：整机的下载与上传、本次会话和自开机以来的总量、每个适配器",
     "基于 TCP 连接统计的按程序网络占用，含打开的连接数和远程终结点",
     "每天自动检查更新，可选自动下载并安装，且按 SHA-256 校验",
+    "启动项管理：每个自启动条目都有一个开关，写入方式与任务管理器相同，所以不会删除任何东西",
+    "清理：临时文件、浏览器缓存、着色器缓存、崩溃转储、Windows Update 缓存和回收站，全部实测而非估算",
+    "旧的下载文件和残留的应用程序文件夹逐项列出，并移入回收站",
+    "内存收缩功能会直说换出工作集能做到什么、做不到什么",
     "英语、土耳其语、俄语、简体中文和印地语界面，深色与浅色主题"
   ],
   "screenshot": [
@@ -206,6 +210,7 @@
       <ul>
         <li><a href="#features">功能</a></li>
         <li><a href="#monitor">监视器</a></li>
+        <li><a href="#maintenance">维护</a></li>
         <li><a href="#post-format">重装之后</a></li>
         <li><a href="#compare">横向对比</a></li>
         <li><a href="#faq">常见问题</a></li>
@@ -239,7 +244,8 @@
         并从 Windows Update 目录或 USB 闪存盘上的某个文件夹安装缺失和过时的驱动程序。
         它并行下载，在驱动程序安装所需的重启之后继续跑，也能在完全没有网络连接的情况下
         把你的旧驱动程序装回去。从 1.1 起，它还会实时显示这台机器和上面的每个程序
-        占用了多少处理器时间、内存和带宽。
+        占用了多少处理器时间、内存和带宽——从 1.2 起，还会显示哪些程序随 Windows
+        启动，以及磁盘空间被什么占用了。
       </p>
       <p class="meta-line">
         Windows 10 1607+ 与 Windows 11 · 64 位（x64 和 arm64 版本） · 需要管理员权限 · MIT 许可
@@ -264,6 +270,8 @@
         <li class="pill">无遥测</li>
         <li class="pill">无后台服务</li>
         <li class="pill">系统与网络监视器</li>
+        <li class="pill">启动项管理</li>
+        <li class="pill">磁盘清理</li>
         <li class="pill">5 种界面语言</li>
         <li class="pill">深色与浅色主题</li>
       </ul>
@@ -273,12 +281,40 @@
 
   <section id="whats-new">
     <div class="wrap">
-      <h2>1.1 的新增内容 <span class="badge-new">1.1.0</span></h2>
+      <h2>近期新增 <span class="badge-new">1.2.0</span></h2>
       <p class="section-intro">
-        三项新增内容，都是应用程序现在确实做得到的事，而不是承诺以后再做的事。
+        下面的每一项都在正式发布的应用程序里。这里没有一份假装成功能列表的
+        路线图。
       </p>
 
       <ul class="whatsnew">
+        <li>
+          <h3>启动项</h3>
+          <p>
+            Windows 会在登录时运行的每一个自启动条目——注册表的 <code>Run</code> 键
+            和两个启动文件夹——每一项都有一个开关。关闭时写入的设置和任务管理器
+            写入的完全一样，所以两边始终一致，本来的命令行也绝不会被删掉。
+            指向的文件已经不在了的条目会被标出来；Windows 每次登录都会重试它们，
+            然后悄无声息地失败。
+          </p>
+        </li>
+        <li>
+          <h3>清理</h3>
+          <p>
+            临时文件、缩略图和图标缓存、七种浏览器、Windows Update 下载缓存、
+            崩溃转储、着色器缓存、系统维护日志，还有回收站。每一个大小都是实测出来的，
+            不是估算，所以复选框旁边的数字就是真正能拿回来的空间——而且没有任何一项
+            是替你勾选的。
+          </p>
+        </li>
+        <li>
+          <h3>你的文件还是你的</h3>
+          <p>
+            旧的下载文件，以及卸载后留下的文件夹，绝不会被批量选中。它们会带着大小
+            和存在时长被逐个列出，逐个勾选，并且是移入回收站而不是删除——因为残留
+            检测是猜测，页面上也这么写着。
+          </p>
+        </li>
         <li>
           <h3>系统监视器</h3>
           <p>
@@ -326,74 +362,95 @@
 
     <div class="shots" role="region" aria-roledescription="轮播" aria-label="DrvNest 屏幕截图">
       <div class="shots-track" id="shotsTrack" tabindex="0">
-        <figure class="shot" id="shot-0" role="group" aria-roledescription="幻灯片" aria-label="1 / 10">
+        <figure class="shot" id="shot-0" role="group" aria-roledescription="幻灯片" aria-label="1 / 12">
           <img src="../screenshots/dashboard.png" width="1240" height="820" loading="eager" decoding="async" alt="仪表板">
           <figcaption class="shot-caption">
             <h3>仪表板</h3>
             <p>所有要紧的数字都在一屏上：找到的设备、缺失的驱动程序、可用的更新和有问题的设备，下面是这台机器自身的操作系统、硬件、处理器和 BIOS 摘要。</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-1" role="group" aria-roledescription="幻灯片" aria-label="2 / 10">
+        <figure class="shot" id="shot-1" role="group" aria-roledescription="幻灯片" aria-label="2 / 12">
           <img src="../screenshots/system.png" width="1240" height="820" loading="lazy" decoding="async" alt="系统监视器">
           <figcaption class="shot-caption">
             <h3>系统监视器</h3>
             <p>处理器、内存、温度和磁盘活动都是实时图表，每个逻辑核心一条柱。当这台机器没有 Windows 能读取的传感器时，温度卡片会直说，而不是编一个数字出来。</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-2" role="group" aria-roledescription="幻灯片" aria-label="3 / 10">
+        <figure class="shot" id="shot-2" role="group" aria-roledescription="幻灯片" aria-label="3 / 12">
           <img src="../screenshots/system-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="各程序占用">
           <figcaption class="shot-caption">
             <h3>各程序占用</h3>
             <p>每个正在运行的进程及其处理器占比、工作集、专用字节、磁盘吞吐量和线程数。可按处理器、内存或磁盘排序，按名称或 PID 搜索，也可以暂停表格以便看清某一行。</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-3" role="group" aria-roledescription="幻灯片" aria-label="4 / 10">
+        <figure class="shot" id="shot-3" role="group" aria-roledescription="幻灯片" aria-label="4 / 12">
           <img src="../screenshots/network.png" width="1240" height="820" loading="lazy" decoding="async" alt="网络监视器">
           <figcaption class="shot-caption">
             <h3>网络监视器</h3>
             <p>整机下载与上传的实时图表、本次会话以及自 Windows 启动以来的总量、打开的连接数，还有每个适配器及其地址和协商出来的链接速度。</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-4" role="group" aria-roledescription="幻灯片" aria-label="5 / 10">
+        <figure class="shot" id="shot-4" role="group" aria-roledescription="幻灯片" aria-label="5 / 12">
           <img src="../screenshots/network-detail.png" width="1240" height="820" loading="lazy" decoding="async" alt="各程序流量">
           <figcaption class="shot-caption">
             <h3>各程序流量</h3>
             <p>此刻是哪个应用程序在用网络、两个方向各有多快、本次会话传了多少、打开着多少个连接——远程终结点显示在工具提示上。</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-5" role="group" aria-roledescription="幻灯片" aria-label="6 / 10">
+        <figure class="shot" id="shot-5" role="group" aria-roledescription="幻灯片" aria-label="6 / 12">
           <img src="../screenshots/devices.png" width="1240" height="820" loading="lazy" decoding="async" alt="设备">
           <figcaption class="shot-caption">
             <h3>设备</h3>
             <p>每个 PnP 设备按类分组，实时的配置管理器问题代码会翻成一句大白话。可以按有问题、缺驱动程序或使用通用驱动程序来筛选，也可以复制任意硬件 ID。</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-6" role="group" aria-roledescription="幻灯片" aria-label="7 / 10">
+        <figure class="shot" id="shot-6" role="group" aria-roledescription="幻灯片" aria-label="7 / 12">
           <img src="../screenshots/updates.png" width="1240" height="820" loading="lazy" decoding="async" alt="更新">
           <figcaption class="shot-caption">
             <h3>更新</h3>
             <p>来自 Windows Update 驱动程序目录和本地 INF 文件夹的可安装包并排列出。可以逐行选择，显示下载总大小，也可以隐藏某个更新或干脆忽略某个设备。</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-7" role="group" aria-roledescription="幻灯片" aria-label="8 / 10">
+        <figure class="shot" id="shot-7" role="group" aria-roledescription="幻灯片" aria-label="8 / 12">
           <img src="../screenshots/queue.png" width="1240" height="820" loading="lazy" decoding="async" alt="活动">
           <figcaption class="shot-caption">
             <h3>活动</h3>
             <p>正在跑的队列：下载百分比、速度、已传输字节数和安装阶段，每个驱动程序一行。被中断的会话在重启之后会在这里显示一个“继续”按钮。</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-8" role="group" aria-roledescription="幻灯片" aria-label="9 / 10">
+        <figure class="shot" id="shot-8" role="group" aria-roledescription="幻灯片" aria-label="9 / 12">
           <img src="../screenshots/backup.png" width="1240" height="820" loading="lazy" decoding="async" alt="备份与还原">
           <figcaption class="shot-caption">
             <h3>备份与还原</h3>
             <p>重装之前先导出每个第三方驱动程序包，可以选择压成一个 ZIP，之后在完全没有网络连接的情况下把整套装回去。</p>
           </figcaption>
         </figure>
-        <figure class="shot" id="shot-9" role="group" aria-roledescription="幻灯片" aria-label="10 / 10">
+        <figure class="shot" id="shot-9" role="group" aria-roledescription="幻灯片" aria-label="10 / 12">
           <img src="../screenshots/settings.png" width="1240" height="820" loading="lazy" decoding="async" alt="设置">
           <figcaption class="shot-caption">
             <h3>设置</h3>
             <p>并行下载数、重试、还原点、更新前备份、重启后继续、自动更新、离线模式、本地驱动程序文件夹、历史记录保留、主题和语言。</p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-10" role="group" aria-roledescription="幻灯片" aria-label="11 / 12">
+          <img src="../screenshots/startup.png" width="1240" height="820" loading="lazy" decoding="async" alt="启动项">
+          <figcaption class="shot-caption">
+            <h3>启动项</h3>
+            <p>
+              随 Windows 启动的一切，每一项都有一个开关，发布者读自可执行文件本身，
+              命令行显示在下面。关掉一项时写入的设置和任务管理器写入的完全一样，
+              不会删除任何东西。
+            </p>
+          </figcaption>
+        </figure>
+        <figure class="shot" id="shot-11" role="group" aria-roledescription="幻灯片" aria-label="12 / 12">
+          <img src="../screenshots/clean.png" width="1240" height="820" loading="lazy" decoding="async" alt="清理">
+          <figcaption class="shot-caption">
+            <h3>清理</h3>
+            <p>
+              这台机器上每一项缓存的实测大小，以及当前所选内容能释放多少的实时合计。
+              这一页打开时没有勾选任何东西，合计是零。
+            </p>
           </figcaption>
         </figure>
       </div>
@@ -411,6 +468,8 @@
       <li><button type="button" data-slide="7">活动</button></li>
       <li><button type="button" data-slide="8">备份与还原</button></li>
       <li><button type="button" data-slide="9">设置</button></li>
+      <li><button type="button" data-slide="10">启动项</button></li>
+      <li><button type="button" data-slide="11">清理</button></li>
       </ul>
       <div class="shots-arrows">
         <button type="button" id="shotsPrev" aria-label="上一张截图">&#8592;</button>
@@ -556,6 +615,31 @@
             每天向 GitHub Releases API 发一次请求，有新版本时告诉你。
             自动下载和安装需要你自己打开，会按 SHA-256 校验，而且只在 DrvNest
             关闭时才应用。
+          </p>
+        </li>
+        <li class="card">
+          <h3>管理随 Windows 启动的程序</h3>
+          <p>
+            来自注册表 <code>Run</code> 键和两个启动文件夹的每一个自启动条目，
+            每一项都有一个开关。关闭时写入的是任务管理器写入的那个
+            <code>StartupApproved</code> 值，所以什么都不会被删除，两个工具也始终
+            一致——而且卸载 DrvNest 之后，这台机器绝不会少掉一半启动项。
+          </p>
+        </li>
+        <li class="card">
+          <h3>测量空间被什么占用了</h3>
+          <p>
+            缓存、临时文件、崩溃转储、着色器缓存和回收站，每一项都是实测出来的，
+            不是估算。默认什么都不勾选，处于打开状态的文件会跳过而不是强行删除，
+            重解析点也绝不跟进。
+          </p>
+        </li>
+        <li class="card">
+          <h3>把你自己的文件分开对待</h3>
+          <p>
+            旧的下载文件，以及卸载后留下的文件夹，会带着大小和存在时长被逐个列出，
+            逐个勾选，并移入回收站——绝不直接删除，因为那种检测是猜测，
+            DrvNest 也这么直说。
           </p>
         </li>
         <li class="card">
@@ -705,6 +789,42 @@ DrvNest.exe --resume        # 立刻继续被中断的队列</code></pre>
     </div>
   </section>
 
+
+  <section id="maintenance">
+    <div class="wrap">
+      <h2>清理工具通常搞错的两件事</h2>
+
+      <div class="prose-2col">
+        <p class="section-intro">
+          <strong>禁用一个启动项，不应该把它删掉。</strong>Windows 把启用标志放在
+          它自己的 <code>StartupApproved</code> 键里，DrvNest 写的也只有这个——
+          <code>Run</code> 值，或者启动文件夹里的快捷方式，原封不动地留在那里。
+          所以把一个条目重新打开，会逐字节还原本来的命令行；任务管理器和 DrvNest
+          始终彼此一致；以后删掉 DrvNest，这台机器也绝不会少掉一半启动项。
+          更省事的做法——把值删掉，记在 DrvNest 自己的设置里——会悄悄把 DrvNest
+          变成别人家软件的承重墙。
+        </p>
+        <p class="section-intro">
+          <strong>清理工具不应该拿你的文件去猜。</strong>缓存要么全清，要么不清，
+          因为缓存会自己重建。你自己的文件不是这样：旧的下载文件，以及卸载后留下的
+          文件夹，会带着大小和存在时长被一个一个列出、一个一个勾选，并且是移入回收站
+          而不是删除。残留检测确实只是猜测——它会把那个文件夹和每一个已安装的程序、
+          每一个正在运行的程序以及 Program Files 里的一切对照，并要求六个月没有被
+          写入过——而那一行也写着这是猜测。页面上的每一个大小都是实测出来的，
+          不是估算，所以合计就是真正能拿回来的空间；这一页打开时，什么都没有被勾选。
+        </p>
+      </div>
+
+      <p class="callout">
+        <strong>还有那个内存按钮。</strong>“释放内存”做的是把进程的工作集换出到磁盘。
+        使用中的物理内存确实会下降——而这些程序再被用到时，Windows 会立刻把那些页
+        读回来，所以它并不会让任何东西变快，反而会让被收缩的程序短时间内变慢。
+        只有在马上要运行一个一次性占用大量内存的程序之前，这才值得做，其他时候
+        都不值得。DrvNest 就在页面上、按钮旁边这么写着。
+      </p>
+    </div>
+  </section>
+
   <section id="compare">
     <div class="wrap">
       <h2>DrvNest 的对比——以及它不如别人的地方</h2>
@@ -765,6 +885,16 @@ DrvNest.exe --resume        # 立刻继续被中断的队列</code></pre>
               <td>资源与网络监视器</td>
               <td><span class="yes">内置，按程序统计</span></td>
               <td>通常没有，或者是另外一个付费产品</td>
+            </tr>
+            <tr>
+              <td>启动项管理</td>
+              <td><span class="yes">有，而且什么都不删</span></td>
+              <td>常常把条目删掉，自己记着</td>
+            </tr>
+            <tr>
+              <td>磁盘清理</td>
+              <td><span class="yes">实测，不预先勾选</span></td>
+              <td>估算，而且通常预先勾好</td>
             </tr>
             <tr>
               <td>代码签名</td>
@@ -884,6 +1014,48 @@ DrvNest.exe --resume        # 立刻继续被中断的队列</code></pre>
         </article>
 
         <article class="faq-item">
+          <h3>禁用一个启动项会删掉什么吗？</h3>
+          <p>
+            不会。Windows 把启用标志放在另外一个键里——
+            <code>...\CurrentVersion\Explorer\StartupApproved\Run</code> 和它的两个
+            同级键——DrvNest 写的也只有这个。<code>Run</code> 值，或者启动文件夹里的
+            快捷方式，原封不动地留在那里，所以把条目重新打开，会逐字节还原
+            本来的命令行。
+          </p>
+          <p>
+            这也意味着任务管理器和 DrvNest 彼此一致，而且以后删掉 DrvNest，
+            这台机器绝不会少掉一半启动项。
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>清理安全吗？</h3>
+          <p>它是照着安全去做的，而且设计上把办法讲出来，而不是要你相信它：</p>
+          <ul>
+            <li><strong>默认什么都不勾选。</strong>这一页打开时合计是零。</li>
+            <li>每一个路径都来自已知文件夹 API，而不是拼出来的字符串；每一次具体的删除，在动手之前都会重新对照它所属类别的根目录检查一遍。</li>
+            <li>绝不跟进重解析点——<code>%LOCALAPPDATA%</code> 里到处是目录联接，走进去一个，正是“清一下缓存”这种功能最后删掉别人文档的原因。</li>
+            <li>处于打开状态的文件会跳过，而不是强行删除，并且会报告跳过了多少个。</li>
+            <li>你自己的文件绝不会被批量选中，而且是移入回收站。</li>
+          </ul>
+        </article>
+
+        <article class="faq-item">
+          <h3>“释放内存”真的有用吗？</h3>
+          <p>
+            它此刻确实会释放物理内存，而它做的也就只有这件事。它请求 Windows 把每个
+            进程的工作集换出到页面文件，所以使用中的内存真的会下降——而那些页并没有
+            消失，它们在磁盘上，程序再碰到那块内存时，Windows 会立刻把它们读回来。
+            空闲的内存不是浪费掉的内存；Windows 本来就把它准备着随时可用。
+          </p>
+          <p>
+            所以这不是一个性能功能，DrvNest 也不把它当成性能功能来讲。它有用的时候，
+            是马上要启动一个需要一次性分配大块内存的程序之前，或者想看清一个在漏内存的
+            程序到底占着多少。别的带这个按钮的工具，都声称正好相反。
+          </p>
+        </article>
+
+        <article class="faq-item">
           <h3>温度卡片为什么说没有传感器？</h3>
           <p>
             因为那台机器上确实没有 Windows 能读的传感器。Windows 在不装驱动程序的
@@ -997,7 +1169,8 @@ DrvNest.exe --resume        # 立刻继续被中断的队列</code></pre>
       USB 离线驱动安装，Windows 驱动备份还原，缺失驱动程序查找，Windows 11 驱动扫描，
       pnputil 驱动导出，Windows Update 驱动目录工具，Windows 免费系统监视器，
       开源 CPU 内存 温度监控，Windows 按程序统计网络占用，各程序带宽监控，
-      哪个程序在占用我的网络，任务管理器替代品。
+      哪个程序在占用我的网络，任务管理器替代品，Windows 启动项管理，禁用开机启动程序，
+      免费电脑清理工具 无广告，Windows 删除临时文件，浏览器缓存清理，查找卸载残留文件。
     </p>
   </div>
 </footer>

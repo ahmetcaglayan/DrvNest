@@ -130,6 +130,12 @@ public sealed class MainViewModel : ViewModelBase
         NavItems.Add(new NavItem("system",    "nav.system",    "\uE950", () => new SystemMonitorView()));
         NavItems.Add(new NavItem("network",   "nav.network",   "\uE701", () => new NetworkMonitorView()));
 
+        // The two maintenance pages. Both only ever act when the user presses something:
+        // the startup page writes nothing until a switch is moved, and the cleaner opens
+        // with every box unticked.
+        NavItems.Add(new NavItem("startup",   "nav.startup",   "\uE7E8", () => new StartupView()));
+        NavItems.Add(new NavItem("clean",     "nav.clean",     "\uE74D", () => new CleanupView()));
+
         NavItems.Add(new NavItem("logs",      "nav.logs",      "\uE7C3", () => new LogsView()));
         NavItems.Add(new NavItem("settings",  "nav.settings",  "\uE713", () => new SettingsView()));
         NavItems.Add(new NavItem("about",     "nav.about",     "\uE946", () => new AboutView()));

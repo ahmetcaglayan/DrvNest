@@ -17,6 +17,8 @@ DrvNest'in dokuz menüsü, her butonun ne yaptığı ve tipik akışlar.
 9. [Geçmiş ve CSV dışa aktarma](#9-geçmiş-ve-csv-dışa-aktarma)
 9b. [Sistem İzleme](#9b-sistem-izleme)
 9c. [Ağ İzleme](#9c-ağ-izleme)
+9d. [Başlangıç Programları](#9d-başlangıç-programları)
+9e. [Temizlik](#9e-temizlik)
 10. [Günlük — hata bildirirken](#10-günlük--hata-bildirirken)
 11. [Ayarların anlamı](#11-ayarların-anlamı)
 12. [Hakkında ve kendi kendini güncelleme](#12-hakkında-ve-kendi-kendini-güncelleme)
@@ -400,6 +402,91 @@ bağlantı sayısı ve karşı uç adresi (fare üzerine gelince).
 
 Bağlı olanlar önce. Her satırda tür, IP adresi, anlaşılan bağlantı hızı ve anlık trafik.
 **Tüm bağdaştırıcılar** düğmesi bağlı olmayanları da gösterir.
+
+---
+
+## 9d. Başlangıç Programları
+
+Windows açılırken çalışan her kaydı listeler ve her biri için bir anahtar verir.
+
+### Kapatmak ne yapar, ne yapmaz
+
+Bir kaydı kapatmak **hiçbir şeyi silmez.** Windows açık/kapalı bilgisini ayrı bir anahtarda
+(`StartupApproved`) tutar ve DrvNest yalnızca oraya yazar. `Run` değeri veya Başlangıç
+klasöründeki kısayol olduğu yerde kalır; tekrar açtığınızda özgün komut satırı aynen geri
+gelir. Görev Yöneticisi de aynı ayarı okur, bu yüzden ikisi her zaman aynı şeyi gösterir.
+
+### Satırlar
+
+| Sütun | Ne gösterir |
+| --- | --- |
+| **Açık** | Anahtar. `RunOnce` kayıtlarında devre dışıdır: onlar bir kez çalışıp kendilerini siler. |
+| **Program** | Çalıştırılabilir dosyanın sürüm bilgisindeki açıklama; yoksa kayıt adı. Altında tam komut satırı. |
+| **Üretici** | Sürüm bilgisindeki şirket adı. |
+| **Nereden başlıyor** | Kayıt defteri (bu kullanıcı / tüm kullanıcılar / 32-bit) ya da Başlangıç klasörü. |
+| **Boyut** | Çalıştırılabilir dosyanın boyutu. |
+
+### Rozetler
+
+- **DOSYA YOK** — kayıt artık var olmayan bir dosyayı gösteriyor. Windows her oturum
+  açılışında denemeye devam eder ve sessizce başarısız olur. Bunları kapatmanın hiçbir
+  maliyeti yoktur.
+- **GÜVENLİK** — güvenlik yazılımı gibi görünüyor. Kapatmadan önce onay istenir.
+- **SİSTEM** — donanım üreticisinin veya Windows'un bir aracı. Genelde güvenle
+  kapatılabilir; bazen bir fonksiyon tuşunu çalıştıran şey odur.
+- **TEK SEFERLİK** — `RunOnce`. Bir kez çalışır ve kendini siler.
+
+Tüm kullanıcılar için olan kayıtları değiştirmek yönetici yetkisi ister; DrvNest zaten
+yönetici olarak çalışır.
+
+---
+
+## 9e. Temizlik
+
+### Sayfa nasıl çalışır
+
+Açıldığında bir tarama başlar ve her kategorinin boyutu **tahmin edilmez, ölçülür.** Bu,
+tahmin eden araçlardan yavaştır ve kutunun yanındaki sayının gerçekten geri kazanılacak yer
+olması demektir.
+
+**Varsayılan olarak hiçbir şey işaretli değildir.** Üstteki "Seçilen" değeri sıfırla açılır
+ve siz işaretledikçe artar.
+
+### Kategoriler
+
+| Rozet | Anlamı |
+| --- | --- |
+| _(yok)_ | Saf önbellek. Kendini yeniden oluşturur; silmenin bedeli bir kerelik biraz yavaşlıktır. |
+| **NOT** | Güvenli ama görünür bir sonucu var — satırdaki not onu yazar. |
+| **SİZİN DOSYALARINIZ** | Kendi dosyalarınız. Asla toplu seçilmez. |
+
+**Önbellekleri seç** düğmesi yalnızca ilk gruptakileri işaretler; ikinci ve üçüncü gruba
+hiç dokunmaz.
+
+### Kendi dosyalarınız
+
+İki kategori sizin dosyalarınızı içerir: **eski indirmeler** ve **artık klasörler**. Bunlar
+tek tek listelenir — boyutu ve kaç günlük olduğuyla birlikte — ve her biri ayrı ayrı
+işaretlenir. Sildiğinizde kalıcı olarak silinmezler, **Geri Dönüşüm Kutusu'na** giderler.
+
+Artık klasör tespiti bir tahmindir. DrvNest klasör adını kurulu her programla, çalışan her
+programla ve Program Files içindekilerle karşılaştırır, altı aydır hiçbir dosyasının
+yazılmamış olmasını şart koşar — ve yine de satırda bunun bir tahmin olduğunu yazar.
+
+### Güvenlik
+
+- Her yol bilinen klasör API'sinden gelir; hiçbir kategori kendi köklerinin dışına çıkmaz.
+- Yeniden ayrıştırma noktaları izlenmez.
+- Açık olan dosyalar zorlanmaz, atlanır; kaç tanesinin atlandığı raporlanır.
+
+### Bellek boşaltma
+
+**Çalışma kümelerini boşalt** düğmesi her işlem için `EmptyWorkingSet` çağırır. Kullanımdaki
+fiziksel bellek gerçekten düşer — ve programlar tekrar kullanıldıkça Windows o sayfaları
+diskten geri okur.
+
+Yani bu bir hızlandırma değildir; kısa süreliğine yavaşlatır. Çok bellek isteyen bir işe
+başlamadan hemen önce anlamlıdır. Sayfa bunu düğmenin yanında yazar.
 
 ---
 

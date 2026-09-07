@@ -27,7 +27,8 @@ public static class CaptureRunner
     private static readonly string[] Pages =
     {
         "dashboard", "devices", "updates", "queue", "backup",
-        "history", "system", "network", "logs", "settings", "about"
+        "history", "system", "network", "startup", "clean",
+        "logs", "settings", "about"
     };
 
     /// <summary>
@@ -44,6 +45,7 @@ public static class CaptureRunner
     {
         ["system"] = 32_000,
         ["network"] = 32_000,
+        ["clean"] = 90_000,
     };
 
     /// <summary>

@@ -9,6 +9,66 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Nothing yet.
 
+## [1.2.0] - 2026-09-07
+
+Two maintenance pages, both of which only ever act when you press something.
+
+### Added
+
+**Startup Programs**
+
+- Every autostart entry DrvNest can safely toggle: the `Run` and `RunOnce` keys under
+  HKCU and HKLM, the 32-bit `Wow6432Node` view, and both Startup folders. Each row
+  carries the program name from the executable's version resource, its publisher, the
+  command line, the size and where it starts from.
+- A switch per entry. Turning one off writes the same `StartupApproved` value Task
+  Manager writes, so the two always agree and **nothing is ever deleted** - the command
+  line stays exactly where it is and switching back on restores it unchanged. The
+  alternative, deleting the value and remembering it in DrvNest's own settings, is easier
+  to write and quietly makes DrvNest load-bearing for someone else's software.
+- Entries pointing at a file that no longer exists are flagged: Windows tries to run them
+  at every logon and fails silently.
+- Security software is marked, and turning one off asks first.
+- Filters for on, off and broken, plus search across name, publisher and command line.
+
+**Clean Up**
+
+- Measures, rather than estimates, what each category holds: temporary files, the
+  thumbnail and icon cache, browser caches for seven browsers, the Windows Update
+  download cache, Delivery Optimization, crash dumps, error reports, DirectX/NVIDIA/AMD/
+  Intel shader caches, Windows servicing logs, DrvNest's own driver cache and the
+  Recycle Bin. The number next to a box is the space that will actually come back.
+- **Nothing is ticked by default.** The page opens with a total of zero.
+- Two categories hold the user's own files and are never bulk-selected: old downloads,
+  and folders under AppData that match no installed program, no running program and
+  nothing in Program Files, and have not been written to for six months. Both are listed
+  item by item with a size and an age, each ticked individually, and both go to the
+  **Recycle Bin** rather than being deleted outright - a wrong guess is recoverable.
+- Every path comes from a well-known folder API, reparse points are never followed, and
+  every single deletion is re-checked against its own category's roots before it happens.
+  Files that are open are skipped rather than forced.
+- A memory trim that says what it actually does: it pages out working sets, physical
+  memory in use genuinely drops, and Windows reads those pages straight back as the
+  programs are used again. It is useful immediately before something that needs a lot of
+  memory at once, and the page says so instead of promising a faster computer.
+
+**Languages**
+
+- All 93 new strings translated into Russian, Simplified Chinese and Hindi alongside
+  English and Turkish.
+
+### Fixed
+
+- `SHQUERYRBINFO` had its two 64-bit fields declared in the wrong order, so the Recycle
+  Bin reported its byte count as a file count and its file count as a size - "44 B" and
+  "1,169,713,882 files" for a bin holding 1.1 GB in 44 items.
+- The leftover-folder detector compared raw folder names against raw display names, so
+  `%APPDATA%\riot-client-ux` was offered for deletion while Riot Client was installed.
+  Names are now normalised before comparison, running processes count as evidence that
+  software is installed, and the age test uses the newest file anywhere in the tree
+  rather than the folder's own timestamp, which does not change when something several
+  levels down is written.
+
 ## [1.1.0] - 2026-09-07
 
 Two new pages and an updater that no longer waits to be asked.
@@ -180,6 +240,7 @@ adapter may not have a driver either.
   runs as SYSTEM or as a different administrator account. Falls back to the user
   profile when ProgramData is not writable.
 
-[Unreleased]: https://github.com/ahmetcaglayan/DrvNest/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/ahmetcaglayan/DrvNest/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/ahmetcaglayan/DrvNest/releases/tag/v1.2.0
 [1.1.0]: https://github.com/ahmetcaglayan/DrvNest/releases/tag/v1.1.0
 [1.0.0]: https://github.com/ahmetcaglayan/DrvNest/releases/tag/v1.0.0

@@ -18,7 +18,8 @@ src/
 
 **`DrvNest.Core`** contains everything that is not a window: device scanning, the driver
 providers, the job engine, persistence, backup/restore, reboot resume, the restore point
-service, the self-updater and the system and network monitors. It references no WPF type and no NuGet package. Anything in
+service, the self-updater, the system and network monitors, the startup manager and the
+clean-up scanner. It references no WPF type and no NuGet package. Anything in
 here can be driven from a console host, a service or a test harness.
 
 **`DrvNest.App`** is the WPF shell. It owns the composition root, the view models, the
@@ -465,6 +466,80 @@ than on the timer thread, guarded by an `Interlocked` flag so two sweeps can nev
 and its results are marshalled to the UI thread. The tables are patched in place by
 `ListSync` rather than rebuilt, so a list that reorders once a second does not reset its
 scroll position every second.
+
+---
+
+## 8c. Startup and clean-up
+
+Two more subsystems that have nothing to do with drivers, and one design rule each that is
+the whole point of them.
+
+### `Core/Startup`
+
+**Disabling never deletes.** Windows keeps the enabled flag for a startup entry in a
+separate key:
+
+```
+HKCU|HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run
+                                                                              \Run32
+                                                                              \StartupFolder
+```
+
+holding a twelve-byte value per entry whose first byte carries the flag — bit 0 set means
+disabled. Windows writes `0x02` / `0x03`, and `0x06` / `0x07` after a round trip, so the
+flag is read as a bit rather than compared against a list of magic numbers. `StartupService`
+writes only that value; the `Run` entry and the Startup-folder shortcut are never touched.
+
+Three things follow, and all three are why it is done this way rather than the easier way:
+
+* Re-enabling is exact, because the command line never went anywhere.
+* Task Manager and DrvNest agree with each other, in both directions.
+* Uninstalling DrvNest does not leave the machine missing half its startup programs.
+
+The easier implementation — delete the value, remember it in DrvNest's own settings — takes
+less code and quietly makes DrvNest load-bearing for somebody else's software.
+
+Command lines in `Run` are not well formed. Some are quoted, some are not, and plenty point
+at a path containing a space without quoting it. `ExtractExecutable` resolves the unquoted
+case the way `CreateProcess` does: try progressively longer prefixes until one names a file
+that exists, and if none does, cut at the first token that looks like a switch.
+
+### `Core/Cleanup`
+
+**Nothing is ticked by default, and nothing outside a target's own roots is ever touched.**
+
+```
+Cleanup/
+├── CleanupModels.cs    targets, items, the report
+├── CleanupInterop.cs   SHFileOperation, SHQueryRecycleBin, EmptyWorkingSet
+├── CleanupScanner.cs   what exists and how big it is
+├── CleanupService.cs   the deletion, and the guard in front of it
+└── MemoryTrimmer.cs    working sets, and an honest description of them
+```
+
+Every root comes from a well-known folder API rather than from a string. Reparse points are
+never followed — `%LOCALAPPDATA%` is full of junctions and walking into one is how a
+"clear the cache" feature deletes somebody's documents — and recursion is depth-capped
+against a junction loop. `CleanupService.IsInsideRoots` re-checks every individual deletion
+against its own target's roots immediately before it happens; that check is redundant by
+design, because the cost of a bug in that file is somebody's data.
+
+Sizes are measured rather than estimated. A full scan is therefore slower than the tools
+that guess, and the number next to the checkbox is the number of bytes that will actually
+come back.
+
+Targets whose risk is `Review` hold the user's own files. Those are never bulk-selected:
+each item is listed with a size, an age and a reason, ticked individually, and deleted
+through `SHFileOperation` with `FOF_ALLOWUNDO` — the Recycle Bin — so a wrong guess is
+recoverable. The leftover detector in particular *is* guessing: it excludes anything
+matching an installed program, a running process or a Program Files folder after
+normalising the names, requires six months with no writes anywhere in the tree, and the row
+still says it is a guess.
+
+`MemoryTrimmer` calls `EmptyWorkingSet` per process and trims the system file cache. It is
+documented, in the code and in the interface, as something that frees physical memory now
+and does not make anything faster — which is the opposite of what every other tool with
+this button claims.
 
 ---
 
