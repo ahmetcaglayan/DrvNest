@@ -62,9 +62,9 @@
   "@type": "SoftwareApplication",
   "name": "Hexnest",
   "alternateName": ["Hexnest for Windows", "Hexnest for Mac"],
-  "description": "Hexnest is a free and open-source system utility for Windows 10, Windows 11 and macOS 12 or newer. On both platforms it provides a live system monitor with per-core processor load and per-application resource usage, a network monitor with per-application traffic, a start-up manager and a disk cleaner that measures rather than estimates. On Windows it is also a full driver updater: it scans every PnP device, reports which ones have no driver, installs missing and outdated drivers from the Windows Update catalog or from local INF folders, resumes its queue after the restarts a driver install needs, and backs drivers up so they can be restored offline from a USB stick after a format.",
+  "description": "Hexnest est un utilitaire système gratuit et open source pour Windows 10, Windows 11 et macOS 12 ou plus récent. Sur les deux plateformes, il offre un moniteur système en direct avec la charge du processeur par cœur et l'utilisation des ressources par application, un moniteur réseau avec le trafic par application, un gestionnaire de démarrage et un nettoyeur de disque qui mesure au lieu d'estimer. Sous Windows, c'est aussi un véritable outil de mise à jour des pilotes : il analyse chaque périphérique PnP, signale ceux qui n'ont pas de pilote, installe les pilotes manquants et obsolètes depuis le catalogue Windows Update ou depuis des dossiers INF locaux, poursuit sa file après les redémarrages qu'une installation de pilote impose, et sauvegarde les pilotes pour pouvoir les restaurer hors ligne depuis une clé USB après un formatage.",
   "applicationCategory": "UtilitiesApplication",
-  "applicationSubCategory": "System monitor, disk cleaner and driver updater",
+  "applicationSubCategory": "Moniteur système, nettoyeur de disque et outil de mise à jour des pilotes",
   "operatingSystem": "Windows 10, Windows 11, macOS 12, macOS 13, macOS 14, macOS 15",
   "softwareVersion": "1.5.0",
   "downloadUrl": "https://github.com/ahmetcaglayan/Hexnest/releases/latest",
@@ -76,35 +76,35 @@
   "inLanguage": ["en", "tr", "ru", "zh", "hi", "pt", "ja", "de", "fr", "ko"],
   "codeRepository": "https://github.com/ahmetcaglayan/Hexnest",
   "programmingLanguage": "C#",
-  "softwareRequirements": "Windows 10 version 1607 (build 14393) or newer, 64-bit, with administrator rights; or macOS 12 Monterey or newer on Apple silicon or Intel. No .NET runtime, no Visual C++ Redistributable and no Homebrew or Xcode required.",
-  "permissions": "On Windows, administrator rights are required to install drivers, export the driver store and create a system restore point. On macOS the application never runs as root and only ever changes files inside the user's own home folder.",
+  "softwareRequirements": "Windows 10 version 1607 (build 14393) ou plus récent, 64 bits, avec les droits d'administrateur ; ou macOS 12 Monterey ou plus récent sur Apple silicon ou Intel. Aucun environnement d'exécution .NET, aucun Visual C++ Redistributable et ni Homebrew ni Xcode requis.",
+  "permissions": "Sous Windows, les droits d'administrateur sont nécessaires pour installer des pilotes, exporter le magasin de pilotes et créer un point de restauration système. Sous macOS, l'application ne s'exécute jamais en root et ne modifie jamais que des fichiers situés dans le dossier de départ de l'utilisateur.",
   "releaseNotes": "https://github.com/ahmetcaglayan/Hexnest/blob/main/CHANGELOG.md",
   "featureList": [
-    "Scans every PnP device with SetupAPI and CfgMgr32, without WMI",
-    "Detects missing drivers from Configuration Manager problem codes",
-    "Finds drivers in the Windows Update catalog through the Windows Update Agent",
-    "Installs drivers from local INF folders, a USB stick or a network share",
-    "Parallel downloads with serialized installs",
-    "Resumes the queue automatically after a reboot",
-    "Creates a system restore point and backs up each driver before replacing it",
-    "Backs up and restores every third-party driver with pnputil",
-    "Offline rescue mode for a freshly formatted machine with no internet",
-    "Hardware report listing every device and hardware id",
-    "Live system monitor: processor load per logical core, memory breakdown, temperature sensors, storage and battery",
-    "Per-application resource usage: processor share, working set, private bytes and disk throughput for every process",
-    "Live network monitor: download and upload for the whole machine, session and since-boot totals, every adapter",
-    "Per-application network usage from TCP connection statistics, with open connection counts and remote endpoints",
-    "Automatic daily update check, with optional automatic download and install verified against SHA-256",
-    "Startup manager: every autostart entry with a switch, written the way Task Manager writes it so nothing is deleted",
-    "Clean-up: temporary files, browser caches, shader caches, crash dumps, Windows Update cache and the Recycle Bin, all measured rather than estimated",
-    "Old downloads and leftover application folders listed item by item and sent to the Recycle Bin",
-    "Memory trim that states plainly what paging out a working set does and does not achieve",
-    "Ten interface languages - English, Turkish, Russian, Simplified Chinese, Hindi, Portuguese, Japanese, German, French and Korean - plus a dark and a light theme",
-    "macOS build with the same monitors, start-up manager and cleaner, built on Avalonia",
-    "macOS start-up manager for launchd login agents, using launchctl overrides so nothing is deleted",
-    "macOS cleaner for application caches, developer caches, Xcode derived data, logs, the Trash, old downloads and iPhone backups",
-    "macOS per-application network usage from the same statistics Activity Monitor reads",
-    "Per-core processor load including the performance and efficiency clusters on Apple silicon",
+    "Analyse chaque périphérique PnP avec SetupAPI et CfgMgr32, sans WMI",
+    "Détecte les pilotes manquants d'après les codes d'erreur du Gestionnaire de configuration",
+    "Trouve les pilotes dans le catalogue Windows Update via l'agent Windows Update",
+    "Installe des pilotes depuis des dossiers INF locaux, une clé USB ou un partage réseau",
+    "Téléchargements parallèles, installations sérialisées",
+    "Reprend automatiquement la file après un redémarrage",
+    "Crée un point de restauration système et sauvegarde chaque pilote avant de le remplacer",
+    "Sauvegarde et restaure chaque pilote tiers avec pnputil",
+    "Mode de secours hors ligne pour une machine fraîchement formatée sans Internet",
+    "Rapport matériel listant chaque périphérique et chaque identifiant matériel",
+    "Moniteur système en direct : charge du processeur par cœur logique, détail de la mémoire, capteurs de température, stockage et batterie",
+    "Utilisation des ressources par application : part de processeur, jeu de travail, octets privés et débit disque pour chaque processus",
+    "Moniteur réseau en direct : téléchargement et envoi pour toute la machine, totaux de la session et depuis le démarrage, chaque carte réseau",
+    "Utilisation réseau par application depuis les statistiques de connexion TCP, avec le nombre de connexions ouvertes et les points distants",
+    "Vérification quotidienne automatique des mises à jour, avec téléchargement et installation automatiques optionnels vérifiés par SHA-256",
+    "Gestionnaire de démarrage : chaque entrée de démarrage automatique avec un interrupteur, écrite comme l'écrit le Gestionnaire des tâches, si bien que rien n'est supprimé",
+    "Nettoyage : fichiers temporaires, caches des navigateurs, caches de shaders, vidages sur incident, cache de Windows Update et Corbeille, tous mesurés plutôt qu'estimés",
+    "Anciens téléchargements et dossiers résiduels d'applications listés un par un et envoyés à la Corbeille",
+    "Libération de mémoire qui dit clairement ce que décharger un jeu de travail apporte et n'apporte pas",
+    "Dix langues d'interface - anglais, turc, russe, chinois simplifié, hindi, portugais, japonais, allemand, français et coréen - plus un thème sombre et un thème clair",
+    "Version macOS avec les mêmes moniteurs, le même gestionnaire de démarrage et le même nettoyage, construite avec Avalonia",
+    "Gestionnaire de démarrage macOS pour les agents d'ouverture de session launchd, par remplacements launchctl, si bien que rien n'est supprimé",
+    "Nettoyage macOS des caches des applications, des caches de développement, des données dérivées Xcode, des journaux, de la Corbeille, des anciens téléchargements et des sauvegardes d'iPhone",
+    "Utilisation réseau par application sous macOS, depuis les mêmes statistiques que lit Activity Monitor",
+    "Charge du processeur par cœur, y compris les clusters de performance et d'efficacité sur Apple silicon",
     "Santé de la batterie sous macOS - cycles de charge, capacité maximale, état et température de la batterie - et la liste des processus qui gardent le Mac éveillé"
   ],
   "screenshot": [
@@ -152,66 +152,66 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Is Hexnest really free?",
+      "name": "Hexnest est-il vraiment gratuit ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Hexnest is released under the MIT licence and the full source code is on GitHub. There is no paid tier, no trial, no feature that unlocks after payment, no advertising and no bundled third-party software. The scan and the installs are the same product."
+        "text": "Oui. Hexnest est publié sous licence MIT et tout le code source est sur GitHub. Il n'y a pas d'offre payante, pas de version d'essai, pas de fonction qui se débloque après paiement, pas de publicité et aucun logiciel tiers livré en prime. L'analyse et les installations sont le même produit."
       }
     },
     {
       "@type": "Question",
-      "name": "Do I need to install .NET or the Visual C++ Redistributable?",
+      "name": "Dois-je installer .NET ou le Visual C++ Redistributable ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. The entire .NET 8 runtime is inside Hexnest.exe as a self-contained single-file publish, and WPF carries its own private copies of vcruntime140_cor3.dll and msvcp140_cor3.dll. The only requirement is 64-bit Windows 10 version 1607 (build 14393) or newer. That is also why the executable is around 65 MB."
+        "text": "Non. Tout l'environnement d'exécution .NET 8 est dans Hexnest.exe sous forme de publication autonome en un seul fichier, et WPF embarque ses propres copies privées de vcruntime140_cor3.dll et msvcp140_cor3.dll. La seule exigence est Windows 10 version 1607 (build 14393) 64 bits ou plus récent. C'est aussi pourquoi l'exécutable pèse environ 65 Mo."
       }
     },
     {
       "@type": "Question",
-      "name": "Why does SmartScreen or my antivirus warn about Hexnest?",
+      "name": "Pourquoi SmartScreen ou mon antivirus met-il en garde contre Hexnest ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Hexnest is not code-signed, because a code-signing certificate costs money. Windows SmartScreen and Smart App Control show a warning for any unsigned executable that has not built up reputation, and a single-file app that runs as administrator, installs drivers and registers a scheduled task looks like malware to a heuristic scanner. The honest mitigation is to verify the download: run Get-FileHash .\\Hexnest.exe -Algorithm SHA256 and compare the result with the Hexnest.exe line in the checksums.txt published with the release. A match means the file is byte-for-byte the published one. You can also build it yourself from source."
+        "text": "Hexnest n'est pas signé numériquement, parce qu'un certificat de signature de code coûte de l'argent. Windows SmartScreen et Smart App Control affichent un avertissement pour tout exécutable non signé qui n'a pas encore de réputation, et une application en un seul fichier qui s'exécute en administrateur, installe des pilotes et enregistre une tâche planifiée ressemble à un logiciel malveillant pour un antivirus heuristique. La parade honnête est de vérifier le téléchargement : exécutez Get-FileHash .\\Hexnest.exe -Algorithm SHA256 et comparez le résultat à la ligne Hexnest.exe du fichier checksums.txt publié avec la version. Si cela correspond, le fichier est octet pour octet celui qui a été publié. Vous pouvez aussi le compiler vous-même à partir des sources."
       }
     },
     {
       "@type": "Question",
-      "name": "Can Hexnest install drivers after a format with no internet?",
+      "name": "Hexnest peut-il installer des pilotes après un formatage sans Internet ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, and that is what it was built for. Before the format, use Backup and Restore to export every third-party driver package, then copy that folder and Hexnest.exe onto the same USB stick. After the format, start Hexnest.exe --rescue: Windows Update is never contacted and only local sources are used. A folder named Drivers next to Hexnest.exe is registered automatically as a local driver repository. Any vendor driver folder you extracted yourself works too, because its INF files are matched recursively."
+        "text": "Oui, et c'est pour cela qu'il a été conçu. Avant le formatage, utilisez Sauvegarde et restauration pour exporter chaque paquet de pilotes tiers, puis copiez ce dossier et Hexnest.exe sur la même clé USB. Après le formatage, lancez Hexnest.exe --rescue : Windows Update n'est jamais contacté et seules les sources locales sont utilisées. Un dossier nommé Drivers à côté de Hexnest.exe est enregistré automatiquement comme dépôt de pilotes local. N'importe quel dossier de pilotes constructeur que vous avez extrait vous-même fonctionne aussi, car ses fichiers INF sont analysés récursivement."
       }
     },
     {
       "@type": "Question",
-      "name": "Can I roll back a driver that breaks something?",
+      "name": "Puis-je revenir en arrière si un pilote casse quelque chose ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, in three ways. Hexnest exports the package it is about to replace and records the path in the history entry, so you can reinstall it with Restore from folder. It also creates a driver-type system restore point before the first install of a session, which you can use through the Windows System Restore wizard. And Windows' own Roll Back Driver button in Device Manager keeps working independently of Hexnest."
+        "text": "Oui, de trois façons. Hexnest exporte le paquet qu'il s'apprête à remplacer et consigne le chemin dans l'entrée d'historique, ce qui permet de le réinstaller avec Restaurer depuis un dossier. Il crée aussi un point de restauration système de type pilote avant la première installation d'une session, que vous pouvez utiliser via l'assistant Restauration du système de Windows. Et le bouton Restaurer le pilote précédent de Windows, dans le Gestionnaire de périphériques, continue de fonctionner indépendamment de Hexnest."
       }
     },
     {
       "@type": "Question",
-      "name": "Does Hexnest really continue after a reboot?",
+      "name": "Hexnest continue-t-il vraiment après un redémarrage ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. The queue is written atomically to session.json on every state change, and Hexnest registers a logon-triggered scheduled task called Hexnest\\ResumeSession, falling back to an HKLM RunOnce value when Task Scheduler is unavailable. At the next logon the task relaunches Hexnest with --resume and the remaining jobs continue. A session survives at most ten restarts, and the task and RunOnce value are removed when the queue finishes."
+        "text": "Oui. La file est écrite de façon atomique dans session.json à chaque changement d'état, et Hexnest enregistre une tâche planifiée déclenchée à l'ouverture de session, appelée Hexnest\\ResumeSession, avec repli sur une valeur RunOnce dans HKLM lorsque le Planificateur de tâches est indisponible. À l'ouverture de session suivante, la tâche relance Hexnest avec --resume et les travaux restants continuent. Une session survit à dix redémarrages au maximum, et la tâche comme la valeur RunOnce sont supprimées quand la file se termine."
       }
     },
     {
       "@type": "Question",
-      "name": "Why does Hexnest need administrator rights?",
+      "name": "Pourquoi Hexnest a-t-il besoin des droits d'administrateur ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Installing a driver is a privileged operation. Adding packages to or exporting them from the driver store with pnputil, driving the Windows Update installer and creating a system restore point through srclient.dll all require an elevated token, and the resume task is registered under HKLM. Hexnest asks for elevation up front in its application manifest rather than failing with access denied in the middle of a queue."
+        "text": "Installer un pilote est une opération privilégiée. Ajouter des paquets au magasin de pilotes ou les en exporter avec pnputil, piloter l'installateur de Windows Update et créer un point de restauration système via srclient.dll exigent tous un jeton élevé, et la tâche de reprise est enregistrée sous HKLM. Hexnest demande l'élévation d'emblée dans son manifeste d'application plutôt que d'échouer sur un « accès refusé » au milieu d'une file."
       }
     },
     {
       "@type": "Question",
-      "name": "Does Hexnest collect any data?",
+      "name": "Hexnest collecte-t-il des données ?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. There is no telemetry, no usage statistics and no device identifiers. Exactly two things ever leave the machine: Windows Update queries, which go straight to Microsoft through Windows' own Windows Update Agent and are skipped entirely in offline or rescue mode, and a single request to the GitHub Releases API when you press Check for updates. Everything else stays in %ProgramData%\\Hexnest on your own machine."
+        "text": "Non. Il n'y a pas de télémétrie, pas de statistiques d'usage et pas d'identifiants d'appareil. Exactement deux choses quittent la machine : les requêtes Windows Update, qui vont directement à Microsoft via l'agent Windows Update de Windows lui-même et sont entièrement ignorées en mode hors ligne ou de secours, et une seule requête à l'API GitHub Releases quand vous appuyez sur Rechercher des mises à jour. Tout le reste reste dans %ProgramData%\\Hexnest sur votre propre machine."
       }
     }
   ]

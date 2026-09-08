@@ -116,8 +116,89 @@ def versions(text: str) -> dict:
     return found
 
 
-def compare(reference: str, candidate: str, code: str) -> list[str]:
+LD = re.compile(r'<script type="application/ld\+json">(.*?)</script>', re.S)
+
+# Fields inside the JSON-LD that are prose and must therefore be translated. The list is
+# deliberately not exhaustive: names, URLs and version numbers are the same everywhere.
+TRANSLATED = ['description', 'applicationSubCategory', 'softwareRequirements', 'permissions']
+
+
+def structured_data(text: str) -> list:
+    """The parsed JSON-LD blocks, or an empty list when they do not parse."""
+    import json
+
+    blocks = []
+    for raw in LD.findall(text):
+        try:
+            blocks.append(json.loads(raw))
+        except ValueError:
+            return []
+    return blocks
+
+
+def compare_structured_data(reference: str, candidate: str, code: str) -> list[str]:
+    """
+    Checks the JSON-LD, which the structural comparison cannot see.
+
+    Everything below lives inside a <script> body, so to the skeleton it is one text
+    node and nothing more. That blind spot let two separate faults sit in the published
+    site across two releases: the four oldest translations described a Windows-only
+    driver updater long after the Mac build shipped, listing no macOS in
+    operatingSystem at all, and the five newest pages carried the English payload
+    wholesale - twenty-five of twenty-six features, eight FAQ answers - under a fully
+    translated page. Search results are built from exactly this.
+    """
     problems: list[str] = []
+
+    left, right = structured_data(reference), structured_data(candidate)
+
+    if not right:
+        return ['%s: the JSON-LD does not parse' % code]
+
+    if len(left) != len(right):
+        return ['%s: %d JSON-LD blocks in English, %d here' % (code, len(left), len(right))]
+
+    for i, (a, b) in enumerate(zip(left, right)):
+        for field in TRANSLATED:
+            if field not in a:
+                continue
+            if field not in b:
+                problems.append('%s: JSON-LD is missing %s' % (code, field))
+            elif a[field] == b[field]:
+                problems.append('%s: JSON-LD %s is still the English text' % (code, field))
+
+        if 'featureList' in a:
+            other = b.get('featureList') or []
+            if len(other) != len(a['featureList']):
+                problems.append('%s: featureList has %d entries, English has %d'
+                                % (code, len(other), len(a['featureList'])))
+            else:
+                same = sum(1 for x, y in zip(a['featureList'], other) if x == y)
+                if same:
+                    problems.append('%s: %d of %d featureList entries are still English'
+                                    % (code, same, len(other)))
+
+        if 'operatingSystem' in a and 'macOS' in str(a['operatingSystem']) \
+                and 'macOS' not in str(b.get('operatingSystem', '')):
+            problems.append('%s: operatingSystem does not mention macOS' % code)
+
+        if 'mainEntity' in a:
+            questions = b.get('mainEntity') or []
+            if len(questions) != len(a['mainEntity']):
+                problems.append('%s: %d FAQ entries, English has %d'
+                                % (code, len(questions), len(a['mainEntity'])))
+            else:
+                same = sum(1 for x, y in zip(a['mainEntity'], questions)
+                           if x.get('name') == y.get('name'))
+                if same:
+                    problems.append('%s: %d of %d FAQ questions are still English'
+                                    % (code, same, len(questions)))
+
+    return problems
+
+
+def compare(reference: str, candidate: str, code: str) -> list[str]:
+    problems: list[str] = compare_structured_data(reference, candidate, code)
 
     # Versions first, because this is the failure the structural check cannot see and
     # the one that actually reaches a reader. Releasing 1.4.0 bumped the English page
